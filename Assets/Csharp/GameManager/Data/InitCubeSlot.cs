@@ -61,10 +61,12 @@ new()
             occupant = piece;
             if (piece != null)
             {
-                piece.position = coord;
+                piece.coord = coord;
                 piece.indexCube.position = indexCube.position;
             }
         }
+
+
     }
 
 
@@ -79,7 +81,7 @@ new()
         public List<CubeSurface_s> surfaces;        //每个方块带的外表面（固定）
 
         [Header("动态状态（变化）")]
-        public Vector3Int position;                 //方块当前的逻辑坐标（变化）
+        public Vector3Int coord;                 //方块当前的逻辑坐标（变化）
 
         //初始化
         public CubePiece() { }
@@ -95,7 +97,7 @@ new()
 
         [Header("动态状态（变化）")]
         public FaceDir dir;                 //外表面的方向，用于坐标计算（变化）
-        public Vector3Int position;         //外表面的逻辑坐标，旋转后变化
+        public Vector3Int coord;         //外表面的逻辑坐标，旋转后变化
 
         //初始化
         public CubeSurface_s() { }
@@ -103,14 +105,13 @@ new()
         //更新面坐标
         public void UpdatePosition(Vector3Int pieceCoord)
         {
-            position = pieceCoord + FaceOffset[dir];
+            coord = pieceCoord + FaceOffset[dir];
         }
     }
 
     //初始化函数
     private void Awake()
     {
-        slots = new List<Slot>();
         InitData();// 验证数据完整性
 
         //初始化字典，方便以后单独引用调用面和方块
@@ -119,19 +120,33 @@ new()
         BuildPieceMap();
         BuildPieceCoordMap();
     }
+    
 
     private void InitData()
     {
+        int i = 0;
         foreach (var slot in slots)
         {
+            Vector3 vec3 = slot.indexCube.position;
+            slot.coord= new Vector3Int(
+            Mathf.RoundToInt(vec3.x),
+            Mathf.RoundToInt(vec3.y),
+            Mathf.RoundToInt(vec3.z)
+        )*2;
             if (slot.indexCube == null)
                 Debug.LogError($"Slot at {slot.coord} 缺少 indexCube");
 
             if (slot.occupant != null)
             {
                 // 确保棋子位置正确
-                slot.occupant.position = slot.coord;
+                slot.occupant.coord = slot.coord;
                 slot.occupant.indexCube.position = slot.indexCube.position;
+                foreach(var element in slot.occupant.surfaces)
+                {
+                    element.id = i;
+                    element.roomID = i;
+                    i++;
+                }
             }
         }
     }
@@ -166,7 +181,7 @@ new()
             foreach (var s in slot.occupant.surfaces)
             {
                 s.UpdatePosition(slot.coord);
-                surfaceCoordMap[s.position] = s;
+                surfaceCoordMap[s.coord] = s;
             }
         }
     }
@@ -194,7 +209,7 @@ new()
         foreach (var slot in slots)
         {
             if (slot.occupant == null) continue;
-            PieceCoordMap[slot.occupant.position] = slot.occupant;
+            PieceCoordMap[slot.occupant.coord] = slot.occupant;
         }
     }
 }
