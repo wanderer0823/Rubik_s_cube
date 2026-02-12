@@ -7,11 +7,11 @@ public class InitCubeSlot : MonoBehaviour
 {
     
     //用于整体管理魔方结构
-    public List<Slot> slots;
-    Dictionary<int, CubePiece> pieceMap;
-    Dictionary<int, CubeSurface_s> surfaceMap;
-    Dictionary<Vector3Int, CubeSurface_s> surfaceCoordMap;
-    Dictionary<Vector3Int, CubePiece> PieceCoordMap;
+    public List<Slot> slots;                    //总入口，都挂这里
+    Dictionary<int, CubePiece> pieceMap;        //用方块id调用对应方块的字典，因为用slot来调用有点冗长
+    Dictionary<int, CubeSurface_s> surfaceMap;  //用面id调用对应面的字典
+    Dictionary<Vector3Int, CubeSurface_s> surfaceCoordMap;//用坐标调用对应面，和上面的区别只是调用媒介不一样，调用方法在下面
+    Dictionary<Vector3Int, CubePiece> PieceCoordMap;//用坐标调用对应方块
 
     //静态数据
     static readonly Dictionary<FaceDir, Vector3Int> FaceOffset =
@@ -25,10 +25,10 @@ new()
     {FaceDir.Back,  new(0,  0, -1)}
 };
     //逻辑坐标范围还是-3，0，3！
-    public enum Axis { X, Y, Z }
+    public enum Axis { X, Y, Z }//旋转轴标识
 
 
-    //面朝向
+    //面朝向，用在面（CubeSurface_s）类
     public enum FaceDir
     {
         Up, Down,
@@ -36,7 +36,7 @@ new()
         Front, Back
     }
 
-    //槽位（入口）
+    //槽位（总入口）：引用方块（CubePiece）类
     [System.Serializable]
     public class Slot
     {
@@ -71,7 +71,7 @@ new()
 
 
 
-    //方块（显示层）（被Slot引用）
+    //方块（显示层）：被槽位（Slot）引用，引用了面（CubeSurface_s）类的List
     [System.Serializable]
     public class CubePiece
     {
@@ -87,7 +87,7 @@ new()
         public CubePiece() { }
     }
 
-    //槽位的外表面（被CubePiece引用）
+    //槽位的外表面：被方块（CubePiece）引用
     [System.Serializable]
     public class CubeSurface_s
     {
@@ -132,10 +132,12 @@ new()
             Mathf.RoundToInt(vec3.x),
             Mathf.RoundToInt(vec3.y),
             Mathf.RoundToInt(vec3.z)
-        )*2;
+        )*2; //初始化逻辑坐标
+
             if (slot.indexCube == null)
                 Debug.LogError($"Slot at {slot.coord} 缺少 indexCube");
 
+            //初始化方块和面的一些数据
             if (slot.occupant != null)
             {
                 // 确保棋子位置正确
