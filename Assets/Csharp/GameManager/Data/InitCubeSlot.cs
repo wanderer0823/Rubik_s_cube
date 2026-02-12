@@ -5,8 +5,13 @@ using UnityEngine.UIElements;
 
 public class InitCubeSlot : MonoBehaviour
 {
+    
     //用于整体管理魔方结构
-    public List<Slot> slots = new List<Slot>();
+    public List<Slot> slots;
+    Dictionary<int, CubePiece> pieceMap;
+    Dictionary<int, CubeSurface_s> surfaceMap;
+    Dictionary<Vector3Int, CubeSurface_s> surfaceCoordMap;
+    Dictionary<Vector3Int, CubePiece> PieceCoordMap;
 
     //静态数据
     static readonly Dictionary<FaceDir, Vector3Int> FaceOffset =
@@ -19,6 +24,7 @@ new()
     {FaceDir.Front, new(0,  0,  1)},
     {FaceDir.Back,  new(0,  0, -1)}
 };
+    //逻辑坐标范围还是-3，0，3！
     public enum Axis { X, Y, Z }
 
 
@@ -55,8 +61,8 @@ new()
             occupant = piece;
             if (piece != null)
             {
-                piece.CurrentCoord = coord;
-                piece.view.position = indexCube.position;
+                piece.position = coord;
+                piece.indexCube.position = indexCube.position;
             }
         }
     }
@@ -69,11 +75,11 @@ new()
     {
         [Header("静态数据（不变）")]
         public int id;                              //方块id（固定）
-        public Transform view;                      //视觉实体（固定）
+        public Transform indexCube;                 //视觉实体（固定）
         public List<CubeSurface_s> surfaces;        //每个方块带的外表面（固定）
 
         [Header("动态状态（变化）")]
-        public Vector3Int CurrentCoord;             //方块当前坐标（变化）
+        public Vector3Int position;                 //方块当前的逻辑坐标（变化）
 
         //初始化
         public CubePiece() { }
@@ -89,7 +95,7 @@ new()
 
         [Header("动态状态（变化）")]
         public FaceDir dir;                 //外表面的方向，用于坐标计算（变化）
-        public Vector3Int position;         //外表面坐标信息，旋转后变化
+        public Vector3Int position;         //外表面的逻辑坐标，旋转后变化
 
         //初始化
         public CubeSurface_s() { }
@@ -104,7 +110,14 @@ new()
     //初始化函数
     private void Awake()
     {
+        slots = new List<Slot>();
         InitData();// 验证数据完整性
+
+        //初始化字典，方便以后单独引用调用面和方块
+        BuildSurfaceMap();
+        BuildSurfaceCoordMap();
+        BuildPieceMap();
+        BuildPieceCoordMap();
     }
 
     private void InitData()
@@ -117,10 +130,71 @@ new()
             if (slot.occupant != null)
             {
                 // 确保棋子位置正确
-                slot.occupant.CurrentCoord = slot.coord;
-                slot.occupant.view.position = slot.indexCube.position;
+                slot.occupant.position = slot.coord;
+                slot.occupant.indexCube.position = slot.indexCube.position;
             }
         }
     }
 
+    //用id调用SurfaceMap
+    void BuildSurfaceMap()
+    {
+        //调用方法：CubeSurface_s s=SurfaceMap[id]
+        surfaceMap = new();
+
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+
+            foreach (var s in slot.occupant.surfaces)
+            {
+                surfaceMap[s.id] = s;
+            }
+        }
+    }
+
+    //用坐标调用SurfaceMap
+    void BuildSurfaceCoordMap()
+    {
+        //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
+        surfaceCoordMap = new();
+
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+
+            foreach (var s in slot.occupant.surfaces)
+            {
+                s.UpdatePosition(slot.coord);
+                surfaceCoordMap[s.position] = s;
+            }
+        }
+    }
+    
+
+    //用id调用pieceMap
+    void BuildPieceMap()
+    {
+        //调用方法：CubePiece p = pieceMap[id];
+        pieceMap = new();
+
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            pieceMap[slot.occupant.id] = slot.occupant;
+        }
+    }
+
+    //用坐标调用PieceMap
+    void BuildPieceCoordMap()
+    {
+        //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
+        PieceCoordMap = new();
+
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            PieceCoordMap[slot.occupant.position] = slot.occupant;
+        }
+    }
 }
