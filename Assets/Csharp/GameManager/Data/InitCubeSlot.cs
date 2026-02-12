@@ -114,11 +114,11 @@ new()
     {
         InitData();// 验证数据完整性
 
-        //初始化字典，方便以后单独引用调用面和方块
-        BuildSurfaceMap();
-        BuildSurfaceCoordMap();
-        BuildPieceMap();
-        BuildPieceCoordMap();
+        //初始化字典，方便以后单独引用调用面和方块,看调用方法即可
+        BuildSurfaceMap();          //调用方法：CubeSurface_s s=SurfaceMap[id]
+        BuildSurfaceCoordMap();     //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
+        BuildPieceMap();            //调用方法：CubePiece p = pieceMap[id];
+        BuildPieceCoordMap();       //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
     }
     
 
@@ -140,13 +140,12 @@ new()
             //初始化方块和面的一些数据
             if (slot.occupant != null)
             {
-                // 确保棋子位置正确
-                slot.occupant.coord = slot.coord;
-                slot.occupant.indexCube.position = slot.indexCube.position;
+                slot.occupant.coord = slot.coord;                            //初始化槽位现在对应的方块的逻辑坐标
+                slot.occupant.indexCube.position = slot.indexCube.position;  //初始化槽位现在对应的方块的世界坐标
                 foreach(var element in slot.occupant.surfaces)
                 {
-                    element.id = i;
-                    element.roomID = i;
+                    element.id = i;         //初始化面id
+                    element.roomID = i;     //初始化面对应的房间id
                     i++;
                 }
             }
@@ -156,7 +155,7 @@ new()
     //用id调用SurfaceMap
     void BuildSurfaceMap()
     {
-        //调用方法：CubeSurface_s s=SurfaceMap[id]
+        
         surfaceMap = new();
 
         foreach (var slot in slots)
@@ -173,7 +172,7 @@ new()
     //用坐标调用SurfaceMap
     void BuildSurfaceCoordMap()
     {
-        //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
+        
         surfaceCoordMap = new();
 
         foreach (var slot in slots)
@@ -192,7 +191,7 @@ new()
     //用id调用pieceMap
     void BuildPieceMap()
     {
-        //调用方法：CubePiece p = pieceMap[id];
+        
         pieceMap = new();
 
         foreach (var slot in slots)
@@ -205,7 +204,7 @@ new()
     //用坐标调用PieceMap
     void BuildPieceCoordMap()
     {
-        //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
+        
         PieceCoordMap = new();
 
         foreach (var slot in slots)
