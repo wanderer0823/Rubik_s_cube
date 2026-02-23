@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallPhysicsManager : MonoBehaviour
+public class BallPhysicsManager 
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject View2Ball;
+    private Rigidbody rb;
+    public void UnlockBallPhysics()
     {
-        
+        Debug.Log("锁定小球物理。");
+        GetBallRigidBody();
+        rb.isKinematic = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LockBallPhysics()
     {
-        
+        Debug.Log("解锁小球物理。");
+        GetBallRigidBody();
+        rb.isKinematic = true;
+    }
+
+    private void GetBallRigidBody()
+    {
+        rb=View2Ball.GetComponent<Rigidbody>();
     }
 }

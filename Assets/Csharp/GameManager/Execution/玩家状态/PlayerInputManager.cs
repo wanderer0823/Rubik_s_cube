@@ -15,9 +15,10 @@ public enum PlayerState
 }
 public class PlayerInputManager
 {
-    public PlayerController playerController;
-    public ArrowsButtonManager arrowsButtonManager;
-    public ViewSwitchManager viewSwitchManager;
+    private PlayerController playerController;
+    private ArrowsButtonManager arrowsButtonManager;
+    private ViewSwitchManager viewSwitchManager;
+    private CubeRotateController cubeRotateController;
     //监听事件，判断当前状态 左键能否进行3种交互。
     public static event Action<bool> OnViewSwitchAvailabilityChanged;//视角切换button
     public static event Action<bool> OnArrowsAvailabilityChanged;//视角1拧动魔方的箭头
@@ -108,6 +109,12 @@ public class PlayerInputManager
         {
             viewSwitchManager.OnKeySwitch();
         }
+        // 长按左键旋转
+        if (Input.GetMouseButton(0))
+            cubeRotateController.LeftRotate();
+        // 长按右键旋转
+        if (Input.GetMouseButton(1))
+            cubeRotateConreoller.RightRotate(View2Camera );
     }
 
     private void PlayerIsMoving()

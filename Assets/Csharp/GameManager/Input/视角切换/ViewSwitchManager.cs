@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ViewMode
+{ 
+    View1,
+    View2,
+    View3
+}
+
 public class ViewSwitchManager
 {
     //按下F后依次切换视角，检查当前视角，并按顺序继续切换

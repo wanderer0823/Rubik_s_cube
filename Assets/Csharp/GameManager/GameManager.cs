@@ -7,18 +7,27 @@ public class GameManager : MonoBehaviour
 {
     [Header("脚本引用")]
     private PlayerInputManager playerInputManager;
+    private BallPhysicsManager ballPhysicsManager;
 
     [Header("视角转换按钮")]
     [SerializeField] private Button[] viewSwitchButtons;
     [Header("拧魔方箭头按钮")]
     [SerializeField] private Button[] ArrowsButtons;
-    [Header("视角转换按钮")]
-    [SerializeField] private Button[] view;
+    [Header("摄像机")]
+    [SerializeField] private Camera[] View1Camera;
+    [SerializeField] private Camera View2Camera;
+    [SerializeField] private Camera View3Camera;
 
     void Start()
     {
         #region 张奕忻
+        //给引用脚本创造实例
+        playerInputManager = new PlayerInputManager(View2Camera);
+        ballPhysicsManager = new BallPhysicsManager();
+        //设置初始状态
         playerInputManager.currentPlayerState = PlayerState.isMoving;
+        ballPhysicsManager.LockBallPhysics();
+
 
         #endregion
     }
