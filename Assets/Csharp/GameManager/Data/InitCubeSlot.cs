@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -212,5 +212,25 @@ new()
             if (slot.occupant == null) continue;
             PieceCoordMap[slot.occupant.coord] = slot.occupant;
         }
+    }
+    
+    // 获取指定轴、指定坐标值的所有方块（即某一层的9个方块）
+    public List<CubePiece> GetPiecesInLayer(Axis axis, int coordValue)
+    {
+        var result = new List<CubePiece>();
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            int val = axis switch
+            {
+                Axis.X => slot.coord.x,
+                Axis.Y => slot.coord.y,
+                Axis.Z => slot.coord.z,
+                _ => 0
+            };
+            if (val == coordValue)
+                result.Add(slot.occupant);
+        }
+        return result;
     }
 }
