@@ -15,11 +15,9 @@ public class CubeRotateController
 
     private bool isRotating = false;
 
-    public CubeRotateController(Camera cam, Transform cubeTransform)
+    //长按左键旋转2摄像机
+    public void LeftRotate()
     {
-        view2Camera = cam;
-        cubeCenter = cubeTransform;
-
         // 计算初始距离
         distance = Vector3.Distance(view2Camera.transform.position, cubeCenter.position);
 
@@ -53,13 +51,13 @@ public class CubeRotateController
     }
 
     // 鼠标按下
-    public void OnMouseDown()
+    private void OnMouseDown()
     {
         isRotating = true;
     }
 
     // 鼠标松开
-    public void OnMouseUp()
+    private void OnMouseUp()
     {
         isRotating = false;
     }

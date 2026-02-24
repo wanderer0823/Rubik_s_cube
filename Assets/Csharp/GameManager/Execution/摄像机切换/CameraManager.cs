@@ -6,9 +6,11 @@ using static InitCubeSlot;
 
 public class CameraManager
 {
-    [SerializeField] private Camera[] View1Camera;
-    [SerializeField] private Camera View2Camera;
-    [SerializeField] private Camera View3Camera;
+    public static float cameraDist;
+
+    private Camera View1Camera;
+    private Camera View2Camera;
+    private Camera View3Camera;
 
     private ViewMode currentMode;
     private int currentView1Index = 0;
@@ -22,7 +24,8 @@ public class CameraManager
         switch (currentMode)
         {
             case ViewMode.View1:
-                SwitchView1Camera();
+                TransView1Camera();
+                View1Camera.gameObject.SetActive(true);
                 break;
 
             case ViewMode.View2:
@@ -38,17 +41,14 @@ public class CameraManager
 
     private void DisableAllCameras()
     {
-        foreach (var camera in View1Camera)
-        {
-            camera.gameObject.SetActive(false);
-        }
+        View1Camera.gameObject.SetActive(false);
         View2Camera.gameObject.SetActive(false);
         View3Camera.gameObject.SetActive(false);
     }
 
-
-    private int SwitchView1Camera()
+    private void TransView1Camera()
     {
+        //更改朝向
         return SearchPlayerFace() switch
         {
             FaceDir.Up => 0,
@@ -59,6 +59,8 @@ public class CameraManager
             FaceDir.Back => 5,
             _ => 0
         };
+        //更改位置
+        View1Camera.transform.position = cubeCenter.position + playerFaceDir*cameraDist;
     }
 
     private FaceDir SearchPlayerFace()

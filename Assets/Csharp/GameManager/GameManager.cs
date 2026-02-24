@@ -1,92 +1,150 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum RotateType
+{
+    Left,
+    Right
+}
+
 public class GameManager : MonoBehaviour
 {
-    [Header("脚本引用")]
+    #region === 子系统引用 ===
+    [Header("Input Systems")]
     private PlayerInputManager playerInputManager;
-    private BallPhysicsManager ballPhysicsManager;
+    [Header("Data Systems")]
+    private InitCubeSlot initCubeSlot;
+    //private InitRoomDoors initRoomDoors;
+    [Header("Execution Systems")]
+    private ViewModeManager viewModeManager;
+    public PlayerController playerController;
+    //public CubeTurnController cubeTurnController;
+    public CubeRotateController cubeRotateController;
+    public RoomPreloadController roomPreloadSystem;
+    [Header("Presentation Systems表现层")]
+    public CameraManager cameraManager;
+    public ArrowsButtonManager arrowsButtonManager;
+    public ViewSwitchManager viewSwitchManager;
+    #endregion
 
+    
+    #region === 全局状态 ===
+    public int currentRoomIndex { get; private set; }
+    public ViewMode currentView { get; private set; }
+    public PlayerState currentPlayerState { get; private set; }
+    #endregion
+
+    #region === UI 引用 ===
     [Header("视角转换按钮")]
     [SerializeField] private Button[] viewSwitchButtons;
     [Header("拧魔方箭头按钮")]
-    [SerializeField] private Button[] ArrowsButtons;
-    [Header("摄像机")]
-    [SerializeField] private Camera[] View1Camera;
-    [SerializeField] private Camera View2Camera;
-    [SerializeField] private Camera View3Camera;
+    [SerializeField] private Button[] arrowsButtons;
+    #endregion
 
+    #region === 生命周期 ===
     void Start()
     {
-        #region 张奕忻
-        //给引用脚本创造实例
-        playerInputManager = new PlayerInputManager(View2Camera);
-        ballPhysicsManager = new BallPhysicsManager();
-        //设置初始状态
-        playerInputManager.currentPlayerState = PlayerState.isMoving;
-        ballPhysicsManager.LockBallPhysics();
+        // 创建输入管理器
+        playerInputManager = new PlayerInputManager(this);
 
+        // 初始状态
+        currentView = ViewMode.View3;
+        currentPlayerState = PlayerState.isMoving;
 
-        #endregion
+        UpdateUIState();
     }
-
 
     void Update()
     {
-        #region 张奕忻
-        //检测玩家输入状态---->PlayerInputManager.cs
-        playerInputManager.ProcessInput(playerInputManager.currentPlayerState);
-        #endregion
-
-        #region 欧熙凝
-
-
-        #endregion
-
-        #region 张天姿
-
-
-        #endregion
-    }
-
-    #region 张奕忻
-    //监听PlayerInputManager.cs--------
-    private void OnMouseEnable()
-    {
-        PlayerInputManager.OnViewSwitchAvailabilityChanged += HandleViewSwitchAvailability;
-        PlayerInputManager.OnArrowsAvailabilityChanged += HandleArrowsAvailability;
-        PlayerInputManager.OnRotateDragAvailabilityChanged += HandleRotateDragAvailability;
-    }
-
-    private void OnMouseDisable()
-    {
-        PlayerInputManager.OnViewSwitchAvailabilityChanged-= HandleViewSwitchAvailability;
-        PlayerInputManager.OnArrowsAvailabilityChanged -= HandleArrowsAvailability;
-        PlayerInputManager.OnRotateDragAvailabilityChanged -= HandleRotateDragAvailability;
-    }
-    # region 1
-    //管理视角转换按钮能否有效点击
-    private void HandleViewSwitchAvailability(bool canSwitch)
-    {
-        foreach(var button in viewSwitchButtons)
-        {
-            button.interactable = canSwitch;
-        }
-    }
-    private void HandleArrowsAvailability(bool canTurnArrows)
-    {
-        foreach (var button in ArrowsButtons)
-        {
-            button.interactable = canTurnArrows;
-        }
-    }
-    private void HandleRotateDragAvailability(bool canRotateDrag)
-    {
-
+        playerInputManager.Update(); // 只读输入
     }
     #endregion
 
+    #region ======================================================
+    #region === 输入请求接口（PIM 调用）===
+    public void RequestTab()
+    {
+        Debug.Log("Tab Pressed请求");
+        GameEvents.onTabRequest();  
+    }
+
+    public void RequestViewSwitch()
+    {
+        Debug.Log("ViewSwitch请求");
+        GameEvents.onViewSwitchRequest(); 
+    }
+
+    public void RequestMove()
+    {
+        Debug.Log("Player Move请求");
+        GameEvents.onMoveRequest(); 
+    }
+
+    public void RequestOpenDoor()
+    {
+        Debug.Log("Try Open Door请求");
+        GameEvents.onOpenDoorRequest(); 
+    }
+
+    public void RequestLeftRotate()
+    {
+        Debug.Log("LeftRotate请求");
+        GameEvents.onRotateRequest(RotateType.Left); 
+    }
+
+    public void RequestRightRotate()
+    {
+        Debug.Log("RightRotate请求");
+        GameEvents.onRotateRequest(RotateType.Right); 
+    }
     #endregion
+    #endregion
+
+    #region ======================================================
+    #region === 输入请求接口（PlayerController 调用）===
+    #endregion
+    #endregion
+
+    #region ======================================================
+    #region === 输入请求接口（ViewSwitchManager 调用）===
+    #endregion
+    #endregion
+
+    #region ======================================================
+    #region === 行为判断层 ===
+
+    #endregion
+    #endregion
+
+
+    #region ======================================================
+    #region === 行为执行层 ===
+    public void SwitchToView(ViewMode newView)
+    {
+        if (currentView == newView) return;
+
+        currentView = newView;
+        GameEvents.OnViewChangedInvoke(currentView);  // 广播
+    }
+    #endregion
+    #endregion
+
+
+    #region ======================================================
+    #region === UI 更新 ===
+    private void UpdateUIState()
+    {
+        bool canSwitch = true;// CanSwitchView();
+        bool canRotate = false;// CanRotateCube();
+
+        foreach (var btn in viewSwitchButtons)
+            btn.interactable = canSwitch;
+
+        foreach (var btn in arrowsButtons)
+            btn.interactable = canRotate;
+    }
+    #endregion
+    #endregion
+
 }

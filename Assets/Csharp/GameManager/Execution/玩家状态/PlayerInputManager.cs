@@ -3,22 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[Header("玩家输入状态")]
-public enum PlayerState
+public class PlayerInputManager
 {
-    isTurning,
-    isRotating,
-    isWaiting,
-    turningFinished,
-    rotatingFinished,
-    isMoving
+    private GameManager gm;
+
+    public PlayerInputManager(GameManager gameManager)
+    {
+        gm = gameManager;
+    }
+
+    public void Update()
+    {
+        HandleKeyboard();
+        HandleMouse();
+    }
+
+    private void HandleKeyboard()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+            gm.RequestTab();
+
+        if (Input.GetKeyDown(KeyCode.F))
+            gm.RequestViewSwitch();
+
+        if (Input.GetKeyDown(KeyCode.E))
+            gm.RequestOpenDoor();
+
+        if (Input.GetKeyDown(KeyCode.W) ||
+            Input.GetKeyDown(KeyCode.A) ||
+            Input.GetKeyDown(KeyCode.S) ||
+            Input.GetKeyDown(KeyCode.D))
+            gm.RequestMove();
+    }
+
+    private void HandleMouse()
+    {
+        if (Input.GetMouseButton(0))
+            gm.RequestLeftRotate();
+
+        if (Input.GetMouseButton(1))
+            gm.RequestRightRotate();
+    }
 }
+
+/*
 public class PlayerInputManager
 {
     private PlayerController playerController;
     private ArrowsButtonManager arrowsButtonManager;
     private ViewSwitchManager viewSwitchManager;
     private CubeRotateController cubeRotateController;
+
+    private Camera View2Camera;
     //监听事件，判断当前状态 左键能否进行3种交互。
     public static event Action<bool> OnViewSwitchAvailabilityChanged;//视角切换button
     public static event Action<bool> OnArrowsAvailabilityChanged;//视角1拧动魔方的箭头
@@ -61,6 +97,11 @@ public class PlayerInputManager
     }
     #endregion
 
+    //获取视角2摄像机
+    public PlayerInputManager(Camera cam)
+    {
+        View2Camera = cam;
+    }
 
     #region 各状态下按键交互禁用状态，不包含鼠标点击按钮
     private void PlayerIsTurning()
@@ -114,7 +155,7 @@ public class PlayerInputManager
             cubeRotateController.LeftRotate();
         // 长按右键旋转
         if (Input.GetMouseButton(1))
-            cubeRotateConreoller.RightRotate(View2Camera );
+            cubeRotateController.RightRotate();
     }
 
     private void PlayerIsMoving()
@@ -157,4 +198,4 @@ public class PlayerInputManager
     }
     #endregion
 
-}
+}*/
