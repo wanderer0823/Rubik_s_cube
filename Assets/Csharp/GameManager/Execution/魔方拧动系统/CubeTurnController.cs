@@ -10,20 +10,22 @@ namespace Csharp.GameManager.Execution.魔方拧动系统
     public class CubeTurnController : MonoBehaviour
     {
         public static  CubeTurnController instance;
-        [SerializeField] private InitCubeSlot initCubeSlot;
-
         
-        [Header("当前朝向（可由外部设置）")]
+        //箭头按键参数
+        [Tooltip("箭头预制体")]
+        [SerializeField] private GameObject arrowButtonPrefab;
+        [SerializeField] private List<RectTransform> upButtonsRectTranform = new List<RectTransform>();
+        [SerializeField] private List<RectTransform> leftButtonsRectTranform = new List<RectTransform>();
+        
+        //旋转参数
+        [SerializeField] private InitCubeSlot initCubeSlot;
         [SerializeField] private InitCubeSlotFaceDir currentFaceDir = InitCubeSlotFaceDir.Up;
         
         public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
         public InitCubeSlotAxis currentAxis;
         
-        
-        
-        // 槽位对应要乘2
+        // 逻辑位置要乘2
         private int coordScale = 2;
-
         // index 0/1/2 映射到 coord 值 -scale, 0, scale 
         private int IndexToCoordValue(int index) => (index - 1) * coordScale;
 
@@ -31,10 +33,39 @@ namespace Csharp.GameManager.Execution.魔方拧动系统
         {
             if (initCubeSlot == null)
                 initCubeSlot = FindObjectOfType<InitCubeSlot>();
+            InitArrowsButton();
         }
         
         public void SetCurrentFace(InitCubeSlotFaceDir face) => currentFaceDir = face;
+
+        public void InitArrowsButton()
+        {
+            if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out var button))
+            {
+                Debug.LogError("预制体缺少ArrowsButton脚本");
+                return;
+            }
+            
+            int index = 0;
+            foreach (RectTransform rect in upButtonsRectTranform)
+            {
+                GameObject go = Instantiate(arrowButtonPrefab, rect);
+                ArrowsButton  arrowButton = go.GetComponent<ArrowsButton>();
+                arrowButton.SetArrowSide(ArrowSide.Up);
+                arrowButton.SetArrowIndex(index++);
+            }
+
+            index = 0;
+            foreach (RectTransform rect in leftButtonsRectTranform)
+            {
+                GameObject go = Instantiate(arrowButtonPrefab, rect);
+                ArrowsButton  arrowButton = go.GetComponent<ArrowsButton>();
+                arrowButton.SetArrowSide(ArrowSide.Left);
+                arrowButton.SetArrowIndex(index++);
+            }
+        }
         
+        #region 获取层级立方体并旋转
         // 根据当前朝向和箭头配置，筛选出对应一层的立方体。
         public void GetPiecesForArrow(
             ArrowSide side,
@@ -143,6 +174,6 @@ namespace Csharp.GameManager.Execution.魔方拧动系统
                 _ => Vector3Int.zero
             };
         }
-        
+        #endregion
     }
 }

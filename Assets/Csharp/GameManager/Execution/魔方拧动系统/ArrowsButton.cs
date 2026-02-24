@@ -19,6 +19,22 @@ namespace Csharp.GameManager.Execution.魔方拧动系统
         [SerializeField] private ArrowSide arrowSide;
         #endregion
 
+        void Awake()
+        {
+            Button button = GetComponent<Button>();
+            button.onClick.AddListener(OnArrowClicked);
+        }
+
+        public void SetArrowSide(ArrowSide side)
+        {
+            arrowSide = side;
+        }
+
+        public void SetArrowIndex(int index)
+        {
+            arrowIndex = index;
+        }
+        
         //按钮点击时调用，返回当前箭头对应的立方体列表 
         public void OnArrowClicked()
         {
