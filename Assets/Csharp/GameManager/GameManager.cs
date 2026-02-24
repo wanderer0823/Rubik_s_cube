@@ -120,13 +120,7 @@ public class GameManager : MonoBehaviour
 
     #region ======================================================
     #region === 行为执行层 ===
-    public void SwitchToView(ViewMode newView)
-    {
-        if (currentView == newView) return;
-
-        currentView = newView;
-        GameEvents.OnViewChangedInvoke(currentView);  // 广播
-    }
+    
     #endregion
     #endregion
 

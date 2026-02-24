@@ -2,18 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//using static UnityEngine.Rendering.DebugUI;
 
 public class UIManager : MonoBehaviour
 {
     [Header("视角转换按钮")]
     [SerializeField] private Button[] viewSwitchButtons;
-    [Header("拧魔方箭头按钮")][SerializeField] private Button[] arrowsButtons;
-
+    [Header("拧魔方箭头按钮")]
+    [SerializeField] private Button[] arrowsButtons;
+    [Header("View面板（空物体）")]
+    [SerializeField] private GameObject[] viewPanels;
     void Awake()
     {
         BindViewSwitchButtons();
     }
+    void OnEnable()
+    {
+        GameEvents.OnViewSwitchExecute += UpdatePanels;
+    }
 
+    void OnDisable()
+    {
+        GameEvents.OnViewSwitchExecute -= UpdatePanels;
+    }
+
+    void UpdatePanels(ViewMode mode)
+    {
+        for (int i = 0; i < viewPanels.Length; i++)
+        {
+            viewPanels[i].SetActive(i == (int)mode);
+        }
+    }
     private void BindViewSwitchButtons()
     {
         if (viewSwitchButtons == null || viewSwitchButtons.Length < 3)
@@ -32,6 +51,6 @@ public class UIManager : MonoBehaviour
         Debug.Log($"请求切换到 {targetMode}");
 
         // 向逻辑层发请求
-        GameEvents.OnViewSwitchRequest?.Invoke();
+        GameEvents.onDirectViewSwitchRequest();
     }
 }

@@ -18,9 +18,10 @@ public static class GameEvents
     // PC¼àÌýVMM
     public static event Action OnTabExecute;
     public static event Action OnMoveExecute;
-    public static event Action<ViewMode> OnViewSwitchExecute;
     public static event Action OnOpenDoorExecute;
     public static event Action<RotateType> OnRotateExecute;
+    // UIM¼àÌýVMM
+    public static event Action<ViewMode> OnViewSwitchExecute;
     // VSM¼àÌýVMM
     public static event Action OnDirectViewSwitchExecute;
     #endregion
@@ -32,14 +33,19 @@ public static class GameEvents
     public static void onMoveRequest() => OnMoveRequest?.Invoke();
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
+    // UIMÇëÇóGM£¬VMM¼àÌý
+    public static void onDirectViewSwitchRequest() => OnViewSwitchRequest?.Invoke();
     #endregion
 
     #region === Ö´ÐÐÊÂ¼þ¹ã²¥·½·¨ ===
     // PC¼àÌýVMM
     public static void onTabExecute() => OnTabExecute?.Invoke();
     public static void onMoveExecute() => OnMoveExecute?.Invoke();
-    public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
     public static void onRotateExecute(RotateType type) => OnRotateExecute?.Invoke(type);
+    // UIM¼àÌýVMM
+    public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
+    // VSM¼àÌýVMM
+    public static void onDirectViewSwitchExecute() => OnDirectViewSwitchExecute?.Invoke();
     #endregion
 }

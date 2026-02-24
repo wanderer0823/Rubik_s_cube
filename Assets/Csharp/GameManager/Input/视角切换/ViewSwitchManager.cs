@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class ViewSwitchManager
 {
-    private GameManager gm;
-
-    public ViewSwitchManager(GameManager gameManager)
-    {
-        gm = gameManager;
-    }
-
-    public void Update()
-    {
-
-    }
-    
     //3¸öÇÐ»»ÊÓ½Ç°´Å¥
     public void OnView1ButtonClicked()
     {

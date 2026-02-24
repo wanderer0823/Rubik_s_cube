@@ -22,11 +22,11 @@ public class BallPhysicsManager
     }
 
     //获取球所在正方形
-    public 
+    /*public 
     public Vector3 GetBallRelativePos()
     {
 
-    }
+    }*/
 
     private void GetBallRigidBody()
     {

@@ -2,29 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ViewMode
-{
-    View1,
-    View2,
-    View3
-}
-
-//"玩家输入状态"
-public enum PlayerState
-{
-    isTurning,
-    isRotating,
-    isWaiting,
-    turningFinished,
-    rotatingFinished,
-    isMoving
-}
-
 public class ViewModeManager : MonoBehaviour
 {
-    public ViewMode currentViewMode;
-    public PlayerState currentPlayerState;
-
+    private GameState gs;
     public void Initialize()
     {
         GameEvents.OnTabRequest += CheckTab;
@@ -45,14 +25,14 @@ public class ViewModeManager : MonoBehaviour
 
     bool CheckViewMode(ViewMode mode)
     {
-        if (currentViewMode == mode)
+        if (gs.CurrentView == mode)
             return true;
         else return false;
     }
 
     bool CheckPlayerState(PlayerState playerState)
     {
-        if (currentPlayerState==playerState)
+        if (gs.CurrentPlayerState ==playerState)
             return true;
         else return false;
     }
@@ -76,7 +56,10 @@ public class ViewModeManager : MonoBehaviour
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
             return;
-        GameEvents.onViewSwitchExecute(currentViewMode);
+        //更新view mode
+        gs.FSetView();
+
+        GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
 
     void CheckOpenDoor()//E
@@ -93,10 +76,5 @@ public class ViewModeManager : MonoBehaviour
             || !CheckPlayerState(PlayerState.rotatingFinished))
             return;
         GameEvents.onRotateExecute(type);  
-    }
-
-    ViewMode NextViewMode(ViewMode mode)
-    {
-        return (ViewMode)(((int)mode + 1) % 3);
     }
 }

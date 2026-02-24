@@ -9,7 +9,7 @@ public class PlayerController
     {
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
-        GameEvents.OnViewSwitchExecute += SwitchView;
+        //GameEvents.OnViewSwitchExecute += SwitchView;
         GameEvents.OnOpenDoorExecute += TryOpenDoor;
         GameEvents.OnRotateExecute += RotateCube;
     }
@@ -18,7 +18,7 @@ public class PlayerController
     {
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
-        GameEvents.OnViewSwitchExecute -= SwitchView;
+        //GameEvents.OnViewSwitchExecute -= SwitchView;
         GameEvents.OnOpenDoorExecute -= TryOpenDoor;
         GameEvents.OnRotateExecute -= RotateCube;
     }
@@ -35,10 +35,10 @@ public class PlayerController
     {
         Debug.Log("移动中");
     }
-    void SwitchView(ViewMode mode)
+    /*void SwitchView()
     {
-        Debug.Log("执行视角切换 " + mode);
-    }
+        Debug.Log("执行自动顺序视角切换 ");
+    }*/
     //按e尝试开门
     void TryOpenDoor()
     {

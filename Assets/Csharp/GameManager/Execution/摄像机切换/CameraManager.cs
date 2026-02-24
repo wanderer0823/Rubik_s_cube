@@ -47,7 +47,7 @@ public class CameraManager
     }
 
     private void TransView1Camera()
-    {
+    {/*
         //更改朝向
         return SearchPlayerFace() switch
         {
@@ -61,6 +61,7 @@ public class CameraManager
         };
         //更改位置
         View1Camera.transform.position = cubeCenter.position + playerFaceDir*cameraDist;
+    */
     }
 
     private FaceDir SearchPlayerFace()
