@@ -17,6 +17,8 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnViewSwitchRequest += CheckViewSwitch;
         GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
+        //订阅UIM请求事件
+        GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
 
         Debug.Log("VMM:初始化完成。");
     }
@@ -32,6 +34,9 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnViewSwitchRequest -= CheckViewSwitch;
         GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
         GameEvents.OnRotateRequest -= CheckRotate;
+        //UIM请求事件
+        GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
+
     }
 
     bool CheckViewMode(ViewMode mode)
@@ -87,5 +92,17 @@ public class ViewModeManager : MonoBehaviour
             || !CheckPlayerState(PlayerState.rotatingFinished))
             return;
         GameEvents.onRotateExecute(type);  
+    }
+
+    void CheckDirectViewSwitch(ViewMode targetMode)
+    {
+        if (!CheckPlayerState(PlayerState.rotatingFinished)
+            && !CheckPlayerState(PlayerState.turningFinished)
+            && !CheckPlayerState(PlayerState.isMoving))
+            return;
+        //更新view mode
+        gs.SetView(targetMode);
+
+        GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
 }

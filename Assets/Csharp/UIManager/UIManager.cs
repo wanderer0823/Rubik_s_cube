@@ -48,9 +48,9 @@ public class UIManager : MonoBehaviour
 
     private void OnViewButtonClick(ViewMode targetMode)
     {
-        Debug.Log($"请求切换到 {targetMode}");
+        Debug.Log($"按钮请求切换到 {targetMode}");
 
         // 向逻辑层发请求
-        GameEvents.onDirectViewSwitchRequest();
+        GameEvents.onDirectViewSwitchRequest(targetMode);
     }
 }

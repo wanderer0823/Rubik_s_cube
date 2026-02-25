@@ -10,8 +10,8 @@ public static class GameEvents
     public static event Action OnMoveRequest;
     public static event Action OnOpenDoorRequest;
     public static event Action<RotateType> OnRotateRequest;
-    // UIM请求GM，VMM监听
-    public static event Action OnDirectViewSwitchRequest;
+    // UIM请求VMM监听
+    public static event Action<ViewMode> OnDirectViewSwitchRequest;
     #endregion
 
     #region === 执行事件定义 ===
@@ -33,8 +33,8 @@ public static class GameEvents
     public static void onMoveRequest() => OnMoveRequest?.Invoke();
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
-    // UIM请求GM，VMM监听
-    public static void onDirectViewSwitchRequest() => OnViewSwitchRequest?.Invoke();
+    // UIM请求VMM监听
+    public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
     #endregion
 
     #region === 执行事件广播方法 ===
