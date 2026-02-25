@@ -5,17 +5,28 @@ using UnityEngine;
 public class ViewModeManager : MonoBehaviour
 {
     private GameState gs;
-    public void Initialize()
+    public void OnEnable()
     {
+        //初始化静态类
+        gs=new GameState();            //纯数据，自动初始化
+        PlayerAction.Initialize(); //有事件订阅，需要手动管理
+
+        //订阅GM请求事件
         GameEvents.OnTabRequest += CheckTab;
         GameEvents.OnMoveRequest += CheckMove;
         GameEvents.OnViewSwitchRequest += CheckViewSwitch;
         GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
+
+        Debug.Log("VMM:初始化完成。");
     }
 
-    public void Dispose()
+    public void OnDisable()
     {
+        //清理
+        PlayerAction.Cleanup();
+
+        //取消订阅
         GameEvents.OnTabRequest -= CheckTab;
         GameEvents.OnMoveRequest -= CheckMove;
         GameEvents.OnViewSwitchRequest -= CheckViewSwitch;

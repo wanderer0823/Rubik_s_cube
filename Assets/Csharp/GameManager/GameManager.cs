@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     //private InitRoomDoors initRoomDoors;
     [Header("Execution Systems")]
     private ViewModeManager viewModeManager;
-    public PlayerController playerController;
     //public CubeTurnController cubeTurnController;
     public CubeRotateController cubeRotateController;
     public RoomPreloadController roomPreloadSystem;
@@ -31,15 +30,6 @@ public class GameManager : MonoBehaviour
     
     #region === 全局状态 ===
     public int currentRoomIndex { get; private set; }
-    public ViewMode currentView { get; private set; }
-    public PlayerState currentPlayerState { get; private set; }
-    #endregion
-
-    #region === UI 引用 ===
-    [Header("视角转换按钮")]
-    [SerializeField] private Button[] viewSwitchButtons;
-    [Header("拧魔方箭头按钮")]
-    [SerializeField] private Button[] arrowsButtons;
     #endregion
 
     #region === 生命周期 ===
@@ -47,17 +37,17 @@ public class GameManager : MonoBehaviour
     {
         // 创建输入管理器
         playerInputManager = new PlayerInputManager(this);
-
-        // 初始状态
-        currentView = ViewMode.View3;
-        currentPlayerState = PlayerState.isMoving;
-
-        UpdateUIState();
     }
 
     void Update()
     {
+        //输入检测
         playerInputManager.Update(); // 只读输入
+    }
+
+    private void OnDestroy()
+    {
+
     }
     #endregion
 
@@ -127,17 +117,6 @@ public class GameManager : MonoBehaviour
 
     #region ======================================================
     #region === UI 更新 ===
-    private void UpdateUIState()
-    {
-        bool canSwitch = true;// CanSwitchView();
-        bool canRotate = false;// CanRotateCube();
-
-        foreach (var btn in viewSwitchButtons)
-            btn.interactable = canSwitch;
-
-        foreach (var btn in arrowsButtons)
-            btn.interactable = canRotate;
-    }
     #endregion
     #endregion
 

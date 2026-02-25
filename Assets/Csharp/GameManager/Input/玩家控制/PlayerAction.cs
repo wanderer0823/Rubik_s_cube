@@ -2,49 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController
+public static class PlayerAction
 {
-    //玩家行为方法
-    void OnEnable()
+    static PlayerAction()
+    {
+        Debug.Log("PlayerController 初始化");
+    }
+    public static void Initialize()
     {
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
-        //GameEvents.OnViewSwitchExecute += SwitchView;
         GameEvents.OnOpenDoorExecute += TryOpenDoor;
         GameEvents.OnRotateExecute += RotateCube;
+        Debug.Log("PlayerController 事件订阅完成");
     }
 
-    void OnDisable()
+    public static void Cleanup()
     {
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
-        //GameEvents.OnViewSwitchExecute -= SwitchView;
         GameEvents.OnOpenDoorExecute -= TryOpenDoor;
         GameEvents.OnRotateExecute -= RotateCube;
     }
 
 
-    
+
     //玩家打开/关闭背包系统的UI
-    void OnTabPressed()
+    static void OnTabPressed()
     {
         Debug.Log("打开/关闭背包系统。");
     }
     //玩家wasd移动
-    void Move()
+    static void Move()
     {
         Debug.Log("移动中");
     }
-    /*void SwitchView()
-    {
-        Debug.Log("执行自动顺序视角切换 ");
-    }*/
     //按e尝试开门
-    void TryOpenDoor()
+    static void TryOpenDoor()
     {
         Debug.Log("正在尝试开门");
     }
-    void RotateCube(RotateType type)
+    static void RotateCube(RotateType type)
     {
         Debug.Log("执行魔方旋转 " + type);
     }

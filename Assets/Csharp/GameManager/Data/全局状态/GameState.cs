@@ -38,6 +38,7 @@ public class GameState
     public void SetView(ViewMode mode)
     {
         CurrentView = mode;
+        Debug.Log("更新为视角：" + CurrentView);
     }
 
 
@@ -45,11 +46,13 @@ public class GameState
     public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
+        Debug.Log("更新为输入状态：" + CurrentPlayerState);
     }
 
     //按顺序切换视角
     public void FSetView()
     {
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
+        Debug.Log("更新为视角：" + CurrentView);
     }
 }
