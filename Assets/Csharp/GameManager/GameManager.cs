@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
     public void RequestRightRotateFinish()
     {
         Debug.Log("RightRotateFinish«Î«Û");
-        GameEvents.onRotateFinishRequest(RotateType.Left);
+        GameEvents.onRotateFinishRequest(RotateType.Right);
     }
     #endregion
     #endregion

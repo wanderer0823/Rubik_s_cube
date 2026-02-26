@@ -89,6 +89,7 @@ public class ViewModeManager : MonoBehaviour
         if (!CheckViewMode(ViewMode.View3)
             || !CheckPlayerState(PlayerState.isMoving))
             return;
+        gs.SetPlayerState(PlayerState.isWaiting);
         GameEvents.onOpenDoorExecute(); 
     }
 

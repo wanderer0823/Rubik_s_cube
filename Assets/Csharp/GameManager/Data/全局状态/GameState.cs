@@ -39,6 +39,14 @@ public class GameState
     {
         CurrentView = mode;
         Debug.Log("更新为视角：" + CurrentView);
+        if(mode==ViewMode.View1)
+        {
+            SetPlayerState(PlayerState.turningFinished);
+        }
+        if(mode==ViewMode.View2)
+        {
+            SetPlayerState(PlayerState.rotatingFinished);
+        }
     }
 
 
