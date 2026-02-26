@@ -24,7 +24,7 @@ public class CameraManager
         switch (currentMode)
         {
             case ViewMode.View1:
-                TransView1Camera();
+                //TransView1Camera();
                 View1Camera.gameObject.SetActive(true);
                 break;
 
@@ -45,32 +45,4 @@ public class CameraManager
         View2Camera.gameObject.SetActive(false);
         View3Camera.gameObject.SetActive(false);
     }
-
-    private void TransView1Camera()
-    {/*
-        //更改朝向
-        return SearchPlayerFace() switch
-        {
-            FaceDir.Up => 0,
-            FaceDir.Down => 1,
-            FaceDir.Left => 2,
-            FaceDir.Right => 3,
-            FaceDir.Front => 4,
-            FaceDir.Back => 5,
-            _ => 0
-        };
-        //更改位置
-        View1Camera.transform.position = cubeCenter.position + playerFaceDir*cameraDist;
-    */
-    }
-
-    private FaceDir SearchPlayerFace()
-    {
-        return playerFace switch
-        {
-
-            _=>0
-        };
-    }
-
 }

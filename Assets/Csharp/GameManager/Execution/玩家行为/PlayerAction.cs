@@ -13,7 +13,6 @@ public static class PlayerAction
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
         GameEvents.OnOpenDoorExecute += TryOpenDoor;
-        GameEvents.OnRotateExecute += RotateCube;
         Debug.Log("PlayerController 事件订阅完成");
     }
 
@@ -22,7 +21,6 @@ public static class PlayerAction
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
         GameEvents.OnOpenDoorExecute -= TryOpenDoor;
-        GameEvents.OnRotateExecute -= RotateCube;
     }
 
 
@@ -42,9 +40,4 @@ public static class PlayerAction
     {
         Debug.Log("正在尝试开门");
     }
-    static void RotateCube(RotateType type)
-    {
-        Debug.Log("执行魔方旋转 " + type);
-    }
-
 }

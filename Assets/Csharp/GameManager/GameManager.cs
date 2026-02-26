@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     [Header("Presentation Systems表现层")]
     public CameraManager cameraManager;
     public ArrowsButtonManager arrowsButtonManager;
-    public ViewSwitchManager viewSwitchManager;
     #endregion
 
     
@@ -88,16 +87,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("RightRotate请求");
         GameEvents.onRotateRequest(RotateType.Right); 
     }
+
+    public void RequestLeftRotateFinish()
+    {
+        Debug.Log("LeftRotateFinish请求");
+        GameEvents.onRotateFinishRequest(RotateType.Left);
+    }
+
+    public void RequestRightRotateFinish()
+    {
+        Debug.Log("RightRotateFinish请求");
+        GameEvents.onRotateFinishRequest(RotateType.Left);
+    }
     #endregion
     #endregion
 
     #region ======================================================
-    #region === 输入请求接口（PlayerController 调用）===
-    #endregion
-    #endregion
-
-    #region ======================================================
-    #region === 输入请求接口（ViewSwitchManager 调用）===
+    #region === 输入请求接口（ 调用）===
     #endregion
     #endregion
 
@@ -110,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     #region ======================================================
     #region === 行为执行层 ===
-    
+
     #endregion
     #endregion
 

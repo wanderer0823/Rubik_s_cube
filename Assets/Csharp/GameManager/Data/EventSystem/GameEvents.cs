@@ -10,6 +10,7 @@ public static class GameEvents
     public static event Action OnMoveRequest;
     public static event Action OnOpenDoorRequest;
     public static event Action<RotateType> OnRotateRequest;
+    public static event Action<RotateType> OnRotateFinishRequest;
     // UIM«Î«ÛVMMº‡Ã˝
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
     #endregion
@@ -19,11 +20,14 @@ public static class GameEvents
     public static event Action OnTabExecute;
     public static event Action OnMoveExecute;
     public static event Action OnOpenDoorExecute;
-    public static event Action<RotateType> OnRotateExecute;
+    // CRCº‡Ã˝VMM
+    public static event Action OnCubeRotateExecute;
+    public static event Action OnCubeRotateFinishExecute;
+    // CARCº‡Ã˝VMM
+    public static event Action OnCameraRotateExecute;
+    public static event Action OnCameraRotateFinishExecute;
     // UIMº‡Ã˝VMM
     public static event Action<ViewMode> OnViewSwitchExecute;
-    // VSMº‡Ã˝VMM
-    public static event Action OnDirectViewSwitchExecute;
     #endregion
 
     #region === «Î«Û ¬º˛π„≤•∑Ω∑® ===
@@ -33,6 +37,7 @@ public static class GameEvents
     public static void onMoveRequest() => OnMoveRequest?.Invoke();
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
+    public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
     // UIM«Î«ÛVMMº‡Ã˝
     public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
     #endregion
@@ -42,10 +47,14 @@ public static class GameEvents
     public static void onTabExecute() => OnTabExecute?.Invoke();
     public static void onMoveExecute() => OnMoveExecute?.Invoke();
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
-    public static void onRotateExecute(RotateType type) => OnRotateExecute?.Invoke(type);
     // UIMº‡Ã˝VMM
     public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
-    // VSMº‡Ã˝VMM
-    public static void onDirectViewSwitchExecute() => OnDirectViewSwitchExecute?.Invoke();
+    // CRCº‡Ã˝VMM
+    public static void onCubeRotateStart() => OnCubeRotateExecute?.Invoke();
+    public static void onCubeRotateEnd()=> OnCubeRotateFinishExecute?.Invoke();
+    // CARCº‡Ã˝VMM
+    public static void onCameraRotateStart() => OnCameraRotateExecute?.Invoke();
+    public static void onCameraRotateEnd() => OnCameraRotateFinishExecute?.Invoke();
+
     #endregion
 }

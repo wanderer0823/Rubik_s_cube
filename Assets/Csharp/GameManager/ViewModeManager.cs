@@ -17,6 +17,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnViewSwitchRequest += CheckViewSwitch;
         GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
+        GameEvents.OnRotateFinishRequest += CheckRotateFinish;
         //订阅UIM请求事件
         GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
 
@@ -34,11 +35,13 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnViewSwitchRequest -= CheckViewSwitch;
         GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
         GameEvents.OnRotateRequest -= CheckRotate;
+        GameEvents.OnRotateFinishRequest -= CheckRotateFinish;
         //UIM请求事件
         GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
 
     }
 
+    #region 用GS检查当前全局状态
     bool CheckViewMode(ViewMode mode)
     {
         if (gs.CurrentView == mode)
@@ -52,7 +55,10 @@ public class ViewModeManager : MonoBehaviour
             return true;
         else return false;
     }
+    #endregion
 
+    #region ============================================
+    #region 监听订阅函数
     void CheckTab()
     {
         GameEvents.onTabExecute();
@@ -86,14 +92,6 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.onOpenDoorExecute(); 
     }
 
-    void CheckRotate(RotateType type)//left right
-    {
-        if (!CheckViewMode(ViewMode.View2)
-            || !CheckPlayerState(PlayerState.rotatingFinished))
-            return;
-        GameEvents.onRotateExecute(type);  
-    }
-
     void CheckDirectViewSwitch(ViewMode targetMode)
     {
         if (!CheckPlayerState(PlayerState.rotatingFinished)
@@ -105,4 +103,47 @@ public class ViewModeManager : MonoBehaviour
 
         GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
+
+    void CheckRotate(RotateType type)//left right
+    {
+        Debug.Log("100");
+        if (!CheckViewMode(ViewMode.View2)
+            || !CheckPlayerState(PlayerState.rotatingFinished))
+            return;
+        Debug.Log("101");
+        gs.SetPlayerState(PlayerState.isRotating);
+        if(type==RotateType.Left)
+        {
+            Debug.Log("103");
+            GameEvents.onCubeRotateStart();
+        }
+        if (type == RotateType.Right)
+        {
+            Debug.Log("104");
+            GameEvents.onCameraRotateStart();
+        }
+    }
+
+    void CheckRotateFinish(RotateType type)
+    {
+        Debug.Log("200");
+        if (!CheckViewMode(ViewMode.View2)
+            || !CheckPlayerState(PlayerState.isRotating))
+            return;
+        Debug.Log("201");
+        gs.SetPlayerState(PlayerState.rotatingFinished);
+        if (type == RotateType.Left)
+        {
+            Debug.Log("202");
+            GameEvents.onCubeRotateEnd();
+        }
+        if (type == RotateType.Right)
+        {
+            Debug.Log("203");
+            GameEvents.onCameraRotateEnd();
+        }
+    }
+
+    #endregion
+    #endregion
 }
