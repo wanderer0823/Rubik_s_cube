@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PlayerAction
+public class PlayerAction:MonoBehaviour
 {
-    static PlayerAction()
-    {
-        Debug.Log("PlayerController 初始化");
-    }
-    public static void Initialize()
+    void OnEnable()
     {
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
@@ -16,7 +12,7 @@ public static class PlayerAction
         Debug.Log("PlayerController 事件订阅完成");
     }
 
-    public static void Cleanup()
+    void OnDisable()
     {
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
@@ -26,17 +22,17 @@ public static class PlayerAction
 
 
     //玩家打开/关闭背包系统的UI
-    static void OnTabPressed()
+    void OnTabPressed()
     {
         Debug.Log("打开/关闭背包系统。");
     }
     //玩家wasd移动
-    static void Move()
+    void Move()
     {
         Debug.Log("移动中");
     }
     //按e尝试开门
-    static void TryOpenDoor()
+    void TryOpenDoor()
     {
         Debug.Log("正在尝试开门");
     }

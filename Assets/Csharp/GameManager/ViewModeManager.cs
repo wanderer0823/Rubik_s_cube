@@ -19,9 +19,6 @@ public class ViewModeManager : MonoBehaviour
     }
     public void OnEnable()
     {
-        //初始化静态类
-        PlayerAction.Initialize(); //有事件订阅，需要手动管理
-
         //订阅GM请求事件
         GameEvents.OnTabRequest += CheckTab;
         GameEvents.OnMoveRequest += CheckMove;
@@ -39,9 +36,6 @@ public class ViewModeManager : MonoBehaviour
 
     public void OnDisable()
     {
-        //清理
-        PlayerAction.Cleanup();
-
         //取消订阅
         GameEvents.OnTabRequest -= CheckTab;
         GameEvents.OnMoveRequest -= CheckMove;
