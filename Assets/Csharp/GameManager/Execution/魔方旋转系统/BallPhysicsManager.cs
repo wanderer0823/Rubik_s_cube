@@ -20,14 +20,6 @@ public class BallPhysicsManager
         GetBallRigidBody();
         rb.isKinematic = true;
     }
-
-    //获取球所在正方形
-    /*public 
-    public Vector3 GetBallRelativePos()
-    {
-
-    }*/
-
     private void GetBallRigidBody()
     {
         rb=View2Ball.GetComponent<Rigidbody>();

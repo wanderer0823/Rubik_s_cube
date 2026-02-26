@@ -1,47 +1,61 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InitCubeSlot;
 
 public class ViewModeManager : MonoBehaviour
 {
     private GameState gs;
+    [Header("ç©ºé—´ç³»ç»Ÿå¼•ç”¨")]
+    public Transform cubeRoot;
+    public InitCubeSlot cubeData;
+
+    void Awake()
+    {
+        if (GameState.Instance == null)
+            new GameState();
+
+        gs = GameState.Instance;
+    }
     public void OnEnable()
     {
-        //³õÊ¼»¯¾²Ì¬Àà
-        gs=new GameState();            //´¿Êı¾İ£¬×Ô¶¯³õÊ¼»¯
-        PlayerAction.Initialize(); //ÓĞÊÂ¼ş¶©ÔÄ£¬ĞèÒªÊÖ¶¯¹ÜÀí
+        //åˆå§‹åŒ–é™æ€ç±»
+        PlayerAction.Initialize(); //æœ‰äº‹ä»¶è®¢é˜…ï¼Œéœ€è¦æ‰‹åŠ¨ç®¡ç†
 
-        //¶©ÔÄGMÇëÇóÊÂ¼ş
+        //è®¢é˜…GMè¯·æ±‚äº‹ä»¶
         GameEvents.OnTabRequest += CheckTab;
         GameEvents.OnMoveRequest += CheckMove;
         GameEvents.OnViewSwitchRequest += CheckViewSwitch;
         GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
         GameEvents.OnRotateFinishRequest += CheckRotateFinish;
-        //¶©ÔÄUIMÇëÇóÊÂ¼ş
+        //è®¢é˜…UIMè¯·æ±‚äº‹ä»¶
         GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
+        //è®¢é˜…CRCè¯·æ±‚äº‹ä»¶
+        GameEvents.OnBallSpaceUpdateRequest += CheckBallSpaceUpdate;
 
-        Debug.Log("VMM:³õÊ¼»¯Íê³É¡£");
+        Debug.Log("VMM:åˆå§‹åŒ–å®Œæˆã€‚");
     }
 
     public void OnDisable()
     {
-        //ÇåÀí
+        //æ¸…ç†
         PlayerAction.Cleanup();
 
-        //È¡Ïû¶©ÔÄ
+        //å–æ¶ˆè®¢é˜…
         GameEvents.OnTabRequest -= CheckTab;
         GameEvents.OnMoveRequest -= CheckMove;
         GameEvents.OnViewSwitchRequest -= CheckViewSwitch;
         GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
         GameEvents.OnRotateRequest -= CheckRotate;
         GameEvents.OnRotateFinishRequest -= CheckRotateFinish;
-        //UIMÇëÇóÊÂ¼ş
+        //UIMè¯·æ±‚äº‹ä»¶
         GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
-
+        //è®¢é˜…CRCè¯·æ±‚äº‹ä»¶
+        GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
     }
 
-    #region ÓÃGS¼ì²éµ±Ç°È«¾Ö×´Ì¬
+    #region ç”¨GSæ£€æŸ¥å½“å‰å…¨å±€çŠ¶æ€
     bool CheckViewMode(ViewMode mode)
     {
         if (gs.CurrentView == mode)
@@ -58,7 +72,7 @@ public class ViewModeManager : MonoBehaviour
     #endregion
 
     #region ============================================
-    #region ¼àÌı¶©ÔÄº¯Êı
+    #region ç›‘å¬è®¢é˜…å‡½æ•°
     void CheckTab()
     {
         GameEvents.onTabExecute();
@@ -78,7 +92,7 @@ public class ViewModeManager : MonoBehaviour
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
             return;
-        //¸üĞÂview mode
+        //æ›´æ–°view mode
         gs.FSetView();
 
         GameEvents.onViewSwitchExecute(gs.CurrentView);
@@ -99,7 +113,7 @@ public class ViewModeManager : MonoBehaviour
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
             return;
-        //¸üĞÂview mode
+        //æ›´æ–°view mode
         gs.SetView(targetMode);
 
         GameEvents.onViewSwitchExecute(gs.CurrentView);
@@ -107,44 +121,71 @@ public class ViewModeManager : MonoBehaviour
 
     void CheckRotate(RotateType type)//left right
     {
-        Debug.Log("100");
+        //Debug.Log("100");
         if (!CheckViewMode(ViewMode.View2)
             || !CheckPlayerState(PlayerState.rotatingFinished))
             return;
-        Debug.Log("101");
+        //Debug.Log("101");
         gs.SetPlayerState(PlayerState.isRotating);
         if(type==RotateType.Left)
         {
-            Debug.Log("103");
+            //Debug.Log("102");
             GameEvents.onCubeRotateStart();
         }
         if (type == RotateType.Right)
         {
-            Debug.Log("104");
+            //Debug.Log("103");
             GameEvents.onCameraRotateStart();
         }
     }
 
     void CheckRotateFinish(RotateType type)
     {
-        Debug.Log("200");
+        //Debug.Log("200");
         if (!CheckViewMode(ViewMode.View2)
             || !CheckPlayerState(PlayerState.isRotating))
             return;
-        Debug.Log("201");
+        //Debug.Log("201");
         gs.SetPlayerState(PlayerState.rotatingFinished);
         if (type == RotateType.Left)
         {
-            Debug.Log("202");
+           // Debug.Log("202");
             GameEvents.onCubeRotateEnd();
         }
         if (type == RotateType.Right)
         {
-            Debug.Log("203");
+            //Debug.Log("203");
             GameEvents.onCameraRotateEnd();
         }
     }
 
+    //è®¢é˜…CRCè¯·æ±‚äº‹ä»¶
+    void CheckBallSpaceUpdate(Vector3 ballPos)
+    {
+        Debug.Log("301");
+        var surface =
+            BallLocationService.CalculateSurface(
+                cubeRoot,
+                cubeData,
+                ballPos
+            );
+
+        if (surface == null)
+            return;
+        Debug.Log("302");
+        // æ›´æ–° GS
+        gs.SetCurrentSurface(surface);
+        Debug.Log("303");
+        Vector3 localDown =
+            cubeRoot.InverseTransformDirection(Vector3.down);
+
+        FaceDir gravityFace =
+            BallLocationService.CalculateGravityFace(localDown);
+
+        gs.SetGravityFace(gravityFace);
+
+        Debug.Log($"VMMæ›´æ–°ç©ºé—´ â†’ Room:{surface.roomID}");
+    }
     #endregion
     #endregion
 }

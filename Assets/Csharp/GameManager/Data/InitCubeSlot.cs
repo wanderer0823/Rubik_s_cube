@@ -213,4 +213,17 @@ new()
             PieceCoordMap[slot.occupant.coord] = slot.occupant;
         }
     }
+
+    #region 张奕忻添加面访问接口
+    public CubeSurface_s GetSurfaceByCoord(Vector3Int coord)
+    {
+        if (surfaceCoordMap == null)
+            return null;
+
+        if (surfaceCoordMap.TryGetValue(coord, out var surface))
+            return surface;
+
+        return null;
+    }
+    #endregion
 }

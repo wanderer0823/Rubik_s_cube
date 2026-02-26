@@ -4,7 +4,7 @@ using UnityEngine;
 public static class GameEvents
 {
     #region === 请求事件定义 ===
-    // PIM请求GM，VMM监听
+    // GM请求VMM监听
     public static event Action OnTabRequest;
     public static event Action OnViewSwitchRequest;
     public static event Action OnMoveRequest;
@@ -13,6 +13,8 @@ public static class GameEvents
     public static event Action<RotateType> OnRotateFinishRequest;
     // UIM请求VMM监听
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
+    // CRC请求VMM监听
+    public static event Action<Vector3> OnBallSpaceUpdateRequest;
     #endregion
 
     #region === 执行事件定义 ===
@@ -40,6 +42,8 @@ public static class GameEvents
     public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
     // UIM请求VMM监听
     public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
+    // CRC请求VMM监听
+    public static void onBallSpaceUpdateRequest(Vector3 ballPos)=> OnBallSpaceUpdateRequest?.Invoke(ballPos);
     #endregion
 
     #region === 执行事件广播方法 ===

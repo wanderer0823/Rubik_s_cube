@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public CubeRotateController cubeRotateController;
     public RoomPreloadController roomPreloadSystem;
     [Header("Presentation Systems±Ìœ÷≤„")]
-    public CameraManager cameraManager;
     public ArrowsButtonManager arrowsButtonManager;
     #endregion
 

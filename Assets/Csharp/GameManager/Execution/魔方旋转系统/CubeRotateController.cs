@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using static InitCubeSlot;
 
@@ -6,6 +6,17 @@ public class CubeRotateController : MonoBehaviour
 {
     bool isDragging;
     Vector3 lastMousePos;
+
+    // ============================
+    // 空间计算引用
+    // ============================
+    public Transform ball;
+    public InitCubeSlot cubeData;
+    public Transform cubeRoot;
+
+    // ============================
+    // 生命周期
+    // ============================
 
     void OnEnable()
     {
@@ -28,6 +39,10 @@ public class CubeRotateController : MonoBehaviour
 
         RotateCubeFree(delta);
     }
+
+    // ============================
+    // 旋转控制
+    // ============================
 
     void StartRotate()
     {
@@ -52,7 +67,9 @@ public class CubeRotateController : MonoBehaviour
         transform.Rotate(Vector3.up, rotY, Space.World);
     }
 
-    #region ����ϵͳ
+    // ============================
+    // 回正 + 空间计算核心
+    // ============================
 
     FaceDir GetClosestFaceToGround()
     {
@@ -87,8 +104,13 @@ public class CubeRotateController : MonoBehaviour
             case FaceDir.Front: return Vector3.forward;
             case FaceDir.Back: return Vector3.back;
         }
+
         return Vector3.up;
     }
+
+    // ============================
+    // 回正结束 → 空间计算入口
+    // ============================
 
     void AutoSnapToNearestFace()
     {
@@ -100,10 +122,10 @@ public class CubeRotateController : MonoBehaviour
             Quaternion.FromToRotation(currentNormal, Vector3.down)
             * transform.rotation;
 
-        StartCoroutine(SmoothRotate(targetRot));
+        StartCoroutine(SmoothRotate(targetRot, face));
     }
 
-    IEnumerator SmoothRotate(Quaternion target)
+    IEnumerator SmoothRotate(Quaternion target, FaceDir gravityFace)
     {
         Quaternion start = transform.rotation;
         float t = 0f;
@@ -116,7 +138,20 @@ public class CubeRotateController : MonoBehaviour
         }
 
         transform.rotation = target;
+
+        // 回正完成后计算空间状态
+        CalculateBallSpaceState();
     }
 
-    #endregion
+    // ============================
+    // 空间状态计算（新增核心）
+    // ============================
+
+    void CalculateBallSpaceState()
+    {
+        Debug.Log("CRC 空间计算请求触发");
+        if (ball == null || cubeData == null || cubeRoot == null)
+            return;
+        GameEvents.onBallSpaceUpdateRequest(ball.position);
+    }
 }
