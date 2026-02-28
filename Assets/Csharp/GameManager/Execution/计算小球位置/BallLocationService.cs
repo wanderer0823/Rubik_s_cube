@@ -9,7 +9,7 @@ public static class BallLocationService
     /// <param name="cubeRoot">魔方根物体</param>
     /// <param name="cubeData">InitCubeSlot 引用</param>
     /// <param name="ballWorldPos">小球世界坐标</param>
-    public static InitCubeSlot.CubeSurface_s CalculateSurface(
+    public static CubeSurface_s CalculateSurface(
         Transform cubeRoot,
         InitCubeSlot cubeData,
         Vector3 ballWorldPos)
@@ -25,7 +25,7 @@ public static class BallLocationService
         );
 
         // 3 判断在哪个面（用最大轴判断）
-        InitCubeSlot.FaceDir faceDir = GetFaceDir(localPos);
+        FaceDir faceDir = GetBallFaceDirByPos(localPos);
 
         // 4 计算该表面的逻辑坐标
         Vector3Int surfaceCoord =
@@ -51,7 +51,8 @@ public static class BallLocationService
         return Mathf.RoundToInt(value / 2f) * 2;
     }
 
-    static InitCubeSlot.FaceDir GetFaceDir(Vector3 localPos)
+    //根据小球位置获取其所在面朝向
+    public static FaceDir GetBallFaceDirByPos(Vector3 localPos)
     {
         float absX = Mathf.Abs(localPos.x);
         float absY = Mathf.Abs(localPos.y);
@@ -59,17 +60,17 @@ public static class BallLocationService
 
         if (absY >= absX && absY >= absZ)
             return localPos.y > 0 ?
-                InitCubeSlot.FaceDir.Up :
-                InitCubeSlot.FaceDir.Down;
+                FaceDir.Up :
+                FaceDir.Down;
 
         if (absX >= absY && absX >= absZ)
             return localPos.x > 0 ?
-                InitCubeSlot.FaceDir.Right :
-                InitCubeSlot.FaceDir.Left;
+                FaceDir.Right :
+                FaceDir.Left;
 
         return localPos.z > 0 ?
-            InitCubeSlot.FaceDir.Front :
-            InitCubeSlot.FaceDir.Back;
+            FaceDir.Front :
+            FaceDir.Back;
     }
 
    

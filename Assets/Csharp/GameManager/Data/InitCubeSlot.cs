@@ -227,24 +227,7 @@ new()
         return null;
     }
 
-    public FaceDir GetBigFaceDirByBallposition(Vector3 ballPosition)
-    {
-        //将小球世界坐标转换为逻辑坐标
-        Vector3Int logicCoord = new Vector3Int(
-            Mathf.RoundToInt(ballPosition.x * 2),  // 乘以2
-            Mathf.RoundToInt(ballPosition.y * 2),
-            Mathf.RoundToInt(ballPosition.z * 2)
-            );
-
-        // 判断在哪个大面上（基于逻辑坐标）
-        if (logicCoord.y >= 3) return FaceDir.Up;
-        if (logicCoord.y <= -3) return FaceDir.Down;
-        if (logicCoord.x <= -3) return FaceDir.Left;
-        if (logicCoord.x >= 3) return FaceDir.Right;
-        if (logicCoord.z >= 3) return FaceDir.Front;
-        if (logicCoord.z <= -3) return FaceDir.Back;
-
-        return FaceDir.Front;//默认值
-    }
+    //找大面朝向，方法在BallLocationService.GetBallFaceDirByPos
+   
     #endregion
 }
