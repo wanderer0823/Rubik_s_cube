@@ -28,6 +28,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnRotateFinishRequest += CheckRotateFinish;
         //订阅UIM请求事件
         GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
+        GameEvents.OnArrowsClickRequest += CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
         GameEvents.OnBallSpaceUpdateRequest += CheckBallSpaceUpdate;
 
@@ -45,6 +46,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnRotateFinishRequest -= CheckRotateFinish;
         //UIM请求事件
         GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
+        GameEvents.OnArrowsClickRequest -= CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
         GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
     }
@@ -179,6 +181,17 @@ public class ViewModeManager : MonoBehaviour
         gs.SetGravityFace(gravityFace);
 
         Debug.Log($"VMM更新空间 → Room:{surface.roomID}");
+    }
+
+    //张天姿：订阅UIM的箭头请求事件
+    void CheckArrowsClick(int number)
+    {
+        if (!CheckPlayerState(PlayerState.turningFinished)
+            || !CheckViewMode(ViewMode.View1))
+            return;
+        //更新view mode
+        gs.SetPlayerState(PlayerState.isTurning);
+        GameEvents.onArrowsExecute(number);
     }
     #endregion
     #endregion
