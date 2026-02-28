@@ -63,10 +63,10 @@ public class GameManager : MonoBehaviour
         GameEvents.onViewSwitchRequest(); 
     }
 
-    public void RequestMove()
+    public void RequestMove(Vector3 moveDir)
     {
         Debug.Log("Player Move«Î«Û");
-        GameEvents.onMoveRequest(); 
+        GameEvents.onMoveRequest(moveDir); 
     }
 
     public void RequestOpenDoor()

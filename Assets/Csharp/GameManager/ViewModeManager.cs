@@ -72,12 +72,12 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.onTabExecute();
     }
 
-    void CheckMove()
+    void CheckMove(Vector3 moveDir)
     {
         if (!CheckViewMode(ViewMode.View3)
             ||!CheckPlayerState(PlayerState.isMoving) )
             return;
-        GameEvents.onMoveExecute(); 
+        GameEvents.onMoveExecute(moveDir); 
     }
 
     void CheckViewSwitch()//F

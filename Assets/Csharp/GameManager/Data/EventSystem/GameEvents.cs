@@ -7,7 +7,7 @@ public static class GameEvents
     // GM请求VMM监听
     public static event Action OnTabRequest;
     public static event Action OnViewSwitchRequest;
-    public static event Action OnMoveRequest;
+    public static event Action<Vector3> OnMoveRequest;
     public static event Action OnOpenDoorRequest;
     public static event Action<RotateType> OnRotateRequest;
     public static event Action<RotateType> OnRotateFinishRequest;
@@ -20,7 +20,7 @@ public static class GameEvents
     #region === 执行事件定义 ===
     // PC监听VMM
     public static event Action OnTabExecute;
-    public static event Action OnMoveExecute;
+    public static event Action<Vector3> OnMoveExecute;
     public static event Action OnOpenDoorExecute;
     // CRC监听VMM
     public static event Action OnCubeRotateExecute;
@@ -36,7 +36,7 @@ public static class GameEvents
     // PIM请求GM，VMM监听
     public static void onTabRequest() => OnTabRequest?.Invoke();
     public static void onViewSwitchRequest() => OnViewSwitchRequest?.Invoke();
-    public static void onMoveRequest() => OnMoveRequest?.Invoke();
+    public static void onMoveRequest(Vector3 moveDir) => OnMoveRequest?.Invoke(moveDir);
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
     public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
@@ -49,7 +49,7 @@ public static class GameEvents
     #region === 执行事件广播方法 ===
     // PC监听VMM
     public static void onTabExecute() => OnTabExecute?.Invoke();
-    public static void onMoveExecute() => OnMoveExecute?.Invoke();
+    public static void onMoveExecute(Vector3 moveDir) => OnMoveExecute?.Invoke(moveDir);
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
     // UIM监听VMM
     public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);

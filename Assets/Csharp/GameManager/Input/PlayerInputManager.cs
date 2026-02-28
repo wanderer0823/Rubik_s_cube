@@ -30,16 +30,20 @@ public class PlayerInputManager
         if (Input.GetKeyDown(KeyCode.E))
             gm.RequestOpenDoor();
 
-        if (Input.GetKey(KeyCode.W) ||
-            Input.GetKey(KeyCode.A) ||
-            Input.GetKey(KeyCode.S) ||
-            Input.GetKey(KeyCode.D))
+        //¼ì²âÒÆ¶¯·½Ïò
+        Vector3 moveDir=Vector3.zero;
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        moveDir = new Vector3(x,0,z);
+
+        if (moveDir!=Vector3.zero)
         {
             holdTime += Time.deltaTime;
+            
             if(holdTime>maxHoverTime)
             {
                 holdTime = 0.0f;
-                gm.RequestMove();
+                gm.RequestMove(moveDir.normalized);
             }
         }
     }
