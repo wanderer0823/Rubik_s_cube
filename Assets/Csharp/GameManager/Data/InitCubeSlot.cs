@@ -8,13 +8,14 @@ public class InitCubeSlot : MonoBehaviour
     
     //用于整体管理魔方结构
     public List<Slot> slots;                    //总入口，都挂这里
+
     Dictionary<int, CubePiece> pieceMap;        //用方块id调用对应方块的字典，因为用slot来调用有点冗长
     Dictionary<int, CubeSurface_s> surfaceMap;  //用面id调用对应面的字典
     Dictionary<Vector3Int, CubeSurface_s> surfaceCoordMap;//用坐标调用对应面，和上面的区别只是调用媒介不一样，调用方法在下面
     Dictionary<Vector3Int, CubePiece> PieceCoordMap;//用坐标调用对应方块
 
     //静态数据
-    static readonly Dictionary<FaceDir, Vector3Int> FaceOffset =
+    public static readonly Dictionary<FaceDir, Vector3Int> FaceOffset =
 new()
 {
     {FaceDir.Up,    new(0,  1,  0)},
@@ -78,7 +79,7 @@ new()
         [Header("静态数据（不变）")]
         public int id;                              //方块id（固定）
         public Transform indexCube;                 //视觉实体（固定）
-        public List<CubeSurface_s> surfaces;        //每个方块带的外表面（固定）
+        public List<CubeSurface_s> surfaces;        //每个方块带的外表面（固定，但外表面属性可能有变化）
 
         [Header("动态状态（变化）")]
         public Vector3Int coord;                 //方块当前的逻辑坐标（变化）
@@ -97,7 +98,7 @@ new()
 
         [Header("动态状态（变化）")]
         public FaceDir dir;                 //外表面的方向，用于坐标计算（变化）
-        public Vector3Int coord;         //外表面的逻辑坐标，旋转后变化
+        public Vector3Int coord;            //外表面的逻辑坐标，旋转后变化
 
         //初始化
         public CubeSurface_s() { }
@@ -224,6 +225,26 @@ new()
             return surface;
 
         return null;
+    }
+
+    public FaceDir GetBigFaceDirByBallposition(Vector3 ballPosition)
+    {
+        //将小球世界坐标转换为逻辑坐标
+        Vector3Int logicCoord = new Vector3Int(
+            Mathf.RoundToInt(ballPosition.x * 2),  // 乘以2
+            Mathf.RoundToInt(ballPosition.y * 2),
+            Mathf.RoundToInt(ballPosition.z * 2)
+            );
+
+        // 判断在哪个大面上（基于逻辑坐标）
+        if (logicCoord.y >= 3) return FaceDir.Up;
+        if (logicCoord.y <= -3) return FaceDir.Down;
+        if (logicCoord.x <= -3) return FaceDir.Left;
+        if (logicCoord.x >= 3) return FaceDir.Right;
+        if (logicCoord.z >= 3) return FaceDir.Front;
+        if (logicCoord.z <= -3) return FaceDir.Back;
+
+        return FaceDir.Front;//默认值
     }
     #endregion
 }

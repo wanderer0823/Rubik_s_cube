@@ -30,7 +30,7 @@ public static class BallLocationService
         // 4 计算该表面的逻辑坐标
         Vector3Int surfaceCoord =
             nearestPieceCoord +
-            GetFaceOffset(faceDir);
+            FaceOffset[faceDir];
 
         // 5 通过 surfaceCoordMap 查表面
         var surface = cubeData.GetSurfaceByCoord(surfaceCoord);
@@ -72,20 +72,7 @@ public static class BallLocationService
             InitCubeSlot.FaceDir.Back;
     }
 
-    static Vector3Int GetFaceOffset(InitCubeSlot.FaceDir dir)
-    {
-        switch (dir)
-        {
-            case InitCubeSlot.FaceDir.Up: return new Vector3Int(0, 1, 0);
-            case InitCubeSlot.FaceDir.Down: return new Vector3Int(0, -1, 0);
-            case InitCubeSlot.FaceDir.Left: return new Vector3Int(-1, 0, 0);
-            case InitCubeSlot.FaceDir.Right: return new Vector3Int(1, 0, 0);
-            case InitCubeSlot.FaceDir.Front: return new Vector3Int(0, 0, 1);
-            case InitCubeSlot.FaceDir.Back: return new Vector3Int(0, 0, -1);
-        }
-
-        return Vector3Int.zero;
-    }
+   
 
     public static FaceDir CalculateGravityFace(Vector3 localDown)
     {
