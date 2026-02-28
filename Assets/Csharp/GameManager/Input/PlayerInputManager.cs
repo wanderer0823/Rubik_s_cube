@@ -46,6 +46,9 @@ public class PlayerInputManager
                 gm.RequestMove(moveDir.normalized);
             }
         }
+
+        //ºÏ≤‚ Û±Í“∆∂Ø
+
     }
 
     private void HandleMouse()

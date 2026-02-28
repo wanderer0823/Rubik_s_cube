@@ -87,4 +87,5 @@ public class PlayerAction : MonoBehaviour
         {
             Debug.Log("正在尝试开门");
         }
+
 }
