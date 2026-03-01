@@ -7,6 +7,9 @@ public class CameraAction : MonoBehaviour
     public Transform player;
     public Vector3 offset = new Vector3(0, 3f, 0);
 
+    [SerializeField] private float minAngle = -80f;  // 向下看
+    [SerializeField] private float maxAngle = 80f;   // 向上看
+
     float xRotation = 0f;
     float yRotation = 0f;
 
