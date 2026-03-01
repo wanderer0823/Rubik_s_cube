@@ -1,13 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraAction : MonoBehaviour
 {
     public Transform player;
-    [SerializeField] private float minAngle = -80f;  // ÏòÏÂ¿´
-    [SerializeField] private float maxAngle = 80f;   // ÏòÉÏ¿´
-
     public Vector3 offset = new Vector3(0, 3f, 0);
 
     float xRotation = 0f;
@@ -29,11 +26,11 @@ public class CameraAction : MonoBehaviour
         float mouseX = mouseMove.x;
         float mouseY = mouseMove.y;
 
-        // ×óÓÒ ¡ú Íæ¼ÒĞı×ª
+        // å·¦å³ â†’ ç©å®¶æ—‹è½¬
         player.Rotate(Vector3.up * mouseX);
         yRotation += mouseX;
 
-        // ÉÏÏÂ ¡ú Ïà»úĞı×ª
+        // ä¸Šä¸‹ â†’ ç›¸æœºæ—‹è½¬
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, minAngle, maxAngle);
     }

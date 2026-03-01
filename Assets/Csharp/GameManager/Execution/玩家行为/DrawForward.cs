@@ -1,24 +1,24 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-//Ò»¸öForward¿ÉÊÓ»¯¹¤¾ß
+//ä¸€ä¸ªForwardå¯è§†åŒ–å·¥å…·
 public class DrawForward : MonoBehaviour
 {
-    // ¿Éµ÷ÕûµÄ²ÎÊı
-    [SerializeField] private float lineLength = 2f;  // ÏßµÄ³¤¶È
-    [SerializeField] private Color lineColor = Color.blue;  // ÏßµÄÑÕÉ«
+    // å¯è°ƒæ•´çš„å‚æ•°
+    [SerializeField] private float lineLength = 2f;  // çº¿çš„é•¿åº¦
+    [SerializeField] private Color lineColor = Color.blue;  // çº¿çš„é¢œè‰²
 
     void OnDrawGizmos()
     {
-        // ÉèÖÃÑÕÉ«
+        // è®¾ç½®é¢œè‰²
         Gizmos.color = lineColor;
 
-        // ´ÓÎïÌåÎ»ÖÃÏòÇ°·½»­Ò»ÌõÏß
+        // ä»ç‰©ä½“ä½ç½®å‘å‰æ–¹ç”»ä¸€æ¡çº¿
         Gizmos.DrawRay(transform.position, transform.forward * lineLength);
 
-        // ÔÚÏßµÄÄ©¶Ë»­Ò»¸öĞ¡Çò£¬¸üÈİÒ×¿´µ½
+        // åœ¨çº¿çš„æœ«ç«¯ç”»ä¸€ä¸ªå°çƒï¼Œæ›´å®¹æ˜“çœ‹åˆ°
         Gizmos.DrawSphere(transform.position + transform.forward * lineLength, 0.1f);
 
     }
