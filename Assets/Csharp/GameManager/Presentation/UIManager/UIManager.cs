@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
     [Header("视角转换按钮")]
     [SerializeField] private Button[] viewSwitchButtons;
     [Header("拧魔方箭头按钮")]
-    [SerializeField] private Button[] arrowsButtons;
+    [SerializeField] private List<Button> arrowsButtons;
     [Header("View面板（空物体）")]
     [SerializeField] private GameObject[] viewPanels;
     [Header("每个视角的相机")]
@@ -20,8 +21,9 @@ public class UIManager : MonoBehaviour
         viewCameras[2].gameObject.SetActive(true);
         //为视角切换按钮添加点击广播
         BindViewSwitchButtons();
-        //为箭头拧动按钮添加点击广播
-        BindArrowsButtons();
+        //为箭头拧动按钮添加点击广播，已修改：迁移至初始化后执行
+        // BindArrowsButtons();
+        Instance = this;
     }
     void OnEnable()
     {
@@ -68,18 +70,25 @@ public class UIManager : MonoBehaviour
 
     #region ===================================================
     #region 张天姿：箭头按钮点击事件监听
-    private void BindArrowsButtons()
+    public void BindArrowsButtons()
     {
-        if (arrowsButtons == null || arrowsButtons.Length < 3)
+        if (arrowsButtons == null || arrowsButtons.Count < 3)
         {
             Debug.LogWarning("箭头按钮数量不足！");
             return;
         }
-        for(int i=0;i<arrowsButtons.Length;i++)
+        for(int i=0;i<arrowsButtons.Count;i++)
         {
-            arrowsButtons[i].onClick.AddListener(() => OnArrowsButtonClick(i));
+            int index = i;
+            arrowsButtons[i].onClick.AddListener(() => OnArrowsButtonClick(index));
         }
     }
+
+    public void AddArrowButton(Button button)
+    {
+        arrowsButtons.Add(button);
+    }
+    
     private void OnArrowsButtonClick(int num)
     {
         Debug.Log($"箭头按钮{num}请求点击");
