@@ -4,24 +4,43 @@ using UnityEngine;
 
 public class CameraAction : MonoBehaviour
 {
-    public Transform Player;
+    public Transform player;
     [SerializeField] private float minAngle = -80f;  // 向下看
     [SerializeField] private float maxAngle = 80f;   // 向上看
 
+    public Vector3 offset = new Vector3(0, 3f, 0);
+
+    float xRotation = 0f;
+    float yRotation = 0f;
+
     private void OnEnable()
     {
-        
+        GameEvents.OnMouseLookExecute += HandleMouseLook;
     }
 
 
     private void OnDisable()
     {
-        
+        GameEvents.OnMouseLookExecute-=HandleMouseLook;
     }
 
-    void Execute()
+    void HandleMouseLook(Vector2 mouseMove)
     {
+        float mouseX = mouseMove.x;
+        float mouseY = mouseMove.y;
 
+        // 左右 → 玩家旋转
+        player.Rotate(Vector3.up * mouseX);
+        yRotation += mouseX;
+
+        // 上下 → 相机旋转
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, minAngle, maxAngle);
+    }
+    private void LateUpdate()
+    {
+        transform.position = player.position + offset;
+        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -97,6 +97,12 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("RightRotateFinish����");
         GameEvents.onRotateFinishRequest(RotateType.Right);
+    }
+
+    public void RequestMouseMove(Vector2 mouseMove)//欧：鼠标移动检测
+    {
+        Debug.Log("检测到鼠标移动");
+        GameEvents.onMouseLookRequest(mouseMove);
     }
     #endregion
     #endregion

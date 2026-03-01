@@ -11,6 +11,7 @@ public static class GameEvents
     public static event Action OnOpenDoorRequest;
     public static event Action<RotateType> OnRotateRequest;
     public static event Action<RotateType> OnRotateFinishRequest;
+    public static event Action<Vector2> OnMouseLookRequest;//≈∑
     // UIM«Î«ÛVMMº‡Ã˝
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
     public static event Action<int> OnArrowsClickRequest; //’≈ÃÏ◊À
@@ -23,6 +24,7 @@ public static class GameEvents
     public static event Action OnTabExecute;
     public static event Action<Vector3> OnMoveExecute;
     public static event Action OnOpenDoorExecute;
+    public static event Action<Vector2> OnMouseLookExecute;//≈∑
     // CRCº‡Ã˝VMM
     public static event Action OnCubeRotateExecute;
     public static event Action OnCubeRotateFinishExecute;
@@ -43,6 +45,7 @@ public static class GameEvents
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
     public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
+    public static void onMouseLookRequest(Vector2 mouseMove)=>OnMouseLookRequest?.Invoke(mouseMove);//≈∑
     // UIM«Î«ÛVMMº‡Ã˝
     public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
 
@@ -56,6 +59,7 @@ public static class GameEvents
     public static void onTabExecute() => OnTabExecute?.Invoke();
     public static void onMoveExecute(Vector3 moveDir) => OnMoveExecute?.Invoke(moveDir);
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
+    public static void onMouseLookExecute(Vector2 mouseMove) => OnMouseLookExecute?.Invoke(mouseMove);//≈∑
     // UIMº‡Ã˝VMM
     public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
     // CRCº‡Ã˝VMM

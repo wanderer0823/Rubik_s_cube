@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +8,9 @@ public class PlayerInputManager
     private GameManager gm;
     private float holdTime=0.0f;
     private float maxHoverTime = 0.1f;
+    [Header("鼠标灵敏度")]
+    [SerializeField] private float mouseSensitivity = 2f;
+
     public PlayerInputManager(GameManager gameManager)
     {
         gm = gameManager;
@@ -30,30 +33,17 @@ public class PlayerInputManager
         if (Input.GetKeyDown(KeyCode.E))
             gm.RequestOpenDoor();
 
-        //����ƶ�����
-        Vector3 moveDir=Vector3.zero;
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        moveDir = new Vector3(x,0,z);
-
-        if (moveDir!=Vector3.zero)
+        //欧：检测移动方向
+        if (TryGetMoveInput(out Vector3 moveDir) && ShouldMoveDueToHoldTime(moveDir))
         {
-            holdTime += Time.deltaTime;
-            
-            if(holdTime>maxHoverTime)
-            {
-                holdTime = 0.0f;
-                gm.RequestMove(moveDir.normalized);
-            }
+            gm.RequestMove(moveDir.normalized);
         }
-
-        //�������ƶ�
 
     }
 
     private void HandleMouse()
     {
-        //����UI����
+        //优先UI输入
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
         if (Input.GetMouseButtonDown(0))
@@ -64,7 +54,7 @@ public class PlayerInputManager
         {
             gm.RequestRightRotate();
         }
-        //������̧��
+        //检测鼠标抬起
         if(Input.GetMouseButtonUp(0))
         {
             gm.RequestLeftRotateFinish();
@@ -73,6 +63,55 @@ public class PlayerInputManager
         {
             gm.RequestRightRotateFinish();
         }
+        //欧：检测鼠标移动
+        if(TryGetMouseMoveInput(out Vector2 mouseMove))
+        {
+            gm.RequestMouseMove(mouseMove);
+        }
     }
+
+
+    #region ======================================================
+    #region === 欧：上面两个主要函数使用的封装函数===
+        //欧：封装检测玩家移动操作输入的函数
+    private bool TryGetMoveInput(out Vector3 moveDir)
+    {
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        moveDir = new Vector3(x, 0, z);
+
+        return moveDir != Vector3.zero;  // 返回是否有输入
+    }
+
+        //长按短按检测
+    private bool ShouldMoveDueToHoldTime(Vector3 moveDir)
+    {
+        if (moveDir == Vector3.zero)
+        {
+            holdTime = 0f;  // 松开时重置计时器
+            return false;
+        }
+
+        holdTime += Time.deltaTime;
+
+        if (holdTime > maxHoverTime)
+        {
+            holdTime = 0f;
+            return true;
+        }
+
+        return false;
+    }
+        //欧：检测视角移动操作输入的函数
+    private bool TryGetMouseMoveInput(out Vector2 mouseMove)
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        mouseMove = new Vector2(mouseX, mouseY);
+        return mouseMove != Vector2.zero;
+    }
+
+    #endregion
+    #endregion
 }
 
