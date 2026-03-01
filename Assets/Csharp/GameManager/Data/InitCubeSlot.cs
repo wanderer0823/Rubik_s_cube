@@ -230,4 +230,22 @@ new()
     //找大面朝向，方法在BallLocationService.GetBallFaceDirByPos
    
     #endregion
+    
+    // 张天姿添加：获取指定轴、指定坐标值的所有方块（即某一层的9个方块）  
+    public List<CubePiece> GetPiecesInLayer(Axis axis, int coordValue)  
+    {  
+        var result = new List<CubePiece>();  
+        foreach (var slot in slots)  
+        {        if (slot.occupant == null) continue;  
+            int val = axis switch  
+            {  
+                Axis.X => slot.coord.x,  
+                Axis.Y => slot.coord.y,  
+                Axis.Z => slot.coord.z,  
+                _ => 0  
+            };  
+            if (val == coordValue)  
+                result.Add(slot.occupant);  
+        }    return result;  
+    }
 }

@@ -10,7 +10,7 @@ public enum RotateType
 
 public class GameManager : MonoBehaviour
 {
-    #region === ×ÓÏµÍ³ÒýÓÃ ===
+    #region === ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ ===
     [Header("Input Systems")]
     private PlayerInputManager playerInputManager;
     [Header("Data Systems")]
@@ -21,26 +21,26 @@ public class GameManager : MonoBehaviour
     //public CubeTurnController cubeTurnController;
     public CubeRotateController cubeRotateController;
     public RoomPreloadController roomPreloadSystem;
-    [Header("Presentation Systems±íÏÖ²ã")]
-    public ArrowsButtonManager arrowsButtonManager;
+    [Header("Presentation Systemsï¿½ï¿½ï¿½Ö²ï¿½")]
+    public ArrowsButton ArrowsButton;
     #endregion
 
     
-    #region === È«¾Ö×´Ì¬ ===
+    #region === È«ï¿½ï¿½×´Ì¬ ===
     public int currentRoomIndex { get; private set; }
     #endregion
 
-    #region === ÉúÃüÖÜÆÚ ===
+    #region === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ===
     void Start()
     {
-        // ´´½¨ÊäÈë¹ÜÀíÆ÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         playerInputManager = new PlayerInputManager(this);
     }
 
     void Update()
     {
-        //ÊäÈë¼ì²â
-        playerInputManager.Update(); // Ö»¶ÁÊäÈë
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        playerInputManager.Update(); // Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     private void OnDestroy()
@@ -50,78 +50,78 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region ======================================================
-    #region === ÊäÈëÇëÇó½Ó¿Ú£¨PIM µ÷ÓÃ£©===
+    #region === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½PIM ï¿½ï¿½ï¿½Ã£ï¿½===
     public void RequestTab()
     {
-        Debug.Log("Tab PressedÇëÇó");
+        Debug.Log("Tab Pressedï¿½ï¿½ï¿½ï¿½");
         GameEvents.onTabRequest();  
     }
 
     public void RequestViewSwitch()
     {
-        Debug.Log("ViewSwitchÇëÇó");
+        Debug.Log("ViewSwitchï¿½ï¿½ï¿½ï¿½");
         GameEvents.onViewSwitchRequest(); 
     }
 
     public void RequestMove(Vector3 moveDir)
     {
-        Debug.Log("Player MoveÇëÇó");
+        Debug.Log("Player Moveï¿½ï¿½ï¿½ï¿½");
         GameEvents.onMoveRequest(moveDir); 
     }
 
     public void RequestOpenDoor()
     {
-        Debug.Log("Try Open DoorÇëÇó");
+        Debug.Log("Try Open Doorï¿½ï¿½ï¿½ï¿½");
         GameEvents.onOpenDoorRequest(); 
     }
 
     public void RequestLeftRotate()
     {
-        Debug.Log("LeftRotateÇëÇó");
+        Debug.Log("LeftRotateï¿½ï¿½ï¿½ï¿½");
         GameEvents.onRotateRequest(RotateType.Left); 
     }
 
     public void RequestRightRotate()
     {
-        Debug.Log("RightRotateÇëÇó");
+        Debug.Log("RightRotateï¿½ï¿½ï¿½ï¿½");
         GameEvents.onRotateRequest(RotateType.Right); 
     }
 
     public void RequestLeftRotateFinish()
     {
-        Debug.Log("LeftRotateFinishÇëÇó");
+        Debug.Log("LeftRotateFinishï¿½ï¿½ï¿½ï¿½");
         GameEvents.onRotateFinishRequest(RotateType.Left);
     }
 
     public void RequestRightRotateFinish()
     {
-        Debug.Log("RightRotateFinishÇëÇó");
+        Debug.Log("RightRotateFinishï¿½ï¿½ï¿½ï¿½");
         GameEvents.onRotateFinishRequest(RotateType.Right);
     }
     #endregion
     #endregion
 
     #region ======================================================
-    #region === ÊäÈëÇëÇó½Ó¿Ú£¨ µ÷ÓÃ£©===
+    #region === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½===
     #endregion
     #endregion
 
     #region ======================================================
-    #region === ÐÐÎªÅÐ¶Ï²ã ===
-
-    #endregion
-    #endregion
-
-
-    #region ======================================================
-    #region === ÐÐÎªÖ´ÐÐ²ã ===
+    #region === ï¿½ï¿½Îªï¿½Ð¶Ï²ï¿½ ===
 
     #endregion
     #endregion
 
 
     #region ======================================================
-    #region === UI ¸üÐÂ ===
+    #region === ï¿½ï¿½ÎªÖ´ï¿½Ð²ï¿½ ===
+
+    #endregion
+    #endregion
+
+
+    #region ======================================================
+    #region === UI ï¿½ï¿½ï¿½ï¿½ ===
     #endregion
     #endregion
 

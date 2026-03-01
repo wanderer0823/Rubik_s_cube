@@ -13,6 +13,7 @@ public static class GameEvents
     public static event Action<RotateType> OnRotateFinishRequest;
     // UIM请求VMM监听
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
+    public static event Action<int> OnArrowsClickRequest; //张天姿
     // CRC请求VMM监听
     public static event Action<Vector3> OnBallSpaceUpdateRequest;
     #endregion
@@ -30,6 +31,8 @@ public static class GameEvents
     public static event Action OnCameraRotateFinishExecute;
     // UIM监听VMM
     public static event Action<ViewMode> OnViewSwitchExecute;
+    // 张天姿：CTC监听VMM
+    public static event Action<int> OnArrowsExecute;
     #endregion
 
     #region === 请求事件广播方法 ===
@@ -42,6 +45,8 @@ public static class GameEvents
     public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
     // UIM请求VMM监听
     public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
+
+    public static void onArrowsClickRequest(int number) => OnArrowsClickRequest?.Invoke(number);//张天姿
     // CRC请求VMM监听
     public static void onBallSpaceUpdateRequest(Vector3 ballPos)=> OnBallSpaceUpdateRequest?.Invoke(ballPos);
     #endregion
@@ -59,6 +64,7 @@ public static class GameEvents
     // CARC监听VMM
     public static void onCameraRotateStart() => OnCameraRotateExecute?.Invoke();
     public static void onCameraRotateEnd() => OnCameraRotateFinishExecute?.Invoke();
-
+    // 张天姿：CTC监听VMM
+    public static void onArrowsExecute(int number) => OnArrowsExecute?.Invoke(number);
     #endregion
 }

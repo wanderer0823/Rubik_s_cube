@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using static UnityEngine.Rendering.DebugUI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
     [Header("视角转换按钮")]
     [SerializeField] private Button[] viewSwitchButtons;
     [Header("拧魔方箭头按钮")]
-    [SerializeField] private Button[] arrowsButtons;
+    [SerializeField] private List<Button> arrowsButtons;
     [Header("View面板（空物体）")]
     [SerializeField] private GameObject[] viewPanels;
     [Header("每个视角的相机")]
@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
         viewCameras[2].gameObject.SetActive(true);
         //为视角切换按钮添加点击广播
         BindViewSwitchButtons();
+        //为箭头拧动按钮添加点击广播，已修改：迁移至初始化后执行
+        // BindArrowsButtons();
+        Instance = this;
     }
     void OnEnable()
     {
@@ -54,13 +57,44 @@ public class UIManager : MonoBehaviour
         viewSwitchButtons[1].onClick.AddListener(() => OnViewButtonClick(ViewMode.View2));
         viewSwitchButtons[2].onClick.AddListener(() => OnViewButtonClick(ViewMode.View3));
     }
-
+    
     private void OnViewButtonClick(ViewMode targetMode)
     {
         Debug.Log($"按钮请求切换到 {targetMode}");
 
         // 向逻辑层发请求
         GameEvents.onDirectViewSwitchRequest(targetMode);
+    }
+    #endregion
+    #endregion
+
+    #region ===================================================
+    #region 张天姿：箭头按钮点击事件监听
+    public void BindArrowsButtons()
+    {
+        if (arrowsButtons == null || arrowsButtons.Count < 3)
+        {
+            Debug.LogWarning("箭头按钮数量不足！");
+            return;
+        }
+        for(int i=0;i<arrowsButtons.Count;i++)
+        {
+            int index = i;
+            arrowsButtons[i].onClick.AddListener(() => OnArrowsButtonClick(index));
+        }
+    }
+
+    public void AddArrowButton(Button button)
+    {
+        arrowsButtons.Add(button);
+    }
+    
+    private void OnArrowsButtonClick(int num)
+    {
+        Debug.Log($"箭头按钮{num}请求点击");
+
+        // 向逻辑层发请求
+        GameEvents.onArrowsClickRequest(num);
     }
     #endregion
     #endregion
