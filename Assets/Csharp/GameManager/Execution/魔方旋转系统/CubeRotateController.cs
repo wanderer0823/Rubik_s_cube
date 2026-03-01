@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using static InitCubeSlot;
 
@@ -10,7 +11,8 @@ public class CubeRotateController : MonoBehaviour
     // ============================
     // 空间计算引用
     // ============================
-    public Transform ball;
+    // public Transform ball;
+    Transform ball;
     public InitCubeSlot cubeData;
     public Transform cubeRoot;
 
@@ -29,6 +31,7 @@ public class CubeRotateController : MonoBehaviour
         GameEvents.OnCubeRotateExecute -= StartRotate;
         GameEvents.OnCubeRotateFinishExecute -= StopRotate;
     }
+    
 
     void Update()
     {
@@ -36,6 +39,7 @@ public class CubeRotateController : MonoBehaviour
 
         Vector3 delta = Input.mousePosition - lastMousePos;
         lastMousePos = Input.mousePosition;
+        ball = GameManager.Instance.ball;
 
         RotateCubeFree(delta);
     }

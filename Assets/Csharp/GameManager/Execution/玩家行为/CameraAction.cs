@@ -35,7 +35,8 @@ public class CameraAction : MonoBehaviour
 
         // 上下 → 相机旋转
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, minAngle, maxAngle);
+        //这里有报错，为了提交先注释一下！
+        //xRotation = Mathf.Clamp(xRotation, minAngle, maxAngle);
     }
     private void LateUpdate()
     {

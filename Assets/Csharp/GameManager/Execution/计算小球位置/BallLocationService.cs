@@ -46,9 +46,23 @@ public static class BallLocationService
     // 内部工具方法
     // =========================
 
-    static int RoundToLogic(float value)
+    public static int RoundToLogic(float value)
     {
         return Mathf.RoundToInt(value / 2f) * 2;
+    }
+
+    public static FaceDir GetBallFaceDirByWorldPos(Transform ballWorldPos)
+    {
+        Vector3 localPos = ViewModeManager.Instance.cubeRoot.InverseTransformPoint(ballWorldPos.position);
+            
+        Vector3Int nearestPieceCoord = new Vector3Int(
+            RoundToLogic(localPos.x),
+            RoundToLogic(localPos.y),
+            RoundToLogic(localPos.z)
+        );
+            
+        FaceDir faceDir = BallLocationService.GetBallFaceDirByPos(localPos);
+        return faceDir;
     }
 
     //根据小球位置获取其所在面朝向
