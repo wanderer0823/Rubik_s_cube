@@ -5,6 +5,7 @@ using static InitCubeSlot;
 
 public class ViewModeManager : MonoBehaviour
 {
+    public static ViewModeManager Instance;
     private GameState gs;
     [Header("空间系统引用")]
     public Transform cubeRoot;
@@ -16,6 +17,7 @@ public class ViewModeManager : MonoBehaviour
             new GameState();
 
         gs = GameState.Instance;
+        Instance = this;
     }
     public void OnEnable()
     {

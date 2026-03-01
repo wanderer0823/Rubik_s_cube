@@ -23,14 +23,22 @@ public class GameManager : MonoBehaviour
     public RoomPreloadController roomPreloadSystem;
     [Header("Presentation Systems���ֲ�")]
     public ArrowsButton ArrowsButton;
+    public Transform ball;
     #endregion
 
+    public static GameManager Instance;
     
     #region === ȫ��״̬ ===
     public int currentRoomIndex { get; private set; }
     #endregion
 
     #region === �������� ===
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         // �������������

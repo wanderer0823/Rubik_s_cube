@@ -144,19 +144,22 @@ public class CubeTurnController : MonoBehaviour
         }        
         public void RotateByCurrentArrow(int arrowIndex)  
         {            
+            currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(GameManager.Instance.ball);
             GetPiecesForArrow(arrowIndex);
             
             // 将 Axis 映射为世界坐标中的单位方向（等价于按轴取 FaceOffset）  
             Vector3Int axisOffset = AxisToOffset(currentAxis);  
   
             foreach (InitCubeSlot.CubePiece piece in currentCubePiece)  
-            {                // TOOD : 添加dotween动画  
+            {                
+                // TOOD : 添加dotween动画  
                 Quaternion rotation = Quaternion.AngleAxis(90, axisOffset);  
                 piece.indexCube.rotation *= rotation;  
   
                 Vector3Int coord = piece.coord;  
                 switch (currentAxis)  
-                {                    case InitCubeSlot.Axis.X:  
+                {                    
+                    case InitCubeSlot.Axis.X:  
                         piece.coord = new Vector3Int(coord.x, -coord.z, coord.y);  
                         break;  
                     case InitCubeSlot.Axis.Y:  
