@@ -110,6 +110,7 @@ new()
         public void UpdatePosition(Vector3Int pieceCoord)
         {
             coord = pieceCoord + FaceOffset[dir];
+            Debug.Log(pieceCoord+"汉字");
         }
     }
     #endregion

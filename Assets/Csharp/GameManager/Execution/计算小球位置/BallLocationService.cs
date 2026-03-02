@@ -16,6 +16,7 @@ public static class BallLocationService
     {
         // 1 转换到魔方本地空间
         Vector3 localPos = cubeRoot.InverseTransformPoint(ballWorldPos);
+        Debug.Log("小球本地位置：" + localPos);
 
         // 2 取最近逻辑坐标（-3,0,3）
         Vector3Int nearestPieceCoord = new Vector3Int(
@@ -23,18 +24,21 @@ public static class BallLocationService
             RoundToLogic(localPos.y),
             RoundToLogic(localPos.z)
         );
+        Debug.Log("取本地最近位置：" + nearestPieceCoord);
 
         // 3 判断在哪个面（用最大轴判断）
         FaceDir faceDir = GetBallFaceDirByPos(localPos);
+        Debug.Log("小球在面：" + faceDir);
 
         // 4 计算该表面的逻辑坐标
         Vector3Int surfaceCoord =
             nearestPieceCoord +
             FaceOffset[faceDir];
+        Debug.Log("小球在表面正方形：" + surfaceCoord);
 
         // 5 通过 surfaceCoordMap 查表面
         var surface = cubeData.GetSurfaceByCoord(surfaceCoord);
-        Debug.Log("303");
+        
         if (surface != null)
         {
             //Debug.Log("303");
@@ -50,7 +54,8 @@ public static class BallLocationService
 
     public static int RoundToLogic(float value)
     {
-        return Mathf.RoundToInt(value / 2f) * 2;
+        return Mathf.RoundToInt(value / 2f) * 2;//保留偶数或向上取整获得偶数
+        //return Mathf.FloorToInt(value*2);
     }
 
     public static FaceDir GetBallFaceDirByWorldPos(Transform ballWorldPos)
