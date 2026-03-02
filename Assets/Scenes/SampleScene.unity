@@ -2568,6 +2568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69224c2a7e617f147b52f4f0474a04c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball_p: {fileID: 604833498}
+  ball: {fileID: 604833499}
   cubeRoot: {fileID: 1576474101}
   cubeData: {fileID: 773962225}
 --- !u!1 &684602856
@@ -3470,7 +3472,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeRotateController: {fileID: 1576474102}
   ArrowsButton: {fileID: 0}
-  ball: {fileID: 0}
 --- !u!1 &821525721
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,7 +39,7 @@ public class CubeRotateController : MonoBehaviour
 
         Vector3 delta = Input.mousePosition - lastMousePos;
         lastMousePos = Input.mousePosition;
-        ball = GameManager.Instance.ball;
+        ball = ViewModeManager.Instance.ball;
 
         RotateCubeFree(delta);
     }

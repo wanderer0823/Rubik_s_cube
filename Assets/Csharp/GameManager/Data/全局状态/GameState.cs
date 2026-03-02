@@ -30,6 +30,8 @@ public enum BallPhysics
 public class GameState
 {
     public static GameState Instance;
+    private GameObject ball;
+    private Rigidbody rb;
 
     public GameState()
     {
@@ -51,9 +53,11 @@ public class GameState
     // 构造函数..初始化默认状态
     public void InitGameState()
     {
+        ball = ViewModeManager.Instance.ball_p;
         CurrentView = ViewMode.View3;
         CurrentPlayerState = PlayerState.isMoving;
-        CurrentBallPhysics = BallPhysics.Off;
+        SetBallPhysics( BallPhysics.Off);
+        CurrentSurface = new InitCubeSlot.CubeSurface_s();
     }
 
     #region ====================================
@@ -110,11 +114,36 @@ public class GameState
 
     #region ===========================================
     #region 更新小球物理状态
+    private void GetBallRigidBody()
+    {
+        rb = ball.GetComponent<Rigidbody>();
+    }
     //锁定小球物理
     public void SetBallPhysics(BallPhysics bp)
     {
         CurrentBallPhysics = bp;
         Debug.Log("更新小球物理：" + CurrentBallPhysics);
+        if(bp==BallPhysics.On)
+        {
+            UnlockBallPhysics();
+        }
+        if (bp == BallPhysics.Off)
+        {
+            LockBallPhysics();
+        }
+    }
+    void UnlockBallPhysics()
+    {
+        Debug.Log("锁定小球物理。");
+        GetBallRigidBody();
+        rb.isKinematic = false;
+    }
+
+    void LockBallPhysics()
+    {
+        Debug.Log("解锁小球物理。");
+        GetBallRigidBody();
+        rb.isKinematic = true;
     }
     #endregion
     #endregion

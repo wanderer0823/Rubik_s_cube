@@ -144,7 +144,7 @@ public class CubeTurnController : MonoBehaviour
         }        
         public void RotateByCurrentArrow(int arrowIndex)  
         {            
-            currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(GameManager.Instance.ball);
+            currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(ViewModeManager.Instance.ball);
             GetPiecesForArrow(arrowIndex);
             
             // 将 Axis 映射为世界坐标中的单位方向（等价于按轴取 FaceOffset）  

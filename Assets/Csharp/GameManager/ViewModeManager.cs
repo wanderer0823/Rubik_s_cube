@@ -7,17 +7,20 @@ public class ViewModeManager : MonoBehaviour
 {
     public static ViewModeManager Instance;
     private GameState gs;
+    [Header("小球")]
+    public GameObject ball_p;
+    public Transform ball;
     [Header("空间系统引用")]
     public Transform cubeRoot;
     public InitCubeSlot cubeData;
 
     void Awake()
     {
+        Instance = this;
         if (GameState.Instance == null)
             new GameState();
 
         gs = GameState.Instance;
-        Instance = this;
     }
     public void OnEnable()
     {
@@ -131,6 +134,7 @@ public class ViewModeManager : MonoBehaviour
         {
             //Debug.Log("102");
             GameEvents.onCubeRotateStart();
+            gs.SetBallPhysics(BallPhysics.On);
         }
         if (type == RotateType.Right)
         {
@@ -178,7 +182,6 @@ public class ViewModeManager : MonoBehaviour
                 cubeData,
                 ballPos
             );
-
         if (surface == null)
             return;
         Debug.Log("302");
@@ -207,6 +210,12 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.onArrowsExecute(number);
     }
 
+
+    #endregion
+    #endregion
+
+    #region ============================================
+    #region 控制小球物理状态
 
     #endregion
     #endregion

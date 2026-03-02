@@ -34,12 +34,14 @@ public static class BallLocationService
 
         // 5 通过 surfaceCoordMap 查表面
         var surface = cubeData.GetSurfaceByCoord(surfaceCoord);
-
+        Debug.Log("303");
         if (surface != null)
         {
+            //Debug.Log("303");
             return surface;
         }
         return null;
+        
     }
 
     // =========================
