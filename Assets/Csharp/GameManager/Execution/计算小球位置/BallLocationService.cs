@@ -16,7 +16,7 @@ public static class BallLocationService
     {
         // 1 转换到魔方本地空间
         Vector3 localPos = cubeRoot.InverseTransformPoint(ballWorldPos);
-        Debug.Log("小球本地位置：" + localPos);
+            //Debug.Log("小球本地位置：" + localPos);
 
         // 2 取最近逻辑坐标（-3,0,3）
         Vector3Int nearestPieceCoord = new Vector3Int(
@@ -24,11 +24,11 @@ public static class BallLocationService
             RoundToLogic(localPos.y),
             RoundToLogic(localPos.z)
         );
-        Debug.Log("取本地最近位置：" + nearestPieceCoord);
+            //Debug.Log("取本地最近位置：" + nearestPieceCoord);
 
         // 3 判断在哪个面（用最大轴判断）
         FaceDir faceDir = GetBallFaceDirByPos(localPos);
-        Debug.Log("小球在面：" + faceDir);
+            //Debug.Log("小球在面：" + faceDir);
 
         // 4 计算该表面的逻辑坐标
         Vector3Int surfaceCoord =

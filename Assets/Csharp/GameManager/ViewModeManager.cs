@@ -10,6 +10,8 @@ public class ViewModeManager : MonoBehaviour
     [Header("小球")]
     public GameObject ball_p;
     public Transform ball;
+    public float minBallSpeed = 0.02f;
+    private Rigidbody rb;
     [Header("空间系统引用")]
     public Transform cubeRoot;
     public InitCubeSlot cubeData;
@@ -21,6 +23,7 @@ public class ViewModeManager : MonoBehaviour
             new GameState();
 
         gs = GameState.Instance;
+        rb = ball_p.GetComponent<Rigidbody>();
     }
     public void OnEnable()
     {
@@ -172,33 +175,6 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.onMouseLookExecute(mouseMove);
     }
 
-    //订阅CRC请求事件
-    void CheckBallSpaceUpdate(Vector3 ballPos)
-    {
-        Debug.Log("301");
-        var surface =
-            BallLocationService.CalculateSurface(
-                cubeRoot,
-                cubeData,
-                ballPos
-            );
-        if (surface == null)
-            return;
-        Debug.Log("302");
-        // 更新 GS
-        gs.SetCurrentSurface(surface);
-        Debug.Log("303");
-        Vector3 localDown =
-            cubeRoot.InverseTransformDirection(Vector3.down);
-
-        FaceDir gravityFace =
-            BallLocationService.CalculateGravityFace(localDown);
-
-        gs.SetGravityFace(gravityFace);
-
-        Debug.Log($"VMM更新空间 → Room:{surface.roomID}");
-    }
-
     //张天姿：订阅UIM的箭头请求事件
     void CheckArrowsClick(int number)
     {
@@ -216,6 +192,57 @@ public class ViewModeManager : MonoBehaviour
 
     #region ============================================
     #region 控制小球物理状态
+
+    //订阅CRC请求事件
+    void CheckBallSpaceUpdate(Vector3 ballPos)
+    {
+        //等待小球速度降低直到低于阈值才计算其空间位置
+        StartCoroutine(CheckSpeed(minBallSpeed, (isOk) =>
+        {
+            Debug.Log("检测结果：" + isOk);
+            if (isOk == false)
+            {
+                Debug.Log("VMM尝试计算失败。");
+                return;
+            }
+            //锁定小球物理状态
+            gs.SetBallPhysics(BallPhysics.Off);
+
+            //计算并更新小球空间位置的全局状态
+            //Debug.Log("301");
+            var surface =
+                BallLocationService.CalculateSurface(
+                    cubeRoot,
+                    cubeData,
+                    ballPos
+                );
+            if (surface == null)
+                return;
+            //Debug.Log("302");
+            gs.SetCurrentSurface(surface);
+            Vector3 localDown =
+                cubeRoot.InverseTransformDirection(Vector3.down);
+
+            //改变新重力方向在相对坐标系中的矢量
+            FaceDir gravityFace =
+                BallLocationService.CalculateGravityFace(localDown);
+            gs.SetGravityFace(gravityFace);
+
+            Debug.Log($"VMM更新空间 → Room:{surface.roomID}");
+        }));
+
+        
+    }
+
+    IEnumerator CheckSpeed(float threshold, System.Action<bool> result)
+    {
+        while (rb.velocity.magnitude > threshold)
+        {
+            yield return null;
+        }
+
+        result?.Invoke(true);
+    }
 
     #endregion
     #endregion

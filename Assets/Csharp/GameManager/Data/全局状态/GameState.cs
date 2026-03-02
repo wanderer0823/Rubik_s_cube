@@ -134,14 +134,14 @@ public class GameState
     }
     void UnlockBallPhysics()
     {
-        Debug.Log("锁定小球物理。");
+        Debug.Log("解锁小球物理。");
         GetBallRigidBody();
         rb.isKinematic = false;
     }
 
     void LockBallPhysics()
     {
-        Debug.Log("解锁小球物理。");
+        Debug.Log("锁定小球物理。");
         GetBallRigidBody();
         rb.isKinematic = true;
     }
