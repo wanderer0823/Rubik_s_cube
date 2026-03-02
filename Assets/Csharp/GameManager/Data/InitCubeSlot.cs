@@ -5,9 +5,10 @@ using UnityEngine.UIElements;
 
 public class InitCubeSlot : MonoBehaviour
 {
-    
     //用于整体管理魔方结构
-    public List<Slot> slots;                    //总入口，都挂这里
+    public List<Slot> slots;                    //槽位，内含方块（CubePiece）类和面（CubeSurface_s）类
+    public List<Room> rooms;                    //房间列表
+    public GameObject CurrentRoom;              //房间刷新点（放预制体的）
 
     Dictionary<int, CubePiece> pieceMap;        //用方块id调用对应方块的字典，因为用slot来调用有点冗长
     Dictionary<int, CubeSurface_s> surfaceMap;  //用面id调用对应面的字典
@@ -37,6 +38,8 @@ new()
         Front, Back
     }
 
+
+    #region 槽位，方块，面相关定义
     //槽位（总入口）：引用方块（CubePiece）类
     [System.Serializable]
     public class Slot
@@ -109,11 +112,64 @@ new()
             coord = pieceCoord + FaceOffset[dir];
         }
     }
+    #endregion
+
+    #region 房间相关定义
+    [System.Serializable]
+    //房间class 
+    public class Room
+    {
+        [Header("静态数据（不变）")]
+        public int roomID;                  //0到53
+        //public int RoomPerfabID;            //因为是预制体，所以是十多个，需要的时候再解锁吧
+        public Vector3 spawnPoint;          //房间生成的坐标
+        public GameObject RoomPerfab;       //房间预制体
+
+        [Header("动态状态（变化）")]
+        public FaceState[] faces=new FaceState[6]; 
+        public FaceDir[] dirMap = new FaceDir[6];
+
+        public void Init()
+        {
+            spawnPoint = new Vector3(0, 40, 0);
+            for (int i=0;i<dirMap.Length;i++)
+            {
+                dirMap[i] = (FaceDir)i;//初始化六个方向
+            }
+        }
+
+        //根据方向获取该方向的门状态
+        public FaceState GetFace(FaceDir dir)
+        {
+            FaceDir originalDir = dirMap[(int)dir];
+            return faces[(int)originalDir];
+        }
+
+        //实例化新的房间预制体
+        public void spawnedRoom(int roomID, Quaternion rotation)
+        {
+
+        }
+
+        public void RenewRotation()
+        {
+
+        }
+    }
+
+    public class FaceState  //每个方向的数据
+    {
+        public bool HasDoor;   //房间的这一面是否有门
+        public bool isPassable; //是否可通行
+    }
+
+    #endregion
 
     //初始化函数
     private void Awake()
     {
-        InitData();// 验证数据完整性
+        InitSlots();                // 初始化slots列表
+        InitRooms();                // 初始化房间列表
 
         //初始化字典，方便以后单独引用调用面和方块,看调用方法即可
         BuildSurfaceMap();          //调用方法：CubeSurface_s s=SurfaceMap[id]
@@ -121,10 +177,12 @@ new()
         BuildPieceMap();            //调用方法：CubePiece p = pieceMap[id];
         BuildPieceCoordMap();       //调用方法：CubeSurface_s s=SurfaceCoordMap[position]
     }
-    
 
-    private void InitData()
+
+    #region 列表初始化
+    private void InitSlots()
     {
+
         int i = 0;
         foreach (var slot in slots)
         {
@@ -153,6 +211,25 @@ new()
         }
     }
 
+    private void InitRooms()
+    {
+        int i = 0;
+        foreach(var room in rooms)
+        {
+            //初始化每个房间的共性
+            room.Init();
+
+            //初始化房间的差异性
+            room.roomID = i;
+            i++;
+        }
+        //初始：加载房间0
+        Instantiate(rooms[0].RoomPerfab, rooms[0].spawnPoint, Quaternion.identity);
+    }
+
+    #endregion
+
+    #region 字典初始化
     //用id调用SurfaceMap
     void BuildSurfaceMap()
     {
@@ -215,6 +292,8 @@ new()
         }
     }
 
+    #endregion
+
     #region 张奕忻添加面访问接口
     public CubeSurface_s GetSurfaceByCoord(Vector3Int coord)
     {
@@ -228,10 +307,10 @@ new()
     }
 
     //找大面朝向，方法在BallLocationService.GetBallFaceDirByPos
-   
+
     #endregion
-    
-    // 张天姿添加：获取指定轴、指定坐标值的所有方块（即某一层的9个方块）  
+
+    # region 张天姿添加：获取指定轴、指定坐标值的所有方块（即某一层的9个方块）  
     public List<CubePiece> GetPiecesInLayer(Axis axis, int coordValue)  
     {  
         var result = new List<CubePiece>();  
@@ -248,4 +327,6 @@ new()
                 result.Add(slot.occupant);  
         }    return result;  
     }
+
+    #endregion
 }
