@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour
 
     #region ===================================================
     #region 按钮点击事件，发送请求
+    //F自动切换
     void UpdatePanels(ViewMode mode)
     {
         for (int i = 0; i < viewPanels.Length; i++)

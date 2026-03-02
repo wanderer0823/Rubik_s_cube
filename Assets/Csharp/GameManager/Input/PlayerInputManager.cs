@@ -7,7 +7,7 @@ public class PlayerInputManager
 {
     private GameManager gm;
     private float holdTime=0.0f;
-    private float maxHoverTime = 0.1f;
+    private float maxHoverTime = 0.01f;
     [Header("鼠标灵敏度")]
     [SerializeField] private float mouseSensitivity = 2f;
 

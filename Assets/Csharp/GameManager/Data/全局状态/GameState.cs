@@ -62,7 +62,7 @@ public class GameState
     public void SetView(ViewMode mode)
     {
         CurrentView = mode;
-        Debug.Log("更新为视角：" + CurrentView);
+        Debug.Log("按键更新为视角：" + CurrentView);
         if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -71,12 +71,28 @@ public class GameState
         {
             SetPlayerState(PlayerState.rotatingFinished);
         }
+        if (mode == ViewMode.View3)
+        {
+            SetPlayerState(PlayerState.isMoving);
+        }
     }
     //按顺序切换视角
     public void FSetView()
     {
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
-        Debug.Log("更新为视角：" + CurrentView);
+        Debug.Log("F更新为视角：" + CurrentView);
+        if (CurrentView == ViewMode.View1)
+        {
+            SetPlayerState(PlayerState.turningFinished);
+        }
+        if (CurrentView == ViewMode.View2)
+        {
+            SetPlayerState(PlayerState.rotatingFinished);
+        }
+        if (CurrentView == ViewMode.View3)
+        {
+            SetPlayerState(PlayerState.isMoving);
+        }
     }
     #endregion
     #endregion
