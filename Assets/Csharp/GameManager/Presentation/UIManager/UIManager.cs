@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     {
         //初始化相机状态
         viewCameras[2].gameObject.SetActive(true);
+        //初始化只有View3 Panel
+        InitView3Panel();
         //为视角切换按钮添加点击广播
         BindViewSwitchButtons();
         //为箭头拧动按钮添加点击广播，已修改：迁移至初始化后执行
@@ -36,7 +38,26 @@ public class UIManager : MonoBehaviour
     }
 
     #region ===================================================
+    #region 初始化面板View3 Panel
+    void InitView3Panel()
+    {
+        if (viewPanels == null || viewPanels.Length < 3)
+        {
+            Debug.LogWarning("视角面板数量不足！");
+            return;
+        }
+        for (int i=0;i<viewPanels.Length;i++)
+        {
+            viewPanels[i].gameObject.SetActive(false);
+        }
+        viewPanels[2].gameObject.SetActive(true);
+    }
+    #endregion
+    #endregion
+
+    #region ===================================================
     #region 按钮点击事件，发送请求
+    //F自动切换
     void UpdatePanels(ViewMode mode)
     {
         for (int i = 0; i < viewPanels.Length; i++)
