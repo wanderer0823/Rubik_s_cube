@@ -24,12 +24,14 @@ public class DoorVectorReturn : MonoBehaviour
         //这里我设置的上一级父物体的六个方向是按世界坐标系对应的矢量，此时门对应的矢量是房间旋转后
         Vector3 dir = transform.parent.localPosition;
 
-        Vector3 parentPos = transform.root.rotation*dir;
+        Vector3 parentPos = transform.parent.parent.parent.rotation*dir;
 
         //把获得的门的世界矢量转换成魔方坐标系下的矢量，故依据重力在世界坐标系和魔方坐标系的不同数值来对应计算。
         //ps:如果用世界坐标系下的矢量来计算，直接注释下面两行就行。
-        Quaternion rotation = Quaternion.FromToRotation(new Vector3(0,1,0), CubeRotateController.CurrentGDirinMF);
+        Quaternion rotation = Quaternion.FromToRotation(new Vector3(0,-1,0), CubeRotateController.CurrentGDirinMF);
         parentPos=rotation*parentPos.normalized;
+
+        //备注：门的父物体对应只需看魔方中初始门的世界矢量，而不是房间中初始门的世界矢量
 
         //舍弃微小值
         float epsilon = 0.1f;
