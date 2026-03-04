@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 
 public class InitCubeSlot : MonoBehaviour
 {
+    public GameObject LogicCube;                //逻辑魔方
+
     //用于整体管理魔方结构
     public List<Slot> slots;                    //槽位，内含方块（CubePiece）类和面（CubeSurface_s）类
     public List<Room> rooms;                    //房间列表
@@ -110,7 +112,6 @@ new()
         public void UpdatePosition(Vector3Int pieceCoord)
         {
             coord = pieceCoord + FaceOffset[dir];
-            Debug.Log(pieceCoord+"汉字");
         }
     }
     #endregion
@@ -121,21 +122,26 @@ new()
     public class Room
     {
         [Header("静态数据（不变）")]
-        public int roomID;                  //0到53
-        //public int RoomPerfabID;            //因为是预制体，所以是十多个，需要的时候再解锁吧
-        public Vector3 spawnPoint;          //房间生成的坐标
-        public GameObject RoomPerfab;       //房间预制体
+        public int roomID;                      //0到53
+        //public int RoomPerfabID;              //因为是预制体，所以是十多个，需要的时候再解锁吧
+        public Vector3 spawnPoint;              //房间生成的坐标
+        public GameObject RoomPerfab;           //房间预制体
 
         [Header("动态状态（变化）")]
-        public FaceState[] faces=new FaceState[6]; 
-        public FaceDir[] dirMap = new FaceDir[6];
+        public FaceState[] faces; 
+        public FaceDir[] dirMap;                //数字对应固定墙面，矢量要随旋转变化！
 
+        
         public void Init()
         {
+            faces = new FaceState[6];
+            dirMap = new FaceDir[6];
+
             spawnPoint = new Vector3(0, 40, 0);
             for (int i=0;i<dirMap.Length;i++)
             {
                 dirMap[i] = (FaceDir)i;//初始化六个方向
+                GetFace(dirMap[i]);
             }
         }
 
@@ -146,18 +152,9 @@ new()
             return faces[(int)originalDir];
         }
 
-        //实例化新的房间预制体
-        public void spawnedRoom(int roomID, Quaternion rotation)
-        {
-
-        }
-
-        public void RenewRotation()
-        {
-
-        }
     }
 
+    [System.Serializable]
     public class FaceState  //每个方向的数据
     {
         public bool HasDoor;   //房间的这一面是否有门
@@ -183,7 +180,7 @@ new()
     #region 列表初始化
     private void InitSlots()
     {
-
+        LogicCube.transform.position = new Vector3(0, 0, 0);
         int i = 0;
         foreach (var slot in slots)
         {
@@ -225,7 +222,8 @@ new()
             i++;
         }
         //初始：加载房间0
-        Instantiate(rooms[0].RoomPerfab, rooms[0].spawnPoint, Quaternion.identity);
+        CurrentRoom = rooms[0].RoomPerfab;
+        Instantiate(CurrentRoom, rooms[0].spawnPoint, Quaternion.identity);
     }
 
     #endregion
@@ -329,5 +327,13 @@ new()
         }    return result;  
     }
 
+    #endregion
+
+    # region 实例化新的房间预制体，rotation是房间对应表面的当前旋转参数，在进入门（能通过）后加载对应房间预制体时调用
+    public void spawnedRoom(int roomID, Quaternion rotation)
+    {
+        CurrentRoom = rooms[roomID].RoomPerfab;
+        Instantiate(rooms[roomID].RoomPerfab, rooms[roomID].spawnPoint, rotation);
+    }
     #endregion
 }

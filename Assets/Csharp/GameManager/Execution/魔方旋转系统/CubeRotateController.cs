@@ -16,6 +16,7 @@ public class CubeRotateController : MonoBehaviour
     public InitCubeSlot cubeData;
     public Transform cubeRoot;
 
+    public static Vector3 CurrentGDirinMF; //欧：当前重力在魔方坐标系下的矢量方向
     // ============================
     // 生命周期
     // ============================
@@ -40,6 +41,7 @@ public class CubeRotateController : MonoBehaviour
         Vector3 delta = Input.mousePosition - lastMousePos;
         lastMousePos = Input.mousePosition;
         ball = ViewModeManager.Instance.ball;
+
 
         RotateCubeFree(delta);
     }
@@ -119,6 +121,8 @@ public class CubeRotateController : MonoBehaviour
     void AutoSnapToNearestFace()
     {
         FaceDir face = GetClosestFaceToGround();
+
+        CurrentGDirinMF = FaceOffset[face];     //欧：添加
 
         Vector3 currentNormal = transform.rotation * DirToVector(face);
 
