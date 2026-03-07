@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -151,7 +151,21 @@ new()
             FaceDir originalDir = dirMap[(int)dir];
             return faces[(int)originalDir];
         }
-
+        
+        public void SetIsPassible(FaceDir dir, bool value)
+        {
+            var fs = GetFace(dir);
+            if (fs != null) fs.isPassable = value;
+        }
+        
+        public void ResetIsPassible()
+        {
+            if (faces == null) return;
+            foreach (var f in faces)
+            {
+                if (f != null) f.isPassable = false;
+            }
+        }
     }
 
     [System.Serializable]
@@ -303,6 +317,75 @@ new()
             return surface;
 
         return null;
+    }
+
+    /// <summary> 表面坐标每轴有效值（与 piece*2 + offset 一致） </summary>
+    const int SurfaceCoordMin = -3, SurfaceCoordMax = 3;
+
+    /// <summary> 是否在魔方表面坐标范围内（每轴取 -3,-1,1,3，即奇数且绝对值≤3） </summary>
+    public static bool IsValidSurfaceCoord(Vector3Int c)
+    {
+        return IsValidSurfaceAxis(c.x) && IsValidSurfaceAxis(c.y) && IsValidSurfaceAxis(c.z);
+    }
+    static bool IsValidSurfaceAxis(int a)
+    {
+        int abs = Mathf.Abs(a);
+        return abs <= SurfaceCoordMax && (abs == 1 || abs == 3);
+    }
+    
+    static int FaceDirToNormalAxis(FaceDir dir)
+    {
+        switch (dir)
+        {
+            case FaceDir.Up:
+            case FaceDir.Down: return 1;  // Y
+            case FaceDir.Left:
+            case FaceDir.Right: return 0; // X
+            case FaceDir.Front:
+            case FaceDir.Back: return 2;  // Z
+        }
+        return 1;
+    }
+    
+    // 使用 GetBallFaceDirByPos 找周围面
+    public static List<Vector3Int> GetNeighborSurfaceCoords(Vector3Int surfaceCoord)
+    {
+        var list = new List<Vector3Int>(4);
+        Vector3 asVec3 = new Vector3(surfaceCoord.x, surfaceCoord.y, surfaceCoord.z);
+        FaceDir faceDir = BallLocationService.GetBallFaceDirByPos(asVec3);
+        int normalAxis = FaceDirToNormalAxis(faceDir);
+        int t0 = (normalAxis + 1) % 3;
+        int t1 = (normalAxis + 2) % 3;
+        int[] v = { surfaceCoord.x, surfaceCoord.y, surfaceCoord.z };
+        for (int d0 = -2; d0 <= 2; d0 += 2)
+        for (int d1 = -2; d1 <= 2; d1 += 2)
+        {
+            if (d0 == 0 && d1 == 0) continue;
+            if (d0 != 0 && d1 != 0) continue; // 只要前后左右，不要对角
+            v[t0] += d0;
+            v[t1] += d1;
+            var neighbor = new Vector3Int(v[0], v[1], v[2]);
+            v[t0] -= d0;
+            v[t1] -= d1;
+            if (IsValidSurfaceCoord(neighbor))
+                list.Add(neighbor);
+        }
+        return list;
+    }
+
+    /// <summary> FaceDir 的反方向 </summary>
+    public static FaceDir OppositeFace(FaceDir dir)
+    {
+        switch (dir)
+        {
+            case FaceDir.Up: return FaceDir.Down;
+            case FaceDir.Down: return FaceDir.Up;
+            case FaceDir.Left: return FaceDir.Right;
+            case FaceDir.Right: return FaceDir.Left;
+            case FaceDir.Front: return FaceDir.Back;
+            case FaceDir.Back: return FaceDir.Front;
+        }
+        return dir;
     }
 
     //找大面朝向，方法在BallLocationService.GetBallFaceDirByPos

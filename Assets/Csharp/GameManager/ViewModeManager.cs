@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
@@ -61,6 +61,13 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
     }
 
+    /// <summary> 邻居预加载接口：在 View3 切换或开门转场时调用 RoomPreloadController.ExecutePreload() </summary>
+    public void RequestNeighborPreload()
+    {
+        var rpc = GameManager.Instance?.roomPreloadSystem;
+        if (rpc != null) rpc.ExecutePreload();
+    }
+
     #region 用GS检查当前全局状态
     bool CheckViewMode(ViewMode mode)
     {
@@ -110,7 +117,7 @@ public class ViewModeManager : MonoBehaviour
             || !CheckPlayerState(PlayerState.isMoving))
             return;
         gs.SetPlayerState(PlayerState.isWaiting);
-        GameEvents.onOpenDoorExecute(); 
+        GameEvents.onOpenDoorExecute();
     }
 
     void CheckDirectViewSwitch(ViewMode targetMode)
