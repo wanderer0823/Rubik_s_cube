@@ -65,6 +65,10 @@ public class UIManager : MonoBehaviour
             viewPanels[i].SetActive(i == (int)mode);
             viewCameras[i].gameObject.SetActive(i == (int)mode);
         }
+        if(mode==ViewMode.View1)
+            GameEvents.isView1Now();
+        if (mode == ViewMode.View3)
+            GameEvents.calculateNeighbors();
     }
     private void BindViewSwitchButtons()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,6 @@ public class GameState
     public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// 当前小球所在外表面
     public int CurrentRoomID { get; private set; }// 当前房间ID
     public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // 当前重力面
-
 
 
     // 构造函数..初始化默认状态

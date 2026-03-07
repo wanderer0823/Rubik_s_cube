@@ -82,10 +82,24 @@ public class PlayerAction : MonoBehaviour
         finalVelocity.y = velocity.y;
         controller.Move(finalVelocity * Time.deltaTime);
     }
-        //按e尝试开门
-        void TryOpenDoor()
+        
+    //按e尝试开门
+    void TryOpenDoor()
         {
             Debug.Log("正在尝试开门");
-        }
+        #region 张奕忻注释
+        //执行此函数时玩家已经按下E，写一个-----------------
+        //如果 玩家碰撞体没有检测到Tag"Door"，则返回。
+        //如果 检测到door，则获取这个门的isPassible=true?
+        //if(isPassible==false):
+        //debug"开门失败“后续添加失败特效。
+        //if(isPassible==true):
+        //玩家成功从View3开门切换房间了！！
+        //广播到：VMM，（0） 广播进入异步转场（暂无脚本）：后台进行以下计算和广播：
+        //             （1） 用GS方法更新GameState.CurrentPlayerxxx,,,
+        //             （2） 更新完玩家新位置，RPC订阅VMM的广播，计算一次邻居房间信息。
+        //             （3） 实例化房间perfab的脚本 订阅VMM广播，spawnRoom一次。
+        #endregion
+    }
 
 }

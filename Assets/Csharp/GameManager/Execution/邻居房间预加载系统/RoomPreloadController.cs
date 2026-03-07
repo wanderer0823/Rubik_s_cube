@@ -24,6 +24,18 @@ public class RoomPreloadController : MonoBehaviour
     /// <summary> 最近一次预加载结果 </summary>
     public NeighborPreloadPayload LastPayload => _lastPayload;
 
+    #region 张奕忻：订阅广播事件，计算一次邻居房间所有信息
+    private void OnEnable()
+    {
+        GameEvents.CalculateNeighbors += ExecutePreload;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.CalculateNeighbors += ExecutePreload;
+    }
+    #endregion
+
     /// <summary>
     /// 执行预加载：获取玩家空间位置 → 当前+前后左右 5 房间 → 计算门通道 → 更新逻辑邻居 → 触发 OnPreloadComplete。
     /// </summary>
