@@ -8,9 +8,8 @@ public class InitCubeSlot : MonoBehaviour
     public GameObject LogicCube;                //逻辑魔方
 
     //用于整体管理魔方结构
-    public static List<Slot> slots;                    //槽位，内含方块（CubePiece）类和面（CubeSurface_s）类
-    public static List<Room> rooms;                    //房间列表
-    public static int CurrentRoomID;            //当前房间ID（需更新！）
+    public List<Slot> slots;                    //槽位，内含方块（CubePiece）类和面（CubeSurface_s）类
+    public List<Room> rooms;                    //房间列表
     public GameObject CurrentRoom;              //房间刷新点（放预制体的）
 
     Dictionary<int, CubePiece> pieceMap;        //用方块id调用对应方块的字典，因为用slot来调用有点冗长
@@ -181,7 +180,6 @@ new()
     //初始化函数
     private void Awake()
     {
-        CurrentRoomID = 0;
         InitSlots();                // 初始化slots列表
         InitRooms();                // 初始化房间列表
 

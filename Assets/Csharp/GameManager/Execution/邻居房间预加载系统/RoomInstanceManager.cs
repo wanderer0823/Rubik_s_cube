@@ -45,9 +45,9 @@ public class RoomInstanceManager : MonoBehaviour
         foreach (int roomId in roomsToKeep)
         {
             if (_instantiatedRooms.ContainsKey(roomId)) continue;
-            if (roomId < 0 || roomId >= rooms.Count) continue;
+            if (roomId < 0 || roomId >= cubeData.rooms.Count) continue;
 
-            var room = rooms[roomId];
+            var room = cubeData.rooms[roomId];
             if (room == null || room.RoomPerfab == null) continue;
 
             Quaternion rotation = Quaternion.identity;

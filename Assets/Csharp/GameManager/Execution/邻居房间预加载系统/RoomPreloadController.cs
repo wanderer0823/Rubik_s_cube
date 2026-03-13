@@ -72,7 +72,7 @@ public class RoomPreloadController : MonoBehaviour
             if (s != null)
             {
                 fiveSurfaces.Add(s);
-                var room = rooms[s.roomID];
+                var room = cubeData.rooms[s.roomID];
                 if (room != null) room.ResetIsPassible();
             }
         }
@@ -80,7 +80,7 @@ public class RoomPreloadController : MonoBehaviour
         // 3) 对 5 个房间的每个门方向：若邻格在 5 内且双方都有门，则标记可形成通道
         foreach (var surface in fiveSurfaces)
         {
-            var room = rooms[surface.roomID];
+            var room = cubeData.rooms[surface.roomID];
             if (room == null) continue;
 
             for (int d = 0; d < 6; d++)
@@ -92,7 +92,7 @@ public class RoomPreloadController : MonoBehaviour
                 var neighborSurface = cubeData.GetSurfaceByCoord(neighborCoord);
                 if (neighborSurface == null) continue;
 
-                var neighborRoom = rooms[neighborSurface.roomID];
+                var neighborRoom = cubeData.rooms[neighborSurface.roomID];
                 if (neighborRoom == null) continue;
 
                 bool curHasDoor = room.GetFace(dir) != null && room.GetFace(dir).HasDoor;
@@ -108,7 +108,7 @@ public class RoomPreloadController : MonoBehaviour
 
         // 4) 逻辑邻居 = 当前房间所有“可形成通道”方向对应的邻室
         _logicalNeighborRoomIds.Clear();
-        var currentRoom = rooms[currentSurface.roomID];
+        var currentRoom = cubeData.rooms[currentSurface.roomID];
         if (currentRoom != null)
         {
             for (int d = 0; d < 6; d++)
@@ -133,8 +133,8 @@ public class RoomPreloadController : MonoBehaviour
         var roomIdsToReport = new HashSet<int>(payload.LogicalNeighborRoomIds) { currentSurface.roomID };
         foreach (int roomId in roomIdsToReport)
         {
-            if (roomId < 0 || roomId >= rooms.Count) continue;
-            var r = rooms[roomId];
+            if (roomId < 0 || roomId >= cubeData.rooms.Count) continue;
+            var r = cubeData.rooms[roomId];
             if (r == null) continue;
 
             // 该房间对应的表面：从当前+四邻中任取一个属于该 roomID 的表面（用于重力方向）
