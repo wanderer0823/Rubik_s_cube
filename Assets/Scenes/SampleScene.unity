@@ -3620,6 +3620,7 @@ MonoBehaviour:
       type: 3}
     faces: []
     dirMap: 00000000
+  CurrentRoomID: 0
   CurrentRoom: {fileID: 4889461341893213211, guid: 07bbcd27a767e934292eb6c7c1e2e45b,
     type: 3}
 --- !u!4 &773962226
@@ -7706,9 +7707,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d1d7d0598c0e654ba846a9cdc582b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeData: {fileID: 773962225}
   moveSpeed: 40
   smoothTime: 0.05
   gravity: -50
+  interactRange: 3
 --- !u!136 &2018642119
 CapsuleCollider:
   m_ObjectHideFlags: 0

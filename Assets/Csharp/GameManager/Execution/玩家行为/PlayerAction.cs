@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InitCubeSlot;
 
 public class PlayerAction : MonoBehaviour
 {
+    public InitCubeSlot cubeData;
+
     [Header("移动设置")]
     public float moveSpeed = 5f;
     public float smoothTime = 0.1f;     // 移动平滑时间
     public float gravity = -15f;
 
+    [Header("检测设置")]
+    public float interactRange=3.0f;
 
     private CharacterController controller;
     private Vector3 CurrentMoveVelocity;
     private Vector3 FinalMoveVelocity;
     private Vector3 moveSmoothVelocity;
-    private Vector3 velocity=Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
 
     void OnEnable()
     {
@@ -82,11 +87,11 @@ public class PlayerAction : MonoBehaviour
         finalVelocity.y = velocity.y;
         controller.Move(finalVelocity * Time.deltaTime);
     }
-        
+
     //按e尝试开门
     void TryOpenDoor()
-        {
-            Debug.Log("正在尝试开门");
+    {
+        Debug.Log("正在尝试开门");
         #region 张奕忻注释
         //执行此函数时玩家已经按下E，写一个-----------------
         //如果 玩家碰撞体没有检测到Tag"Door"，则返回。
@@ -100,6 +105,48 @@ public class PlayerAction : MonoBehaviour
         //             （2） 更新完玩家新位置，RPC订阅VMM的广播，计算一次邻居房间信息。
         //             （3） 实例化房间perfab的脚本 订阅VMM广播，spawnRoom一次。
         #endregion
+
+        //射线检测
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Door"))//带tag
+            {
+                TryOpenDoor_(hit);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
     }
 
+    private void TryOpenDoor_(RaycastHit hit)
+    {
+        DoorVectorReturn Door = hit.collider.GetComponent<DoorVectorReturn>();
+        int id = cubeData. CurrentRoomID;
+        Vector3Int DoorDir = Vector3Int.RoundToInt(Door.DoorinRoomVector);
+
+        for (int i = 0; i < cubeData. rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
+        {
+            if (DoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])//找到门对应墙面
+            {
+                FaceState face = cubeData. rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);//该方向的墙面状态
+                if (face.isPassable)
+                {
+                    // 玩家成功从View3开门切换房间了！！
+                    //广播
+
+                }
+                else
+                {
+                    Debug.Log("开门失败");
+                }
+            }
+        }
+    }
 }
