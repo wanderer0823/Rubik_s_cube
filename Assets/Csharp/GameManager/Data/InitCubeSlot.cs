@@ -196,6 +196,7 @@ new()
     #region 列表初始化
     private void InitSlots()
     {
+        slots = new List<Slot>();//张奕忻添加
         LogicCube.transform.position = new Vector3(0, 0, 0);
         int i = 0;
         foreach (var slot in slots)
@@ -227,6 +228,7 @@ new()
 
     private void InitRooms()
     {
+        rooms = new List<Room>();//张奕忻添加
         int i = 0;
         foreach(var room in rooms)
         {
