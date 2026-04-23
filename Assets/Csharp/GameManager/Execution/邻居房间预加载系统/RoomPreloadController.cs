@@ -32,7 +32,8 @@ public class RoomPreloadController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.CalculateNeighbors += ExecutePreload;
+        // 修复问题5：取消订阅应使用 -=，原来写成 += 导致重复订阅
+        GameEvents.CalculateNeighbors -= ExecutePreload;
     }
     #endregion
 

@@ -129,17 +129,17 @@ new()
         public GameObject RoomPerfab;           //房间预制体
 
         [Header("动态状态（变化）")]
-        public FaceState[] faces; 
+        public FaceState[] faces;
         public FaceDir[] dirMap;                //数字对应固定墙面，矢量要随旋转变化！
 
-        
+
         public void Init()
         {
             faces = new FaceState[6];
             dirMap = new FaceDir[6];
 
             spawnPoint = new Vector3(0, 40, 0);
-            for (int i=0;i<dirMap.Length;i++)
+            for (int i = 0; i < dirMap.Length; i++)
             {
                 dirMap[i] = (FaceDir)i;//初始化六个方向
                 GetFace(dirMap[i]);
@@ -152,13 +152,13 @@ new()
             FaceDir originalDir = dirMap[(int)dir];
             return faces[(int)originalDir];
         }
-        
+
         public void SetIsPassible(FaceDir dir, bool value)
         {
             var fs = GetFace(dir);
             if (fs != null) fs.isPassable = value;
         }
-        
+
         public void ResetIsPassible()
         {
             if (faces == null) return;
@@ -201,11 +201,11 @@ new()
         foreach (var slot in slots)
         {
             Vector3 vec3 = slot.indexCube.position;
-            slot.coord= new Vector3Int(
+            slot.coord = new Vector3Int(
             Mathf.RoundToInt(vec3.x),
             Mathf.RoundToInt(vec3.y),
             Mathf.RoundToInt(vec3.z)
-        )*2; //初始化逻辑坐标
+        ) * 2; //初始化逻辑坐标
 
             if (slot.indexCube == null)
                 Debug.LogError($"Slot at {slot.coord} 缺少 indexCube");
@@ -215,7 +215,7 @@ new()
             {
                 slot.occupant.coord = slot.coord;                            //初始化槽位现在对应的方块的逻辑坐标
                 slot.occupant.indexCube.position = slot.indexCube.position;  //初始化槽位现在对应的方块的世界坐标
-                foreach(var element in slot.occupant.surfaces)
+                foreach (var element in slot.occupant.surfaces)
                 {
                     element.id = i;         //初始化面id
                     element.roomID = i;     //初始化面对应的房间id
@@ -228,7 +228,7 @@ new()
     private void InitRooms()
     {
         int i = 0;
-        foreach(var room in rooms)
+        foreach (var room in rooms)
         {
             //初始化每个房间的共性
             room.Init();
@@ -248,7 +248,7 @@ new()
     //用id调用SurfaceMap
     void BuildSurfaceMap()
     {
-        
+
         surfaceMap = new();
 
         foreach (var slot in slots)
@@ -265,7 +265,7 @@ new()
     //用坐标调用SurfaceMap
     void BuildSurfaceCoordMap()
     {
-        
+
         surfaceCoordMap = new();
 
         foreach (var slot in slots)
@@ -279,12 +279,12 @@ new()
             }
         }
     }
-    
+
 
     //用id调用pieceMap
     void BuildPieceMap()
     {
-        
+
         pieceMap = new();
 
         foreach (var slot in slots)
@@ -297,7 +297,7 @@ new()
     //用坐标调用PieceMap
     void BuildPieceCoordMap()
     {
-        
+
         PieceCoordMap = new();
 
         foreach (var slot in slots)
@@ -334,7 +334,7 @@ new()
         int abs = Mathf.Abs(a);
         return abs <= SurfaceCoordMax && (abs == 1 || abs == 3);
     }
-    
+
     static int FaceDirToNormalAxis(FaceDir dir)
     {
         switch (dir)
@@ -348,7 +348,7 @@ new()
         }
         return 1;
     }
-    
+
     // 使用 GetBallFaceDirByPos 找周围面
     public static List<Vector3Int> GetNeighborSurfaceCoords(Vector3Int surfaceCoord)
     {
@@ -360,18 +360,18 @@ new()
         int t1 = (normalAxis + 2) % 3;
         int[] v = { surfaceCoord.x, surfaceCoord.y, surfaceCoord.z };
         for (int d0 = -2; d0 <= 2; d0 += 2)
-        for (int d1 = -2; d1 <= 2; d1 += 2)
-        {
-            if (d0 == 0 && d1 == 0) continue;
-            if (d0 != 0 && d1 != 0) continue; // 只要前后左右，不要对角
-            v[t0] += d0;
-            v[t1] += d1;
-            var neighbor = new Vector3Int(v[0], v[1], v[2]);
-            v[t0] -= d0;
-            v[t1] -= d1;
-            if (IsValidSurfaceCoord(neighbor))
-                list.Add(neighbor);
-        }
+            for (int d1 = -2; d1 <= 2; d1 += 2)
+            {
+                if (d0 == 0 && d1 == 0) continue;
+                if (d0 != 0 && d1 != 0) continue; // 只要前后左右，不要对角
+                v[t0] += d0;
+                v[t1] += d1;
+                var neighbor = new Vector3Int(v[0], v[1], v[2]);
+                v[t0] -= d0;
+                v[t1] -= d1;
+                if (IsValidSurfaceCoord(neighbor))
+                    list.Add(neighbor);
+            }
         return list;
     }
 
@@ -395,21 +395,41 @@ new()
     #endregion
 
     # region 张天姿添加：获取指定轴、指定坐标值的所有方块（即某一层的9个方块）  
-    public List<CubePiece> GetPiecesInLayer(Axis axis, int coordValue)  
-    {  
-        var result = new List<CubePiece>();  
-        foreach (var slot in slots)  
-        {        if (slot.occupant == null) continue;  
-            int val = axis switch  
-            {  
-                Axis.X => slot.coord.x,  
-                Axis.Y => slot.coord.y,  
-                Axis.Z => slot.coord.z,  
-                _ => 0  
-            };  
-            if (val == coordValue)  
-                result.Add(slot.occupant);  
-        }    return result;  
+    public List<CubePiece> GetPiecesInLayer(Axis axis, int coordValue)
+    {
+        var result = new List<CubePiece>();
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            // 修复问题A：应使用 piece.coord（随旋转变化），而非 slot.coord（固定不变）
+            int val = axis switch
+            {
+                Axis.X => slot.occupant.coord.x,
+                Axis.Y => slot.occupant.coord.y,
+                Axis.Z => slot.occupant.coord.z,
+                _ => 0
+            };
+            if (val == coordValue)
+                result.Add(slot.occupant);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 修复问题B：拧动魔方后重建 surfaceCoordMap，使新坐标可以被正确查询到。
+    /// 应在每次拧动完成后调用。
+    /// </summary>
+    public void RebuildSurfaceCoordMap()
+    {
+        surfaceCoordMap = new Dictionary<Vector3Int, CubeSurface_s>();
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            foreach (var s in slot.occupant.surfaces)
+            {
+                surfaceCoordMap[s.coord] = s;
+            }
+        }
     }
 
     #endregion
