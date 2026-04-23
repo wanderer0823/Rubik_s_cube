@@ -27,7 +27,20 @@ public enum BallPhysics
     On,
     Off
 }
-
+//玩家材质状态
+public enum PlayerMatState
+{
+    Steel,//钢珠
+    Glass,//玻璃球
+    Bounce//弹力球
+}
+//可交互道具
+public enum Item
+{
+    Spring,//弹簧
+    Wind,//风力
+    Plate//压力板
+}
 public class GameState
 {
     public static GameState Instance;
