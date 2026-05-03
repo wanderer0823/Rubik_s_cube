@@ -21,6 +21,7 @@ public class CubeTurnController : MonoBehaviour
 
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
+    private Vector3 currentSignedLocalAxis = Vector3.right;
 
     // 坐标缩放（逻辑坐标：-2 / 0 / 2）
     private int coordScale = 2;
@@ -128,55 +129,30 @@ public class CubeTurnController : MonoBehaviour
         ArrowSide side,
         int index)
     {
-        (InitCubeSlotAxis axis, int coordValue) = GetLayerFilter(faceDir, side, index);
+        (Vector3 signedAxis, int coordValue) = GetLayerFilter(faceDir, side, index);
 
         currentCubePiece.Clear();
-        currentAxis = axis;
-        currentCubePiece = initCubeSlot.GetPiecesInLayer(axis, coordValue);
+        currentSignedLocalAxis = signedAxis;
+        currentAxis = VectorToAxis(signedAxis);
+        currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
     }
 
-    // 根据当前面和箭头位置，确定筛选层（轴 + 坐标）
-    public (InitCubeSlotAxis axis, int coordValue) GetLayerFilter(
+    // 根据当前面的屏幕朝向，动态决定按钮对应的轴和层
+    public (Vector3 signedAxis, int coordValue) GetLayerFilter(
         InitCubeSlotFaceDir faceDir,
         ArrowSide side,
         int index)
     {
         int val = IndexToCoordValue(Mathf.Clamp(index, 0, 2));
+        GetFaceBasis(faceDir, out _, out Vector3 localUp, out Vector3 localRight);
 
-        switch (faceDir)
-        {
-            case InitCubeSlotFaceDir.Up:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.X, val)
-                    : (InitCubeSlotAxis.Z, val);
+        Vector3 signedAxis = side == ArrowSide.Up ? localRight : localUp;
+        int axisSign = GetAxisSign(signedAxis);
+        int coordValue = side == ArrowSide.Up
+            ? axisSign * val
+            : axisSign * -val;
 
-            case InitCubeSlotFaceDir.Down:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.X, val)
-                    : (InitCubeSlotAxis.Z, -val);
-
-            case InitCubeSlotFaceDir.Left:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.Z, val)
-                    : (InitCubeSlotAxis.Y, val);
-
-            case InitCubeSlotFaceDir.Right:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.Z, -val)
-                    : (InitCubeSlotAxis.Y, val);
-
-            case InitCubeSlotFaceDir.Front:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.X, val)
-                    : (InitCubeSlotAxis.Y, val);
-
-            case InitCubeSlotFaceDir.Back:
-                return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.X, -val)
-                    : (InitCubeSlotAxis.Y, val);
-        }
-
-        return (InitCubeSlotAxis.X, val);
+        return (signedAxis, coordValue);
     }
 
     public void RotateByCurrentArrow(int arrowIndex)
@@ -187,17 +163,16 @@ public class CubeTurnController : MonoBehaviour
 
         ArrowSide side = arrowIndex < 3 ? ArrowSide.Up : ArrowSide.Left;
 
-        float angle = GetRotationAngle(currentFaceDir, side);
+        float angle = 90f;
         Transform cubeRoot = ViewModeManager.Instance != null
             ? ViewModeManager.Instance.cubeRoot
             : null;
-        Vector3 localAxis = AxisToVector(currentAxis);
-        Quaternion localRotation = Quaternion.AngleAxis(angle, localAxis);
+        Quaternion localRotation = Quaternion.AngleAxis(angle, currentSignedLocalAxis);
         Quaternion worldRotation = cubeRoot != null
             ? cubeRoot.rotation * localRotation * Quaternion.Inverse(cubeRoot.rotation)
             : localRotation;
 
-        bool isCW = angle > 0f;
+        bool isCW = GetAxisSign(currentSignedLocalAxis) > 0;
 
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
@@ -260,26 +235,53 @@ public class CubeTurnController : MonoBehaviour
         Debug.Log("CubeTurnController：旋转完成");
     }
 
-    private float GetRotationAngle(InitCubeSlotFaceDir face, ArrowSide side)
+    private static int GetAxisSign(Vector3 axis)
     {
-        if (side == ArrowSide.Up)
-            return 90f;
-
-        if (face == InitCubeSlotFaceDir.Down)
-            return 90f;
-
-        return -90f;
+        if (Mathf.Abs(axis.x) > 0.5f) return axis.x > 0 ? 1 : -1;
+        if (Mathf.Abs(axis.y) > 0.5f) return axis.y > 0 ? 1 : -1;
+        return axis.z > 0 ? 1 : -1;
     }
 
-    private static Vector3 AxisToVector(InitCubeSlotAxis axis)
+    private static InitCubeSlotAxis VectorToAxis(Vector3 axis)
     {
-        return axis switch
+        if (Mathf.Abs(axis.x) > 0.5f) return InitCubeSlotAxis.X;
+        if (Mathf.Abs(axis.y) > 0.5f) return InitCubeSlotAxis.Y;
+        return InitCubeSlotAxis.Z;
+    }
+
+    private static Vector3 GetFaceNormal(InitCubeSlotFaceDir face)
+    {
+        return face switch
         {
-            InitCubeSlotAxis.X => Vector3.right,
-            InitCubeSlotAxis.Y => Vector3.up,
-            InitCubeSlotAxis.Z => Vector3.forward,
+            InitCubeSlotFaceDir.Up => Vector3.up,
+            InitCubeSlotFaceDir.Down => Vector3.down,
+            InitCubeSlotFaceDir.Left => Vector3.left,
+            InitCubeSlotFaceDir.Right => Vector3.right,
+            InitCubeSlotFaceDir.Front => Vector3.forward,
+            InitCubeSlotFaceDir.Back => Vector3.back,
+            _ => Vector3.forward
+        };
+    }
+
+    private static Vector3 GetLocalUp(InitCubeSlotFaceDir face)
+    {
+        return face switch
+        {
+            InitCubeSlotFaceDir.Up => Vector3.back,
+            InitCubeSlotFaceDir.Down => Vector3.forward,
             _ => Vector3.up
         };
+    }
+
+    private static void GetFaceBasis(
+        InitCubeSlotFaceDir face,
+        out Vector3 localNormal,
+        out Vector3 localUp,
+        out Vector3 localRight)
+    {
+        localNormal = GetFaceNormal(face);
+        localUp = GetLocalUp(face);
+        localRight = Vector3.Cross(localUp, -localNormal);
     }
 
     #endregion
