@@ -1,30 +1,34 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 using InitCubeSlotAxis = InitCubeSlot.Axis;
 using InitCubeSlotFaceDir = InitCubeSlot.FaceDir;
 using ArrowSide = ArrowsButton.ArrowSide;
-using UnityEngine.UI;
 
 public class CubeTurnController : MonoBehaviour
 {
-    // ¼ıÍ·°´Å¥ÈİÆ÷  
-    [Tooltip("¼ıÍ·Ô¤ÖÆÌå")]
+    // ç®­å¤´æŒ‰é’®ç›¸å…³
+    [Tooltip("ç®­å¤´æŒ‰é’®é¢„åˆ¶ä½“")]
     [SerializeField] private GameObject arrowButtonPrefab;
+
     [SerializeField] private List<RectTransform> ButtonsRectTranform = new List<RectTransform>();
-    // Ğı×ªÊı¾İ  
+
+    // é­”æ–¹æ•°æ®
     [SerializeField] private InitCubeSlot initCubeSlot;
     [SerializeField] private InitCubeSlotFaceDir currentFaceDir = InitCubeSlotFaceDir.Up;
+
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
 
-    // Âß¼­×ø±ê²½³¤Îª2  
+    // åæ ‡ç¼©æ”¾ï¼ˆé€»è¾‘åæ ‡ï¼š-2 / 0 / 2ï¼‰
     private int coordScale = 2;
 
-    // index 0/1/2 ¡ú coord Öµ -2, 0, +2
+    // index 0/1/2 â†’ -2 / 0 / +2
     int IndexToCoordValue(int index)
     {
-        return (index - 1) * coordScale;  // 0¡ú-2, 1¡ú0, 2¡ú+2
+        return (index - 1) * coordScale;
     }
 
     private void Awake()
@@ -42,6 +46,7 @@ public class CubeTurnController : MonoBehaviour
     {
         GameEvents.OnArrowsExecute += RotateByCurrentArrow;
     }
+
     private void OnDisable()
     {
         GameEvents.OnArrowsExecute -= RotateByCurrentArrow;
@@ -53,43 +58,69 @@ public class CubeTurnController : MonoBehaviour
     {
         if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out var button))
         {
-            Debug.LogError("Ô¤ÖÆÌåÈ±ÉÙArrowsButton½Å±¾");
+            Debug.LogError("é¢„åˆ¶ä½“ç¼ºå°‘ ArrowsButton è„šæœ¬");
             return;
         }
+
         int index = 0;
+
         foreach (RectTransform rect in ButtonsRectTranform)
         {
-            GameObject go = Instantiate(arrowButtonPrefab, rect);
+            GameObject go = Instantiate(arrowButtonPrefab);
+            RectTransform goRect = go.GetComponent<RectTransform>();
+
+            // æŒ‚åˆ°å½“å‰è„šæœ¬ç‰©ä½“ä¸‹
+            goRect.SetParent(transform, false);
+
+            // å¯¹é½åˆ°ç›®æ ‡ rect
+            goRect.anchorMin = rect.anchorMin;
+            goRect.anchorMax = rect.anchorMax;
+            goRect.anchoredPosition = rect.anchoredPosition;
+            goRect.sizeDelta = rect.sizeDelta;
+
             ArrowsButton arrowButton = go.GetComponent<ArrowsButton>();
             Button b = go.GetComponent<Button>();
+
             UIManager.Instance.AddArrowButton(b);
-            if (index < 3) arrowButton.SetArrowSide(ArrowSide.Up);
-            else arrowButton.SetArrowSide(ArrowSide.Left);
-            arrowButton.SetArrowIndex(index++);
+
+            if (index < 3)
+            {
+                arrowButton.SetArrowSide(ArrowSide.Up);
+                arrowButton.SetArrowIndex(index++);
+            }
+            else
+            {
+                arrowButton.SetArrowSide(ArrowSide.Left);
+                int overindex = (index++) % 3;
+                arrowButton.SetArrowIndex(overindex);
+            }
         }
+
         UIManager.Instance.BindArrowsButtons();
     }
 
-    #region »ñÈ¡²ã¼¶·½¿é²¢Ğı×ª
+    #region è·å–å±‚å¹¶æ‰§è¡Œæ—‹è½¬
 
-    // ¸ù¾İµ±Ç°³¯ÏòÃæºÍ¼ıÍ·ĞòºÅ£¬É¸Ñ¡³ö¶ÔÓ¦Ò»²ãµÄÁ¢·½Ìå¡£  
+    // æ ¹æ®ç®­å¤´ç´¢å¼•ç­›é€‰å¯¹åº”å±‚
     public void GetPiecesForArrow(int index)
     {
         var face = currentFaceDir;
-        ArrowSide s;
+
+        ArrowSide side;
         int normalizedIndex;
+
         if (index < 3)
         {
-            s = ArrowSide.Up;
-            normalizedIndex = index;        // Up ²à£º0/1/2 Ö±½ÓÊ¹ÓÃ
+            side = ArrowSide.Up;
+            normalizedIndex = index;
         }
         else
         {
-            s = ArrowSide.Left;
-            normalizedIndex = index - 3;    // Left ²à£º3/4/5 ¡ú 0/1/2
+            side = ArrowSide.Left;
+            normalizedIndex = index - 3;
         }
 
-        GetPiecesForArrowInternal(face, s, normalizedIndex);
+        GetPiecesForArrowInternal(face, side, normalizedIndex);
     }
 
     private void GetPiecesForArrowInternal(
@@ -98,13 +129,13 @@ public class CubeTurnController : MonoBehaviour
         int index)
     {
         (InitCubeSlotAxis axis, int coordValue) = GetLayerFilter(faceDir, side, index);
+
         currentCubePiece.Clear();
         currentAxis = axis;
         currentCubePiece = initCubeSlot.GetPiecesInLayer(axis, coordValue);
     }
 
-    // ¸ù¾İ³¯ÏòÃæºÍ¼ıÍ·Î»ÖÃ£¬µÃµ½É¸Ñ¡Ìõ¼ş(Öá, ×ø±êÖµ)¡£  
-    // ÀıÈç face=Front, side=Up, index=0 ¡ú (X, -2) ±íÊ¾×î×óÁĞ¡£  
+    // æ ¹æ®å½“å‰é¢å’Œç®­å¤´ä½ç½®ï¼Œç¡®å®šç­›é€‰å±‚ï¼ˆè½´ + åæ ‡ï¼‰
     public (InitCubeSlotAxis axis, int coordValue) GetLayerFilter(
         InitCubeSlotFaceDir faceDir,
         ArrowSide side,
@@ -112,70 +143,78 @@ public class CubeTurnController : MonoBehaviour
     {
         int val = IndexToCoordValue(Mathf.Clamp(index, 0, 2));
 
-        // Up  ²à¼ıÍ· = ÃæÉÏ±ßÔµÄÇÅÅ£¬¿ØÖÆÁĞ·½Ïò
-        // Left ²à¼ıÍ· = Ãæ×ó±ßÔµÄÇÅÅ£¬¿ØÖÆĞĞ·½Ïò
         switch (faceDir)
         {
-            case InitCubeSlotFaceDir.Up:    // Y+ Ãæ£¬Æ½ÃæÎª XZ
+            case InitCubeSlotFaceDir.Up:
                 return side == ArrowSide.Up
-                    ? (InitCubeSlotAxis.X, val)   // Up ²à¼ıÍ· ¡ú Ñ¡ X ÁĞ
-                    : (InitCubeSlotAxis.Z, val);  // Left ²à¼ıÍ· ¡ú Ñ¡ Z ĞĞ
+                    ? (InitCubeSlotAxis.X, val)
+                    : (InitCubeSlotAxis.Z, val);
 
-            case InitCubeSlotFaceDir.Down:  // Y- Ãæ£¬Æ½ÃæÎª XZ
+            case InitCubeSlotFaceDir.Down:
                 return side == ArrowSide.Up
                     ? (InitCubeSlotAxis.X, val)
                     : (InitCubeSlotAxis.Z, -val);
 
-            case InitCubeSlotFaceDir.Left:  // X- Ãæ£¬Æ½ÃæÎª YZ
+            case InitCubeSlotFaceDir.Left:
                 return side == ArrowSide.Up
                     ? (InitCubeSlotAxis.Z, val)
                     : (InitCubeSlotAxis.Y, val);
 
-            case InitCubeSlotFaceDir.Right: // X+ Ãæ£¬Æ½ÃæÎª YZ
+            case InitCubeSlotFaceDir.Right:
                 return side == ArrowSide.Up
                     ? (InitCubeSlotAxis.Z, -val)
                     : (InitCubeSlotAxis.Y, val);
 
-            case InitCubeSlotFaceDir.Front: // Z+ Ãæ£¬Æ½ÃæÎª XY
+            case InitCubeSlotFaceDir.Front:
                 return side == ArrowSide.Up
                     ? (InitCubeSlotAxis.X, val)
                     : (InitCubeSlotAxis.Y, val);
 
-            case InitCubeSlotFaceDir.Back:  // Z- Ãæ£¬Æ½ÃæÎª XY
+            case InitCubeSlotFaceDir.Back:
                 return side == ArrowSide.Up
                     ? (InitCubeSlotAxis.X, -val)
                     : (InitCubeSlotAxis.Y, val);
         }
+
         return (InitCubeSlotAxis.X, val);
     }
 
     public void RotateByCurrentArrow(int arrowIndex)
     {
         currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(ViewModeManager.Instance.ball);
+
         GetPiecesForArrow(arrowIndex);
 
-        // Axis Ó³ÉäÎªĞı×ªÖá·½ÏòÏòÁ¿£¨ÊÀ½ç¿Õ¼äµ¥Î»ÏòÁ¿£©
-        Vector3 axisVec = AxisToVector(currentAxis);
-
-        // ¸ù¾İ¼ıÍ··½ÏòºÍËùÔÚÃæ¾ö¶¨Ğı×ª½Ç¶È£º
-        //   Up ²à£¨index 0~2£©£º¼ıÍ·³¯¡ü£¬¶ÔÓ¦ +90¡ã£¨ÁĞÏòÉÏ×ß£©
-        //   Left ²à£¨index 3~5£©£º¼ıÍ·³¯¡û£¬¶ÔÓ¦ -90¡ã£¨ĞĞÏò×ó×ß£©
-        //   ÀıÍâ£ºDown ÃæÒòÏà»úÊÓ½Ç¾µÏñ£¬Left ²à¸ÄÎª +90¡ã
         ArrowSide side = arrowIndex < 3 ? ArrowSide.Up : ArrowSide.Left;
+
         float angle = GetRotationAngle(currentFaceDir, side);
-        Quaternion rotation = Quaternion.AngleAxis(angle, axisVec);
+        Transform cubeRoot = ViewModeManager.Instance != null
+            ? ViewModeManager.Instance.cubeRoot
+            : null;
+        Vector3 localAxis = AxisToVector(currentAxis);
+        Quaternion localRotation = Quaternion.AngleAxis(angle, localAxis);
+        Quaternion worldRotation = cubeRoot != null
+            ? cubeRoot.rotation * localRotation * Quaternion.Inverse(cubeRoot.rotation)
+            : localRotation;
+
         bool isCW = angle > 0f;
 
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
-            // TODO: Ìí¼Ó DOTween ¶¯»­
-            // position ÈÆÄ§·½ÖĞĞÄ£¨Ô­µã£©¹«×ª
-            piece.indexCube.position = rotation * piece.indexCube.position;
-            // ÊÀ½ç¿Õ¼äĞı×ª·Å×ó±ß£¬±ÜÃâ±¾µØ×ø±êÖáÆ¯ÒÆ
-            piece.indexCube.rotation = rotation * piece.indexCube.rotation;
+            if (cubeRoot != null)
+            {
+                Vector3 localPos = cubeRoot.InverseTransformPoint(piece.indexCube.position);
+                piece.indexCube.position = cubeRoot.TransformPoint(localRotation * localPos);
+            }
+            else
+            {
+                piece.indexCube.position = localRotation * piece.indexCube.position;
+            }
 
-            // ¸üĞÂÂß¼­×ø±ê£¨ÓëĞı×ª½Ç¶È·½ÏòÒ»ÖÂ£©
+            piece.indexCube.rotation = worldRotation * piece.indexCube.rotation;
+
             Vector3Int coord = piece.coord;
+
             if (isCW)
             {
                 switch (currentAxis)
@@ -193,7 +232,6 @@ public class CubeTurnController : MonoBehaviour
             }
             else
             {
-                // -90¡ã = CW µÄÄæ±ä»»
                 switch (currentAxis)
                 {
                     case InitCubeSlot.Axis.X:
@@ -208,7 +246,6 @@ public class CubeTurnController : MonoBehaviour
                 }
             }
 
-            // ÓÃ DirRotator Í¬²½¸üĞÂÃ¿¸öÃæµÄ dir£¬²¢ÖØĞÂ¼ÆËãÃæ×ø±ê
             foreach (var surface in piece.surfaces)
             {
                 surface.dir = DirRotator.Rotate(surface.dir, currentAxis, isCW);
@@ -216,40 +253,31 @@ public class CubeTurnController : MonoBehaviour
             }
         }
 
-        // ÖØ½¨ surfaceCoordMap£¬È·±£ĞÂ×ø±ê¿É±» BallLocationService ÕıÈ·²éÑ¯
         initCubeSlot.RebuildSurfaceCoordMap();
-        // ÁÚ¾Ó·¿¼äÖØËã²»ÔÚ´Ë´¦´¥·¢£ºÍæ¼ÒÇĞ»»µ½ View3 Ê± UIManager »á×Ô¶¯¹ã²¥ calculateNeighbors
 
-        // Ğı×ªÍê³Éºó½«×´Ì¬¸Ä»Ø turningFinished£¬½â³ı²Ù×÷Ëø¶¨
         GameState.Instance.SetPlayerState(PlayerState.turningFinished);
-        Debug.Log("CTC: Å¡¶¯Íê³É£¬×´Ì¬ÒÑ»Ö¸´Îª turningFinished");
+
+        Debug.Log("CubeTurnControllerï¼šæ—‹è½¬å®Œæˆ");
     }
 
-    /// <summary>
-    /// ¸ù¾İËùÔÚÃæºÍ¼ıÍ··½Ïò¾ö¶¨Ğı×ª½Ç¶È£º
-    /// Up ²à£º+90¡ã£¨ÁĞÏòÉÏ£©
-    /// Left ²à£º-90¡ã£¨ĞĞÏò×ó£©£¬Down ÃæÀıÍâÓÃ +90¡ã£¨¾µÏñ·­×ª£©
-    /// </summary>
     private float GetRotationAngle(InitCubeSlotFaceDir face, ArrowSide side)
     {
         if (side == ArrowSide.Up)
             return 90f;
 
-        // Left ²à£ºDown Ãæ¾µÏñ£¬ÆäÓàÒ»ÂÉ -90¡ã
         if (face == InitCubeSlotFaceDir.Down)
             return 90f;
 
         return -90f;
     }
 
-    // Axis -> ÊÀ½ç¿Õ¼äµ¥Î»·½ÏòÏòÁ¿£¬ÓÃÓÚ Quaternion.AngleAxis
     private static Vector3 AxisToVector(InitCubeSlotAxis axis)
     {
         return axis switch
         {
-            InitCubeSlotAxis.X => Vector3.right,   // (1, 0, 0)
-            InitCubeSlotAxis.Y => Vector3.up,      // (0, 1, 0)
-            InitCubeSlotAxis.Z => Vector3.forward, // (0, 0, 1)
+            InitCubeSlotAxis.X => Vector3.right,
+            InitCubeSlotAxis.Y => Vector3.up,
+            InitCubeSlotAxis.Z => Vector3.forward,
             _ => Vector3.up
         };
     }
