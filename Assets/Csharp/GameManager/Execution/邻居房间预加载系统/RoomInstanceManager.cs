@@ -24,10 +24,11 @@ public class RoomInstanceManager : MonoBehaviour
         if (payload == null) return;
 
         var vmm = ViewModeManager.Instance;
-        if (vmm == null || vmm.cubeData == null) return;
+        var gs = GameState.Instance;
+        if (vmm == null || vmm.cubeData == null || gs == null) return;
 
         InitCubeSlot cubeData = vmm.cubeData;
-        var roomsToKeep = new HashSet<int>(payload.LogicalNeighborRoomIds) { payload.CurrentRoomID };
+        var roomsToKeep = new HashSet<int>(payload.LogicalNeighborRoomIds) { gs.CurrentRoomID };
 
         // 销毁：已实例化但不在本次“当前+逻辑邻居”集合中的房间
         var toRemove = new List<int>();

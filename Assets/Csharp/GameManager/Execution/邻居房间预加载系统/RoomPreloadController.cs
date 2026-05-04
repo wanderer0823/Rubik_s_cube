@@ -127,7 +127,6 @@ public class RoomPreloadController : MonoBehaviour
         // 5) 组装 payload：当前房间 + 逻辑邻居的重力方向与各门通道 bool
         var payload = new NeighborPreloadPayload
         {
-            CurrentRoomID = currentSurface.roomID,
             LogicalNeighborRoomIds = new HashSet<int>(_logicalNeighborRoomIds)
         };
 
@@ -157,6 +156,6 @@ public class RoomPreloadController : MonoBehaviour
 
         _lastPayload = payload;
         OnPreloadComplete?.Invoke(payload);
-        Debug.Log($"RoomPreloadController: 预加载完成 CurrentRoom={payload.CurrentRoomID}, 逻辑邻居数={payload.LogicalNeighborRoomIds.Count}");
+        Debug.Log($"RoomPreloadController: 预加载完成 CurrentRoom={currentSurface.roomID}, 逻辑邻居数={payload.LogicalNeighborRoomIds.Count}");
     }
 }
