@@ -128,7 +128,11 @@ public class PlayerAction : MonoBehaviour
     private void TryOpenDoor_(RaycastHit hit)
     {
         DoorVectorReturn Door = hit.collider.GetComponent<DoorVectorReturn>();
-        int id = cubeData. CurrentRoomID;
+        var gs = GameState.Instance;
+        if (gs == null)
+            return;
+
+        int id = gs.CurrentRoomID;
         Vector3Int DoorDir = Vector3Int.RoundToInt(Door.DoorinRoomVector);
 
         for (int i = 0; i < cubeData. rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
