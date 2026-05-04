@@ -23,7 +23,7 @@ public class ViewModeManager : MonoBehaviour
             new GameState();
 
         gs = GameState.Instance;
-        rb = ball_p.GetComponent<Rigidbody>();
+        //rb = ball_p.GetComponent<Rigidbody>();
     }
     public void OnEnable()
     {
@@ -154,7 +154,6 @@ public class ViewModeManager : MonoBehaviour
         {
             //Debug.Log("102");
             GameEvents.onCubeRotateStart();
-            gs.SetBallPhysics(BallPhysics.On);
         }
         if (type == RotateType.Right)
         {
@@ -209,22 +208,9 @@ public class ViewModeManager : MonoBehaviour
 
     #region ============================================
     #region 控制小球物理状态
-
     //订阅CRC请求事件
     void CheckBallSpaceUpdate(Vector3 ballPos)
     {
-        //等待小球速度降低直到低于阈值才计算其空间位置
-        StartCoroutine(CheckSpeed(minBallSpeed, (isOk) =>
-        {
-            Debug.Log("检测结果：" + isOk);
-            if (isOk == false)
-            {
-                Debug.Log("VMM尝试计算失败。");
-                return;
-            }
-            //锁定小球物理状态
-            gs.SetBallPhysics(BallPhysics.Off);
-
             //计算并更新小球空间位置的全局状态
             //Debug.Log("301");
             var surface =
@@ -246,21 +232,7 @@ public class ViewModeManager : MonoBehaviour
             gs.SetGravityFace(gravityFace);
 
             Debug.Log($"VMM更新空间 → Room:{surface.roomID}");
-        }));
-
-        
     }
-
-    IEnumerator CheckSpeed(float threshold, System.Action<bool> result)
-    {
-        while (rb.velocity.magnitude > threshold)
-        {
-            yield return null;
-        }
-
-        result?.Invoke(true);
-    }
-
     #endregion
     #endregion
 }

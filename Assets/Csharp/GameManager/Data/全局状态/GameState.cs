@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
-//ÊÓ½Ç×´Ì¬
+//è§†è§’çŠ¶æ€
 public enum ViewMode
 {
     View1,
@@ -11,7 +11,7 @@ public enum ViewMode
     View3
 }
 
-//Íæ¼ÒÊäÈë×´Ì¬
+//ç©å®¶çŠ¶æ€
 public enum PlayerState
 {
     isTurning,
@@ -21,25 +21,20 @@ public enum PlayerState
     rotatingFinished,
     isMoving
 }
-//Ğ¡ÇòÖØÁ¦Ëø¶¨×´Ì¬
-public enum BallPhysics
-{
-    On,
-    Off
-}
-//Íæ¼Ò²ÄÖÊ×´Ì¬
+
+//ç©å®¶æè´¨çŠ¶æ€
 public enum PlayerMatState
 {
-    Steel,//¸ÖÖé
-    Glass,//²£Á§Çò
-    Bounce//µ¯Á¦Çò
+    Steel,//é’¢é“
+    Glass,//ç»ç’ƒ
+    Bounce//å¼¹åŠ›
 }
-//¿É½»»¥µÀ¾ß
+//å¯æ‹¾å–é“å…·
 public enum Item
 {
-    Spring,//µ¯»É
-    Wind,//·çÁ¦
-    Plate//Ñ¹Á¦°å
+    Spring,//å¼¹ç°§
+    Wind,//é£
+    Plate//å‹æ¿
 }
 public class GameState
 {
@@ -55,32 +50,29 @@ public class GameState
 
     public ViewMode CurrentView { get; private set; }
     public PlayerState CurrentPlayerState { get; private set; }
-    public BallPhysics CurrentBallPhysics { get; private set; }
-    //Íæ¼ÒËùÔÚÎ»ÖÃ
+    //ç©å®¶é¢æœå‘
     public FaceDir CurrentPlayerFace { get; private set; }
-    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// µ±Ç°Ğ¡ÇòËùÔÚÍâ±íÃæ
-    public int CurrentRoomID { get; private set; }// µ±Ç°·¿¼äID
-    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // µ±Ç°ÖØÁ¦Ãæ
+    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// å½“å‰å°çƒæ‰€åœ¨çš„è¡¨é¢
+    public int CurrentRoomID { get; private set; }// å½“å‰æˆ¿é—´ID
+    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // å½“å‰é‡åŠ›é¢
 
 
-    // ¹¹Ôìº¯Êı..³õÊ¼»¯Ä¬ÈÏ×´Ì¬
+    // æ„é€ å‡½æ•°..åˆå§‹åŒ–é»˜è®¤çŠ¶æ€
     public void InitGameState()
     {
         ball = ViewModeManager.Instance.ball_p;
         CurrentView = ViewMode.View3;
         CurrentPlayerState = PlayerState.isMoving;
-        SetBallPhysics( BallPhysics.Off);
         CurrentSurface = new InitCubeSlot.CubeSurface_s();
-        CurrentRoomID = 22;
     }
 
     #region ====================================
-    #region ¸üĞÂÊÓ½Ç·½·¨
-    // ĞŞ¸ÄÊÓ½Ç
+    #region ä¿®æ”¹è§†è§’æ–¹å‘
+    // ä¿®æ”¹è§†è§’
     public void SetView(ViewMode mode)
     {
         CurrentView = mode;
-        Debug.Log("°´¼ü¸üĞÂÎªÊÓ½Ç£º" + CurrentView);
+        Debug.Log("åˆ‡æ¢ä¸ºè§†è§’ï¼š" + CurrentView);
         if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -94,11 +86,11 @@ public class GameState
             SetPlayerState(PlayerState.isMoving);
         }
     }
-    //°´Ë³ĞòÇĞ»»ÊÓ½Ç
+    //é¡ºåºåˆ‡æ¢è§†è§’
     public void FSetView()
     {
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
-        Debug.Log("F¸üĞÂÎªÊÓ½Ç£º" + CurrentView);
+        Debug.Log("Fåˆ‡æ¢ä¸ºè§†è§’ï¼š" + CurrentView);
         if (CurrentView == ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -116,54 +108,24 @@ public class GameState
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂÍæ¼ÒÊäÈë×´Ì¬
-    // ĞŞ¸ÄÍæ¼Ò×´Ì¬
+    #region ä¿®æ”¹ç©å®¶çŠ¶æ€
+    // ä¿®æ”¹ç©å®¶çŠ¶æ€
     public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
-        Debug.Log("¸üĞÂÎªÊäÈë×´Ì¬£º" + CurrentPlayerState);
+        Debug.Log("æ›´æ–°ä¸ºç©å®¶çŠ¶æ€ï¼š" + CurrentPlayerState);
     }
     #endregion
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂĞ¡ÇòÎïÀí×´Ì¬
-    private void GetBallRigidBody()
-    {
-        rb = ball.GetComponent<Rigidbody>();
-    }
-    //Ëø¶¨Ğ¡ÇòÎïÀí
-    public void SetBallPhysics(BallPhysics bp)
-    {
-        CurrentBallPhysics = bp;
-        Debug.Log("¸üĞÂĞ¡ÇòÎïÀí£º" + CurrentBallPhysics);
-        if(bp==BallPhysics.On)
-        {
-            UnlockBallPhysics();
-        }
-        if (bp == BallPhysics.Off)
-        {
-            LockBallPhysics();
-        }
-    }
-    void UnlockBallPhysics()
-    {
-        Debug.Log("½âËøĞ¡ÇòÎïÀí¡£");
-        GetBallRigidBody();
-        rb.isKinematic = false;
-    }
-
-    void LockBallPhysics()
-    {
-        Debug.Log("Ëø¶¨Ğ¡ÇòÎïÀí¡£");
-        GetBallRigidBody();
-        rb.isKinematic = true;
-    }
+    #region æ§åˆ¶å°çƒç‰©ç†çŠ¶æ€
+    
     #endregion
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂĞ¡ÇòÎ»ÖÃ×´Ì¬
+    #region æ›´æ–°å°çƒä½ç½®çŠ¶æ€
     public void SetCurrentSurface(InitCubeSlot.CubeSurface_s surface)
     {
         CurrentSurface = surface;
@@ -174,12 +136,12 @@ public class GameState
             CurrentPlayerFace = surface.dir;
         }
 
-        Debug.Log($"¸üĞÂ¿Õ¼äĞÅÏ¢ Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
+        Debug.Log($"æ›´æ–°ç©ºé—´ä¿¡æ¯ Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
     }
     public void SetGravityFace(InitCubeSlot.FaceDir face)
     {
         CurrentGravityFace = face;
-        Debug.Log("¸üĞÂÖØÁ¦·½Ïò£º" + CurrentGravityFace);
+        Debug.Log("æ›´æ–°é‡åŠ›æ–¹å‘" + CurrentGravityFace);
     }
     #endregion
     #endregion
