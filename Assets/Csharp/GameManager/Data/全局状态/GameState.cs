@@ -71,6 +71,7 @@ public class GameState
         CurrentPlayerState = PlayerState.isMoving;
         SetBallPhysics( BallPhysics.Off);
         CurrentSurface = new InitCubeSlot.CubeSurface_s();
+        CurrentRoomID = 22;
     }
 
     #region ====================================

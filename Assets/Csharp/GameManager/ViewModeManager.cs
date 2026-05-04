@@ -129,6 +129,16 @@ public class ViewModeManager : MonoBehaviour
         //更新view mode
         gs.SetView(targetMode);
 
+        Quaternion rotation_R = Quaternion.FromToRotation(CubeRotateController.CurrentGDirinMF,new Vector3(0, -1, 0));//转魔方
+        Quaternion qStart = Quaternion.Euler(270, 0, 0);
+        Quaternion qEnd = cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID).transform.localRotation;
+        Debug.Log("可恶这是什么" + qEnd.eulerAngles);
+        Quaternion rotation_T = qEnd * Quaternion.Inverse(qStart);//拧魔方
+        Quaternion rotation = rotation_R * rotation_T;
+        GameObject currentRoom = cubeData.CurrentRoom;
+        currentRoom.transform.rotation *= rotation;
+        
+
         GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
 

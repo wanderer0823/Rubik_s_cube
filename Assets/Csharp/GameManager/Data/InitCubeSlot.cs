@@ -180,6 +180,8 @@ new()
     //初始化函数
     private void Awake()
     {
+
+
         InitSlots();                // 初始化slots列表
         InitRooms();                // 初始化房间列表
 
@@ -211,8 +213,8 @@ new()
             //初始化方块和面的一些数据
             if (slot.occupant != null)
             {
-                slot.occupant.coord = slot.coord;                            //初始化槽位现在对应的方块的逻辑坐标
-                slot.occupant.indexCube.position = slot.indexCube.position;  //初始化槽位现在对应的方块的世界坐标
+                slot.occupant.coord = slot.coord;                                   //初始化槽位现在对应的方块的逻辑坐标
+                slot.occupant.indexCube.position = slot.indexCube.position;         //初始化槽位现在对应的方块的世界坐标
                 foreach (var element in slot.occupant.surfaces)
                 {
                     element.id = i;         //初始化面id
@@ -236,8 +238,8 @@ new()
             i++;
         }
         //初始：加载房间0
-        CurrentRoom = rooms[0].RoomPerfab;
-        Instantiate(CurrentRoom, rooms[0].spawnPoint, Quaternion.identity);
+        GameObject newRoom = Instantiate(rooms[0].RoomPerfab, rooms[0].spawnPoint, Quaternion.identity);
+        newRoom.transform.SetParent(CurrentRoom.transform, true);
     }
 
     #endregion
@@ -432,11 +434,19 @@ new()
 
     #endregion
 
-    # region 实例化新的房间预制体，rotation是房间对应表面的当前旋转参数，在进入门（能通过）后加载对应房间预制体时调用
-    //public void spawnedRoom(int roomID, Quaternion rotation)
-    //{
-    //    CurrentRoom = rooms[roomID].RoomPerfab;
-    //    Instantiate(rooms[roomID].RoomPerfab, rooms[roomID].spawnPoint, rotation);
-    //}
+    # region 根据当前房间ID获取对应的方块 
+    public GameObject GetPieceGameObjectByRoomID(int roomID)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            foreach (var surface in slot.occupant.surfaces)
+            {
+                if (surface.roomID == roomID)
+                    return slot.occupant.indexCube.gameObject;
+            }
+        }
+        return null;
+    }
     #endregion
 }
