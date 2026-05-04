@@ -7,6 +7,7 @@ using static InitCubeSlot;
 public class RoomInstanceManager : MonoBehaviour
 {
     private Dictionary<int, GameObject> _instantiatedRooms = new Dictionary<int, GameObject>();
+    private NeighborPreloadPayload _lastPayload;
 
     void OnEnable()
     {
@@ -57,6 +58,7 @@ public class RoomInstanceManager : MonoBehaviour
             }
 
             GameObject instance = Instantiate(room.RoomPerfab, room.spawnPoint, rotation);
+
             _instantiatedRooms[roomId] = instance;
         }
 

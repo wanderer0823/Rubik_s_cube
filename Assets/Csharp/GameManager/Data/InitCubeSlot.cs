@@ -435,10 +435,10 @@ new()
     #endregion
 
     # region 实例化新的房间预制体，rotation是房间对应表面的当前旋转参数，在进入门（能通过）后加载对应房间预制体时调用
-    public void spawnedRoom(int roomID, Quaternion rotation)
-    {
-        CurrentRoom = rooms[roomID].RoomPerfab;
-        Instantiate(rooms[roomID].RoomPerfab, rooms[roomID].spawnPoint, rotation);
-    }
+    //public void spawnedRoom(int roomID, Quaternion rotation)
+    //{
+    //    CurrentRoom = rooms[roomID].RoomPerfab;
+    //    Instantiate(rooms[roomID].RoomPerfab, rooms[roomID].spawnPoint, rotation);
+    //}
     #endregion
 }
