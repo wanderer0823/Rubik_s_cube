@@ -53,7 +53,7 @@ public class GameState
     //玩家面朝向
     public FaceDir CurrentPlayerFace { get; private set; }
     public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// 当前小球所在的表面
-    public int CurrentRoomID { get; private set; }// 当前房间ID
+    public int CurrentRoomID=22;// 当前房间ID
     public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // 当前重力面
 
 

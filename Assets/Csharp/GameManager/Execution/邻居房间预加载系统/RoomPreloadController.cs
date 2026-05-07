@@ -158,4 +158,10 @@ public class RoomPreloadController : MonoBehaviour
         OnPreloadComplete?.Invoke(payload);
         Debug.Log($"RoomPreloadController: 预加载完成 CurrentRoom={currentSurface.roomID}, 逻辑邻居数={payload.LogicalNeighborRoomIds.Count}");
     }
+
+    //事件触发方法
+    public void TriggerPreloadComplete()
+    {
+        OnPreloadComplete?.Invoke(_lastPayload);
+    }
 }

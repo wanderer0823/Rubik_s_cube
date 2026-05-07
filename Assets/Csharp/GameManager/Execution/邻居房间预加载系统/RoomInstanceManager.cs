@@ -80,4 +80,10 @@ public class RoomInstanceManager : MonoBehaviour
         }
         return Quaternion.identity;
     }
+
+    //欧：读取字典
+    public IEnumerable<KeyValuePair<int, GameObject>> GetInstantiatedRooms()
+    {
+        return _instantiatedRooms;
+    }
 }

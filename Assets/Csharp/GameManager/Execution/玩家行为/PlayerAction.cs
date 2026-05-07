@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using static InitCubeSlot;
 
@@ -25,7 +26,7 @@ public class PlayerAction : MonoBehaviour
     {
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
-        GameEvents.OnOpenDoorExecute += TryOpenDoor;
+        //GameEvents.OnOpenDoorExecute += TryOpenDoor;
         Debug.Log("PlayerController 事件订阅完成");
     }
 
@@ -33,7 +34,7 @@ public class PlayerAction : MonoBehaviour
     {
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
-        GameEvents.OnOpenDoorExecute -= TryOpenDoor;
+        //GameEvents.OnOpenDoorExecute -= TryOpenDoor;
     }
 
     void Awake()
@@ -41,6 +42,7 @@ public class PlayerAction : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
+ 
     //玩家打开/关闭背包系统的UI
     void OnTabPressed()
     {
@@ -106,49 +108,76 @@ public class PlayerAction : MonoBehaviour
         //             （3） 实例化房间perfab的脚本 订阅VMM广播，spawnRoom一次。
         #endregion
 
-        //射线检测
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, interactRange))
-        {
-            if (hit.collider.CompareTag("Door"))//带tag
-            {
-                TryOpenDoor_(hit);
-            }
-            else
-            {
-                return;
-            }
-        }
-
-
+     
     }
 
-    private void TryOpenDoor_(RaycastHit hit)
+    private void OnTriggerEnter(Collider hit)
     {
-        DoorVectorReturn Door = hit.collider.GetComponent<DoorVectorReturn>();
+        if (hit.CompareTag("Door"))//带tag
+        {
+            Debug.Log("检测到门");
+            TryOpenDoor_(hit);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    private void TryOpenDoor_(Collider hit)
+    {
+        DoorVectorReturn Door = hit.GetComponent<DoorVectorReturn>();
         var gs = GameState.Instance;
         if (gs == null)
             return;
 
         int id = gs.CurrentRoomID;
         Vector3Int DoorDir = Vector3Int.RoundToInt(Door.DoorinRoomVector);
-
+        Vector3Int oppositeDir = -DoorDir;//门相对的方向
         for (int i = 0; i < cubeData. rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
         {
             if (DoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])//找到门对应墙面
             {
                 FaceState face = cubeData. rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);//该方向的墙面状态
+                Debug.Log("Face是——"+ cubeData.rooms[id].dirMap[i]);
                 if (face.isPassable)
                 {
                     // 玩家成功从View3开门切换房间了！！
+                    RoomInstanceManager roomInstanceManager = FindObjectOfType<RoomInstanceManager>();
+                    foreach (var kvp in roomInstanceManager.GetInstantiatedRooms())//遍历邻居房间字典
+                    {
+                        int NeighborRoomID=kvp.Key;
+                        TryFindTrueNeighborRoom(NeighborRoomID,oppositeDir);
+                    }
                     //广播
 
                 }
                 else
                 {
-                    Debug.Log("开门失败");
+                    Debug.Log("开门失败1");
+                }
+            }
+        }
+    }
+
+    private void TryFindTrueNeighborRoom(int id,Vector3Int ODoorDir)
+    {
+        for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
+        {
+            if (ODoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])//找到门对应矢量相对的墙面
+            {
+                FaceState face = cubeData.rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);//该方向的墙面状态
+                if (face.isPassable)
+                {
+                    RoomPreloadController innn= FindObjectOfType<RoomPreloadController>();
+                    NeighborPreloadPayload payload = new NeighborPreloadPayload();
+                    GameState.Instance.CurrentRoomID = id;
+                    Debug.Log("开门成功，传送到" + id);
+                    innn.TriggerPreloadComplete();//触发跳转
+                }
+                else
+                {
+                    Debug.Log("开门失败2");
                 }
             }
         }
