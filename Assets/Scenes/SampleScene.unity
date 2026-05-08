@@ -5548,6 +5548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1455381705}
   - component: {fileID: 1455381706}
+  - component: {fileID: 1455381707}
   m_Layer: 0
   m_Name: RoomPreloadController
   m_TagString: Untagged
@@ -5580,6 +5581,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccd51bf2abba3824592e20198044f16c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1455381707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455381704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c0609cffea9184484c2753443d5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1468114437
@@ -5703,14 +5716,15 @@ MonoBehaviour:
   arrowButtonPrefab: {fileID: 1443326121000042531, guid: c10fdea9a57075a42841c36d0c118472,
     type: 3}
   ButtonsRectTranform:
-  - {fileID: 1819071034}
-  - {fileID: 1180175550}
   - {fileID: 2138139157}
+  - {fileID: 1180175550}
+  - {fileID: 1819071034}
   - {fileID: 1346315145}
   - {fileID: 27685030}
   - {fileID: 1368437613}
   initCubeSlot: {fileID: 773962225}
   currentFaceDir: 0
+  turnAnimationDuration: 0.5
   currentCubePiece: []
   currentAxis: 0
 --- !u!1 &1527002666
