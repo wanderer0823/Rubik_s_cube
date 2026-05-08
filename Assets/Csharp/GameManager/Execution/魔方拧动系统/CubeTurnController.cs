@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,25 +10,31 @@ using ArrowSide = ArrowsButton.ArrowSide;
 
 public class CubeTurnController : MonoBehaviour
 {
-    // 箭头按钮相关
-    [Tooltip("箭头按钮预制体")]
+    [Tooltip("Arrow button prefab")]
     [SerializeField] private GameObject arrowButtonPrefab;
 
     [SerializeField] private List<RectTransform> ButtonsRectTranform = new List<RectTransform>();
-
-    // 魔方数据
     [SerializeField] private InitCubeSlot initCubeSlot;
     [SerializeField] private InitCubeSlotFaceDir currentFaceDir = InitCubeSlotFaceDir.Up;
+    [SerializeField] private float turnAnimationDuration = 0.5f;
 
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
-    private Vector3 currentSignedLocalAxis = Vector3.right;
 
-    // 坐标缩放（逻辑坐标：-2 / 0 / 2）
+    private Vector3 currentSignedLocalAxis = Vector3.right;
+    private bool isTurnAnimating;
     private int coordScale = 2;
 
-    // index 0/1/2 → -2 / 0 / +2
-    int IndexToCoordValue(int index)
+    private struct TurnAnimationState
+    {
+        public InitCubeSlot.CubePiece Piece;
+        public Vector3 StartPosition;
+        public Vector3 TargetPosition;
+        public Quaternion StartRotation;
+        public Quaternion TargetRotation;
+    }
+
+    private int IndexToCoordValue(int index)
     {
         return (index - 1) * coordScale;
     }
@@ -38,7 +45,7 @@ public class CubeTurnController : MonoBehaviour
             initCubeSlot = FindObjectOfType<InitCubeSlot>();
     }
 
-    void Start()
+    private void Start()
     {
         InitArrowsButton();
     }
@@ -57,9 +64,9 @@ public class CubeTurnController : MonoBehaviour
 
     public void InitArrowsButton()
     {
-        if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out var button))
+        if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out _))
         {
-            Debug.LogError("预制体缺少 ArrowsButton 脚本");
+            Debug.LogError("Missing ArrowsButton component on prefab");
             return;
         }
 
@@ -70,19 +77,16 @@ public class CubeTurnController : MonoBehaviour
             GameObject go = Instantiate(arrowButtonPrefab);
             RectTransform goRect = go.GetComponent<RectTransform>();
 
-            // 挂到当前脚本物体下
             goRect.SetParent(transform, false);
-
-            // 对齐到目标 rect
             goRect.anchorMin = rect.anchorMin;
             goRect.anchorMax = rect.anchorMax;
             goRect.anchoredPosition = rect.anchoredPosition;
             goRect.sizeDelta = rect.sizeDelta;
 
             ArrowsButton arrowButton = go.GetComponent<ArrowsButton>();
-            Button b = go.GetComponent<Button>();
+            Button button = go.GetComponent<Button>();
 
-            UIManager.Instance.AddArrowButton(b);
+            UIManager.Instance.AddArrowButton(button);
 
             if (index < 3)
             {
@@ -100,9 +104,6 @@ public class CubeTurnController : MonoBehaviour
         UIManager.Instance.BindArrowsButtons();
     }
 
-    #region 获取层并执行旋转
-
-    // 根据箭头索引筛选对应层
     public void GetPiecesForArrow(int index)
     {
         var face = currentFaceDir;
@@ -137,7 +138,6 @@ public class CubeTurnController : MonoBehaviour
         currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
     }
 
-    // 根据当前面的屏幕朝向，动态决定按钮对应的轴和层
     public (Vector3 signedAxis, int coordValue) GetLayerFilter(
         InitCubeSlotFaceDir faceDir,
         ArrowSide side,
@@ -157,11 +157,11 @@ public class CubeTurnController : MonoBehaviour
 
     public void RotateByCurrentArrow(int arrowIndex)
     {
-        currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(ViewModeManager.Instance.ball);
+        if (isTurnAnimating)
+            return;
 
+        currentFaceDir = (InitCubeSlotFaceDir)GameState.Instance.CurrentPlayerFace;
         GetPiecesForArrow(arrowIndex);
-
-        ArrowSide side = arrowIndex < 3 ? ArrowSide.Up : ArrowSide.Left;
 
         float angle = 90f;
         Transform cubeRoot = ViewModeManager.Instance != null
@@ -173,21 +173,72 @@ public class CubeTurnController : MonoBehaviour
             : localRotation;
 
         bool isCW = GetAxisSign(currentSignedLocalAxis) > 0;
+        List<TurnAnimationState> animationStates = new List<TurnAnimationState>(currentCubePiece.Count);
 
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
+            Vector3 targetPosition;
+
             if (cubeRoot != null)
             {
                 Vector3 localPos = cubeRoot.InverseTransformPoint(piece.indexCube.position);
-                piece.indexCube.position = cubeRoot.TransformPoint(localRotation * localPos);
+                targetPosition = cubeRoot.TransformPoint(localRotation * localPos);
             }
             else
             {
-                piece.indexCube.position = localRotation * piece.indexCube.position;
+                targetPosition = localRotation * piece.indexCube.position;
             }
 
-            piece.indexCube.rotation = worldRotation * piece.indexCube.rotation;
+            animationStates.Add(new TurnAnimationState
+            {
+                Piece = piece,
+                StartPosition = piece.indexCube.position,
+                TargetPosition = targetPosition,
+                StartRotation = piece.indexCube.rotation,
+                TargetRotation = worldRotation * piece.indexCube.rotation
+            });
+        }
 
+        StartCoroutine(AnimateTurn(animationStates, isCW));
+    }
+
+    private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
+    {
+        isTurnAnimating = true;
+
+        float duration = Mathf.Max(0.01f, turnAnimationDuration);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+
+            foreach (TurnAnimationState state in animationStates)
+            {
+                state.Piece.indexCube.position = Vector3.LerpUnclamped(state.StartPosition, state.TargetPosition, t);
+                state.Piece.indexCube.rotation = Quaternion.Slerp(state.StartRotation, state.TargetRotation, t);
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        foreach (TurnAnimationState state in animationStates)
+        {
+            state.Piece.indexCube.position = state.TargetPosition;
+            state.Piece.indexCube.rotation = state.TargetRotation;
+        }
+
+        ApplyTurnResult(isCW);
+
+        isTurnAnimating = false;
+        GameState.Instance.SetPlayerState(PlayerState.turningFinished);
+    }
+
+    private void ApplyTurnResult(bool isCW)
+    {
+        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
+        {
             Vector3Int coord = piece.coord;
 
             if (isCW)
@@ -229,10 +280,6 @@ public class CubeTurnController : MonoBehaviour
         }
 
         initCubeSlot.RebuildSurfaceCoordMap();
-
-        GameState.Instance.SetPlayerState(PlayerState.turningFinished);
-
-        Debug.Log("CubeTurnController：旋转完成");
     }
 
     private static int GetAxisSign(Vector3 axis)
@@ -283,6 +330,4 @@ public class CubeTurnController : MonoBehaviour
         localUp = GetLocalUp(face);
         localRight = Vector3.Cross(localUp, -localNormal);
     }
-
-    #endregion
 }
