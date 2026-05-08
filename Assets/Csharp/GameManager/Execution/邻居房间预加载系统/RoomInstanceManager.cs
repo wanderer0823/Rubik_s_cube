@@ -8,6 +8,7 @@ public class RoomInstanceManager : MonoBehaviour
 {
     private Dictionary<int, GameObject> _instantiatedRooms = new Dictionary<int, GameObject>();
     private NeighborPreloadPayload _lastPayload;
+    public GameObject CurrentRoom;
 
     void OnEnable()
     {
@@ -58,9 +59,10 @@ public class RoomInstanceManager : MonoBehaviour
                 rotation = FaceDirToRotation(loadData.GravityFace);
             }
 
-            GameObject instance = Instantiate(room.RoomPerfab, room.spawnPoint, rotation);
+            GameObject newRoom = Instantiate(room.RoomPerfab, room.spawnPoint, Quaternion.identity);
+            newRoom.transform.SetParent(CurrentRoom.transform, true);
 
-            _instantiatedRooms[roomId] = instance;
+            _instantiatedRooms[roomId] = newRoom;
         }
 
         Debug.Log($"RoomInstanceManager: 当前加载房间数={_instantiatedRooms.Count}（当前+逻辑邻居）");

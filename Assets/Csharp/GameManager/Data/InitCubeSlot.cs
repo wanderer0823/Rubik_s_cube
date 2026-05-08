@@ -238,7 +238,7 @@ new()
             i++;
         }
         //初始：加载房间0
-        GameObject newRoom = Instantiate(rooms[0].RoomPerfab, rooms[0].spawnPoint, Quaternion.identity);
+        GameObject newRoom = Instantiate(rooms[22].RoomPerfab, rooms[22].spawnPoint, Quaternion.identity);
         newRoom.transform.SetParent(CurrentRoom.transform, true);
     }
 

@@ -154,7 +154,7 @@ public class PlayerAction : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("开门失败1");
+                    Debug.Log("开门失败1,id="+id);
                 }
             }
         }
