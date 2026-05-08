@@ -5595,6 +5595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c0609cffea9184484c2753443d5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentRoom: {fileID: 1455267926}
 --- !u!1 &1468114437
 GameObject:
   m_ObjectHideFlags: 0
@@ -9017,6 +9018,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: junior school_desk
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714564332879867106, guid: 88e7806c3a53b03459d7006f34ad8223,
         type: 3}
