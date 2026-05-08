@@ -139,22 +139,32 @@ public class PlayerAction : MonoBehaviour
             if (DoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])//找到门对应墙面
             {
                 FaceState face = cubeData. rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);//该方向的墙面状态
-                Debug.Log("Face是——"+ cubeData.rooms[id].dirMap[i]);
                 if (face.isPassable)
                 {
+                    
                     // 玩家成功从View3开门切换房间了！！
                     RoomInstanceManager roomInstanceManager = FindObjectOfType<RoomInstanceManager>();
-                    foreach (var kvp in roomInstanceManager.GetInstantiatedRooms())//遍历邻居房间字典
+                    foreach (var roomId in roomInstanceManager.GetNeighborRoomIds())
                     {
-                        int NeighborRoomID=kvp.Key;
-                        TryFindTrueNeighborRoom(NeighborRoomID,oppositeDir);
+                        
+                        int NeighborRoomID = roomId;
+                        if (NeighborRoomID != id)
+                        {
+                            TryFindTrueNeighborRoom(NeighborRoomID, oppositeDir);
+                            Debug.Log("NeighborRoomID是——" + roomId);
+                        }
                     }
                     //广播
-
+                    Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
+                    RoomPreloadController innn = FindObjectOfType<RoomPreloadController>();
+                    transform.position = new Vector3(0, 40, 0);
+                    innn.TriggerPreloadComplete();//触发跳转
+                    break;
                 }
                 else
                 {
                     Debug.Log("开门失败1,id="+id);
+                  
                 }
             }
         }
@@ -169,15 +179,13 @@ public class PlayerAction : MonoBehaviour
                 FaceState face = cubeData.rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);//该方向的墙面状态
                 if (face.isPassable)
                 {
-                    RoomPreloadController innn= FindObjectOfType<RoomPreloadController>();
                     NeighborPreloadPayload payload = new NeighborPreloadPayload();
                     GameState.Instance.CurrentRoomID = id;
-                    Debug.Log("开门成功，传送到" + id);
-                    innn.TriggerPreloadComplete();//触发跳转
                 }
                 else
                 {
                     Debug.Log("开门失败2");
+                    
                 }
             }
         }
