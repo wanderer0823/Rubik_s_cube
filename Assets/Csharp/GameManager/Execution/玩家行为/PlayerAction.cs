@@ -10,17 +10,19 @@ public class PlayerAction : MonoBehaviour
 
     [Header("移动设置")]
     public float moveSpeed = 5f;
-    public float smoothTime = 0.1f;     // 移动平滑时间
-    public float gravity = -15f;
+    /*public float smoothTime = 0.1f;     // 移动平滑时间
+    public float gravity = -15f;*/
 
     [Header("检测设置")]
     public float interactRange=3.0f;
 
-    private CharacterController controller;
+    /*private CharacterController controller;
     private Vector3 CurrentMoveVelocity;
     private Vector3 FinalMoveVelocity;
     private Vector3 moveSmoothVelocity;
-    private Vector3 velocity = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;*/
+    private Rigidbody rb;
+    private GameState gs;
 
     void OnEnable()
     {
@@ -42,10 +44,15 @@ public class PlayerAction : MonoBehaviour
 
     void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();///Yiu
     }
 
- 
+    void Start()///YIu
+    {
+        gs = GameState.Instance;
+    }
+
     //玩家打开/关闭背包系统的UI
     void OnTabPressed()
     {
@@ -54,7 +61,21 @@ public class PlayerAction : MonoBehaviour
     //玩家wasd移动
     void Move(Vector3 moveDir)
     {
-        Debug.Log("移动中");
+        ///Yiu
+        moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
+        if (moveDir.magnitude > 0.1f)
+        {
+            Vector3 targetVel = moveDir.normalized * moveSpeed;
+            targetVel.y = rb.velocity.y; // 保持垂直速度（重力/弹跳）
+            rb.velocity = targetVel;
+        }
+        else
+        {
+            // 停止水平移动，保持垂直速度
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+        #region （已注释） 欧的旧移动CC
+        /*Debug.Log("移动中");
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
         if (moveDir.magnitude > 0.1f)
         {
@@ -90,24 +111,12 @@ public class PlayerAction : MonoBehaviour
         // 组合移动和重力
         Vector3 finalVelocity = CurrentMoveVelocity;
         finalVelocity.y = velocity.y;
-        controller.Move(finalVelocity * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider hit)
-    {
-        if (hit.CompareTag("Door"))//带tag
-        {
-            Debug.Log("检测到门");
-            ///Yiu：：注释掉TryOpenDoor_()的调用
-            //TryOpenDoor_(hit);
-        }
-        else
-        {
-            return;
-        }
+        controller.Move(finalVelocity * Time.deltaTime);*/
+        #endregion
     }
 
     ///Yiu：注释掉TryOpenDoor_()
+    #region （已注释） 欧的旧尝试开门
     /*
     private void TryOpenDoor_(Collider hit)
     {
@@ -154,7 +163,6 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
-    */
     private void TryFindTrueNeighborRoom(int id,Vector3Int ODoorDir)
     {
         for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
@@ -175,6 +183,9 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
+    
+    */
+    #endregion
 
     // ===== 新增：材质切换响应 =====
     void OnMatChanged(PlayerMatState newMat)

@@ -58,61 +58,61 @@ public class GameManager : MonoBehaviour
     // ===== 新增 Request 方法 =====
     public void RequestInteract()
     {
-        Debug.Log("GM:玩家按E交互请求");
+        //Debug.Log("GM:玩家按E交互请求");
         GameEvents.onInteractRequest();
     }
 
     public void RequestScroll(float delta)
     {
-        Debug.Log("GM:滚轮请求");
+        //Debug.Log("GM:滚轮请求");
         GameEvents.onScrollRequest(delta);
     }
 
     public void RequestTab()
     {
-        Debug.Log("Tab Pressed����");
+        //Debug.Log("Tab Pressed����");
         GameEvents.onTabRequest();  
     }
 
     public void RequestViewSwitch()
     {
-        Debug.Log("ViewSwitch����");
+        //Debug.Log("ViewSwitch����");
         GameEvents.onViewSwitchRequest(); 
     }
 
     public void RequestMove(Vector3 moveDir)
     {
-        Debug.Log("Player Move����");
+        //Debug.Log("Player Move����");
         GameEvents.onMoveRequest(moveDir); 
     }
 
     public void RequestOpenDoor()
     {
-        Debug.Log("Try Open Door����");
+        //Debug.Log("Try Open Door����");
         GameEvents.onOpenDoorRequest(); 
     }
 
     public void RequestLeftRotate()
     {
-        Debug.Log("LeftRotate����");
+        //Debug.Log("LeftRotate����");
         GameEvents.onRotateRequest(RotateType.Left); 
     }
 
     public void RequestRightRotate()
     {
-        Debug.Log("RightRotate����");
+        //Debug.Log("RightRotate����");
         GameEvents.onRotateRequest(RotateType.Right); 
     }
 
     public void RequestLeftRotateFinish()
     {
-        Debug.Log("LeftRotateFinish����");
+        //Debug.Log("LeftRotateFinish����");
         GameEvents.onRotateFinishRequest(RotateType.Left);
     }
 
     public void RequestRightRotateFinish()
     {
-        Debug.Log("RightRotateFinish����");
+        //Debug.Log("RightRotateFinish����");
         GameEvents.onRotateFinishRequest(RotateType.Right);
     }
 
