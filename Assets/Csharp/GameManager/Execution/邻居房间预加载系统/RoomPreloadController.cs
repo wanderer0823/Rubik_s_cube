@@ -29,6 +29,7 @@ public class RoomPreloadController : MonoBehaviour
 
     public void ExecutePreload()
     {
+        Debug.Log("ExecutePreload");
         var vmm = ViewModeManager.Instance;
         if (vmm == null || vmm.cubeRoot == null || vmm.cubeData == null || vmm.ball == null)
         {
