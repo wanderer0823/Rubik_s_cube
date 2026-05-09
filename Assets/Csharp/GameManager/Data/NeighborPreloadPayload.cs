@@ -8,6 +8,9 @@ using static InitCubeSlot;
 /// </summary>
 public class NeighborPreloadPayload
 {
+    /// <summary> 玩家当前所在房间 ID </summary>
+    public int CurrentRoomID { get; set; }
+
     /// <summary> 可与当前房间形成通道的逻辑邻居房间 ID 集合（用于实例化/销毁） </summary>
     public HashSet<int> LogicalNeighborRoomIds { get; set; }
 
