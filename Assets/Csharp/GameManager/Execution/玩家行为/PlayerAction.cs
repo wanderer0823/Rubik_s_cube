@@ -27,7 +27,8 @@ public class PlayerAction : MonoBehaviour
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
         //GameEvents.OnOpenDoorExecute += TryOpenDoor;
-        Debug.Log("PlayerController 事件订阅完成");
+        // ===== 新增 =====
+        GameEvents.OnMatChangeExecute += OnMatChanged;
     }
 
     void OnDisable()
@@ -35,6 +36,8 @@ public class PlayerAction : MonoBehaviour
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
         //GameEvents.OnOpenDoorExecute -= TryOpenDoor;
+        // ===== 新增 =====
+        GameEvents.OnMatChangeExecute -= OnMatChanged;
     }
 
     void Awake()
@@ -90,33 +93,13 @@ public class PlayerAction : MonoBehaviour
         controller.Move(finalVelocity * Time.deltaTime);
     }
 
-    //按e尝试开门
-    void TryOpenDoor()
-    {
-        Debug.Log("正在尝试开门");
-        #region 张奕忻注释
-        //执行此函数时玩家已经按下E，写一个-----------------
-        //如果 玩家碰撞体没有检测到Tag"Door"，则返回。
-        //如果 检测到door，则获取这个门的isPassible=true?
-        //if(isPassible==false):
-        //debug"开门失败“后续添加失败特效。
-        //if(isPassible==true):
-        //玩家成功从View3开门切换房间了！！
-        //广播到：VMM，（0） 广播进入异步转场（暂无脚本）：后台进行以下计算和广播：
-        //             （1） 用GS方法更新GameState.CurrentPlayerxxx,,,
-        //             （2） 更新完玩家新位置，RPC订阅VMM的广播，计算一次邻居房间信息。
-        //             （3） 实例化房间perfab的脚本 订阅VMM广播，spawnRoom一次。
-        #endregion
-
-     
-    }
-
     private void OnTriggerEnter(Collider hit)
     {
         if (hit.CompareTag("Door"))//带tag
         {
             Debug.Log("检测到门");
-            TryOpenDoor_(hit);
+            ///Yiu：：注释掉TryOpenDoor_()的调用
+            //TryOpenDoor_(hit);
         }
         else
         {
@@ -124,6 +107,8 @@ public class PlayerAction : MonoBehaviour
         }
     }
 
+    ///Yiu：注释掉TryOpenDoor_()
+    /*
     private void TryOpenDoor_(Collider hit)
     {
         DoorVectorReturn Door = hit.GetComponent<DoorVectorReturn>();
@@ -169,7 +154,7 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
-
+    */
     private void TryFindTrueNeighborRoom(int id,Vector3Int ODoorDir)
     {
         for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
@@ -190,4 +175,21 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
+
+    // ===== 新增：材质切换响应 =====
+    void OnMatChanged(PlayerMatState newMat)
+    {
+        Debug.Log($"PlayerAction: 材质切换为 {newMat}");
+
+        // TODO: 完整RB改造后在此更新物理参数
+        // 目前先做标记，后续改CC→RB时补充：
+        // rb.mass = GetProfileForMat(newMat).mass;
+        // rb.drag = GetProfileForMat(newMat).drag;
+        // collider.material.bounciness = GetProfileForMat(newMat).bounciness;
+
+        // TODO: 更新小球视觉材质
+        // var renderer = GetComponent<Renderer>();
+        // renderer.material = matForState[newMat];
+    }
+
 }
