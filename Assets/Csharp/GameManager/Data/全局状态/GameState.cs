@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
-//ÊÓ½Ç×´Ì¬
+//è§†è§’çŠ¶æ€
 public enum ViewMode
 {
     View1,
@@ -11,7 +11,7 @@ public enum ViewMode
     View3
 }
 
-//Íæ¼ÒÊäÈë×´Ì¬
+//ç©å®¶çŠ¶æ€
 public enum PlayerState
 {
     isTurning,
@@ -19,33 +19,37 @@ public enum PlayerState
     isWaiting,
     turningFinished,
     rotatingFinished,
-    isMoving
+    isMoving,
+    isOpeningBag,    // æ–°å¢ï¼šæ‰“å¼€èƒŒåŒ…
+    isGrabbing       // æ–°å¢ï¼šä¸¾èµ·ç‰©ä½“
 }
-//Ğ¡ÇòÖØÁ¦Ëø¶¨×´Ì¬
-public enum BallPhysics
-{
-    On,
-    Off
-}
-//Íæ¼Ò²ÄÖÊ×´Ì¬
+
+//ç©å®¶æè´¨çŠ¶æ€
 public enum PlayerMatState
 {
-    Steel,//¸ÖÖé
-    Glass,//²£Á§Çò
-    Bounce//µ¯Á¦Çò
+    Steel,//é’¢é“
+    Glass,//ç»ç’ƒ
+    Bounce//å¼¹åŠ›
 }
-//¿É½»»¥µÀ¾ß
-public enum Item
+//å¯æ‹¾å–é“å…·
+public enum ItemType
 {
-    Spring,//µ¯»É
-    Wind,//·çÁ¦
-    Plate//Ñ¹Á¦°å
+    Spring,//å¼¹ç°§
+    Wind,//é£
+    Plate//å‹æ¿
 }
 public class GameState
 {
     public static GameState Instance;
     private GameObject ball;
     private Rigidbody rb;
+    public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.Steel;
+    // èƒŒåŒ…ï¼šè®°ä½æ‰“å¼€å‰çš„çŠ¶æ€
+    private PlayerState stateBeforeBag;
+    public bool[] TaskFinished { get; private set; } = new bool[5];
+    // çº¿ç´¢æ”¶é›†
+    private HashSet<string> collectedClueIDs = new HashSet<string>();
+
 
     public GameState()
     {
@@ -55,31 +59,31 @@ public class GameState
 
     public ViewMode CurrentView { get; private set; }
     public PlayerState CurrentPlayerState { get; private set; }
-    public BallPhysics CurrentBallPhysics { get; private set; }
-    //Íæ¼ÒËùÔÚÎ»ÖÃ
     public FaceDir CurrentPlayerFace { get; private set; }
-    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// µ±Ç°Ğ¡ÇòËùÔÚÍâ±íÃæ
-    public int CurrentRoomID { get; private set; }// µ±Ç°·¿¼äID
-    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // µ±Ç°ÖØÁ¦Ãæ
+    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// å½“å‰å°çƒæ‰€åœ¨çš„è¡¨é¢
+    public int CurrentRoomID=43;// å½“å‰æˆ¿é—´IDï¼Œè¿™é‡Œæ˜¯æ˜¾ç¤ºçš„åˆå§‹æˆ¿é—´
+    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // å½“å‰é‡åŠ›é¢
 
 
-    // ¹¹Ôìº¯Êı..³õÊ¼»¯Ä¬ÈÏ×´Ì¬
+    // æ„é€ å‡½æ•°..åˆå§‹åŒ–é»˜è®¤çŠ¶æ€
     public void InitGameState()
     {
         ball = ViewModeManager.Instance.ball_p;
         CurrentView = ViewMode.View3;
         CurrentPlayerState = PlayerState.isMoving;
-        SetBallPhysics( BallPhysics.Off);
         CurrentSurface = new InitCubeSlot.CubeSurface_s();
     }
 
     #region ====================================
-    #region ¸üĞÂÊÓ½Ç·½·¨
-    // ĞŞ¸ÄÊÓ½Ç
+    #region ä¿®æ”¹è§†è§’æ–¹å‘
+    // ä¿®æ”¹è§†è§’
     public void SetView(ViewMode mode)
     {
+        // åˆ‡è§†è§’å‰è‡ªåŠ¨å…³èƒŒåŒ…
+        if (IsBagOpen)
+            CloseBag();
         CurrentView = mode;
-        Debug.Log("°´¼ü¸üĞÂÎªÊÓ½Ç£º" + CurrentView);
+        Debug.Log("åˆ‡æ¢ä¸ºè§†è§’ï¼š" + CurrentView);
         if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -93,11 +97,13 @@ public class GameState
             SetPlayerState(PlayerState.isMoving);
         }
     }
-    //°´Ë³ĞòÇĞ»»ÊÓ½Ç
+    //é¡ºåºåˆ‡æ¢è§†è§’
     public void FSetView()
     {
+        if (IsBagOpen)
+            CloseBag();
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
-        Debug.Log("F¸üĞÂÎªÊÓ½Ç£º" + CurrentView);
+        Debug.Log("Fåˆ‡æ¢ä¸ºè§†è§’ï¼š" + CurrentView);
         if (CurrentView == ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -115,54 +121,24 @@ public class GameState
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂÍæ¼ÒÊäÈë×´Ì¬
-    // ĞŞ¸ÄÍæ¼Ò×´Ì¬
+    #region ä¿®æ”¹ç©å®¶çŠ¶æ€
+    // ä¿®æ”¹ç©å®¶çŠ¶æ€
     public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
-        Debug.Log("¸üĞÂÎªÊäÈë×´Ì¬£º" + CurrentPlayerState);
+        Debug.Log("æ›´æ–°ä¸ºç©å®¶çŠ¶æ€ï¼š" + CurrentPlayerState);
     }
     #endregion
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂĞ¡ÇòÎïÀí×´Ì¬
-    private void GetBallRigidBody()
-    {
-        rb = ball.GetComponent<Rigidbody>();
-    }
-    //Ëø¶¨Ğ¡ÇòÎïÀí
-    public void SetBallPhysics(BallPhysics bp)
-    {
-        CurrentBallPhysics = bp;
-        Debug.Log("¸üĞÂĞ¡ÇòÎïÀí£º" + CurrentBallPhysics);
-        if(bp==BallPhysics.On)
-        {
-            UnlockBallPhysics();
-        }
-        if (bp == BallPhysics.Off)
-        {
-            LockBallPhysics();
-        }
-    }
-    void UnlockBallPhysics()
-    {
-        Debug.Log("½âËøĞ¡ÇòÎïÀí¡£");
-        GetBallRigidBody();
-        rb.isKinematic = false;
-    }
-
-    void LockBallPhysics()
-    {
-        Debug.Log("Ëø¶¨Ğ¡ÇòÎïÀí¡£");
-        GetBallRigidBody();
-        rb.isKinematic = true;
-    }
+    #region æ§åˆ¶å°çƒç‰©ç†çŠ¶æ€
+    
     #endregion
     #endregion
 
     #region ===========================================
-    #region ¸üĞÂĞ¡ÇòÎ»ÖÃ×´Ì¬
+    #region æ›´æ–°å°çƒä½ç½®çŠ¶æ€
     public void SetCurrentSurface(InitCubeSlot.CubeSurface_s surface)
     {
         CurrentSurface = surface;
@@ -173,13 +149,76 @@ public class GameState
             CurrentPlayerFace = surface.dir;
         }
 
-        Debug.Log($"¸üĞÂ¿Õ¼äĞÅÏ¢ Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
+        Debug.Log($"æ›´æ–°ç©ºé—´ä¿¡æ¯ Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
     }
     public void SetGravityFace(InitCubeSlot.FaceDir face)
     {
         CurrentGravityFace = face;
-        Debug.Log("¸üĞÂÖØÁ¦·½Ïò£º" + CurrentGravityFace);
+        Debug.Log("æ›´æ–°é‡åŠ›æ–¹å‘" + CurrentGravityFace);
     }
     #endregion
     #endregion
+
+    #region ===========================================
+    #region æè´¨åˆ‡æ¢
+    public void SetMatState(PlayerMatState state)
+    {
+        CurrentMatState = state;
+        Debug.Log("åˆ‡æ¢æè´¨ï¼š" + CurrentMatState);
+    }
+    #endregion
+    #endregion
+
+    #region ===========================================
+    #region èƒŒåŒ…å¼€å…³
+    public void OpenBag()
+    {
+        stateBeforeBag = CurrentPlayerState;
+        SetPlayerState(PlayerState.isOpeningBag);
+        Debug.Log("èƒŒåŒ…æ‰“å¼€ï¼Œè®°ä½ä¹‹å‰çŠ¶æ€ï¼š" + stateBeforeBag);
+    }
+
+    public void CloseBag()
+    {
+        SetPlayerState(stateBeforeBag);
+        Debug.Log("èƒŒåŒ…å…³é—­ï¼Œæ¢å¤çŠ¶æ€ï¼š" + stateBeforeBag);
+    }
+
+    public bool IsBagOpen => CurrentPlayerState == PlayerState.isOpeningBag;
+    #endregion
+    #endregion
+
+    #region ===========================================
+    #region ä»»åŠ¡ç³»ç»Ÿ
+    public bool FinishTask(int index)
+    {
+        if (index < 0 || index >= 4 || TaskFinished[index]) return false;
+        TaskFinished[index] = true;
+        Debug.Log($"ä»»åŠ¡ {index} å®Œæˆ");
+        return true;
+    }
+
+    public bool AllTasksFinished()
+    {
+        foreach (var t in TaskFinished)
+            if (!t) return false;
+        return true;
+    }
+    #endregion
+    #endregion
+
+    #region ===========================================
+    #region çº¿ç´¢æ”¶é›†
+    public bool CollectClue(string clueID)
+    {
+        bool added = collectedClueIDs.Add(clueID);
+        if (added) Debug.Log($"æ”¶é›†çº¿ç´¢ï¼š{clueID}");
+        return added;
+    }
+
+    public bool HasClue(string clueID) => collectedClueIDs.Contains(clueID);
+    public HashSet<string> GetAllClues() => collectedClueIDs;
+    #endregion
+    #endregion
+
 }
