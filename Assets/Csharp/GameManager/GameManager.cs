@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +10,7 @@ public enum RotateType
 
 public class GameManager : MonoBehaviour
 {
-    #region === 脚本引用 ===
+    #region === ��ϵͳ���� ===
     [Header("Input Systems")]
     private PlayerInputManager playerInputManager;
     [Header("Data Systems")]
@@ -27,11 +27,12 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     
-    #region === 字段 ===
+    #region === ȫ��״̬ ===
     public int currentRoomIndex { get; private set; }
     #endregion
 
-    #region === 脚本生命 ===
+    #region === �������� ===
+
     private void Awake()
     {
         Instance = this;
@@ -39,11 +40,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        // �������������
         playerInputManager = new PlayerInputManager(this);
     }
 
     void Update()
     {
+        //������
         playerInputManager.Update(); // ֻ������
     }
 
@@ -54,72 +57,85 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region ======================================================
-    #region === PIM 输入请求===
-    // ===== 新增 Request 方法 =====
-    public void RequestInteract()
-    {
-        //Debug.Log("GM:玩家按E交互请求");
-        GameEvents.onInteractRequest();
-    }
-
-    public void RequestScroll(float delta)
-    {
-        //Debug.Log("GM:滚轮请求");
-        GameEvents.onScrollRequest(delta);
-    }
-
+    #region === ��������ӿڣ�PIM ���ã�===
     public void RequestTab()
     {
-        //Debug.Log("Tab Pressed����");
+        Debug.Log("Tab Pressed����");
         GameEvents.onTabRequest();  
     }
 
     public void RequestViewSwitch()
     {
-        //Debug.Log("ViewSwitch����");
+        Debug.Log("ViewSwitch����");
         GameEvents.onViewSwitchRequest(); 
     }
 
     public void RequestMove(Vector3 moveDir)
     {
-        //Debug.Log("Player Move����");
+        Debug.Log("Player Move����");
         GameEvents.onMoveRequest(moveDir); 
     }
 
     public void RequestOpenDoor()
     {
-        //Debug.Log("Try Open Door����");
+        Debug.Log("Try Open Door����");
         GameEvents.onOpenDoorRequest(); 
     }
 
     public void RequestLeftRotate()
     {
-        //Debug.Log("LeftRotate����");
+        Debug.Log("LeftRotate����");
         GameEvents.onRotateRequest(RotateType.Left); 
     }
 
     public void RequestRightRotate()
     {
-        //Debug.Log("RightRotate����");
+        Debug.Log("RightRotate����");
         GameEvents.onRotateRequest(RotateType.Right); 
     }
 
     public void RequestLeftRotateFinish()
     {
-        //Debug.Log("LeftRotateFinish����");
+        Debug.Log("LeftRotateFinish����");
         GameEvents.onRotateFinishRequest(RotateType.Left);
     }
 
     public void RequestRightRotateFinish()
     {
-        //Debug.Log("RightRotateFinish����");
+        Debug.Log("RightRotateFinish����");
         GameEvents.onRotateFinishRequest(RotateType.Right);
     }
 
     public void RequestMouseMove(Vector2 mouseMove)//欧：鼠标移动检测
     {
+        Debug.Log("检测到鼠标移动");
         GameEvents.onMouseLookRequest(mouseMove);
     }
     #endregion
     #endregion
+
+    #region ======================================================
+    #region === ��������ӿڣ� ���ã�===
+    #endregion
+    #endregion
+
+    #region ======================================================
+    #region === ��Ϊ�жϲ� ===
+
+    #endregion
+    #endregion
+
+
+    #region ======================================================
+    #region === ��Ϊִ�в� ===
+
+    #endregion
+    #endregion
+
+
+    #region ======================================================
+    #region === UI ���� ===
+    #endregion
+    #endregion
+
 }

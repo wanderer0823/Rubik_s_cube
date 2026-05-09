@@ -2,18 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
 
-// 维护当前逻辑邻居房间ID（不实例化邻居房间）
-// 仅实例化当前房间
+// 订阅 OnNeighborPreloadExecute，维护当前应加载的房间集合。
 
 public class RoomInstanceManager : MonoBehaviour
 {
-    // 当前逻辑邻居房间ID
-    public List<int> _neighborRoomIds = new List<int>();
-
-    // 当前房间实例
-    private GameObject _currentRoomInstance;
-
-    public GameObject CurrentRoom;
+    private Dictionary<int, GameObject> _instantiatedRooms = new Dictionary<int, GameObject>();
 
     void OnEnable()
     {
@@ -25,56 +18,63 @@ public class RoomInstanceManager : MonoBehaviour
         RoomPreloadController.OnPreloadComplete -= OnPreloadComplete;
     }
 
+    // TODO: 这里是关键预加载函数
     private void OnPreloadComplete(NeighborPreloadPayload payload)
     {
         if (payload == null) return;
 
         var vmm = ViewModeManager.Instance;
-        var gs = GameState.Instance;
-
-        if (vmm == null || vmm.cubeData == null || gs == null)
-            return;
+        if (vmm == null || vmm.cubeData == null) return;
 
         InitCubeSlot cubeData = vmm.cubeData;
+        var roomsToKeep = new HashSet<int>(payload.LogicalNeighborRoomIds) { payload.CurrentRoomID };
 
-        // 更新逻辑邻居房间列表
-        _neighborRoomIds.Clear();
-        _neighborRoomIds.AddRange(payload.LogicalNeighborRoomIds);
-
-        int currentRoomId = gs.CurrentRoomID;
-
-        // 当前房间合法性检查
-        if (currentRoomId < 0 || currentRoomId >= cubeData.rooms.Count)
-            return;
-
-        var room = cubeData.rooms[currentRoomId];
-
-        if (room == null || room.RoomPerfab == null)
-            return;
-
-        // 销毁旧当前房间
-        if (_currentRoomInstance != null)
+        // 销毁：已实例化但不在本次“当前+逻辑邻居”集合中的房间
+        var toRemove = new List<int>();
+        foreach (var kv in _instantiatedRooms)
         {
-            Destroy(_currentRoomInstance);
+            if (!roomsToKeep.Contains(kv.Key))
+            {
+                if (kv.Value != null) Destroy(kv.Value);
+                toRemove.Add(kv.Key);
+            }
+        }
+        foreach (var id in toRemove) _instantiatedRooms.Remove(id);
+
+        // 实例化：本次集合中尚未实例化的房间（使用 payload 中的重力方向等子属性可在此或后续应用到实例上）
+        foreach (int roomId in roomsToKeep)
+        {
+            if (_instantiatedRooms.ContainsKey(roomId)) continue;
+            if (roomId < 0 || roomId >= cubeData.rooms.Count) continue;
+
+            var room = cubeData.rooms[roomId];
+            if (room == null || room.RoomPerfab == null) continue;
+
+            Quaternion rotation = Quaternion.identity;
+            if (payload.RoomDataByRoomId != null && payload.RoomDataByRoomId.TryGetValue(roomId, out var loadData))
+            {
+                rotation = FaceDirToRotation(loadData.GravityFace);
+            }
+
+            GameObject instance = Instantiate(room.RoomPerfab, room.spawnPoint, rotation);
+            _instantiatedRooms[roomId] = instance;
         }
 
-        // 仅实例化当前房间
-        _currentRoomInstance = Instantiate(
-            room.RoomPerfab,
-            room.spawnPoint,
-            Quaternion.identity
-        );
-
-        _currentRoomInstance.transform.SetParent(CurrentRoom.transform, true);
-
-        Debug.Log(
-            $"RoomInstanceManager: 当前房间={currentRoomId} 邻居房间数={_neighborRoomIds.Count}"
-        );
+        Debug.Log($"RoomInstanceManager: 当前加载房间数={_instantiatedRooms.Count}（当前+逻辑邻居）");
     }
 
-    // 获取当前逻辑邻居房间ID列表
-    public List<int> GetNeighborRoomIds()
+    private static Quaternion FaceDirToRotation(FaceDir gravityFace)
     {
-        return _neighborRoomIds;
+        // 重力朝下时房间“地面”朝向；可根据实际坐标系调整
+        switch (gravityFace)
+        {
+            case FaceDir.Down: return Quaternion.identity;
+            case FaceDir.Up: return Quaternion.Euler(180f, 0f, 0f);
+            case FaceDir.Back: return Quaternion.Euler(90f, 0f, 0f);
+            case FaceDir.Front: return Quaternion.Euler(-90f, 0f, 0f);
+            case FaceDir.Left: return Quaternion.Euler(0f, 90f, 0f);
+            case FaceDir.Right: return Quaternion.Euler(0f, -90f, 0f);
+        }
+        return Quaternion.identity;
     }
 }

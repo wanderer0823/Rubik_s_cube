@@ -17,12 +17,6 @@ public static class GameEvents
     public static event Action<int> OnArrowsClickRequest; //张天姿
     // CRC请求VMM监听
     public static event Action<Vector3> OnBallSpaceUpdateRequest;
-    // PIM→GM→VMM：E键交互
-    public static event Action OnInteractRequest;
-    // PIM→GM→VMM：滚轮
-    public static event Action<float> OnScrollRequest;
-    // BackpackUI→VMM：材质切换
-    public static event Action<PlayerMatState> OnMatChangeRequest;
     #endregion
 
     #region === 执行事件定义 ===
@@ -45,22 +39,6 @@ public static class GameEvents
     public static event Action IsView1Now;
     // RPC监听UIM和PA
     public static event Action CalculateNeighbors;
-    // ===== 新增执行事件 =====
-    // UIManager监听VMM：背包开关
-    public static event Action OnBagOpenExecute;
-    public static event Action OnBagCloseExecute;
-    // CluePickup/可交互物体 监听VMM：E键交互
-    public static event Action OnInteractExecute;
-    // BackpackSystem监听VMM：背包滚动
-    public static event Action<float> OnBagScrollExecute;
-    // GrabSystem监听VMM：举起物体旋转
-    public static event Action<float> OnGrabRotateExecute;
-    // PlayerAction监听VMM：材质切换
-    public static event Action<PlayerMatState> OnMatChangeExecute;
-    // TaskSystem/UIManager监听：任务完成
-    public static event Action<int> OnTaskFinished;
-    // UIManager监听：通关
-    public static event Action OnGameWin;
     #endregion
 
     #region === 请求事件广播方法 ===
@@ -78,10 +56,6 @@ public static class GameEvents
     public static void onArrowsClickRequest(int number) => OnArrowsClickRequest?.Invoke(number);//张天姿
     // CRC请求VMM监听
     public static void onBallSpaceUpdateRequest(Vector3 ballPos)=> OnBallSpaceUpdateRequest?.Invoke(ballPos);
-    // ===== 新增请求广播 =====
-    public static void onInteractRequest() => OnInteractRequest?.Invoke();
-    public static void onScrollRequest(float delta) => OnScrollRequest?.Invoke(delta);
-    public static void onMatChangeRequest(PlayerMatState s) => OnMatChangeRequest?.Invoke(s);
     #endregion
 
     #region === 执行事件广播方法 ===
@@ -104,14 +78,5 @@ public static class GameEvents
     public static void isView1Now() => IsView1Now?.Invoke();
     // RPC监听UIM和PA
     public static void calculateNeighbors() =>CalculateNeighbors?.Invoke();
-    // ===== 新增执行广播 =====
-    public static void onBagOpenExecute() => OnBagOpenExecute?.Invoke();
-    public static void onBagCloseExecute() => OnBagCloseExecute?.Invoke();
-    public static void onInteractExecute() => OnInteractExecute?.Invoke();
-    public static void onBagScrollExecute(float d) => OnBagScrollExecute?.Invoke(d);
-    public static void onGrabRotateExecute(float d) => OnGrabRotateExecute?.Invoke(d);
-    public static void onMatChangeExecute(PlayerMatState s) => OnMatChangeExecute?.Invoke(s);
-    public static void onTaskFinished(int i) => OnTaskFinished?.Invoke(i);
-    public static void onGameWin() => OnGameWin?.Invoke();
     #endregion
 }

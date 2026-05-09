@@ -1,42 +1,30 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 using InitCubeSlotAxis = InitCubeSlot.Axis;
 using InitCubeSlotFaceDir = InitCubeSlot.FaceDir;
 using ArrowSide = ArrowsButton.ArrowSide;
+using UnityEngine.UI;
 
 public class CubeTurnController : MonoBehaviour
 {
-    [Tooltip("Arrow button prefab")]
+    // 箭头按钮容器  
+    [Tooltip("箭头预制体")]
     [SerializeField] private GameObject arrowButtonPrefab;
-
     [SerializeField] private List<RectTransform> ButtonsRectTranform = new List<RectTransform>();
+    // 旋转数据  
     [SerializeField] private InitCubeSlot initCubeSlot;
     [SerializeField] private InitCubeSlotFaceDir currentFaceDir = InitCubeSlotFaceDir.Up;
-    [SerializeField] private float turnAnimationDuration = 0.5f;
-
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
 
-    private Vector3 currentSignedLocalAxis = Vector3.right;
-    private bool isTurnAnimating;
+    // 逻辑坐标步长为2  
     private int coordScale = 2;
 
-    private struct TurnAnimationState
+    // index 0/1/2 → coord 值 -2, 0, +2
+    int IndexToCoordValue(int index)
     {
-        public InitCubeSlot.CubePiece Piece;
-        public Vector3 StartPosition;
-        public Vector3 TargetPosition;
-        public Quaternion StartRotation;
-        public Quaternion TargetRotation;
-    }
-
-    private int IndexToCoordValue(int index)
-    {
-        return (index - 1) * coordScale;
+        return (index - 1) * coordScale;  // 0→-2, 1→0, 2→+2
     }
 
     private void Awake()
@@ -45,7 +33,7 @@ public class CubeTurnController : MonoBehaviour
             initCubeSlot = FindObjectOfType<InitCubeSlot>();
     }
 
-    private void Start()
+    void Start()
     {
         InitArrowsButton();
     }
@@ -54,7 +42,6 @@ public class CubeTurnController : MonoBehaviour
     {
         GameEvents.OnArrowsExecute += RotateByCurrentArrow;
     }
-
     private void OnDisable()
     {
         GameEvents.OnArrowsExecute -= RotateByCurrentArrow;
@@ -64,65 +51,45 @@ public class CubeTurnController : MonoBehaviour
 
     public void InitArrowsButton()
     {
-        if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out _))
+        if (!arrowButtonPrefab.TryGetComponent<ArrowsButton>(out var button))
         {
-            Debug.LogError("Missing ArrowsButton component on prefab");
+            Debug.LogError("预制体缺少ArrowsButton脚本");
             return;
         }
-
         int index = 0;
-
         foreach (RectTransform rect in ButtonsRectTranform)
         {
-            GameObject go = Instantiate(arrowButtonPrefab);
-            RectTransform goRect = go.GetComponent<RectTransform>();
-
-            goRect.SetParent(transform, false);
-            goRect.anchorMin = rect.anchorMin;
-            goRect.anchorMax = rect.anchorMax;
-            goRect.anchoredPosition = rect.anchoredPosition;
-            goRect.sizeDelta = rect.sizeDelta;
-
+            GameObject go = Instantiate(arrowButtonPrefab, rect);
             ArrowsButton arrowButton = go.GetComponent<ArrowsButton>();
-            Button button = go.GetComponent<Button>();
-
-            UIManager.Instance.AddArrowButton(button);
-
-            if (index < 3)
-            {
-                arrowButton.SetArrowSide(ArrowSide.Up);
-                arrowButton.SetArrowIndex(index++);
-            }
-            else
-            {
-                arrowButton.SetArrowSide(ArrowSide.Left);
-                int overindex = (index++) % 3;
-                arrowButton.SetArrowIndex(overindex);
-            }
+            Button b = go.GetComponent<Button>();
+            UIManager.Instance.AddArrowButton(b);
+            if (index < 3) arrowButton.SetArrowSide(ArrowSide.Up);
+            else arrowButton.SetArrowSide(ArrowSide.Left);
+            arrowButton.SetArrowIndex(index++);
         }
-
         UIManager.Instance.BindArrowsButtons();
     }
 
+    #region 获取层级方块并旋转
+
+    // 根据当前朝向面和箭头序号，筛选出对应一层的立方体。  
     public void GetPiecesForArrow(int index)
     {
         var face = currentFaceDir;
-
-        ArrowSide side;
+        ArrowSide s;
         int normalizedIndex;
-
         if (index < 3)
         {
-            side = ArrowSide.Up;
-            normalizedIndex = index;
+            s = ArrowSide.Up;
+            normalizedIndex = index;        // Up 侧：0/1/2 直接使用
         }
         else
         {
-            side = ArrowSide.Left;
-            normalizedIndex = index - 3;
+            s = ArrowSide.Left;
+            normalizedIndex = index - 3;    // Left 侧：3/4/5 → 0/1/2
         }
 
-        GetPiecesForArrowInternal(face, side, normalizedIndex);
+        GetPiecesForArrowInternal(face, s, normalizedIndex);
     }
 
     private void GetPiecesForArrowInternal(
@@ -130,117 +97,85 @@ public class CubeTurnController : MonoBehaviour
         ArrowSide side,
         int index)
     {
-        (Vector3 signedAxis, int coordValue) = GetLayerFilter(faceDir, side, index);
-
+        (InitCubeSlotAxis axis, int coordValue) = GetLayerFilter(faceDir, side, index);
         currentCubePiece.Clear();
-        currentSignedLocalAxis = signedAxis;
-        currentAxis = VectorToAxis(signedAxis);
-        currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
+        currentAxis = axis;
+        currentCubePiece = initCubeSlot.GetPiecesInLayer(axis, coordValue);
     }
 
-    public (Vector3 signedAxis, int coordValue) GetLayerFilter(
+    // 根据朝向面和箭头位置，得到筛选条件(轴, 坐标值)。  
+    // 例如 face=Front, side=Up, index=0 → (X, -2) 表示最左列。  
+    public (InitCubeSlotAxis axis, int coordValue) GetLayerFilter(
         InitCubeSlotFaceDir faceDir,
         ArrowSide side,
         int index)
     {
         int val = IndexToCoordValue(Mathf.Clamp(index, 0, 2));
-        GetFaceBasis(faceDir, out _, out Vector3 localUp, out Vector3 localRight);
 
-        Vector3 signedAxis = side == ArrowSide.Up ? localRight : localUp;
-        int axisSign = GetAxisSign(signedAxis);
-        int coordValue = side == ArrowSide.Up
-            ? axisSign * val
-            : axisSign * -val;
+        // Up  侧箭头 = 面上边缘那排，控制列方向
+        // Left 侧箭头 = 面左边缘那排，控制行方向
+        switch (faceDir)
+        {
+            case InitCubeSlotFaceDir.Up:    // Y+ 面，平面为 XZ
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.X, val)   // Up 侧箭头 → 选 X 列
+                    : (InitCubeSlotAxis.Z, val);  // Left 侧箭头 → 选 Z 行
 
-        return (signedAxis, coordValue);
+            case InitCubeSlotFaceDir.Down:  // Y- 面，平面为 XZ
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.X, val)
+                    : (InitCubeSlotAxis.Z, -val);
+
+            case InitCubeSlotFaceDir.Left:  // X- 面，平面为 YZ
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.Z, val)
+                    : (InitCubeSlotAxis.Y, val);
+
+            case InitCubeSlotFaceDir.Right: // X+ 面，平面为 YZ
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.Z, -val)
+                    : (InitCubeSlotAxis.Y, val);
+
+            case InitCubeSlotFaceDir.Front: // Z+ 面，平面为 XY
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.X, val)
+                    : (InitCubeSlotAxis.Y, val);
+
+            case InitCubeSlotFaceDir.Back:  // Z- 面，平面为 XY
+                return side == ArrowSide.Up
+                    ? (InitCubeSlotAxis.X, -val)
+                    : (InitCubeSlotAxis.Y, val);
+        }
+        return (InitCubeSlotAxis.X, val);
     }
 
     public void RotateByCurrentArrow(int arrowIndex)
     {
-        if (isTurnAnimating)
-            return;
-
-        currentFaceDir = (InitCubeSlotFaceDir)GameState.Instance.CurrentPlayerFace;
+        currentFaceDir = BallLocationService.GetBallFaceDirByWorldPos(ViewModeManager.Instance.ball);
         GetPiecesForArrow(arrowIndex);
 
-        float angle = 90f;
-        Transform cubeRoot = ViewModeManager.Instance != null
-            ? ViewModeManager.Instance.cubeRoot
-            : null;
-        Quaternion localRotation = Quaternion.AngleAxis(angle, currentSignedLocalAxis);
-        Quaternion worldRotation = cubeRoot != null
-            ? cubeRoot.rotation * localRotation * Quaternion.Inverse(cubeRoot.rotation)
-            : localRotation;
+        // Axis 映射为旋转轴方向向量（世界空间单位向量）
+        Vector3 axisVec = AxisToVector(currentAxis);
 
-        bool isCW = GetAxisSign(currentSignedLocalAxis) > 0;
-        List<TurnAnimationState> animationStates = new List<TurnAnimationState>(currentCubePiece.Count);
+        // 根据箭头方向和所在面决定旋转角度：
+        //   Up 侧（index 0~2）：箭头朝↑，对应 +90°（列向上走）
+        //   Left 侧（index 3~5）：箭头朝←，对应 -90°（行向左走）
+        //   例外：Down 面因相机视角镜像，Left 侧改为 +90°
+        ArrowSide side = arrowIndex < 3 ? ArrowSide.Up : ArrowSide.Left;
+        float angle = GetRotationAngle(currentFaceDir, side);
+        Quaternion rotation = Quaternion.AngleAxis(angle, axisVec);
+        bool isCW = angle > 0f;
 
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
-            Vector3 targetPosition;
+            // TODO: 添加 DOTween 动画
+            // position 绕魔方中心（原点）公转
+            piece.indexCube.position = rotation * piece.indexCube.position;
+            // 世界空间旋转放左边，避免本地坐标轴漂移
+            piece.indexCube.rotation = rotation * piece.indexCube.rotation;
 
-            if (cubeRoot != null)
-            {
-                Vector3 localPos = cubeRoot.InverseTransformPoint(piece.indexCube.position);
-                targetPosition = cubeRoot.TransformPoint(localRotation * localPos);
-            }
-            else
-            {
-                targetPosition = localRotation * piece.indexCube.position;
-            }
-
-            animationStates.Add(new TurnAnimationState
-            {
-                Piece = piece,
-                StartPosition = piece.indexCube.position,
-                TargetPosition = targetPosition,
-                StartRotation = piece.indexCube.rotation,
-                TargetRotation = worldRotation * piece.indexCube.rotation
-            });
-        }
-
-        StartCoroutine(AnimateTurn(animationStates, isCW));
-    }
-
-    private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
-    {
-        isTurnAnimating = true;
-
-        float duration = Mathf.Max(0.01f, turnAnimationDuration);
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
-
-            foreach (TurnAnimationState state in animationStates)
-            {
-                state.Piece.indexCube.position = Vector3.LerpUnclamped(state.StartPosition, state.TargetPosition, t);
-                state.Piece.indexCube.rotation = Quaternion.Slerp(state.StartRotation, state.TargetRotation, t);
-            }
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        foreach (TurnAnimationState state in animationStates)
-        {
-            state.Piece.indexCube.position = state.TargetPosition;
-            state.Piece.indexCube.rotation = state.TargetRotation;
-        }
-
-        ApplyTurnResult(isCW);
-
-        isTurnAnimating = false;
-        GameState.Instance.SetPlayerState(PlayerState.turningFinished);
-    }
-
-    private void ApplyTurnResult(bool isCW)
-    {
-        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
-        {
+            // 更新逻辑坐标（与旋转角度方向一致）
             Vector3Int coord = piece.coord;
-
             if (isCW)
             {
                 switch (currentAxis)
@@ -258,6 +193,7 @@ public class CubeTurnController : MonoBehaviour
             }
             else
             {
+                // -90° = CW 的逆变换
                 switch (currentAxis)
                 {
                     case InitCubeSlot.Axis.X:
@@ -272,6 +208,7 @@ public class CubeTurnController : MonoBehaviour
                 }
             }
 
+            // 用 DirRotator 同步更新每个面的 dir，并重新计算面坐标
             foreach (var surface in piece.surfaces)
             {
                 surface.dir = DirRotator.Rotate(surface.dir, currentAxis, isCW);
@@ -279,55 +216,43 @@ public class CubeTurnController : MonoBehaviour
             }
         }
 
+        // 重建 surfaceCoordMap，确保新坐标可被 BallLocationService 正确查询
         initCubeSlot.RebuildSurfaceCoordMap();
+        // 邻居房间重算不在此处触发：玩家切换到 View3 时 UIManager 会自动广播 calculateNeighbors
+
+        // 旋转完成后将状态改回 turningFinished，解除操作锁定
+        GameState.Instance.SetPlayerState(PlayerState.turningFinished);
+        Debug.Log("CTC: 拧动完成，状态已恢复为 turningFinished");
     }
 
-    private static int GetAxisSign(Vector3 axis)
+    /// <summary>
+    /// 根据所在面和箭头方向决定旋转角度：
+    /// Up 侧：+90°（列向上）
+    /// Left 侧：-90°（行向左），Down 面例外用 +90°（镜像翻转）
+    /// </summary>
+    private float GetRotationAngle(InitCubeSlotFaceDir face, ArrowSide side)
     {
-        if (Mathf.Abs(axis.x) > 0.5f) return axis.x > 0 ? 1 : -1;
-        if (Mathf.Abs(axis.y) > 0.5f) return axis.y > 0 ? 1 : -1;
-        return axis.z > 0 ? 1 : -1;
+        if (side == ArrowSide.Up)
+            return 90f;
+
+        // Left 侧：Down 面镜像，其余一律 -90°
+        if (face == InitCubeSlotFaceDir.Down)
+            return 90f;
+
+        return -90f;
     }
 
-    private static InitCubeSlotAxis VectorToAxis(Vector3 axis)
+    // Axis -> 世界空间单位方向向量，用于 Quaternion.AngleAxis
+    private static Vector3 AxisToVector(InitCubeSlotAxis axis)
     {
-        if (Mathf.Abs(axis.x) > 0.5f) return InitCubeSlotAxis.X;
-        if (Mathf.Abs(axis.y) > 0.5f) return InitCubeSlotAxis.Y;
-        return InitCubeSlotAxis.Z;
-    }
-
-    private static Vector3 GetFaceNormal(InitCubeSlotFaceDir face)
-    {
-        return face switch
+        return axis switch
         {
-            InitCubeSlotFaceDir.Up => Vector3.up,
-            InitCubeSlotFaceDir.Down => Vector3.down,
-            InitCubeSlotFaceDir.Left => Vector3.left,
-            InitCubeSlotFaceDir.Right => Vector3.right,
-            InitCubeSlotFaceDir.Front => Vector3.forward,
-            InitCubeSlotFaceDir.Back => Vector3.back,
-            _ => Vector3.forward
-        };
-    }
-
-    private static Vector3 GetLocalUp(InitCubeSlotFaceDir face)
-    {
-        return face switch
-        {
-            InitCubeSlotFaceDir.Up => Vector3.back,
-            InitCubeSlotFaceDir.Down => Vector3.forward,
+            InitCubeSlotAxis.X => Vector3.right,   // (1, 0, 0)
+            InitCubeSlotAxis.Y => Vector3.up,      // (0, 1, 0)
+            InitCubeSlotAxis.Z => Vector3.forward, // (0, 0, 1)
             _ => Vector3.up
         };
     }
 
-    private static void GetFaceBasis(
-        InitCubeSlotFaceDir face,
-        out Vector3 localNormal,
-        out Vector3 localUp,
-        out Vector3 localRight)
-    {
-        localNormal = GetFaceNormal(face);
-        localUp = GetLocalUp(face);
-        localRight = Vector3.Cross(localUp, -localNormal);
-    }
+    #endregion
 }
