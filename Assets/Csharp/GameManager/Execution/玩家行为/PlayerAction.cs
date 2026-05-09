@@ -8,6 +8,14 @@ public class PlayerAction : MonoBehaviour
 {
     public InitCubeSlot cubeData;
 
+    [Header("物理参数配置（从Project面板拖入）")]
+    public PlayerPhysicsProfile steelProfile;
+    public PlayerPhysicsProfile glassProfile;
+    public PlayerPhysicsProfile bounceProfile;
+
+    [Header("反弹控制（仅Bounce状态）")]
+    public float minBounceSpeed = 1.5f;
+
     [Header("移动设置")]
     public float moveSpeed = 5f;
     /*public float smoothTime = 0.1f;     // 移动平滑时间
@@ -22,7 +30,11 @@ public class PlayerAction : MonoBehaviour
     private Vector3 moveSmoothVelocity;
     private Vector3 velocity = Vector3.zero;*/
     private Rigidbody rb;
+    private Collider col;
     private GameState gs;
+    private bool isBouncing = false;
+    // 当前生效的 profile
+    private PlayerPhysicsProfile currentProfile;
 
     void OnEnable()
     {
@@ -46,11 +58,25 @@ public class PlayerAction : MonoBehaviour
     {
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();///Yiu
+        col = GetComponent<Collider>();
     }
 
     void Start()///YIu
     {
         gs = GameState.Instance;
+        ApplyProfile(steelProfile);
+    }
+    void FixedUpdate()//Yiu
+    {
+        // Bounce 状态：速度低于阈值时停止反弹，恢复正常移动
+        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce && isBouncing)
+        {
+            if (rb.velocity.magnitude < minBounceSpeed)
+            {
+                isBouncing = false;
+                Debug.Log("Bounce反弹结束，恢复正常移动");
+            }
+        }
     }
 
     //玩家打开/关闭背包系统的UI
@@ -62,16 +88,18 @@ public class PlayerAction : MonoBehaviour
     void Move(Vector3 moveDir)
     {
         ///Yiu
+        // Bounce 反弹中不接受移动输入
+        if (isBouncing) return;
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
+        float speed = currentProfile != null ? currentProfile.moveSpeed : 5f;
         if (moveDir.magnitude > 0.1f)
         {
-            Vector3 targetVel = moveDir.normalized * moveSpeed;
-            targetVel.y = rb.velocity.y; // 保持垂直速度（重力/弹跳）
+            Vector3 targetVel = moveDir.normalized * speed;
+            targetVel.y = rb.velocity.y;
             rb.velocity = targetVel;
         }
         else
         {
-            // 停止水平移动，保持垂直速度
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
         }
         #region （已注释） 欧的旧移动CC
@@ -191,16 +219,58 @@ public class PlayerAction : MonoBehaviour
     void OnMatChanged(PlayerMatState newMat)
     {
         Debug.Log($"PlayerAction: 材质切换为 {newMat}");
-
-        // TODO: 完整RB改造后在此更新物理参数
-        // 目前先做标记，后续改CC→RB时补充：
-        // rb.mass = GetProfileForMat(newMat).mass;
-        // rb.drag = GetProfileForMat(newMat).drag;
-        // collider.material.bounciness = GetProfileForMat(newMat).bounciness;
-
-        // TODO: 更新小球视觉材质
-        // var renderer = GetComponent<Renderer>();
-        // renderer.material = matForState[newMat];
+        PlayerPhysicsProfile profile = GetProfileForMat(newMat);
+        ApplyProfile(profile);
+        // 切换材质时取消反弹状态
+        isBouncing = false;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        // Bounce 状态：碰撞速度够就进入反弹模式
+        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce)
+        {
+            if (rb.velocity.magnitude >= minBounceSpeed)
+            {
+                isBouncing = true;
+            }
+        }
+    }
+    /// <summary>
+    /// 应用物理参数到 Rigidbody 和 Collider
+    /// </summary>
+    void ApplyProfile(PlayerPhysicsProfile profile)
+    {
+        if (profile == null) return;
+        currentProfile = profile;
+        rb.mass = profile.mass;
+        rb.drag = profile.drag;
+        rb.angularDrag = profile.angularDrag;
+        if (col != null)
+        {
+            PhysicMaterial pm = col.sharedMaterial;
+            if (pm == null)
+            {
+                pm = new PhysicMaterial("PlayerPhysMat");
+                col.material = pm;
+            }
+            pm.bounciness = profile.bounciness;
+            pm.dynamicFriction = profile.friction;
+            pm.staticFriction = profile.friction;
+            pm.bounceCombine = PhysicMaterialCombine.Maximum;
+            pm.frictionCombine = PhysicMaterialCombine.Average;
+        }
+        Debug.Log($"ApplyProfile: mass={profile.mass}, drag={profile.drag}, " +
+                  $"bounce={profile.bounciness}, friction={profile.friction}, speed={profile.moveSpeed}");
+    }
+    PlayerPhysicsProfile GetProfileForMat(PlayerMatState mat)
+    {
+        return mat switch
+        {
+            PlayerMatState.Steel => steelProfile,
+            PlayerMatState.Glass => glassProfile,
+            PlayerMatState.Bounce => bounceProfile,
+            _ => steelProfile
+        };
+    }
 }
