@@ -11005,10 +11005,7 @@ GameObject:
   - component: {fileID: 2018642123}
   - component: {fileID: 2018642124}
   - component: {fileID: 2018642125}
-<<<<<<< HEAD
-=======
   - component: {fileID: 2018642126}
->>>>>>> 619e000681b990ac66d1701f8f6858e14374344f
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -11029,17 +11026,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeData: {fileID: 773962225}
-<<<<<<< HEAD
-  moveSpeed: 10
-  smoothTime: 0.05
-  gravity: -15
-=======
   steelProfile: {fileID: 11400000, guid: 63ee4ec163051dd42bdd6cc0fcd1b496, type: 2}
   glassProfile: {fileID: 11400000, guid: 8e254070b065e5540ab0e210c4b4c65f, type: 2}
   bounceProfile: {fileID: 11400000, guid: 3fabb3e5cf90ce94a9609f4ca113f5c5, type: 2}
   minBounceSpeed: 1.5
   moveSpeed: 6
->>>>>>> 619e000681b990ac66d1701f8f6858e14374344f
   interactRange: 3
 --- !u!136 &2018642119
 CapsuleCollider:
@@ -11194,10 +11185,6 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-<<<<<<< HEAD
-  m_Constraints: 0
-  m_CollisionDetection: 0
-=======
   m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &2018642126
@@ -11226,7 +11213,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4851905859714701077}
   m_PrefabAsset: {fileID: 0}
->>>>>>> 619e000681b990ac66d1701f8f6858e14374344f
 --- !u!1 &2070858262
 GameObject:
   m_ObjectHideFlags: 0
@@ -13194,22 +13180,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 8666836165289351299, guid: 88e7806c3a53b03459d7006f34ad8223,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.9910731
-      objectReference: {fileID: 0}
-    - target: {fileID: 8666836165289351299, guid: 88e7806c3a53b03459d7006f34ad8223,
-        type: 3}
-      propertyPath: m_Center.x
-      value: -0.77735597
-      objectReference: {fileID: 0}
-    - target: {fileID: 8666836165289351299, guid: 88e7806c3a53b03459d7006f34ad8223,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 2.0590608
-=======
     - target: {fileID: 3692391320806384701, guid: 88e7806c3a53b03459d7006f34ad8223,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -13269,7 +13239,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
->>>>>>> 619e000681b990ac66d1701f8f6858e14374344f
       objectReference: {fileID: 0}
     - target: {fileID: 8714564332879867106, guid: 88e7806c3a53b03459d7006f34ad8223,
         type: 3}
