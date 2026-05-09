@@ -1,4 +1,5 @@
 using UnityEngine;
+using static InitCubeSlot;
 
 /// <summary>
 /// 玩家与道具（Spring/Wind/Plate）的碰撞交互。
@@ -7,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class ItemInteractionController : MonoBehaviour
 {
+    [Header("魔方数据引用")]
+    public InitCubeSlot cubeData;
+
     [Header("Plate 设置")]
     public float plateMoveDistance = 1f;
     public float plateMoveSpeed = 2f;
@@ -20,13 +24,16 @@ public class ItemInteractionController : MonoBehaviour
     [Header("Bounce + Plate 设置")]
     public int bounceCountRequired = 3;
 
+    [Header("门碰撞回弹力度")]
+    public float doorBounceForce = 2f;        // 撞门弹回力度
+
     private Rigidbody rb;
     private GameState gs;
-
     // Bounce + Plate 计数
     private int bounceCountOnPlate = 0;
     private Collider currentPlateCollider = null;
-    private Coroutine plateResetCoroutine = null;    // 新增
+    private Coroutine plateResetCoroutine = null;    
+
     [Header("Bounce + Plate 归零延迟")]
     public float plateResetDelay = 2f;               // 新增：离开后多久归零
 
@@ -103,6 +110,12 @@ public class ItemInteractionController : MonoBehaviour
             {
                 Debug.Log("Steel + Wind: 无效果");
             }
+            return;
+        }
+        // ---------- Door ----------
+        if (other.CompareTag("Door"))
+        {
+            HandleDoorCollision(other);
             return;
         }
     }
@@ -230,6 +243,162 @@ public class ItemInteractionController : MonoBehaviour
 
         // TODO: 禁止 fan -Y 方向移动（后续在 PlayerAction.Move 里过滤）
     }
+
+    // ==================== 门碰撞 ====================
+
+    void HandleDoorCollision(Collider doorCollider)
+    {
+        DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
+        if (doorCtrl == null)
+        {
+            Debug.Log("Door碰撞：未找到DoorController");
+            return;
+        }
+
+        var mat = gs.CurrentMatState;
+        float playerSpeed = rb.velocity.magnitude;
+        bool isPassable = doorCtrl.GetIsPassable();
+        string doorMatName = doorCtrl.doorMat.ToString();
+        string passStr = isPassable ? "1" : "0";
+        string openStr = doorCtrl.IsOpened ? "1" : "0";
+
+        // 1. 通道未连通
+        if (!isPassable)
+        {
+            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");
+            BounceBackFromDoor(doorCollider);
+            // TODO: 广播UI提示
+            return;
+        }
+
+        // 2. Steel
+        if (mat == PlayerMatState.Steel)
+        {
+            if (doorCtrl.doorMat == DoorController.DoorMat.Soft)
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于钢铁球无法撞碎软门");
+                BounceBackFromDoor(doorCollider);
+                return;
+            }
+
+            if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
+                ExecuteDoorTransition(doorCollider);
+            }
+            else
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
+                BounceBackFromDoor(doorCollider);
+            }
+            return;
+        }
+
+        // 3. Glass / Bounce
+        if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
+        {
+            if (doorCtrl.doorMat == DoorController.DoorMat.Soft)
+            {
+                if (playerSpeed >= doorCtrl.softDoorHitSpeed)
+                {
+                    doorCtrl.Open();
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");
+                    ExecuteDoorTransition(doorCollider);
+                }
+                else
+                {
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于速度不足({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");
+                    BounceBackFromDoor(doorCollider);
+                }
+                return;
+            }
+
+            if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
+                ExecuteDoorTransition(doorCollider);
+            }
+            else
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
+                BounceBackFromDoor(doorCollider);
+            }
+            return;
+        }
+    }
+
+    /// <summary>
+    /// 撞门弹回
+    /// </summary>
+    void BounceBackFromDoor(Collider doorCollider)
+    {
+        Vector3 bounceDir = (transform.position - doorCollider.transform.position).normalized;
+        bounceDir.y = 0; // 只水平弹回
+        rb.velocity = Vector3.zero;
+        rb.AddForce(bounceDir * doorBounceForce, ForceMode.Impulse);
+    }
+
+    /// <summary>
+    /// 执行过门传送（调用原有逻辑）
+    /// </summary>
+    void ExecuteDoorTransition(Collider doorCollider)
+    {
+        DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
+        if (doorCtrl == null) return;
+
+        var gs_local = GameState.Instance;
+        if (gs_local == null) return;
+
+        int id = gs_local.CurrentRoomID;
+        Vector3Int DoorDir = Vector3Int.RoundToInt(doorCtrl.DoorinRoomVector);
+        Vector3Int oppositeDir = -DoorDir;
+
+        for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)
+        {
+            if (DoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])
+            {
+                FaceState face = cubeData.rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);
+                if (face.isPassable)
+                {
+                    RoomInstanceManager roomInstanceManager = FindObjectOfType<RoomInstanceManager>();
+                    foreach (var roomId in roomInstanceManager.GetNeighborRoomIds())
+                    {
+                        int NeighborRoomID = roomId;
+                        if (NeighborRoomID != id)
+                        {
+                            TryFindTrueNeighborRoom(NeighborRoomID, oppositeDir);
+                            Debug.Log("NeighborRoomID是——" + roomId);
+                        }
+                    }
+                    Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
+                    RoomPreloadController rpc = FindObjectOfType<RoomPreloadController>();
+                    transform.position = new Vector3(0, 40, 0);
+                    rpc.TriggerPreloadComplete();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void TryFindTrueNeighborRoom(int id, Vector3Int ODoorDir)
+    {
+        for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)
+        {
+            if (ODoorDir == FaceOffset[cubeData.rooms[id].dirMap[i]])
+            {
+                FaceState face = cubeData.rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);
+                if (face.isPassable)
+                {
+                    GameState.Instance.CurrentRoomID = id;
+                }
+                else
+                {
+                    Debug.Log("开门失败2");
+                }
+            }
+        }
+    }
+
 
     // ==================== 工具 ====================
 

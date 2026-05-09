@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// 门控制器：门属性 + 门向量计算（原 DoorVectorReturn 逻辑保留）。
-/// 挂在每扇门的 GameObject 上。
-/// </summary>
 public class DoorController : MonoBehaviour
 {
     // ==================== 门属性 ====================
@@ -13,6 +9,9 @@ public class DoorController : MonoBehaviour
     [Header("初始化设定（不变）")]
     public DoorMat doorMat = DoorMat.Hard;
     public float softDoorHitSpeed = 5f;
+
+    [Header("方向引用（从dir_door下拖入对应方向物体，如left）")]
+    public Transform dirReference;
 
     [Header("运行时状态")]
     [SerializeField] private bool _isOpened = false;
@@ -27,9 +26,6 @@ public class DoorController : MonoBehaviour
         // TODO: 播放开门动画
     }
 
-    /// <summary>
-    /// 查询此门方向的 isPassable（从 Room.FaceState 读取）
-    /// </summary>
     public bool GetIsPassable()
     {
         var gs = GameState.Instance;
@@ -54,7 +50,19 @@ public class DoorController : MonoBehaviour
         return false;
     }
 
-    // ==================== 门向量计算（原 DoorVectorReturn，保留原逻辑）====================
+    /// <summary>
+    /// 打印当前门的完整状态
+    /// </summary>
+    public void LogDoorStatus()
+    {
+        Debug.Log($"[门状态] {gameObject.name} | " +
+                  $"DoorMat={doorMat} | " +
+                  $"isOpened={_isOpened} | " +
+                  $"isPassable={GetIsPassable()} | " +
+                  $"DoorVector={DoorinRoomVector}");
+    }
+
+    // ==================== 门向量计算（原 DoorVectorReturn 逻辑）====================
 
     [Header("门向量（运行时自动计算）")]
     public Vector3 DoorinRoomVector;
@@ -65,19 +73,17 @@ public class DoorController : MonoBehaviour
         ReturnDoorVector();
     }
 
-    /// <summary>
-    /// 原作者逻辑，保留不变。
-    /// </summary>
     void ReturnDoorVector()
     {
-        // 安全检查：层级不够时跳过计算
-        if (transform.parent == null
-            || transform.parent.parent == null
-            || transform.parent.parent.parent == null)
-            return;
+        // 安全检查
+        if (dirReference == null) return;
+        if (dirReference.parent == null) return;
 
-        Vector3 dir = transform.parent.localPosition;
-        Vector3 parentPos = transform.parent.parent.parent.rotation * dir;
+        // dirReference = dir_door/left，其 localPosition = (-5,0,0)
+        // dirReference.parent = dir_door
+        // dirReference.parent.parent = perfab根节点
+        Vector3 dir = dirReference.localPosition;
+        Vector3 parentPos = dirReference.parent.parent.rotation * dir;
 
         Quaternion rotation = Quaternion.FromToRotation(
             new Vector3(0, -1, 0),
