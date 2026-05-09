@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -171,6 +172,11 @@ public class InitCubeSlot : MonoBehaviour
         InitRooms();
     }
 
+    private void Start()
+    {
+        GameEvents.calculateNeighbors();
+    }
+
     #region Init
     private void InitSlots()
     {
@@ -211,8 +217,9 @@ public class InitCubeSlot : MonoBehaviour
             room.roomID = i;
             i++;
         }
-
-        GameEvents.calculateNeighbors();
+        
+        //改到start里
+        //GameEvents.calculateNeighbors();
     }
     #endregion
 

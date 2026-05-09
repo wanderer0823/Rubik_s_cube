@@ -8,26 +8,41 @@ public class PlayerAction : MonoBehaviour
 {
     public InitCubeSlot cubeData;
 
+    [Header("物理参数配置（从Project面板拖入）")]
+    public PlayerPhysicsProfile steelProfile;
+    public PlayerPhysicsProfile glassProfile;
+    public PlayerPhysicsProfile bounceProfile;
+
+    [Header("反弹控制（仅Bounce状态）")]
+    public float minBounceSpeed = 1.5f;
+
     [Header("移动设置")]
     public float moveSpeed = 5f;
-    public float smoothTime = 0.1f;     // 移动平滑时间
-    public float gravity = -15f;
+    /*public float smoothTime = 0.1f;     // 移动平滑时间
+    public float gravity = -15f;*/
 
     [Header("检测设置")]
     public float interactRange=3.0f;
 
-    private CharacterController controller;
+    /*private CharacterController controller;
     private Vector3 CurrentMoveVelocity;
     private Vector3 FinalMoveVelocity;
     private Vector3 moveSmoothVelocity;
-    private Vector3 velocity = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;*/
+    private Rigidbody rb;
+    private Collider col;
+    private GameState gs;
+    private bool isBouncing = false;
+    // 当前生效的 profile
+    private PlayerPhysicsProfile currentProfile;
 
     void OnEnable()
     {
         GameEvents.OnTabExecute += OnTabPressed;
         GameEvents.OnMoveExecute += Move;
         //GameEvents.OnOpenDoorExecute += TryOpenDoor;
-        Debug.Log("PlayerController 事件订阅完成");
+        // ===== 新增 =====
+        GameEvents.OnMatChangeExecute += OnMatChanged;
     }
 
     void OnDisable()
@@ -35,14 +50,35 @@ public class PlayerAction : MonoBehaviour
         GameEvents.OnTabExecute -= OnTabPressed;
         GameEvents.OnMoveExecute -= Move;
         //GameEvents.OnOpenDoorExecute -= TryOpenDoor;
+        // ===== 新增 =====
+        GameEvents.OnMatChangeExecute -= OnMatChanged;
     }
 
     void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();///Yiu
+        col = GetComponent<Collider>();
     }
 
- 
+    void Start()///YIu
+    {
+        gs = GameState.Instance;
+        ApplyProfile(steelProfile);
+    }
+    void FixedUpdate()//Yiu
+    {
+        // Bounce 状态：速度低于阈值时停止反弹，恢复正常移动
+        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce && isBouncing)
+        {
+            if (rb.velocity.magnitude < minBounceSpeed)
+            {
+                isBouncing = false;
+                Debug.Log("Bounce反弹结束，恢复正常移动");
+            }
+        }
+    }
+
     //玩家打开/关闭背包系统的UI
     void OnTabPressed()
     {
@@ -51,7 +87,23 @@ public class PlayerAction : MonoBehaviour
     //玩家wasd移动
     void Move(Vector3 moveDir)
     {
-        Debug.Log("移动中");
+        ///Yiu
+        // Bounce 反弹中不接受移动输入
+        if (isBouncing) return;
+        moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
+        float speed = currentProfile != null ? currentProfile.moveSpeed : 5f;
+        if (moveDir.magnitude > 0.1f)
+        {
+            Vector3 targetVel = moveDir.normalized * speed;
+            targetVel.y = rb.velocity.y;
+            rb.velocity = targetVel;
+        }
+        else
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+        #region （已注释） 欧的旧移动CC
+        /*Debug.Log("移动中");
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
         if (moveDir.magnitude > 0.1f)
         {
@@ -87,43 +139,13 @@ public class PlayerAction : MonoBehaviour
         // 组合移动和重力
         Vector3 finalVelocity = CurrentMoveVelocity;
         finalVelocity.y = velocity.y;
-        controller.Move(finalVelocity * Time.deltaTime);
-    }
-
-    //按e尝试开门
-    void TryOpenDoor()
-    {
-        Debug.Log("正在尝试开门");
-        #region 张奕忻注释
-        //执行此函数时玩家已经按下E，写一个-----------------
-        //如果 玩家碰撞体没有检测到Tag"Door"，则返回。
-        //如果 检测到door，则获取这个门的isPassible=true?
-        //if(isPassible==false):
-        //debug"开门失败“后续添加失败特效。
-        //if(isPassible==true):
-        //玩家成功从View3开门切换房间了！！
-        //广播到：VMM，（0） 广播进入异步转场（暂无脚本）：后台进行以下计算和广播：
-        //             （1） 用GS方法更新GameState.CurrentPlayerxxx,,,
-        //             （2） 更新完玩家新位置，RPC订阅VMM的广播，计算一次邻居房间信息。
-        //             （3） 实例化房间perfab的脚本 订阅VMM广播，spawnRoom一次。
+        controller.Move(finalVelocity * Time.deltaTime);*/
         #endregion
-
-     
     }
 
-    private void OnTriggerEnter(Collider hit)
-    {
-        if (hit.CompareTag("Door"))//带tag
-        {
-            Debug.Log("检测到门");
-            TryOpenDoor_(hit);
-        }
-        else
-        {
-            return;
-        }
-    }
-
+    ///Yiu：注释掉TryOpenDoor_()
+    #region （已注释） 欧的旧尝试开门
+    /*
     private void TryOpenDoor_(Collider hit)
     {
         DoorVectorReturn Door = hit.GetComponent<DoorVectorReturn>();
@@ -156,8 +178,10 @@ public class PlayerAction : MonoBehaviour
                     }
                     //广播
                     Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
-                    RoomPreloadController innn = FindObjectOfType<RoomPreloadController>();
+                    controller.enabled = false;     // 临时禁用控制器
                     transform.position = new Vector3(0, 40, 0);
+                    controller.enabled = true;      // 重新启用
+                    RoomPreloadController innn = FindObjectOfType<RoomPreloadController>();
                     innn.TriggerPreloadComplete();//触发跳转
                     break;
                 }
@@ -169,7 +193,6 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
-
     private void TryFindTrueNeighborRoom(int id,Vector3Int ODoorDir)
     {
         for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)//遍历现在房间的dirmap(六个方向墙面)
@@ -189,5 +212,67 @@ public class PlayerAction : MonoBehaviour
                 }
             }
         }
+    }
+    
+    */
+    #endregion
+
+    // ===== 新增：材质切换响应 =====
+    void OnMatChanged(PlayerMatState newMat)
+    {
+        Debug.Log($"PlayerAction: 材质切换为 {newMat}");
+        PlayerPhysicsProfile profile = GetProfileForMat(newMat);
+        ApplyProfile(profile);
+        // 切换材质时取消反弹状态
+        isBouncing = false;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Bounce 状态：碰撞速度够就进入反弹模式
+        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce)
+        {
+            if (rb.velocity.magnitude >= minBounceSpeed)
+            {
+                isBouncing = true;
+            }
+        }
+    }
+    /// <summary>
+    /// 应用物理参数到 Rigidbody 和 Collider
+    /// </summary>
+    void ApplyProfile(PlayerPhysicsProfile profile)
+    {
+        if (profile == null) return;
+        currentProfile = profile;
+        rb.mass = profile.mass;
+        rb.drag = profile.drag;
+        rb.angularDrag = profile.angularDrag;
+        if (col != null)
+        {
+            PhysicMaterial pm = col.sharedMaterial;
+            if (pm == null)
+            {
+                pm = new PhysicMaterial("PlayerPhysMat");
+                col.material = pm;
+            }
+            pm.bounciness = profile.bounciness;
+            pm.dynamicFriction = profile.friction;
+            pm.staticFriction = profile.friction;
+            pm.bounceCombine = PhysicMaterialCombine.Maximum;
+            pm.frictionCombine = PhysicMaterialCombine.Average;
+        }
+        Debug.Log($"ApplyProfile: mass={profile.mass}, drag={profile.drag}, " +
+                  $"bounce={profile.bounciness}, friction={profile.friction}, speed={profile.moveSpeed}");
+    }
+    PlayerPhysicsProfile GetProfileForMat(PlayerMatState mat)
+    {
+        return mat switch
+        {
+            PlayerMatState.Steel => steelProfile,
+            PlayerMatState.Glass => glassProfile,
+            PlayerMatState.Bounce => bounceProfile,
+            _ => steelProfile
+        };
     }
 }

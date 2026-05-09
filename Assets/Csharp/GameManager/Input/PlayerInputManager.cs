@@ -31,7 +31,7 @@ public class PlayerInputManager
             gm.RequestViewSwitch();
 
         if (Input.GetKeyDown(KeyCode.E))
-            gm.RequestOpenDoor();
+            gm.RequestInteract();
 
         //欧：检测移动方向
         if (TryGetMoveInput(out Vector3 moveDir) && ShouldMoveDueToHoldTime(moveDir))
@@ -67,6 +67,12 @@ public class PlayerInputManager
         if(TryGetMouseMoveInput(out Vector2 mouseMove))
         {
             gm.RequestMouseMove(mouseMove);
+        }
+        // ===== 新增：滚轮检测 =====
+        float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scrollDelta) > 0.01f)
+        {
+            gm.RequestScroll(scrollDelta);
         }
     }
 

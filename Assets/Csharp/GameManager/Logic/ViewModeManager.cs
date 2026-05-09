@@ -31,7 +31,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnTabRequest += CheckTab;
         GameEvents.OnMoveRequest += CheckMove;
         GameEvents.OnViewSwitchRequest += CheckViewSwitch;
-        GameEvents.OnOpenDoorRequest += CheckOpenDoor;
+        //GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
         GameEvents.OnRotateFinishRequest += CheckRotateFinish;
         GameEvents.OnMouseLookRequest += CheckMouseMove; //欧
@@ -40,8 +40,10 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnArrowsClickRequest += CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
         GameEvents.OnBallSpaceUpdateRequest += CheckBallSpaceUpdate;
-
-        Debug.Log("VMM:初始化完成。");
+        //新增
+        GameEvents.OnInteractRequest += CheckInteract;
+        GameEvents.OnScrollRequest += CheckScroll;
+        GameEvents.OnMatChangeRequest += CheckMatChange;
     }
 
     public void OnDisable()
@@ -50,7 +52,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnTabRequest -= CheckTab;
         GameEvents.OnMoveRequest -= CheckMove;
         GameEvents.OnViewSwitchRequest -= CheckViewSwitch;
-        GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
+        //GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
         GameEvents.OnRotateRequest -= CheckRotate;
         GameEvents.OnRotateFinishRequest -= CheckRotateFinish;
         GameEvents.OnMouseLookRequest -= CheckMouseMove; //欧
@@ -59,6 +61,10 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnArrowsClickRequest -= CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
         GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
+        //新增
+        GameEvents.OnInteractRequest += CheckInteract;
+        GameEvents.OnScrollRequest += CheckScroll;
+        GameEvents.OnMatChangeRequest += CheckMatChange;
     }
 
     /// <summary> 邻居预加载接口：在 View3 切换或开门转场时调用 RoomPreloadController.ExecutePreload() </summary>
@@ -88,40 +94,80 @@ public class ViewModeManager : MonoBehaviour
     #region 监听订阅函数
     void CheckTab()
     {
-        GameEvents.onTabExecute();
+        if (gs.IsBagOpen)
+        {
+            // 背包已开 → 关闭
+            gs.CloseBag();
+            GameEvents.onBagCloseExecute();
+            Debug.Log("VMM: 背包关闭");
+        }
+        else
+        {
+            // 背包未开 → 检查是否允许打开
+            if (!CheckPlayerState(PlayerState.isMoving)
+                && !CheckPlayerState(PlayerState.turningFinished)
+                && !CheckPlayerState(PlayerState.rotatingFinished))
+                return;
+
+            gs.OpenBag();
+            GameEvents.onBagOpenExecute();
+            Debug.Log("VMM: 背包打开");
+        }
     }
 
     void CheckMove(Vector3 moveDir)
     {
-        if (!CheckViewMode(ViewMode.View3)
-            ||!CheckPlayerState(PlayerState.isMoving) )
+        if (!CheckViewMode(ViewMode.View3))
             return;
-        GameEvents.onMoveExecute(moveDir); 
+
+        // 移动时自动关背包
+        if (CheckPlayerState(PlayerState.isOpeningBag))
+        {
+            gs.CloseBag();
+            GameEvents.onBagCloseExecute();
+        }
+
+        if (!CheckPlayerState(PlayerState.isMoving))
+            return;
+
+        GameEvents.onMoveExecute(moveDir);
     }
 
     void CheckViewSwitch()//F
     {
+        // 背包打开时先关背包再切视角
+        if (CheckPlayerState(PlayerState.isOpeningBag))
+        {
+            gs.CloseBag();
+            GameEvents.onBagCloseExecute();
+        }
+
         if (!CheckPlayerState(PlayerState.rotatingFinished)
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
             return;
-        //更新view mode
-        gs.FSetView();
 
+        gs.FSetView();
         GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
 
-    void CheckOpenDoor()//E
+    /*void CheckOpenDoor()//E
     {
         if (!CheckViewMode(ViewMode.View3)
             || !CheckPlayerState(PlayerState.isMoving))
             return;
         gs.SetPlayerState(PlayerState.isWaiting);
         GameEvents.onOpenDoorExecute();
-    }
+    }*/
 
     void CheckDirectViewSwitch(ViewMode targetMode)
     {
+        // 背包打开时先关背包再切视角
+        if (CheckPlayerState(PlayerState.isOpeningBag))
+        {
+            gs.CloseBag();
+            GameEvents.onBagCloseExecute();
+        }
         if (!CheckPlayerState(PlayerState.rotatingFinished)
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
@@ -201,7 +247,43 @@ public class ViewModeManager : MonoBehaviour
         gs.SetPlayerState(PlayerState.isTurning);
         GameEvents.onArrowsExecute(number);
     }
+    // ===== yiu新增：E键交互 =====
+    void CheckInteract()
+    {
+        // 仅 View3 + isMoving 时允许E交互
+        if (!CheckViewMode(ViewMode.View3)
+            || !CheckPlayerState(PlayerState.isMoving))
+            return;
+        GameEvents.onInteractExecute();
+        Debug.Log("VMM: E键交互执行");
+    }
 
+    // ===== 新增：滚轮分流 =====
+    void CheckScroll(float delta)
+    {
+        if (CheckPlayerState(PlayerState.isOpeningBag))
+        {
+            // 背包打开时 → 背包滚动
+            GameEvents.onBagScrollExecute(delta);
+        }
+        else if (CheckPlayerState(PlayerState.isGrabbing)
+                 && CheckViewMode(ViewMode.View3))
+        {
+            // 举起物体时 → 旋转物体
+            GameEvents.onGrabRotateExecute(delta);
+        }
+        // 其他状态下滚轮无效
+    }
+
+    // ===== 新增：背包内材质切换 =====
+    void CheckMatChange(PlayerMatState targetMat)
+    {
+        if (!CheckPlayerState(PlayerState.isOpeningBag))
+            return;
+        gs.SetMatState(targetMat);
+        GameEvents.onMatChangeExecute(targetMat);
+        Debug.Log("VMM: 材质切换为 " + targetMat);
+    }
 
     #endregion
     #endregion
