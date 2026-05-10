@@ -127,7 +127,7 @@ public class ViewModeManager : MonoBehaviour
             GameEvents.onBagCloseExecute();
         }
 
-        if (!CheckPlayerState(PlayerState.isMoving))
+        if (!CheckPlayerState(PlayerState.isMoving)&&!CheckPlayerState(PlayerState.isGrabbing))
             return;
 
         GameEvents.onMoveExecute(moveDir);
@@ -177,13 +177,28 @@ public class ViewModeManager : MonoBehaviour
 
         Quaternion rotation_R = Quaternion.FromToRotation(CubeRotateController.CurrentGDirinMF,new Vector3(0, -1, 0));//转魔方
         Quaternion qStart = Quaternion.Euler(270, 0, 0);
+        //====YIU====
+        Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
+        GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID);
+        Debug.Log($"旋转计算: CurrentGDirinMF={CubeRotateController.CurrentGDirinMF}, RoomID={gs.CurrentRoomID}, pieceObj={pieceObj?.name}");
+        //=========
         Quaternion qEnd = cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID).transform.localRotation;
+        //====YIU====
+        if(pieceObj.transform.parent == cubeRoot)
+        {
+            qEnd = pieceObj.transform.localRotation;
+        }
+        //========
         Debug.Log("可恶这是什么" + qEnd.eulerAngles);
         Quaternion rotation_T = qEnd * Quaternion.Inverse(qStart);//拧魔方
         Quaternion rotation = rotation_R * rotation_T;
         GameObject currentRoom = cubeData.CurrentRoom;
+        Debug.Log($"旋转计算: currentRoom={currentRoom?.name}, rotation_R={rotation_R.eulerAngles}, rotation_T={rotation_T.eulerAngles}, final={rotation.eulerAngles}");
+        Debug.Log($"旋转前: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
+
         currentRoom.transform.rotation *= rotation;
-        
+
+        Debug.Log($"旋转后: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
 
         GameEvents.onViewSwitchExecute(gs.CurrentView);
     }
@@ -231,8 +246,10 @@ public class ViewModeManager : MonoBehaviour
     //欧：订阅GM的鼠标移动请求事件
     void CheckMouseMove(Vector2 mouseMove)
     {
-        if (!CheckViewMode(ViewMode.View3)
-            || !CheckPlayerState(PlayerState.isMoving))
+        if (!CheckViewMode(ViewMode.View3))
+            return;
+        if(!CheckPlayerState(PlayerState.isMoving)
+            &&!CheckPlayerState(PlayerState.isGrabbing))
             return;
         GameEvents.onMouseLookExecute(mouseMove);
     }

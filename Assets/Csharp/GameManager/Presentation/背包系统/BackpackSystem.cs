@@ -70,45 +70,10 @@ public class BackpackSystem : MonoBehaviour
 
     void Start()
     {
-        InitMatSlots();
         InitDetailPanel();
     }
 
     // ===== 初始化 =====
-
-    private void InitMatSlots()
-    {
-        /*if (matSlots == null || matSlots.Count < 3)
-        {
-            Debug.LogWarning("BackpackSystem: matSlots 未配置满3个");
-            return;
-        }
-
-        matSlots[0].Init(this,
-            BackpackSlotUI.SlotType.Material,
-            "Steel",
-            "钢铁球：质量大，可踩压力板开门",
-            () => GameEvents.onMatChangeRequest(PlayerMatState.Steel),
-            steelDetailSprite       // 传入图片
-);
-
-        matSlots[1].Init(this,
-            BackpackSlotUI.SlotType.Material,
-            "Glass",
-            "玻璃球：可被弹簧弹起，可被风吹动，高速可撞碎软门",
-            () => GameEvents.onMatChangeRequest(PlayerMatState.Glass),
-            glassDetailSprite
-        );
-
-        matSlots[2].Init(this,
-            BackpackSlotUI.SlotType.Material,
-            "Bounce",
-            "弹力球：拥有玻璃球全部能力，且可在所有表面反弹，反复踩压力板也可开门",
-            () => GameEvents.onMatChangeRequest(PlayerMatState.Bounce),
-            bounceDetailSprite
-        );*/
-    }
-
     private void InitDetailPanel()
     {
         if (detailPopupPanel == null) return;
@@ -260,17 +225,18 @@ public class BackpackSystem : MonoBehaviour
         // 检查是否已有该材质
         foreach (var existingSlot in matSlots)
         {
-            if (existingSlot != null && existingSlot.gameObject.activeSelf)
+            if (existingSlot != null && existingSlot.gameObject.name == matName)
                 return;
         }
 
         if (matSlotPrefab == null || matSection == null)
         {
-            Debug.LogWarning("BackpackSystem: 材质预制体或容器未配置");
+            Debug.LogError("BackpackSystem: 材质预制体或容器未配置");
             return;
         }
 
         GameObject go = Instantiate(matSlotPrefab, matSection);
+        go.name = matName;
         BackpackSlotUI newSlot = go.GetComponent<BackpackSlotUI>();
 
         if (newSlot == null)
@@ -285,7 +251,8 @@ public class BackpackSystem : MonoBehaviour
             matName,
             desc,
             () => GameEvents.onMatChangeRequest(matType),
-            detail
+            detail,
+            matType
         );
 
         matSlots.Add(newSlot);
@@ -329,12 +296,9 @@ public class BackpackSystem : MonoBehaviour
         foreach (var slot in matSlots)
         {
             if (slot == null) continue;
-            // 暂时全部取消高亮，由点击回调后刷新
-            slot.SetSelected(false);
+            bool match = slot.LinkedMatState.HasValue && slot.LinkedMatState.Value == currentMat;
+            slot.SetSelected(match);
         }
-
-        // TODO: 需要在 BackpackSlotUI 里记录 matType 才能精确匹配
-        // 目前先不高亮，功能不影响
     }
 
     private void OnMatChanged(PlayerMatState newMat)

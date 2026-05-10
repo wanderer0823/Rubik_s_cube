@@ -78,10 +78,11 @@ public class ItemInteractionController : MonoBehaviour
                     HandleBouncePlate(other);
                 }
             }
-            else
+            else if(mat == PlayerMatState.Glass)
             {
                 Debug.Log("Glass + Plate: 无效果");
             }
+            else
             return;
         }
 
@@ -92,10 +93,11 @@ public class ItemInteractionController : MonoBehaviour
             {
                 HandleSpring(other);
             }
-            else
+            else if (mat == PlayerMatState.Steel)
             {
                 Debug.Log("Steel + Spring: 无效果");
             }
+            else
             return;
         }
 
@@ -106,11 +108,11 @@ public class ItemInteractionController : MonoBehaviour
             {
                 HandleWind(other);
             }
-            else
+            else if (mat == PlayerMatState.Steel)
             {
                 Debug.Log("Steel + Wind: 无效果");
             }
-            return;
+            else return;
         }
         // ---------- Door ----------
         if (other.CompareTag("Door"))

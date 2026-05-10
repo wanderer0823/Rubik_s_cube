@@ -34,15 +34,14 @@ public class MatPickup : MonoBehaviour
     {
         if (isPickedUp) return;
 
-        Transform ball = ViewModeManager.Instance?.ball;
-        if (ball == null) return;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
 
-        float dist = Vector3.Distance(ball.position, transform.position);
+        float dist = Vector3.Distance(player.transform.position, transform.position);
         if (dist > pickupRange) return;
 
         isPickedUp = true;
 
-        // Ìí¼Óµ½±³°ü
         var backpack = FindObjectOfType<BackpackSystem>();
         if (backpack != null)
         {

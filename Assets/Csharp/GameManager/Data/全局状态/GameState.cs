@@ -29,7 +29,8 @@ public enum PlayerMatState
 {
     Steel,//钢铁
     Glass,//玻璃
-    Bounce//弹力
+    Bounce,//弹力
+    None
 }
 //可拾取道具
 public enum ItemType
@@ -43,7 +44,7 @@ public class GameState
     public static GameState Instance;
     private GameObject ball;
     private Rigidbody rb;
-    public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.Steel;
+    public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.None;
     // 背包：记住打开前的状态
     private PlayerState stateBeforeBag;
     public bool[] TaskFinished { get; private set; } = new bool[5];

@@ -37,6 +37,7 @@ public class BackpackSlotUI : MonoBehaviour,
     private Sprite detailSprite;     // 详情图片
     private Action onClickCallback;
     private bool isSelected = false;
+    private PlayerMatState? linkedMatState = null;   // 新增：关联的材质类型
 
     // 所属的 BackpackSystem 引用
     private BackpackSystem backpackSystem;
@@ -45,7 +46,7 @@ public class BackpackSlotUI : MonoBehaviour,
     /// 初始化格子
     /// </summary>
     public void Init(BackpackSystem system, SlotType type, string name, string desc,
-                     Action onClick = null, Sprite detail = null)
+                     Action onClick = null, Sprite detail = null,PlayerMatState? matState = null)
     {
         backpackSystem = system;    // 直接赋值，不再 GetComponentInParent
         slotType = type;
@@ -53,6 +54,7 @@ public class BackpackSlotUI : MonoBehaviour,
         description = desc;
         detailSprite = detail;
         onClickCallback = onClick;
+        linkedMatState = matState;
 
         if (nameText != null)
             nameText.text = displayName;
@@ -60,6 +62,8 @@ public class BackpackSlotUI : MonoBehaviour,
         if (backgroundImage != null)
             backgroundImage.color = normalColor;
     }
+
+    public PlayerMatState? LinkedMatState => linkedMatState;
 
     // ===== 鼠标悬浮 =====
     public void OnPointerEnter(PointerEventData eventData)

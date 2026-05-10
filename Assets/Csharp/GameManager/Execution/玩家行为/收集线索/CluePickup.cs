@@ -32,22 +32,19 @@ public class CluePickup : MonoBehaviour
     {
         if (isPickedUp) return;
 
-        // 检查玩家是否在拾取范围内
-        Transform ball = ViewModeManager.Instance?.ball;
-        if (ball == null) return;
+        // 用玩家位置而不是ball
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
 
-        float dist = Vector3.Distance(ball.position, transform.position);
+        float dist = Vector3.Distance(player.transform.position, transform.position);
         if (dist > pickupRange) return;
 
-        // 检查是否已收集过
         var gs = GameState.Instance;
         if (gs == null || gs.HasClue(clueID)) return;
 
-        // 收集线索
         gs.CollectClue(clueID);
         isPickedUp = true;
 
-        // 添加到背包UI
         var backpack = FindObjectOfType<BackpackSystem>();
         if (backpack != null)
         {
@@ -55,8 +52,6 @@ public class CluePickup : MonoBehaviour
         }
 
         Debug.Log($"拾取线索：{clueName}");
-
-        // 拾取后隐藏物体（不销毁，因为房间不会被销毁）
         gameObject.SetActive(false);
     }
 }

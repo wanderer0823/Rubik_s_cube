@@ -24,6 +24,12 @@ public class PlayerAction : MonoBehaviour
     [Header("检测设置")]
     public float interactRange=3.0f;
 
+    [Header("小球材质显示（View1/2可见的Sphere）")]
+    public Renderer ballRenderer;
+    public Material steelMaterial;
+    public Material glassMaterial;
+    public Material bounceMaterial;
+
     /*private CharacterController controller;
     private Vector3 CurrentMoveVelocity;
     private Vector3 FinalMoveVelocity;
@@ -221,10 +227,28 @@ public class PlayerAction : MonoBehaviour
     void OnMatChanged(PlayerMatState newMat)
     {
         Debug.Log($"PlayerAction: 材质切换为 {newMat}");
+
+        // 物理参数切换
         PlayerPhysicsProfile profile = GetProfileForMat(newMat);
         ApplyProfile(profile);
+
         // 切换材质时取消反弹状态
         isBouncing = false;
+
+        // 更新小球视觉材质
+        if (ballRenderer != null)
+        {
+            Material targetMat = newMat switch
+            {
+                PlayerMatState.Steel => steelMaterial,
+                PlayerMatState.Glass => glassMaterial,
+                PlayerMatState.Bounce => bounceMaterial,
+                _ => steelMaterial
+            };
+
+            if (targetMat != null)
+                ballRenderer.material = targetMat;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
