@@ -19,6 +19,11 @@ public class GrabSystem : MonoBehaviour
     [Header("旋转设置")]
     public float rotateSpeed = 90f;
 
+    [Header("准星提示")]
+    public UnityEngine.UI.Image crosshairImage;
+    public Color normalColor = Color.white;
+    public Color interactColor = Color.green;
+
     private Camera cam;
     private GameState gs;
 
@@ -89,12 +94,15 @@ public class GrabSystem : MonoBehaviour
             if (g != null)
             {
                 currentTarget = g;
-                // TODO: 准星变色提示可交互
+                if (crosshairImage != null)
+                    crosshairImage.color = interactColor;
                 return;
             }
         }
 
         currentTarget = null;
+        if (crosshairImage != null)
+            crosshairImage.color = normalColor;
     }
 
     void GrabObject(Grabbable obj)
@@ -120,7 +128,7 @@ public class GrabSystem : MonoBehaviour
         if (heldObject == null) return;
 
         // 目标位置：相机前方 grabDistance 距离
-        Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance;
+        Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + Vector3.up *holdHeightOffset;
 
         // 防穿墙：射线检测相机到目标位置之间是否有墙
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
@@ -158,6 +166,8 @@ public class GrabSystem : MonoBehaviour
 
         // 恢复玩家状态
         gs.SetPlayerState(PlayerState.isMoving);
+        if (crosshairImage != null)
+            crosshairImage.color = normalColor;
     }
 
     /// <summary>
