@@ -36,7 +36,7 @@ public class BallVisualController : MonoBehaviour
         if (gs == null) return;
 
         // View1/2 下不重新定位（小球跟着Piece转就行）
-        //if (gs.CurrentView == ViewMode.View2||gs.CurrentView == ViewMode.View1) return;
+        if (gs.CurrentView != ViewMode.View3) return;
 
         // 检测房间变化
         if (gs.CurrentRoomID != lastRoomID)
