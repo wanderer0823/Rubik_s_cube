@@ -2,40 +2,41 @@ using UnityEngine;
 using static InitCubeSlot;
 
 /// <summary>
-/// Íæ¼ÒÓëµÀ¾ß£¨Spring/Wind/Plate£©µÄÅö×²½»»¥¡£
-/// ¹ÒÔÚÍæ¼ÒÎïÌåÉÏ£¨´ø Rigidbody + Collider£©¡£
-/// ²»×ßÊÂ¼ş×ÜÏß£¬Ö±½ÓÓÃ OnTriggerEnter/Stay/Exit¡£
+/// ç©å®¶ä¸é“å…·ï¼ˆSpring/Wind/Plateï¼‰çš„ç¢°æ’äº¤äº’ã€‚
+/// æŒ‚åœ¨ç©å®¶ç‰©ä½“ä¸Šï¼ˆå¸¦ Rigidbody + Colliderï¼‰ã€‚
+/// ä¸èµ°äº‹ä»¶æ€»çº¿ï¼Œç›´æ¥ç”¨ OnTriggerEnter/Stay/Exitã€‚
 /// </summary>
 public class ItemInteractionController : MonoBehaviour
 {
-    [Header("Ä§·½Êı¾İÒıÓÃ")]
+    [Header("é­”æ–¹æ•°æ®å¼•ç”¨")]
     public InitCubeSlot cubeData;
 
-    [Header("Plate ÉèÖÃ")]
+    [Header("Plate è®¾ç½®")]
     public float plateMoveDistance = 1f;
     public float plateMoveSpeed = 2f;
 
-    [Header("Spring ÉèÖÃ")]
+    [Header("Spring è®¾ç½®")]
     public float springForce = 15f;
 
-    [Header("Wind ÉèÖÃ")]
+    [Header("Wind è®¾ç½®")]
     public float windForce = 10f;
 
-    [Header("Bounce + Plate ÉèÖÃ")]
+    [Header("Bounce + Plate è®¾ç½®")]
     public int bounceCountRequired = 3;
 
-    [Header("ÃÅÅö×²»Øµ¯Á¦¶È")]
-    public float doorBounceForce = 2f;        // ×²ÃÅµ¯»ØÁ¦¶È
+    [Header("é—¨ç¢°æ’å›å¼¹åŠ›åº¦")]
+    public float doorBounceForce = 2f;        // æ’é—¨å¼¹å›åŠ›åº¦
 
     private Rigidbody rb;
     private GameState gs;
-    // Bounce + Plate ¼ÆÊı
+    // Bounce + Plate è®¡æ•°
     private int bounceCountOnPlate = 0;
-    private Collider currentPlateCollider = null;
-    private Coroutine plateResetCoroutine = null;    
+    private Transform currentPlateRoot = null;
+    private int activePlateContactCount = 0;
+    private Coroutine plateResetCoroutine = null;
 
-    [Header("Bounce + Plate ¹éÁãÑÓ³Ù")]
-    public float plateResetDelay = 2f;               // ĞÂÔö£ºÀë¿ªºó¶à¾Ã¹éÁã
+    [Header("Bounce + Plate å½’é›¶å»¶è¿Ÿ")]
+    public float plateResetDelay = 2f;               // æ–°å¢ï¼šç¦»å¼€åå¤šä¹…å½’é›¶
 
     void Start()
     {
@@ -43,7 +44,7 @@ public class ItemInteractionController : MonoBehaviour
         gs = GameState.Instance;
     }
 
-    // ==================== Trigger ½øÈë ====================
+    // ==================== Trigger è¿›å…¥ ====================
     void OnTriggerEnter(Collider other)
     {
         if (gs == null) return;
@@ -58,29 +59,11 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Bounce)
             {
-                // ²È»ØÀ´Ê±È¡Ïû¹éÁã¼ÆÊ±
-                if (plateResetCoroutine != null)
-                {
-                    StopCoroutine(plateResetCoroutine);
-                    plateResetCoroutine = null;
-                }
-
-                if (currentPlateCollider != other)
-                {
-                    currentPlateCollider = other;
-                    bounceCountOnPlate = 0;
-                }
-                bounceCountOnPlate++;
-                Debug.Log($"Bounce²ÈPlate ´ÎÊı: {bounceCountOnPlate}/{bounceCountRequired}");
-
-                if (bounceCountOnPlate >= bounceCountRequired)
-                {
-                    HandleBouncePlate(other);
-                }
+                HandleBouncePlateEnter(other);
             }
             else if(mat == PlayerMatState.Glass)
             {
-                Debug.Log("Glass + Plate: ÎŞĞ§¹û");
+                Debug.Log("Glass + Plate: æ— æ•ˆæœ");
             }
             else
             return;
@@ -95,7 +78,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Steel)
             {
-                Debug.Log("Steel + Spring: ÎŞĞ§¹û");
+                Debug.Log("Steel + Spring: æ— æ•ˆæœ");
             }
             else
             return;
@@ -110,7 +93,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Steel)
             {
-                Debug.Log("Steel + Wind: ÎŞĞ§¹û");
+                Debug.Log("Steel + Wind: æ— æ•ˆæœ");
             }
             else return;
         }
@@ -122,7 +105,7 @@ public class ItemInteractionController : MonoBehaviour
         }
     }
 
-    // ==================== Trigger ³ÖĞø£¨Wind ³ÖĞø´µ£©====================
+    // ==================== Trigger æŒç»­ï¼ˆWind æŒç»­å¹ï¼‰====================
     void OnTriggerStay(Collider other)
     {
         if (gs == null) return;
@@ -132,7 +115,7 @@ public class ItemInteractionController : MonoBehaviour
         {
             if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
             {
-                // ³ÖĞøÊ©¼Ó·çÁ¦
+                // æŒç»­æ–½åŠ é£åŠ›
                 Transform fanModel = other.transform.parent;
                 Vector3 windDir = fanModel.TransformDirection(Vector3.up).normalized;
                 rb.AddForce(windDir * windForce * Time.fixedDeltaTime, ForceMode.Force);
@@ -140,72 +123,109 @@ public class ItemInteractionController : MonoBehaviour
         }
     }
 
-    // ==================== Trigger Àë¿ª ====================
+    // ==================== Trigger ç¦»å¼€ ====================
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Plate") && other == currentPlateCollider)
+        if (!other.CompareTag("Plate"))
+            return;
+
+        Transform plateRoot = ResolvePlateTransform(other);
+        if (plateRoot != currentPlateRoot)
+            return;
+
+        activePlateContactCount = Mathf.Max(0, activePlateContactCount - 1);
+        if (activePlateContactCount > 0)
+            return;
+
+        // å»¶è¿Ÿå½’é›¶ï¼Œç»™å¼¹åŠ›çƒæ—¶é—´å¼¹å›æ¥
+        if (plateResetCoroutine != null)
+            StopCoroutine(plateResetCoroutine);
+        plateResetCoroutine = StartCoroutine(DelayedPlateReset());
+    }
+
+    void HandleBouncePlateEnter(Collider plateCollider)
+    {
+        Transform plateRoot = ResolvePlateTransform(plateCollider);
+
+        // åœ¨è¶…æ—¶å‰å¼¹å›åŒä¸€å—æ¿æ—¶ï¼Œä¿ç•™å½“å‰ç´¯è®¡æ¬¡æ•°ã€‚
+        if (plateResetCoroutine != null)
         {
-            // ÑÓ³Ù¹éÁã£¬¸øµ¯Á¦ÇòÊ±¼äµ¯»ØÀ´
-            if (plateResetCoroutine != null)
-                StopCoroutine(plateResetCoroutine);
-            plateResetCoroutine = StartCoroutine(DelayedPlateReset());
+            StopCoroutine(plateResetCoroutine);
+            plateResetCoroutine = null;
         }
+
+        if (currentPlateRoot != null && currentPlateRoot != plateRoot)
+            ResetBouncePlateTracking(clearBounceProgress: true);
+
+        currentPlateRoot = plateRoot;
+
+        bool wasOutsidePlate = activePlateContactCount == 0;
+        activePlateContactCount++;
+
+        // åŒä¸€å— Plate å°±ç®—æœ‰å¤šä¸ªè§¦å‘å™¨ï¼Œä¹Ÿåªåœ¨ä¸€æ¬¡è½æ¿çš„é¦–æ¬¡æ¥è§¦è®¡æ•°ã€‚
+        if (!wasOutsidePlate)
+            return;
+
+        // åªåœ¨ä¸‹è½æ¥è§¦ Plate æ—¶è®¡æ•°ã€‚
+        if (rb == null || rb.velocity.y >= 0f)
+            return;
+
+        bounceCountOnPlate++;
+        Debug.Log($"Bounceè¸©Plate æ¬¡æ•°: {bounceCountOnPlate}/{bounceCountRequired}");
+
+        if (bounceCountOnPlate >= bounceCountRequired)
+            HandleBouncePlate(plateCollider);
     }
 
     System.Collections.IEnumerator DelayedPlateReset()
     {
         yield return new WaitForSeconds(plateResetDelay);
-        Debug.Log("Plate¼ÆÊı³¬Ê±¹éÁã");
-        bounceCountOnPlate = 0;
-        currentPlateCollider = null;
+        Debug.Log("Plateè®¡æ•°è¶…æ—¶å½’é›¶");
+        ResetBouncePlateTracking(clearBounceProgress: true);
         plateResetCoroutine = null;
     }
 
-    // ==================== ½»»¥´¦Àí ====================
+    // ==================== äº¤äº’å¤„ç† ====================
 
     void HandleSteelPlate(Collider plateCollider)
     {
-        Transform plateModel = plateCollider.transform.parent;
-        PlateLink link = plateModel.GetComponent<PlateLink>();
-        if (link == null)
-            link = plateModel.GetComponentInParent<PlateLink>();
+        Transform plateModel = ResolvePlateTransform(plateCollider);
+        PlateLink link = ResolvePlateLink(plateCollider);
 
-        // ÒÑÏÂÑ¹¹ıÔòÌø¹ı
+        // å·²ä¸‹å‹è¿‡åˆ™è·³è¿‡
         if (link != null && link.isPressed)
         {
-            Debug.Log("Plate ÒÑÏÂÑ¹£¬Ìø¹ı");
+            Debug.Log("Plate å·²ä¸‹å‹ï¼Œè·³è¿‡");
             return;
         }
 
-        Debug.Log("Steel + Plate: Ñ¹Á¦°å´¥·¢£¡");
+        Debug.Log("Steel + Plate: å‹åŠ›æ¿è§¦å‘ï¼");
         StartCoroutine(MovePlate(plateModel, Vector3.down * plateMoveDistance));
 
-        // ±ê¼ÇÒÑÏÂÑ¹
+        // æ ‡è®°å·²ä¸‹å‹
         if (link != null)
         {
             link.isPressed = true;
             if (link.linkedDoor != null)
             {
                 link.linkedDoor.Open();
-                Debug.Log($"¹ØÁªÃÅ [{link.linkedDoor.gameObject.name}] ÒÑ´ò¿ª");
+                Debug.Log($"å…³è”é—¨ [{link.linkedDoor.gameObject.name}] å·²æ‰“å¼€");
             }
         }
     }
 
     void HandleBouncePlate(Collider plateCollider)
     {
-        Transform plateModel = plateCollider.transform.parent;
-        PlateLink link = plateModel.GetComponent<PlateLink>();
-        if (link == null)
-            link = plateModel.GetComponentInParent<PlateLink>();
+        Transform plateModel = ResolvePlateTransform(plateCollider);
+        PlateLink link = ResolvePlateLink(plateCollider);
 
         if (link != null && link.isPressed)
         {
-            Debug.Log("Plate ÒÑÏÂÑ¹£¬Ìø¹ı");
+            Debug.Log("Plate å·²ä¸‹å‹ï¼Œè·³è¿‡");
             return;
         }
 
-        Debug.Log($"Bounce + Plate: ²ÈÂú{bounceCountRequired}´Î£¬Ñ¹Á¦°å´¥·¢£¡");
+        Debug.Log($"Bounce + Plate: è¸©æ»¡{bounceCountRequired}æ¬¡ï¼Œå‹åŠ›æ¿è§¦å‘ï¼");
         StartCoroutine(MovePlate(plateModel, Vector3.down * plateMoveDistance));
 
         if (link != null)
@@ -217,43 +237,43 @@ public class ItemInteractionController : MonoBehaviour
             }
         }
 
-        bounceCountOnPlate = 0;
+        ResetBouncePlateTracking(clearBounceProgress: true);
     }
 
     void HandleSpring(Collider springCollider)
     {
         Transform springModel = springCollider.transform.parent;
 
-        // µ¯Æğ·½Ïò = µ¯»ÉÄ£ĞÍ±¾µØ+Y×ªÊÀ½ç·½Ïò
+        // å¼¹èµ·æ–¹å‘ = å¼¹ç°§æ¨¡å‹æœ¬åœ°+Yè½¬ä¸–ç•Œæ–¹å‘
         Vector3 launchDir = springModel.TransformDirection(Vector3.up).normalized;
 
         rb.AddForce(launchDir * springForce, ForceMode.Impulse);
-        Debug.Log($"{gs.CurrentMatState} + Spring: µ¯Æğ£¡·½Ïò={launchDir}, Á¦={springForce}");
+        Debug.Log($"{gs.CurrentMatState} + Spring: å¼¹èµ·ï¼æ–¹å‘={launchDir}, åŠ›={springForce}");
 
-        // TODO: ²¥·Åµ¯»ÉÑ¹Ëõ¶¯»­
+        // TODO: æ’­æ”¾å¼¹ç°§å‹ç¼©åŠ¨ç”»
     }
 
     void HandleWind(Collider windCollider)
     {
         Transform fanModel = windCollider.transform.parent;
 
-        // Ë²Ê±·çÁ¦ = ·çÉÈÄ£ĞÍ±¾µØ+Y×ªÊÀ½ç·½Ïò
+        // ç¬æ—¶é£åŠ› = é£æ‰‡æ¨¡å‹æœ¬åœ°+Yè½¬ä¸–ç•Œæ–¹å‘
         Vector3 windDir = fanModel.TransformDirection(Vector3.up).normalized;
 
         rb.AddForce(windDir * windForce, ForceMode.Impulse);
-        Debug.Log($"{gs.CurrentMatState} + Wind: ·çÁ¦£¡·½Ïò={windDir}, Á¦={windForce}");
+        Debug.Log($"{gs.CurrentMatState} + Wind: é£åŠ›ï¼æ–¹å‘={windDir}, åŠ›={windForce}");
 
-        // TODO: ½ûÖ¹ fan -Y ·½ÏòÒÆ¶¯£¨ºóĞøÔÚ PlayerAction.Move Àï¹ıÂË£©
+        // TODO: ç¦æ­¢ fan -Y æ–¹å‘ç§»åŠ¨ï¼ˆåç»­åœ¨ PlayerAction.Move é‡Œè¿‡æ»¤ï¼‰
     }
 
-    // ==================== ÃÅÅö×² ====================
+    // ==================== é—¨ç¢°æ’ ====================
 
     void HandleDoorCollision(Collider doorCollider)
     {
         DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
         if (doorCtrl == null)
         {
-            Debug.Log("DoorÅö×²£ºÎ´ÕÒµ½DoorController");
+            Debug.Log("Doorç¢°æ’ï¼šæœªæ‰¾åˆ°DoorController");
             return;
         }
 
@@ -264,12 +284,12 @@ public class ItemInteractionController : MonoBehaviour
         string passStr = isPassable ? "1" : "0";
         string openStr = doorCtrl.IsOpened ? "1" : "0";
 
-        // 1. Í¨µÀÎ´Á¬Í¨
+        // 1. é€šé“æœªè¿é€š
         if (!isPassable)
         {
-            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò²»¿ÉÒÔÍ¨¹ı£¬ÓÉÓÚÍ¨µÀÎ´Á¬Í¨");
+            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶ä¸å¯ä»¥é€šè¿‡ï¼Œç”±äºé€šé“æœªè¿é€š");
             BounceBackFromDoor(doorCollider);
-            // TODO: ¹ã²¥UIÌáÊ¾
+            // TODO: å¹¿æ’­UIæç¤º
             return;
         }
 
@@ -278,19 +298,19 @@ public class ItemInteractionController : MonoBehaviour
         {
             if (doorCtrl.doorMat == DoorController.DoorMat.Soft)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò²»¿ÉÒÔÍ¨¹ı£¬ÓÉÓÚ¸ÖÌúÇòÎŞ·¨×²ËéÈíÃÅ");
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶ä¸å¯ä»¥é€šè¿‡ï¼Œç”±äºé’¢é“çƒæ— æ³•æ’ç¢è½¯é—¨");
                 BounceBackFromDoor(doorCollider);
                 return;
             }
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò¿ÉÒÔÍ¨¹ı");
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶å¯ä»¥é€šè¿‡");
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò²»¿ÉÒÔÍ¨¹ı£¬ÓÉÓÚÓ²ÃÅÎ´±»Ñ¹Á¦°å´ò¿ª");
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶ä¸å¯ä»¥é€šè¿‡ï¼Œç”±äºç¡¬é—¨æœªè¢«å‹åŠ›æ¿æ‰“å¼€");
                 BounceBackFromDoor(doorCollider);
             }
             return;
@@ -304,12 +324,12 @@ public class ItemInteractionController : MonoBehaviour
                 if (playerSpeed >= doorCtrl.softDoorHitSpeed)
                 {
                     doorCtrl.Open();
-                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, Íæ¼Ò¿ÉÒÔÍ¨¹ı£¬ÈíÃÅ±»×²Ëé(ËÙ¶È={playerSpeed:F1})");
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, ç©å®¶å¯ä»¥é€šè¿‡ï¼Œè½¯é—¨è¢«æ’ç¢(é€Ÿåº¦={playerSpeed:F1})");
                     ExecuteDoorTransition(doorCollider);
                 }
                 else
                 {
-                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò²»¿ÉÒÔÍ¨¹ı£¬ÓÉÓÚËÙ¶È²»×ã({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶ä¸å¯ä»¥é€šè¿‡ï¼Œç”±äºé€Ÿåº¦ä¸è¶³({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");
                     BounceBackFromDoor(doorCollider);
                 }
                 return;
@@ -317,12 +337,12 @@ public class ItemInteractionController : MonoBehaviour
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò¿ÉÒÔÍ¨¹ı");
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶å¯ä»¥é€šè¿‡");
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, Íæ¼Ò²»¿ÉÒÔÍ¨¹ı£¬ÓÉÓÚÓ²ÃÅÎ´±»Ñ¹Á¦°å´ò¿ª");
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, ç©å®¶ä¸å¯ä»¥é€šè¿‡ï¼Œç”±äºç¡¬é—¨æœªè¢«å‹åŠ›æ¿æ‰“å¼€");
                 BounceBackFromDoor(doorCollider);
             }
             return;
@@ -330,18 +350,18 @@ public class ItemInteractionController : MonoBehaviour
     }
 
     /// <summary>
-    /// ×²ÃÅµ¯»Ø
+    /// æ’é—¨å¼¹å›
     /// </summary>
     void BounceBackFromDoor(Collider doorCollider)
     {
         Vector3 bounceDir = (transform.position - doorCollider.transform.position).normalized;
-        bounceDir.y = 0; // Ö»Ë®Æ½µ¯»Ø
+        bounceDir.y = 0; // åªæ°´å¹³å¼¹å›
         rb.velocity = Vector3.zero;
         rb.AddForce(bounceDir * doorBounceForce, ForceMode.Impulse);
     }
 
     /// <summary>
-    /// Ö´ĞĞ¹ıÃÅ´«ËÍ£¨µ÷ÓÃÔ­ÓĞÂß¼­£©
+    /// æ‰§è¡Œè¿‡é—¨ä¼ é€ï¼ˆè°ƒç”¨åŸæœ‰é€»è¾‘ï¼‰
     /// </summary>
     void ExecuteDoorTransition(Collider doorCollider)
     {
@@ -369,10 +389,10 @@ public class ItemInteractionController : MonoBehaviour
                         if (NeighborRoomID != id)
                         {
                             TryFindTrueNeighborRoom(NeighborRoomID, oppositeDir);
-                            Debug.Log("NeighborRoomIDÊÇ¡ª¡ª" + roomId);
+                            Debug.Log("NeighborRoomIDæ˜¯â€”â€”" + roomId);
                         }
                     }
-                    Debug.Log("¿ªÃÅ³É¹¦£¬´«ËÍµ½" + GameState.Instance.CurrentRoomID);
+                    Debug.Log("å¼€é—¨æˆåŠŸï¼Œä¼ é€åˆ°" + GameState.Instance.CurrentRoomID);
                     RoomPreloadController rpc = FindObjectOfType<RoomPreloadController>();
                     transform.position = new Vector3(0, 40, 0);
                     rpc.TriggerPreloadComplete();
@@ -395,14 +415,40 @@ public class ItemInteractionController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("¿ªÃÅÊ§°Ü2");
+                    Debug.Log("å¼€é—¨å¤±è´¥2");
                 }
             }
         }
     }
 
 
-    // ==================== ¹¤¾ß ====================
+    // ==================== å·¥å…· ====================
+
+    Transform ResolvePlateTransform(Collider plateCollider)
+    {
+        PlateLink link = ResolvePlateLink(plateCollider);
+        if (link != null)
+            return link.transform;
+
+        if (plateCollider.transform.parent != null)
+            return plateCollider.transform.parent;
+
+        return plateCollider.transform;
+    }
+
+    PlateLink ResolvePlateLink(Collider plateCollider)
+    {
+        return plateCollider.GetComponentInParent<PlateLink>();
+    }
+
+    void ResetBouncePlateTracking(bool clearBounceProgress)
+    {
+        activePlateContactCount = 0;
+        currentPlateRoot = null;
+
+        if (clearBounceProgress)
+            bounceCountOnPlate = 0;
+    }
 
     System.Collections.IEnumerator MovePlate(Transform plate, Vector3 offset)
     {
