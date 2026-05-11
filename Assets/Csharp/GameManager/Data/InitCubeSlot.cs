@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class InitCubeSlot : MonoBehaviour
 {
     public GameObject LogicCube;
+    public GameObject csP;//测试一键加载prefb
 
     public List<Slot> slots;
     public List<Room> rooms;
@@ -170,6 +171,7 @@ public class InitCubeSlot : MonoBehaviour
         BuildPieceMap();
         BuildPieceCoordMap();
         InitRooms();
+
     }
 
     private void Start()
@@ -215,6 +217,7 @@ public class InitCubeSlot : MonoBehaviour
         {
             room.Init();
             room.roomID = i;
+            room.RoomPerfab = csP;
             i++;
         }
         

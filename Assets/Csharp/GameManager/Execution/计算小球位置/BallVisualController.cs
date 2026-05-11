@@ -79,6 +79,8 @@ public class BallVisualController : MonoBehaviour
             return;
         }
 
+        Debug.Log("现在房间是" + gs.CurrentRoomID);
+
         // 设为 Piece 子物体
         transform.SetParent(pieceObj.transform, false);
 
