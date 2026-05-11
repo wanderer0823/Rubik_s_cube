@@ -16,6 +16,15 @@ public class DoorController : MonoBehaviour
     [Header("运行时状态")]
     [SerializeField] private bool _isOpened = false;
 
+    [Header("开门动画设置（仅Hard门）")]
+    [SerializeField] private float doorOpenAngle = 90f;
+    [SerializeField] private float doorAnimSpeed = 2f;
+    [SerializeField] private Transform doorPivot;       // 门旋转轴物体（门模型本身或一个空父物体）
+
+    // 动画状态
+    private bool isVisuallyOpen = false;
+    private Coroutine doorAnimCoroutine;
+
     public bool IsOpened => _isOpened;
 
     public void Open()
@@ -71,6 +80,7 @@ public class DoorController : MonoBehaviour
     void Update()
     {
         ReturnDoorVector();
+        CheckDoorVisualState();
     }
 
     void ReturnDoorVector()
@@ -99,4 +109,45 @@ public class DoorController : MonoBehaviour
 
         DoorinRoomVector = parentPos;
     }
+
+    void CheckDoorVisualState()
+    {
+        // 只有 Hard 门 + 已被压力板打开 才有开关动画
+        if (doorMat != DoorMat.Hard || !_isOpened || doorPivot == null) return;
+
+        bool shouldBeOpen = GetIsPassable();
+
+        if (shouldBeOpen && !isVisuallyOpen)
+        {
+            // 旋转打开
+            isVisuallyOpen = true;
+            if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
+            doorAnimCoroutine = StartCoroutine(AnimateDoor(doorOpenAngle));
+        }
+        else if (!shouldBeOpen && isVisuallyOpen)
+        {
+            // 旋转关闭
+            isVisuallyOpen = false;
+            if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
+            doorAnimCoroutine = StartCoroutine(AnimateDoor(0f));
+        }
+    }
+
+    System.Collections.IEnumerator AnimateDoor(float targetAngle)
+    {
+        float currentAngle = doorPivot.localEulerAngles.y;
+        // 处理角度环绕
+        if (currentAngle > 180f) currentAngle -= 360f;
+
+        while (Mathf.Abs(currentAngle - targetAngle) > 0.5f)
+        {
+            currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * doorAnimSpeed);
+            doorPivot.localEulerAngles = new Vector3(0, currentAngle, 0);
+            yield return null;
+        }
+
+        doorPivot.localEulerAngles = new Vector3(0, targetAngle, 0);
+        doorAnimCoroutine = null;
+    }
+
 }

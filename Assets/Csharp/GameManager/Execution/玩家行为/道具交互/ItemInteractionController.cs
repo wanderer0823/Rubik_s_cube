@@ -396,6 +396,9 @@ public class ItemInteractionController : MonoBehaviour
                     RoomPreloadController rpc = FindObjectOfType<RoomPreloadController>();
                     transform.position = new Vector3(0, 40, 0);
                     rpc.TriggerPreloadComplete();
+                    // 新增：通知小球移动
+                    GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
+
                     break;
                 }
             }

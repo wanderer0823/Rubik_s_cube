@@ -16,7 +16,7 @@ public static class GameEvents
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
     public static event Action<int> OnArrowsClickRequest; //张天姿
     // CRC请求VMM监听
-    public static event Action<Vector3> OnBallSpaceUpdateRequest;
+    //public static event Action<Vector3> OnBallSpaceUpdateRequest;
     // PIM→GM→VMM：E键交互
     public static event Action OnInteractRequest;
     // PIM→GM→VMM：滚轮
@@ -61,6 +61,8 @@ public static class GameEvents
     public static event Action<int> OnTaskFinished;
     // UIManager监听：通关
     public static event Action OnGameWin;
+    // 过门成功，小球需要移动
+    public static event Action<int> OnRoomTransitionExecute;
     #endregion
 
     #region === 请求事件广播方法 ===
@@ -77,7 +79,7 @@ public static class GameEvents
 
     public static void onArrowsClickRequest(int number) => OnArrowsClickRequest?.Invoke(number);//张天姿
     // CRC请求VMM监听
-    public static void onBallSpaceUpdateRequest(Vector3 ballPos)=> OnBallSpaceUpdateRequest?.Invoke(ballPos);
+    //public static void onBallSpaceUpdateRequest(Vector3 ballPos)=> OnBallSpaceUpdateRequest?.Invoke(ballPos);
     // ===== 新增请求广播 =====
     public static void onInteractRequest() => OnInteractRequest?.Invoke();
     public static void onScrollRequest(float delta) => OnScrollRequest?.Invoke(delta);
@@ -113,5 +115,7 @@ public static class GameEvents
     public static void onMatChangeExecute(PlayerMatState s) => OnMatChangeExecute?.Invoke(s);
     public static void onTaskFinished(int i) => OnTaskFinished?.Invoke(i);
     public static void onGameWin() => OnGameWin?.Invoke();
+    public static void onRoomTransitionExecute(int newRoomID) => OnRoomTransitionExecute?.Invoke(newRoomID);
+
     #endregion
 }

@@ -12,7 +12,7 @@ public class CubeRotateController : MonoBehaviour
     // 空间计算引用
     // ============================
     // public Transform ball;
-    Transform ball;
+    //Transform ball;
     public InitCubeSlot cubeData;
     public Transform cubeRoot;
 
@@ -40,7 +40,7 @@ public class CubeRotateController : MonoBehaviour
 
         Vector3 delta = Input.mousePosition - lastMousePos;
         lastMousePos = Input.mousePosition;
-        ball = ViewModeManager.Instance.ball;
+        //ball = ViewModeManager.Instance.ball;
 
 
         RotateCubeFree(delta);
@@ -148,18 +148,18 @@ public class CubeRotateController : MonoBehaviour
         transform.rotation = target;
 
         // 回正完成后计算空间状态
-        CalculateBallSpaceState();
+        //CalculateBallSpaceState();
     }
 
     // ============================
     // 空间状态计算（新增核心）
     // ============================
 
-    void CalculateBallSpaceState()
+    /*void CalculateBallSpaceState()
     {
         Debug.Log("CRC 空间计算请求触发");
         if (ball == null || cubeData == null || cubeRoot == null)
             return;
         GameEvents.onBallSpaceUpdateRequest(ball.position);
-    }
+    }*/
 }
