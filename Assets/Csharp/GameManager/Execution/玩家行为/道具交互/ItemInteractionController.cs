@@ -396,7 +396,7 @@ public class ItemInteractionController : MonoBehaviour
                     RoomPreloadController rpc = FindObjectOfType<RoomPreloadController>();
                     transform.position = new Vector3(0, 40, 0);
                     rpc.TriggerPreloadComplete();
-                    // ÐÂÔö£ºÍ¨ÖªÐ¡ÇòÒÆ¶¯
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ÖªÐ¡ï¿½ï¿½ï¿½Æ¶ï¿½
                     GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
 
                     break;
