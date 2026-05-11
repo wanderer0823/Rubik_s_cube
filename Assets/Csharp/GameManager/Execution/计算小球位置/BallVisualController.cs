@@ -35,6 +35,9 @@ public class BallVisualController : MonoBehaviour
         var gs = GameState.Instance;
         if (gs == null) return;
 
+        // View1/2 下不重新定位（小球跟着Piece转就行）
+        //if (gs.CurrentView == ViewMode.View2||gs.CurrentView == ViewMode.View1) return;
+
         // 检测房间变化
         if (gs.CurrentRoomID != lastRoomID)
         {
@@ -46,7 +49,7 @@ public class BallVisualController : MonoBehaviour
     void OnViewSwitch(ViewMode mode)
     {
         // 切视角时也刷新一次，确保位置正确
-        UpdateBallPosition();
+        //UpdateBallPosition();
     }
 
     /// <summary>
