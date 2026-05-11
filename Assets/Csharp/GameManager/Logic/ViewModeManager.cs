@@ -39,7 +39,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
         GameEvents.OnArrowsClickRequest += CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
-        GameEvents.OnBallSpaceUpdateRequest += CheckBallSpaceUpdate;
+        //GameEvents.OnBallSpaceUpdateRequest += CheckBallSpaceUpdate;
         //新增
         GameEvents.OnInteractRequest += CheckInteract;
         GameEvents.OnScrollRequest += CheckScroll;
@@ -60,7 +60,7 @@ public class ViewModeManager : MonoBehaviour
         GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
         GameEvents.OnArrowsClickRequest -= CheckArrowsClick;  //张天姿
         //订阅CRC请求事件
-        GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
+        //GameEvents.OnBallSpaceUpdateRequest -= CheckBallSpaceUpdate;
         //新增
         GameEvents.OnInteractRequest += CheckInteract;
         GameEvents.OnScrollRequest += CheckScroll;
@@ -306,9 +306,9 @@ public class ViewModeManager : MonoBehaviour
     #endregion
 
     #region ============================================
-    #region 控制小球物理状态
+    #region 控制小球物理状态（删除）
     //订阅CRC请求事件
-    void CheckBallSpaceUpdate(Vector3 ballPos)
+    /*void CheckBallSpaceUpdate(Vector3 ballPos)
     {
             //计算并更新小球空间位置的全局状态
             //Debug.Log("301");
@@ -331,7 +331,7 @@ public class ViewModeManager : MonoBehaviour
             gs.SetGravityFace(gravityFace);
 
             Debug.Log($"VMM更新空间 → Room:{surface.roomID}");
-    }
+    }*/
     #endregion
     #endregion
 }

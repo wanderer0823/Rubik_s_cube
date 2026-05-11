@@ -3,96 +3,67 @@ using static InitCubeSlot;
 
 /// <summary>
 /// 控制魔方内小球的视觉位置。
-/// 小球始终作为当前 CubePiece 的子物体，本地坐标由 Surface 方向决定。
+/// 小球始终作为当前 CubePiece 的子物体。
+/// 只在玩家真正过门换房间时重新定位。
 /// </summary>
 public class BallVisualController : MonoBehaviour
 {
     [Header("视觉偏移（魔方插槽深度）")]
-    public float surfaceOffset = 1.4f;
+    public float surfaceOffset = 0.008f;
 
-    private int lastRoomID = -1;
     private InitCubeSlot cubeData;
 
     void Start()
     {
         cubeData = ViewModeManager.Instance?.cubeData;
         // 初始定位
-        UpdateBallPosition();
+        PositionBall(GameState.Instance.CurrentRoomID);
     }
 
     void OnEnable()
     {
-        GameEvents.OnViewSwitchExecute += OnViewSwitch;
+        GameEvents.OnRoomTransitionExecute += PositionBall;
     }
 
     void OnDisable()
     {
-        GameEvents.OnViewSwitchExecute -= OnViewSwitch;
-    }
-
-    void Update()
-    {
-        var gs = GameState.Instance;
-        if (gs == null) return;
-
-        // View1/2 下不重新定位（小球跟着Piece转就行）
-        if (gs.CurrentView != ViewMode.View3) return;
-
-        // 检测房间变化
-        if (gs.CurrentRoomID != lastRoomID)
-        {
-            lastRoomID = gs.CurrentRoomID;
-            UpdateBallPosition();
-        }
-    }
-
-    void OnViewSwitch(ViewMode mode)
-    {
-        // 切视角时也刷新一次，确保位置正确
-        //UpdateBallPosition();
+        GameEvents.OnRoomTransitionExecute -= PositionBall;
     }
 
     /// <summary>
-    /// 更新小球：设为对应 Piece 的子物体，本地坐标 = 面方向 × offset
+    /// 将小球移动到指定房间对应的 Piece 下
     /// </summary>
-    public void UpdateBallPosition()
+    void PositionBall(int roomID)
     {
-        var gs = GameState.Instance;
-        if (gs == null || cubeData == null) return;
-
-        int roomID = gs.CurrentRoomID;
+        if (cubeData == null) return;
         if (roomID < 0) return;
 
-        // 找到该 roomID 对应的 Surface
         CubeSurface_s surface = FindSurfaceByRoomID(roomID);
         if (surface == null)
         {
-            Debug.LogWarning($"BallVisualController: 找不到 RoomID={roomID} 对应的 Surface");
+            Debug.LogWarning($"BallVisual: 找不到 RoomID={roomID} 对应的 Surface");
             return;
         }
 
-        // 找到该 Surface 所属的 Piece 的 GameObject
         GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(roomID);
         if (pieceObj == null)
         {
-            Debug.LogWarning($"BallVisualController: 找不到 RoomID={roomID} 对应的 PieceObj");
+            Debug.LogWarning($"BallVisual: 找不到 RoomID={roomID} 对应的 PieceObj");
             return;
         }
-
-        Debug.Log("现在房间是" + gs.CurrentRoomID);
 
         // 设为 Piece 子物体
         transform.SetParent(pieceObj.transform, false);
 
         // 本地坐标 = 面方向 × offset / 父物体缩放
         Vector3 localDir = FaceDirToLocalVector(surface.dir);
-        float parentScale = pieceObj.transform.lossyScale.x; // 假设xyz等比缩放
-        transform.localPosition = localDir * (surfaceOffset / parentScale);
+        float parentScale = pieceObj.transform.lossyScale.x;
+        transform.localPosition = localDir * surfaceOffset;
+
+        Debug.Log($"BallVisual: 移动到 Room={roomID}, Piece={pieceObj.name}, " +
+                  $"FaceDir={surface.dir}, localPos={transform.localPosition}");
     }
 
-    /// <summary>
-    /// 通过 roomID 找到对应的 CubeSurface_s
-    /// </summary>
     CubeSurface_s FindSurfaceByRoomID(int roomID)
     {
         foreach (var slot in cubeData.slots)
@@ -107,9 +78,6 @@ public class BallVisualController : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// FaceDir 转本地方向向量
-    /// </summary>
     Vector3 FaceDirToLocalVector(FaceDir dir)
     {
         return dir switch
