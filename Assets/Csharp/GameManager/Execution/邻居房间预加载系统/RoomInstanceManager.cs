@@ -62,7 +62,7 @@ public class RoomInstanceManager : MonoBehaviour
         _currentRoomInstance = Instantiate(
             room.RoomPerfab,
             room.spawnPoint,
-            Quaternion.identity
+            Quaternion.Euler(room.orRotation)
         );
 
         _currentRoomInstance.transform.SetParent(CurrentRoom.transform, true);
