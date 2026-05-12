@@ -47,8 +47,6 @@ public class GameState
     private GameObject ball;
     private Rigidbody rb;
     public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.None;
-    //通过VMM单例访问cubeData
-    public InitCubeSlot cubeData => ViewModeManager.Instance?.cubeData;
     // 背包：记住打开前的状态
     private PlayerState stateBeforeBag;
     public bool[] TaskFinished { get; private set; } = new bool[5];
@@ -100,8 +98,9 @@ public class GameState
         if (mode == ViewMode.View3)
         {
             SetPlayerState(PlayerState.isMoving);
-            RotateCurrentRoom();
         }
+
+        GameEvents.onViewSwitchExecute(CurrentView);
     }
     //顺序切换视角
     public void FSetView()
@@ -121,37 +120,9 @@ public class GameState
         if (CurrentView == ViewMode.View3)
         {
             SetPlayerState(PlayerState.isMoving);
-            RotateCurrentRoom();
         }
-    }
 
-    private void RotateCurrentRoom()
-    {
-        Quaternion rotation_R = Quaternion.FromToRotation(CubeRotateController.CurrentGDirinMF, new Vector3(0, -1, 0));//转魔方
-        Quaternion qStart = Quaternion.Euler(270, 0, 0);
-        //====YIU====
-        Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
-        GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(CurrentRoomID);
-        Debug.Log($"旋转计算: CurrentGDirinMF={CubeRotateController.CurrentGDirinMF}, RoomID={CurrentRoomID}, pieceObj={pieceObj?.name}");
-        //=========
-        Quaternion qEnd = cubeData.GetPieceGameObjectByRoomID(CurrentRoomID).transform.localRotation;
-        //====YIU====
-        if (pieceObj.transform.parent == cubeRoot)
-        {
-            qEnd = pieceObj.transform.localRotation;
-        }
-        //========
-        Debug.Log("可恶这是什么" + qEnd.eulerAngles);
-        Quaternion rotation_T = qEnd * Quaternion.Inverse(qStart);//拧魔方
-        Quaternion rotation = rotation_R * rotation_T;
-        GameObject currentRoom = cubeData.CurrentRoom;
-        Debug.Log($"旋转计算: currentRoom={currentRoom?.name}, rotation_R={rotation_R.eulerAngles}, rotation_T={rotation_T.eulerAngles}, final={rotation.eulerAngles}");
-        Debug.Log($"旋转前: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
-
-        currentRoom.transform.rotation = rotation;
-        currentRoom.transform.GetChild(0).localRotation = Quaternion.Euler(cubeData.rooms[CurrentRoomID].orRotation);
-
-        Debug.Log($"旋转后: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
+        GameEvents.onViewSwitchExecute(CurrentView);
     }
 #endregion
 #endregion

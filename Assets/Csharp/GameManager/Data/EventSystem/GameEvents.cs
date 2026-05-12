@@ -37,7 +37,7 @@ public static class GameEvents
     // CARC监听VMM
     public static event Action OnCameraRotateExecute;
     public static event Action OnCameraRotateFinishExecute;
-    // UIM监听VMM
+    // UIM+VMM监听GS
     public static event Action<ViewMode> OnViewSwitchExecute;
     // 张天姿：CTC监听VMM
     public static event Action<int> OnArrowsExecute;
@@ -92,7 +92,7 @@ public static class GameEvents
     public static void onMoveExecute(Vector3 moveDir) => OnMoveExecute?.Invoke(moveDir);
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
     public static void onMouseLookExecute(Vector2 mouseMove) => OnMouseLookExecute?.Invoke(mouseMove);//欧
-    // UIM监听VMM
+    // UIM+VMM监听GS
     public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
     // CRC监听VMM
     public static void onCubeRotateStart() => OnCubeRotateExecute?.Invoke();
