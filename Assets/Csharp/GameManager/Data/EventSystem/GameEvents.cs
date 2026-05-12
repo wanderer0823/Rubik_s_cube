@@ -41,7 +41,7 @@ public static class GameEvents
     public static event Action<ViewMode> OnViewSwitchExecute;
     // 张天姿：CTC监听VMM
     public static event Action<int> OnArrowsExecute;
-    // V1CM监听GS
+    // V1CM监听UIM
     public static event Action IsView1Now;
     // RPC监听UIM和PA
     public static event Action CalculateNeighbors;
@@ -102,7 +102,7 @@ public static class GameEvents
     public static void onCameraRotateEnd() => OnCameraRotateFinishExecute?.Invoke();
     // 张天姿：CTC监听VMM
     public static void onArrowsExecute(int number) => OnArrowsExecute?.Invoke(number);
-    // V1CM监听GS
+    // V1CM监听UIM
     public static void isView1Now() => IsView1Now?.Invoke();
     // RPC监听UIM和PA
     public static void calculateNeighbors() =>CalculateNeighbors?.Invoke();

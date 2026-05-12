@@ -52,16 +52,18 @@ public class BallVisualController : MonoBehaviour
             return;
         }
 
-        // 设为 Piece 子物体
         transform.SetParent(pieceObj.transform, false);
 
-        // 本地坐标 = 面方向 × offset / 父物体缩放
-        Vector3 localDir = FaceDirToLocalVector(surface.dir);
-        float parentScale = pieceObj.transform.lossyScale.x;
-        transform.localPosition = localDir * surfaceOffset;
+        // 逻辑方向 → 魔方坐标系世界方向 → Piece本地方向
+        Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
+        Vector3 logicDir = FaceDirToLocalVector(surface.dir);
+        Vector3 worldDir = cubeRoot.TransformDirection(logicDir);
+        Vector3 pieceLocalDir = pieceObj.transform.InverseTransformDirection(worldDir).normalized;
 
-        Debug.Log($"BallVisual: 移动到 Room={roomID}, Piece={pieceObj.name}, " +
-                  $"FaceDir={surface.dir}, localPos={transform.localPosition}");
+        transform.localPosition = pieceLocalDir * surfaceOffset;
+
+        Debug.Log($"BallVisual: Room={roomID}, Piece={pieceObj.name}, " +
+                  $"FaceDir={surface.dir}, pieceLocalDir={pieceLocalDir}, localPos={transform.localPosition}");
     }
 
     CubeSurface_s FindSurfaceByRoomID(int roomID)
@@ -91,4 +93,46 @@ public class BallVisualController : MonoBehaviour
             _ => Vector3.up
         };
     }
+
+    /// <summary>
+    /// 获取指定房间 Surface 在世界空间的朝外方向（供外部使用）
+    /// </summary>
+    public static Vector3 GetSurfaceWorldDirection(int roomID)
+    {
+        var cubeData = ViewModeManager.Instance?.cubeData;
+        var cubeRoot = ViewModeManager.Instance?.cubeRoot;
+        if (cubeData == null || cubeRoot == null) return Vector3.up;
+
+        // 找 Surface
+        CubeSurface_s surface = null;
+        foreach (var slot in cubeData.slots)
+        {
+            if (slot.occupant == null) continue;
+            foreach (var s in slot.occupant.surfaces)
+            {
+                if (s.roomID == roomID)
+                {
+                    surface = s;
+                    break;
+                }
+            }
+            if (surface != null) break;
+        }
+
+        if (surface == null) return Vector3.up;
+
+        Vector3 logicDir = surface.dir switch
+        {
+            FaceDir.Up => Vector3.up,
+            FaceDir.Down => Vector3.down,
+            FaceDir.Left => Vector3.left,
+            FaceDir.Right => Vector3.right,
+            FaceDir.Front => Vector3.forward,
+            FaceDir.Back => Vector3.back,
+            _ => Vector3.up
+        };
+
+        return cubeRoot.TransformDirection(logicDir).normalized;
+    }
+
 }

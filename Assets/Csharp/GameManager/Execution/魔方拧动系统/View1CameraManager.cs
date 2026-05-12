@@ -20,24 +20,47 @@ public class View1CameraManager : MonoBehaviour
         GameEvents.IsView1Now -= TransCamera;
     }
 
-    private void TransCamera()
+    //Yiu：注释掉旧玩法的计算方法，并使用BallVisualController的静态方法。
+    /*private void TransCamera()
     {
         FaceDir face = GameState.Instance.CurrentPlayerFace;
 
-        // 玩家所在面的本地法向量
-        Vector3 localDir = (Vector3)FaceOffset[face];
+        // 玩家所在面的本地法向量（不变）
+        //Vector3 localDir = (Vector3)FaceOffset[face];
+
         // 转换到世界坐标，考虑魔方在 View2 中被旋转后的实际朝向
         Vector3 worldDir = cubeCenter.TransformDirection(localDir);
+        Debug.Log("V1CM:玩家所在面的本地法向量：" + localDir);
+
+        // 相机放在该面外侧
+        transform.position = cubeCenter.position + worldDir * View1CameraDist;
+        Debug.Log("V1CM:玩家所在面的本地法向量：" + localDir);
+
+        // 计算屏幕"上"方向（魔方本地坐标系），避免 Up/Down 面 LookAt 退化
+        Vector3 localUp = GetLocalUp(face);
+        Vector3 worldUp = cubeCenter.TransformDirection(localUp);
+        Debug.Log("V1CM:玩家所在面的本地法向量：" + localDir);
+
+        transform.LookAt(cubeCenter.position, worldUp);
+    }*/
+    private void TransCamera()
+    {
+        int roomID = GameState.Instance.CurrentRoomID;
+
+        // 用 BallVisualController 的静态方法获取世界方向
+        Vector3 worldDir = BallVisualController.GetSurfaceWorldDirection(roomID);
 
         // 相机放在该面外侧
         transform.position = cubeCenter.position + worldDir * View1CameraDist;
 
-        // 计算屏幕"上"方向（魔方本地坐标系），避免 Up/Down 面 LookAt 退化
+        // 计算屏幕"上"方向
+        FaceDir face = GameState.Instance.CurrentPlayerFace;
         Vector3 localUp = GetLocalUp(face);
         Vector3 worldUp = cubeCenter.TransformDirection(localUp);
 
         transform.LookAt(cubeCenter.position, worldUp);
     }
+
 
     /// <summary>
     /// 根据展开图（Up-Front-Down-Back 纵列，Left-Front-Right 横排）推导：
