@@ -172,7 +172,6 @@ public class ViewModeManager : MonoBehaviour
     {
         if (mode != ViewMode.View3)
             return;
-
         RotateCurrentRoom();
     }
     private void RotateCurrentRoom()
@@ -181,6 +180,7 @@ public class ViewModeManager : MonoBehaviour
             Quaternion.FromToRotation(
                 CubeRotateController.CurrentGDirinMF,
                 new Vector3(0, -1, 0));
+        Debug.Log("地球："+ CubeRotateController.CurrentGDirinMF);
 
         Quaternion qStart = Quaternion.Euler(270, 0, 0);
 
@@ -216,10 +216,8 @@ public class ViewModeManager : MonoBehaviour
 
         currentRoom.transform.rotation = rotation;
 
-        currentRoom.transform.GetChild(0).localRotation =
+        //currentRoom.transform.GetChild(0).localRotation =
             Quaternion.Euler(cubeData.rooms[gs.CurrentRoomID].orRotation);
-
-        Debug.Log($"旋转后: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
     }
     #endregion
 

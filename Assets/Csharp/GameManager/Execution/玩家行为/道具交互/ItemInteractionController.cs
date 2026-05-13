@@ -393,11 +393,9 @@ public class ItemInteractionController : MonoBehaviour
                         }
                     }
                     Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
-                    RoomPreloadController rpc = FindObjectOfType<RoomPreloadController>();
                     transform.position = new Vector3(0, 40, 0);
-                    rpc.TriggerPreloadComplete();
-                    // ������֪ͨС���ƶ�
                     GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
+                    GameEvents.calculateNeighbors();//计算逻辑邻居，然后实例化新房间
 
                     break;
                 }

@@ -19,7 +19,7 @@ public class RoomInstanceManager : MonoBehaviour
     {
         RoomPreloadController.OnPreloadComplete += OnPreloadComplete;
     }
-
+    
     void OnDisable()
     {
         RoomPreloadController.OnPreloadComplete -= OnPreloadComplete;

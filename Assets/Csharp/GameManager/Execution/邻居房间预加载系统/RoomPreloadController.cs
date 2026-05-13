@@ -164,8 +164,5 @@ public class RoomPreloadController : MonoBehaviour
         Debug.Log($"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");
     }
 
-    public void TriggerPreloadComplete()
-    {
-        OnPreloadComplete?.Invoke(_lastPayload);
-    }
+
 }
