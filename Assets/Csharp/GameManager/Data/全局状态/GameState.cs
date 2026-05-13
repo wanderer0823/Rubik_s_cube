@@ -1,6 +1,8 @@
+//using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Runtime.CompilerServices;
 using UnityEngine;
 using static InitCubeSlot;
 //视角状态
@@ -97,6 +99,8 @@ public class GameState
         {
             SetPlayerState(PlayerState.isMoving);
         }
+
+        GameEvents.onViewSwitchExecute(CurrentView);
     }
     //顺序切换视角
     public void FSetView()
@@ -117,14 +121,16 @@ public class GameState
         {
             SetPlayerState(PlayerState.isMoving);
         }
-    }
-    #endregion
-    #endregion
 
-    #region ===========================================
-    #region 修改玩家状态
-    // 修改玩家状态
-    public void SetPlayerState(PlayerState state)
+        GameEvents.onViewSwitchExecute(CurrentView);
+    }
+#endregion
+#endregion
+
+#region ===========================================
+#region 修改玩家状态
+// 修改玩家状态
+public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
         Debug.Log("更新为玩家状态：" + CurrentPlayerState);
