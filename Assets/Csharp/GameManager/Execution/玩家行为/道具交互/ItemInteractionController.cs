@@ -413,6 +413,7 @@ public class ItemInteractionController : MonoBehaviour
                 if (face.isPassable)
                 {
                     GameState.Instance.CurrentRoomID = id;
+                    GameState.Instance.RefreshCurrentSurfaceFromRoomID();
                 }
                 else
                 {

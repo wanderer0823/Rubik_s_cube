@@ -75,6 +75,7 @@ public class GameState
         CurrentView = ViewMode.View3;
         CurrentPlayerState = PlayerState.isMoving;
         CurrentSurface = new InitCubeSlot.CubeSurface_s();
+        RefreshCurrentSurfaceFromRoomID();
     }
 
     #region ====================================
@@ -157,6 +158,20 @@ public void SetPlayerState(PlayerState state)
         }
 
         Debug.Log($"更新空间信息 Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
+    }
+
+    public bool RefreshCurrentSurfaceFromRoomID()
+    {
+        var cubeData = ViewModeManager.Instance?.cubeData;
+        if (cubeData == null)
+            return false;
+
+        var surface = cubeData.GetSurfaceByRoomID(CurrentRoomID);
+        if (surface == null)
+            return false;
+
+        SetCurrentSurface(surface);
+        return true;
     }
     public void SetGravityFace(InitCubeSlot.FaceDir face)
     {

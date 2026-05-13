@@ -15,6 +15,7 @@ public class CubeTurnController : MonoBehaviour
 
     [SerializeField] private List<RectTransform> ButtonsRectTranform = new List<RectTransform>();
     [SerializeField] private InitCubeSlot initCubeSlot;
+    [SerializeField] private Transform view1CameraTransform;
     [SerializeField] private InitCubeSlotFaceDir currentFaceDir = InitCubeSlotFaceDir.Up;
     [SerializeField] private float turnAnimationDuration = 0.5f;
 
@@ -22,7 +23,11 @@ public class CubeTurnController : MonoBehaviour
     public InitCubeSlotAxis currentAxis;
 
     private Vector3 currentSignedLocalAxis = Vector3.right;
+    private Vector3 lockedLocalUp = Vector3.up;
+    private Vector3 lockedLocalRight = Vector3.right;
     private bool isTurnAnimating;
+    private bool hasLockedScreenBasis;
+    private bool isView1FaceLocked;
     private int coordScale = 2;
 
     private struct TurnAnimationState
@@ -43,6 +48,13 @@ public class CubeTurnController : MonoBehaviour
     {
         if (initCubeSlot == null)
             initCubeSlot = FindObjectOfType<InitCubeSlot>();
+
+        if (view1CameraTransform == null)
+        {
+            var view1CameraManager = FindObjectOfType<View1CameraManager>();
+            if (view1CameraManager != null)
+                view1CameraTransform = view1CameraManager.transform;
+        }
     }
 
     private void Start()
@@ -53,11 +65,13 @@ public class CubeTurnController : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnArrowsExecute += RotateByCurrentArrow;
+        GameEvents.OnViewSwitchExecute += OnViewSwitch;
     }
 
     private void OnDisable()
     {
         GameEvents.OnArrowsExecute -= RotateByCurrentArrow;
+        GameEvents.OnViewSwitchExecute -= OnViewSwitch;
     }
 
     public void SetCurrentFace(InitCubeSlotFaceDir face) => currentFaceDir = face;
@@ -144,7 +158,7 @@ public class CubeTurnController : MonoBehaviour
         int index)
     {
         int val = IndexToCoordValue(Mathf.Clamp(index, 0, 2));
-        GetFaceBasis(faceDir, out _, out Vector3 localUp, out Vector3 localRight);
+        GetCurrentBasis(faceDir, out Vector3 localUp, out Vector3 localRight);
 
         Vector3 signedAxis = side == ArrowSide.Up ? localRight : localUp;
         int axisSign = GetAxisSign(signedAxis);
@@ -160,7 +174,7 @@ public class CubeTurnController : MonoBehaviour
         if (isTurnAnimating)
             return;
 
-        currentFaceDir = (InitCubeSlotFaceDir)GameState.Instance.CurrentPlayerFace;
+        EnsureView1FaceLocked();
         GetPiecesForArrow(arrowIndex);
 
         float angle = 90f;
@@ -282,6 +296,63 @@ public class CubeTurnController : MonoBehaviour
         initCubeSlot.RebuildSurfaceCoordMap();
     }
 
+    private void OnViewSwitch(ViewMode mode)
+    {
+        hasLockedScreenBasis = false;
+        isView1FaceLocked = false;
+    }
+
+    private void EnsureView1FaceLocked()
+    {
+        if (isView1FaceLocked)
+            return;
+
+        LockCurrentFaceForView1();
+    }
+
+    private void LockCurrentFaceForView1()
+    {
+        GameState.Instance.RefreshCurrentSurfaceFromRoomID();
+        currentFaceDir = (InitCubeSlotFaceDir)GameState.Instance.CurrentPlayerFace;
+        CacheScreenBasisForView1();
+        isView1FaceLocked = true;
+    }
+
+    private void GetCurrentBasis(
+        InitCubeSlotFaceDir face,
+        out Vector3 localUp,
+        out Vector3 localRight)
+    {
+        if (hasLockedScreenBasis)
+        {
+            localUp = lockedLocalUp;
+            localRight = lockedLocalRight;
+            return;
+        }
+
+        GetFaceBasis(face, out _, out localUp, out localRight);
+    }
+
+    private void CacheScreenBasisForView1()
+    {
+        hasLockedScreenBasis = false;
+
+        Transform cubeRoot = ViewModeManager.Instance?.cubeRoot;
+        if (cubeRoot == null || view1CameraTransform == null)
+            return;
+
+        Vector3 cameraLocalUp = cubeRoot.InverseTransformDirection(view1CameraTransform.up);
+        Vector3 cameraLocalRight = cubeRoot.InverseTransformDirection(view1CameraTransform.right);
+
+        lockedLocalUp = SnapToPrimaryAxis(cameraLocalUp);
+        lockedLocalRight = SnapToPrimaryAxis(cameraLocalRight);
+
+        if (lockedLocalUp == Vector3.zero || lockedLocalRight == Vector3.zero)
+            return;
+
+        hasLockedScreenBasis = true;
+    }
+
     private static int GetAxisSign(Vector3 axis)
     {
         if (Mathf.Abs(axis.x) > 0.5f) return axis.x > 0 ? 1 : -1;
@@ -328,6 +399,21 @@ public class CubeTurnController : MonoBehaviour
     {
         localNormal = GetFaceNormal(face);
         localUp = GetLocalUp(face);
-        localRight = Vector3.Cross(localUp, -localNormal);
+        localRight = Vector3.Cross(-localNormal, localUp);
+    }
+
+    private static Vector3 SnapToPrimaryAxis(Vector3 v)
+    {
+        float absX = Mathf.Abs(v.x);
+        float absY = Mathf.Abs(v.y);
+        float absZ = Mathf.Abs(v.z);
+
+        if (absX >= absY && absX >= absZ)
+            return v.x >= 0f ? Vector3.right : Vector3.left;
+
+        if (absY >= absX && absY >= absZ)
+            return v.y >= 0f ? Vector3.up : Vector3.down;
+
+        return v.z >= 0f ? Vector3.forward : Vector3.back;
     }
 }
