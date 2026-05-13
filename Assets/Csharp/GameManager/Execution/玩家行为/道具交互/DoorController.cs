@@ -1,38 +1,50 @@
+ï»¿using System;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    // ==================== ÃÅÊôĞÔ ====================
+    // ==================== é—¨å±æ€§ ====================
 
     public enum DoorMat { Hard, Soft }
 
-    [Header("³õÊ¼»¯Éè¶¨£¨²»±ä£©")]
+    [Header("åˆå§‹åŒ–è®¾å®šï¼ˆä¸å˜ï¼‰")]
     public DoorMat doorMat = DoorMat.Hard;
     public float softDoorHitSpeed = 5f;
 
-    [Header("·½ÏòÒıÓÃ£¨´Ódir_doorÏÂÍÏÈë¶ÔÓ¦·½ÏòÎïÌå£¬Èçleft£©")]
+    [Header("æ–¹å‘å¼•ç”¨ï¼ˆä»dir_doorä¸‹æ‹–å…¥å¯¹åº”æ–¹å‘ç‰©ä½“ï¼Œå¦‚leftï¼‰")]
     public Transform dirReference;
 
-    [Header("ÔËĞĞÊ±×´Ì¬")]
+    [Header("è¿è¡Œæ—¶çŠ¶æ€")]
     [SerializeField] private bool _isOpened = false;
+    [SerializeField] private int needPlateNum = 1;
+    private int currentPlateNum = 0;
 
-    [Header("¿ªÃÅ¶¯»­ÉèÖÃ£¨½öHardÃÅ£©")]
+    [Header("å¼€é—¨åŠ¨ç”»è®¾ç½®ï¼ˆä»…Hardé—¨ï¼‰")]
     [SerializeField] private float doorOpenAngle = 90f;
     [SerializeField] private float doorAnimSpeed = 2f;
-    [SerializeField] private Transform doorPivot;       // ÃÅĞı×ªÖáÎïÌå£¨ÃÅÄ£ĞÍ±¾Éí»òÒ»¸ö¿Õ¸¸ÎïÌå£©
+    [SerializeField] private Transform doorPivot;       // é—¨æ—‹è½¬è½´ç‰©ä½“ï¼ˆé—¨æ¨¡å‹æœ¬èº«æˆ–ä¸€ä¸ªç©ºçˆ¶ç‰©ä½“ï¼‰
 
-    // ¶¯»­×´Ì¬
+    // åŠ¨ç”»çŠ¶æ€
     private bool isVisuallyOpen = false;
     private Coroutine doorAnimCoroutine;
 
     public bool IsOpened => _isOpened;
 
+    private void Awake()
+    {
+        _isOpened = needPlateNum == 0;
+    }
+
     public void Open()
     {
         if (_isOpened) return;
-        _isOpened = true;
-        Debug.Log($"ÃÅ {gameObject.name} ÒÑ´ò¿ª£¨isOpened=true£©");
-        // TODO: ²¥·Å¿ªÃÅ¶¯»­
+        currentPlateNum++;
+        if (currentPlateNum >= needPlateNum)
+        {
+            _isOpened = true;
+        }
+        Debug.Log($"é—¨ {gameObject.name} å·²æ‰“å¼€ï¼ˆisOpened=trueï¼‰");
+        // TODO: æ’­æ”¾å¼€é—¨åŠ¨ç”»
     }
 
     public bool GetIsPassable()
@@ -60,20 +72,20 @@ public class DoorController : MonoBehaviour
     }
 
     /// <summary>
-    /// ´òÓ¡µ±Ç°ÃÅµÄÍêÕû×´Ì¬
+    /// æ‰“å°å½“å‰é—¨çš„å®Œæ•´çŠ¶æ€
     /// </summary>
     public void LogDoorStatus()
     {
-        Debug.Log($"[ÃÅ×´Ì¬] {gameObject.name} | " +
+        Debug.Log($"[é—¨çŠ¶æ€] {gameObject.name} | " +
                   $"DoorMat={doorMat} | " +
                   $"isOpened={_isOpened} | " +
                   $"isPassable={GetIsPassable()} | " +
                   $"DoorVector={DoorinRoomVector}");
     }
 
-    // ==================== ÃÅÏòÁ¿¼ÆËã£¨Ô­ DoorVectorReturn Âß¼­£©====================
+    // ==================== é—¨å‘é‡è®¡ç®—ï¼ˆåŸ DoorVectorReturn é€»è¾‘ï¼‰====================
 
-    [Header("ÃÅÏòÁ¿£¨ÔËĞĞÊ±×Ô¶¯¼ÆËã£©")]
+    [Header("é—¨å‘é‡ï¼ˆè¿è¡Œæ—¶è‡ªåŠ¨è®¡ç®—ï¼‰")]
     public Vector3 DoorinRoomVector;
     public Vector3 GinMF;
 
@@ -85,13 +97,13 @@ public class DoorController : MonoBehaviour
 
     void ReturnDoorVector()
     {
-        // °²È«¼ì²é
+        // å®‰å…¨æ£€æŸ¥
         if (dirReference == null) return;
         if (dirReference.parent == null) return;
 
-        // dirReference = dir_door/left£¬Æä localPosition = (-5,0,0)
+        // dirReference = dir_door/leftï¼Œå…¶ localPosition = (-5,0,0)
         // dirReference.parent = dir_door
-        // dirReference.parent.parent = perfab¸ù½Úµã
+        // dirReference.parent.parent = prefabæ ¹èŠ‚ç‚¹
         Vector3 dir = dirReference.localPosition;
         Vector3 parentPos = dirReference.parent.parent.rotation * dir;
 
@@ -112,21 +124,21 @@ public class DoorController : MonoBehaviour
 
     void CheckDoorVisualState()
     {
-        // Ö»ÓĞ Hard ÃÅ + ÒÑ±»Ñ¹Á¦°å´ò¿ª ²ÅÓĞ¿ª¹Ø¶¯»­
+        // åªæœ‰ Hard é—¨ + å·²è¢«å‹åŠ›æ¿æ‰“å¼€ æ‰æœ‰å¼€å…³åŠ¨ç”»
         if (doorMat != DoorMat.Hard || !_isOpened || doorPivot == null) return;
 
         bool shouldBeOpen = GetIsPassable();
 
         if (shouldBeOpen && !isVisuallyOpen)
         {
-            // Ğı×ª´ò¿ª
+            // æ—‹è½¬æ‰“å¼€
             isVisuallyOpen = true;
             if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
             doorAnimCoroutine = StartCoroutine(AnimateDoor(doorOpenAngle));
         }
         else if (!shouldBeOpen && isVisuallyOpen)
         {
-            // Ğı×ª¹Ø±Õ
+            // æ—‹è½¬å…³é—­
             isVisuallyOpen = false;
             if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
             doorAnimCoroutine = StartCoroutine(AnimateDoor(0f));
@@ -136,7 +148,7 @@ public class DoorController : MonoBehaviour
     System.Collections.IEnumerator AnimateDoor(float targetAngle)
     {
         float currentAngle = doorPivot.localEulerAngles.y;
-        // ´¦Àí½Ç¶È»·ÈÆ
+        // å¤„ç†è§’åº¦ç¯ç»•
         if (currentAngle > 180f) currentAngle -= 360f;
 
         while (Mathf.Abs(currentAngle - targetAngle) > 0.5f)
