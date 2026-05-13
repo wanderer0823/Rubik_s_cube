@@ -310,6 +310,21 @@ public class InitCubeSlot : MonoBehaviour
         return null;
     }
 
+    public CubeSurface_s GetSurfaceByRoomID(int roomID)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.occupant == null) continue;
+            foreach (var surface in slot.occupant.surfaces)
+            {
+                if (surface.roomID == roomID)
+                    return surface;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary> 表面坐标每轴有效值（与 piece*2 + offset 一致） </summary>
     const int SurfaceCoordMax = 3;
 

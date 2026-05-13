@@ -71,11 +71,11 @@ public class View1CameraManager : MonoBehaviour
     /// </summary>
     private Vector3 GetLocalUp(FaceDir face)
     {
-        switch (face)
+        return face switch
         {
-            case FaceDir.Up: return Vector3.back;    // 顶面：屏幕上 = 魔方本地 Z-
-            case FaceDir.Down: return Vector3.forward; // 底面：屏幕上 = 魔方本地 Z+
-            default: return Vector3.up;      // 四侧面：屏幕上 = 魔方本地 Y+
-        }
+            FaceDir.Up => Vector3.back,
+            FaceDir.Down => Vector3.forward,
+            _ => Vector3.up
+        };
     }
 }
