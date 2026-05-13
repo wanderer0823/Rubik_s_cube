@@ -7395,6 +7395,7 @@ GameObject:
   - component: {fileID: 1455381705}
   - component: {fileID: 1455381706}
   - component: {fileID: 1455381707}
+  - component: {fileID: 1455381708}
   m_Layer: 0
   m_Name: RoomPreloadController
   m_TagString: Untagged
@@ -7443,6 +7444,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _neighborRoomIds: 
   CurrentRoom: {fileID: 1455267926}
+--- !u!114 &1455381708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455381704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b764d29ae704ec48999604ffb9beb9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentRoom: {fileID: 1455267926}
+  roomGameObjects: []
 --- !u!1 &1468114437
 GameObject:
   m_ObjectHideFlags: 0
