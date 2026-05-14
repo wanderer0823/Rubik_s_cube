@@ -16,6 +16,11 @@ public class ViewModeManager : MonoBehaviour
     public Transform cubeRoot;
     public InitCubeSlot cubeData;
 
+    //欧添加：在更新旋转后重置小球位置
+    public GameObject player;
+    private Quaternion newRotation = Quaternion.Euler(360, 360, 360);
+    private Quaternion lastRoomRotation = Quaternion.Euler(360, 360, 360);
+
     void Awake()
     {
         Instance = this;
@@ -216,8 +221,13 @@ public class ViewModeManager : MonoBehaviour
 
         currentRoom.transform.rotation = rotation;
 
-        //currentRoom.transform.GetChild(0).localRotation =
-            Quaternion.Euler(cubeData.rooms[gs.CurrentRoomID].orRotation);
+        newRotation = currentRoom.transform.rotation;
+        if (Quaternion.Angle(lastRoomRotation, newRotation) > 0f) 
+        {
+            player.transform.position = new Vector3(0, 40, 0);
+            lastRoomRotation = newRotation;
+        }
+
     }
     #endregion
 
