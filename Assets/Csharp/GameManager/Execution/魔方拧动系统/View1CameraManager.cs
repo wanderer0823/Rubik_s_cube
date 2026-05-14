@@ -45,7 +45,9 @@ public class View1CameraManager : MonoBehaviour
     }*/
     private void TransCamera()
     {
+        GameState.Instance.RefreshCurrentSurfaceFromRoomID();
         int roomID = GameState.Instance.CurrentRoomID;
+        FaceDir face = ResolveRoomFace(roomID);
 
         // 用 BallVisualController 的静态方法获取世界方向
         Vector3 worldDir = BallVisualController.GetSurfaceWorldDirection(roomID);
@@ -53,12 +55,18 @@ public class View1CameraManager : MonoBehaviour
         // 相机放在该面外侧
         transform.position = cubeCenter.position + worldDir * View1CameraDist;
 
-        // 计算屏幕"上"方向
-        FaceDir face = GameState.Instance.CurrentPlayerFace;
+        // 位置和朝上方向都基于同一个 room surface，避免切到 View1 时出现倾斜。
         Vector3 localUp = GetLocalUp(face);
         Vector3 worldUp = cubeCenter.TransformDirection(localUp);
 
         transform.LookAt(cubeCenter.position, worldUp);
+    }
+
+    private FaceDir ResolveRoomFace(int roomID)
+    {
+        var cubeData = ViewModeManager.Instance?.cubeData;
+        var surface = cubeData?.GetSurfaceByRoomID(roomID);
+        return surface != null ? surface.dir : GameState.Instance.CurrentPlayerFace;
     }
 
 

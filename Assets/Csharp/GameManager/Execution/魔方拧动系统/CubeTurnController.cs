@@ -49,12 +49,7 @@ public class CubeTurnController : MonoBehaviour
         if (initCubeSlot == null)
             initCubeSlot = FindObjectOfType<InitCubeSlot>();
 
-        if (view1CameraTransform == null)
-        {
-            var view1CameraManager = FindObjectOfType<View1CameraManager>();
-            if (view1CameraManager != null)
-                view1CameraTransform = view1CameraManager.transform;
-        }
+        TryResolveView1CameraTransform();
     }
 
     private void Start()
@@ -174,7 +169,7 @@ public class CubeTurnController : MonoBehaviour
         if (isTurnAnimating)
             return;
 
-        EnsureView1FaceLocked();
+        LockCurrentFaceForView1();
         GetPiecesForArrow(arrowIndex);
 
         float angle = 90f;
@@ -336,6 +331,7 @@ public class CubeTurnController : MonoBehaviour
     private void CacheScreenBasisForView1()
     {
         hasLockedScreenBasis = false;
+        TryResolveView1CameraTransform();
 
         Transform cubeRoot = ViewModeManager.Instance?.cubeRoot;
         if (cubeRoot == null || view1CameraTransform == null)
@@ -351,6 +347,30 @@ public class CubeTurnController : MonoBehaviour
             return;
 
         hasLockedScreenBasis = true;
+    }
+
+    private bool TryResolveView1CameraTransform()
+    {
+        if (view1CameraTransform != null)
+            return true;
+
+        var activeCameraManager = FindObjectOfType<View1CameraManager>();
+        if (activeCameraManager != null)
+        {
+            view1CameraTransform = activeCameraManager.transform;
+            return true;
+        }
+
+        foreach (var candidate in Resources.FindObjectsOfTypeAll<View1CameraManager>())
+        {
+            if (!candidate.gameObject.scene.IsValid())
+                continue;
+
+            view1CameraTransform = candidate.transform;
+            return true;
+        }
+
+        return false;
     }
 
     private static int GetAxisSign(Vector3 axis)
