@@ -91,64 +91,48 @@ public class PlayerAction : MonoBehaviour
         Debug.Log("打开/关闭背包系统。");
     }
     //玩家wasd移动
+    // 可调参数：移动加速度（控制响应速度）
+    public float moveAcceleration = 20f;
+    // 可调参数：地面/空中刹车减速度
+    public float brakeDeceleration = 30f;
+    public Vector3 deltaHorVelocity;
     void Move(Vector3 moveDir)
     {
-        ///Yiu
-        // Bounce 反弹中不接受移动输入
         if (isBouncing) return;
+
+        // 获取输入方向（本地转世界）
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
-        float speed = currentProfile != null ? currentProfile.moveSpeed : 5f;
+        float targetSpeed = currentProfile != null ? currentProfile.moveSpeed : 5f;
+
+        // 期望的水平速度方向
+        Vector3 targetHorVelocity = moveDir.normalized * targetSpeed;
+        Vector3 currentHorVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+
+        
         if (moveDir.magnitude > 0.1f)
         {
-            Vector3 targetVel = moveDir.normalized * speed;
-            targetVel.y = rb.velocity.y;
-            rb.velocity = targetVel;
+            // 有输入：向目标速度加速
+            deltaHorVelocity = targetHorVelocity - currentHorVelocity;
+            // 限制单帧最大加速度
+            float maxDelta = moveAcceleration * Time.fixedDeltaTime;
+            deltaHorVelocity = Vector3.ClampMagnitude(deltaHorVelocity, maxDelta);
         }
         else
         {
-            rb.velocity = new Vector3(0, rb.velocity.y, 0);
-        }
-        #region （已注释） 欧的旧移动CC
-        /*Debug.Log("移动中");
-        moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
-        if (moveDir.magnitude > 0.1f)
-        {
-            //平滑移动
-            CurrentMoveVelocity = Vector3.SmoothDamp(
-                CurrentMoveVelocity,            //当前速度
-                moveDir.normalized * moveSpeed, //目标速度
-                ref moveSmoothVelocity,         //存储中间速度
-                smoothTime                      //平滑时间
-            );
-        }
-        else
-        {
-            // 停止时减速
-            CurrentMoveVelocity = Vector3.SmoothDamp(
-                CurrentMoveVelocity,
-                Vector3.zero,
-                ref moveSmoothVelocity,
-                smoothTime
-            );
+            // 无输入：刹车减速
+            float brake = brakeDeceleration * Time.fixedDeltaTime;
+            float currentSpeed = currentHorVelocity.magnitude;
+            float decel = Mathf.Min(currentSpeed, brake);
+            deltaHorVelocity = -currentHorVelocity.normalized * decel;
+            if (float.IsNaN(deltaHorVelocity.x)) deltaHorVelocity = Vector3.zero;
         }
 
-        //应用重力
-        if (!controller.isGrounded)
-        {
-            velocity.y += gravity * Time.deltaTime;
-        }
-        else if (velocity.y < 0)
-        {
-            velocity.y = -2f;  // 轻微贴地
-        }
-
-        // 组合移动和重力
-        Vector3 finalVelocity = CurrentMoveVelocity;
-        finalVelocity.y = velocity.y;
-        controller.Move(finalVelocity * Time.deltaTime);*/
-        #endregion
+        // 叠加到速度上（保留 Y 轴）
+        Vector3 newVelocity = rb.velocity;
+        newVelocity.x += deltaHorVelocity.x;
+        newVelocity.z += deltaHorVelocity.z;
+        rb.velocity = newVelocity;
     }
-
     ///Yiu：注释掉TryOpenDoor_()
     #region （已注释） 欧的旧尝试开门
     /*
@@ -298,6 +282,12 @@ public class PlayerAction : MonoBehaviour
             PlayerMatState.Bounce => bounceProfile,
             _ => steelProfile
         };
+    }
+    private Vector3 externalAcceleration = Vector3.zero;
+
+    public void AddExternalAcceleration(Vector3 deltaVelocity)
+    {
+        externalAcceleration += deltaVelocity;
     }
 
 }
