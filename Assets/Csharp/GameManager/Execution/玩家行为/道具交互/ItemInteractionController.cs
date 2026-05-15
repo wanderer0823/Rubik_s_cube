@@ -155,7 +155,7 @@ public class ItemInteractionController : MonoBehaviour
 
             // 应用变化，并限制合理的范围（例如 5 ~ 50）
             playerAction.moveAcceleration += accelChange * Time.fixedDeltaTime;
-            playerAction.moveAcceleration = Mathf.Clamp(pa.moveAcceleration, 8f, 20f);
+            playerAction.moveAcceleration = Mathf.Clamp(playerAction.moveAcceleration, 8f, 20f);
         }
     }
 
