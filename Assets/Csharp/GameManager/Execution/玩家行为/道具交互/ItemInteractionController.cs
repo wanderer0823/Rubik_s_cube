@@ -21,11 +21,13 @@ public class ItemInteractionController : MonoBehaviour
 
     private Rigidbody rb;
     private GameState gs;
+    private PlayerAction playerAction;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         gs = GameState.Instance;
+        playerAction = GetComponent<PlayerAction>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -96,6 +98,10 @@ public class ItemInteractionController : MonoBehaviour
 
     void HandlePlate(Collider plateCollider)
     {
+        float minPressSpeed = playerAction != null ? playerAction.stopBounceYSpeed : 0f;
+        if (rb == null || Mathf.Abs(rb.velocity.y) <= minPressSpeed)
+            return;
+
         Plate plateLink = ResolvePlateLink(plateCollider);
         if (plateLink == null)
         {
