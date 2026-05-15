@@ -1,5 +1,7 @@
 using UnityEngine;
 using static InitCubeSlot;
+using System.Collections;
+using Unity.VisualScripting;
 
 /// <summary>
 /// 玩家与道具（Spring/Wind/Plate）的碰撞交互。
@@ -21,7 +23,9 @@ public class ItemInteractionController : MonoBehaviour
 
     private Rigidbody rb;
     private GameState gs;
+
     private PlayerAction playerAction;
+
 
     void Start()
     {
@@ -61,24 +65,15 @@ public class ItemInteractionController : MonoBehaviour
             return;
         }
 
-        if (other.CompareTag("Wind"))
-        {
-            if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
-            {
-                HandleWind(other);
-            }
-            else if (mat == PlayerMatState.Steel)
-            {
-                Debug.Log("Steel + Wind: 无效果");
-            }
-            return;
-        }
+       
 
         if (other.CompareTag("Door"))
         {
             HandleDoorCollision(other);
         }
     }
+
+
 
     void OnTriggerStay(Collider other)
     {
@@ -88,12 +83,13 @@ public class ItemInteractionController : MonoBehaviour
         if (!other.CompareTag("Wind"))
             return;
 
-        if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
-        {
-            Transform fanModel = other.transform.parent;
-            Vector3 windDir = fanModel.TransformDirection(Vector3.up).normalized;
-            rb.AddForce(windDir * windForce * Time.fixedDeltaTime, ForceMode.Force);
-        }
+        //if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
+        //{
+        //    Transform fanModel = other.transform.parent;
+        //    Vector3 windDir = fanModel.TransformDirection(Vector3.up).normalized;
+        //    rb.AddForce(windDir * windForce * Time.fixedDeltaTime, ForceMode.Force);
+        //}
+        HandleWind(other);
     }
 
     void HandlePlate(Collider plateCollider)
@@ -118,16 +114,49 @@ public class ItemInteractionController : MonoBehaviour
         Vector3 launchDir = springModel.TransformDirection(Vector3.up).normalized;
 
         rb.AddForce(launchDir * springForce, ForceMode.Impulse);
+        Animator anim = springModel.gameObject.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.SetBool("Jump",true);
+            StartCoroutine(ResetJumpAfterDelay(anim, 1f));
+        }
+
         Debug.Log($"{gs.CurrentMatState} + Spring: 弹起，方向 {launchDir}, 力 {springForce}");
+    }
+    IEnumerator ResetJumpAfterDelay(Animator anim, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        anim.SetBool("Jump", false);
     }
 
     void HandleWind(Collider windCollider)
     {
         Transform fanModel = windCollider.transform.parent;
-        Vector3 windDir = fanModel.TransformDirection(Vector3.up).normalized;
+        Vector3 windDir = fanModel.TransformDirection(Vector3.forward).normalized;
+        rb.velocity += windDir * windForce * Time.fixedDeltaTime; // 增量添加
+        if (playerAction != null)
+        {
+            Vector3 playerMoveDir = rb.velocity; // 归一化的移动输入方向
+            float dot = Vector3.Dot(playerMoveDir, windDir);
 
-        rb.AddForce(windDir * windForce, ForceMode.Impulse);
-        Debug.Log($"{gs.CurrentMatState} + Wind: 风力，方向 {windDir}, 力 {windForce}");
+            // 顺风：dot > 0.2 （夹角约78度以内）→ 增加加速度
+            // 逆风：dot < -0.2 → 减少加速度
+            // 侧风：中间范围 → 不变或缓慢恢复默认值
+
+            float accelChange = 0f;
+            if (dot > 0.2f)
+            {
+                accelChange = dot * 2f;   // 最大顺风时 +2（可调）
+            }
+            else if (dot < -0.2f)
+            {
+                accelChange = dot * 10f;   // dot为负，accelChange为负（如-0.5 → -1）
+            }
+
+            // 应用变化，并限制合理的范围（例如 5 ~ 50）
+            playerAction.moveAcceleration += accelChange * Time.fixedDeltaTime;
+            playerAction.moveAcceleration = Mathf.Clamp(pa.moveAcceleration, 8f, 20f);
+        }
     }
 
     void HandleDoorCollision(Collider doorCollider)
