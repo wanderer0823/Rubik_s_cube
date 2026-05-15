@@ -4019,6 +4019,7 @@ GameObject:
   - component: {fileID: 773962226}
   - component: {fileID: 773962225}
   - component: {fileID: 773962227}
+  - component: {fileID: 773962228}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4814,6 +4815,24 @@ MonoBehaviour:
   cubeRotateController: {fileID: 1576474102}
   roomPreloadSystem: {fileID: 0}
   ArrowsButton: {fileID: 0}
+--- !u!114 &773962228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773962224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce4c2bec9b882e49906ac7a46861c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initCubeSlot: {fileID: 773962225}
+  doubleClickThreshold: 0.25
+  clickThresholdPixels: 8
+  turnAnimationDuration: 0.5
+  currentCubePiece: []
+  currentAxis: 0
 --- !u!1 &784567779
 GameObject:
   m_ObjectHideFlags: 0
@@ -8215,6 +8234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 827093f4db3a8014ea7f8d1e66b349d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragStartThresholdPixels: 8
   cubeData: {fileID: 773962225}
   cubeRoot: {fileID: 1576474101}
 --- !u!65 &1576474103
@@ -11508,6 +11528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeCenter: {fileID: 1576474101}
+  snapSpeed: 3
 --- !u!224 &2138139157 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 200857504844002566, guid: c10fdea9a57075a42841c36d0c118472,

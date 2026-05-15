@@ -8,6 +8,7 @@ public class PlayerInputManager
     private GameManager gm;
     private float holdTime=0.0f;
     private float maxHoverTime = 0.01f;
+    private bool isView2LeftRotateActive;
     [Header("鼠标灵敏度")]
     [SerializeField] private float mouseSensitivity = 2f;
 
@@ -46,9 +47,26 @@ public class PlayerInputManager
         //优先UI输入
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
+
+        bool isView2 = GameState.Instance != null && GameState.Instance.CurrentView == ViewMode.View2;
+
         if (Input.GetMouseButtonDown(0))
         {
-            gm.RequestLeftRotate();
+            if (isView2)
+            {
+                if (IsMouseOnView2Cube())
+                {
+                }
+                else
+                {
+                    isView2LeftRotateActive = true;
+                    gm.RequestLeftRotate();
+                }
+            }
+            else
+            {
+                gm.RequestLeftRotate();
+            }
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -57,7 +75,21 @@ public class PlayerInputManager
         //检测鼠标抬起
         if(Input.GetMouseButtonUp(0))
         {
-            gm.RequestLeftRotateFinish();
+            if (isView2)
+            {
+                if (isView2LeftRotateActive)
+                {
+                    isView2LeftRotateActive = false;
+                    gm.RequestLeftRotateFinish();
+                }
+                else
+                {
+                }
+            }
+            else
+            {
+                gm.RequestLeftRotateFinish();
+            }
         }
         if(Input.GetMouseButtonUp(1))
         {
@@ -115,6 +147,30 @@ public class PlayerInputManager
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
         mouseMove = new Vector2(mouseX, mouseY);
         return mouseMove != Vector2.zero;
+    }
+
+    private bool IsMouseOnView2Cube()
+    {
+        if (GameState.Instance == null || GameState.Instance.CurrentView != ViewMode.View2)
+            return false;
+
+        var cubeRoot = ViewModeManager.Instance?.cubeRoot;
+        if (cubeRoot == null)
+            return false;
+
+        var cameraController = UnityEngine.Object.FindObjectOfType<CameraRotateController>();
+        if (cameraController == null)
+            return false;
+
+        Camera cam = cameraController.GetComponent<Camera>();
+        if (cam == null)
+            return false;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (!Physics.Raycast(ray, out RaycastHit hit))
+            return false;
+
+        return hit.transform == cubeRoot || hit.transform.IsChildOf(cubeRoot);
     }
 
     #endregion
