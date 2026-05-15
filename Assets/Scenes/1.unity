@@ -3497,7 +3497,7 @@ MonoBehaviour:
   steelProfile: {fileID: 11400000, guid: 63ee4ec163051dd42bdd6cc0fcd1b496, type: 2}
   glassProfile: {fileID: 11400000, guid: 8e254070b065e5540ab0e210c4b4c65f, type: 2}
   bounceProfile: {fileID: 11400000, guid: 3fabb3e5cf90ce94a9609f4ca113f5c5, type: 2}
-  minBounceSpeed: 1.5
+  stopBounceYSpeed: 0.2
   moveSpeed: 6
   interactRange: 3
   ballRenderer: {fileID: 1816655380}
@@ -5118,6 +5118,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811202023793702137, guid: 8f978dd4dd948c944a973eb05f597806,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186724974040769274, guid: 8f978dd4dd948c944a973eb05f597806,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117531181460904228, guid: 8f978dd4dd948c944a973eb05f597806,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459796793157343785, guid: 8f978dd4dd948c944a973eb05f597806,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15472,7 +15492,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
