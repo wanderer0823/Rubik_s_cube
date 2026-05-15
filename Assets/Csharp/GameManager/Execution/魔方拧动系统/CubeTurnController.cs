@@ -22,6 +22,7 @@ public class CubeTurnController : MonoBehaviour
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
 
+    private Camera view1Camera;
     private Vector3 currentSignedLocalAxis = Vector3.right;
     private Vector3 lockedLocalUp = Vector3.up;
     private Vector3 lockedLocalRight = Vector3.right;
@@ -170,9 +171,22 @@ public class CubeTurnController : MonoBehaviour
             return;
 
         LockCurrentFaceForView1();
-        GetPiecesForArrow(arrowIndex);
+        DecomposeArrowIndex(arrowIndex, out ArrowSide side, out int normalizedIndex);
+        TryRotateLayer(currentFaceDir, side, normalizedIndex, false);
+    }
 
-        float angle = 90f;
+    public bool TryRotateLayer(
+        InitCubeSlotFaceDir faceDir,
+        ArrowSide side,
+        int index,
+        bool reverse)
+    {
+        if (isTurnAnimating)
+            return false;
+
+        GetPiecesForArrowInternal(faceDir, side, index);
+
+        float angle = reverse ? -90f : 90f;
         Transform cubeRoot = ViewModeManager.Instance != null
             ? ViewModeManager.Instance.cubeRoot
             : null;
@@ -181,7 +195,7 @@ public class CubeTurnController : MonoBehaviour
             ? cubeRoot.rotation * localRotation * Quaternion.Inverse(cubeRoot.rotation)
             : localRotation;
 
-        bool isCW = GetAxisSign(currentSignedLocalAxis) > 0;
+        bool isCW = angle * GetAxisSign(currentSignedLocalAxis) > 0f;
         List<TurnAnimationState> animationStates = new List<TurnAnimationState>(currentCubePiece.Count);
 
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
@@ -209,6 +223,7 @@ public class CubeTurnController : MonoBehaviour
         }
 
         StartCoroutine(AnimateTurn(animationStates, isCW));
+        return true;
     }
 
     private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
@@ -352,12 +367,17 @@ public class CubeTurnController : MonoBehaviour
     private bool TryResolveView1CameraTransform()
     {
         if (view1CameraTransform != null)
+        {
+            if (view1Camera == null)
+                view1Camera = view1CameraTransform.GetComponent<Camera>();
             return true;
+        }
 
         var activeCameraManager = FindObjectOfType<View1CameraManager>();
         if (activeCameraManager != null)
         {
             view1CameraTransform = activeCameraManager.transform;
+            view1Camera = activeCameraManager.GetComponent<Camera>();
             return true;
         }
 
@@ -367,10 +387,25 @@ public class CubeTurnController : MonoBehaviour
                 continue;
 
             view1CameraTransform = candidate.transform;
+            view1Camera = candidate.GetComponent<Camera>();
             return true;
         }
 
         return false;
+    }
+
+    private void DecomposeArrowIndex(int arrowIndex, out ArrowSide side, out int normalizedIndex)
+    {
+        if (arrowIndex < 3)
+        {
+            side = ArrowSide.Up;
+            normalizedIndex = arrowIndex;
+        }
+        else
+        {
+            side = ArrowSide.Left;
+            normalizedIndex = arrowIndex - 3;
+        }
     }
 
     private static int GetAxisSign(Vector3 axis)

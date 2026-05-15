@@ -23,12 +23,14 @@ public class Plate : MonoBehaviour
 
     [HideInInspector]
     public bool isPressed = false;
+    private Vector3 initialPosition;
 
     private void Awake()
     {
         if (targetRenderer == null)
             targetRenderer = GetComponentInChildren<Renderer>();
 
+        initialPosition = transform.position;
         RefreshMaterial();
     }
 
@@ -38,7 +40,7 @@ public class Plate : MonoBehaviour
             return;
 
         currentCount++;
-        Debug.Log($"Plate: {name} count {currentCount}/{maxCount}");
+        //Debug.Log($"Plate: {name} count {currentCount}/{maxCount}");
         RefreshMaterial();
 
         if (currentCount >= maxCount)
@@ -88,5 +90,14 @@ public class Plate : MonoBehaviour
 
         if (targetMaterial != null)
             targetRenderer.material = targetMaterial;
+    }
+
+    public void ResetPlate()
+    {
+        currentCount = 0;
+        isPressed = false;
+        StopAllCoroutines();
+        transform.position = initialPosition;
+        RefreshMaterial();
     }
 }

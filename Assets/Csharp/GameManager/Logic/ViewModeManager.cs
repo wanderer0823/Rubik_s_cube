@@ -233,40 +233,32 @@ public class ViewModeManager : MonoBehaviour
 
     void CheckRotate(RotateType type)//left right
     {
-        //Debug.Log("100");
         if (!CheckViewMode(ViewMode.View2)
             || !CheckPlayerState(PlayerState.rotatingFinished))
             return;
-        //Debug.Log("101");
         gs.SetPlayerState(PlayerState.isRotating);
         if(type==RotateType.Left)
         {
-            //Debug.Log("102");
             GameEvents.onCubeRotateStart();
         }
         if (type == RotateType.Right)
         {
-            //Debug.Log("103");
             GameEvents.onCameraRotateStart();
         }
     }
 
     void CheckRotateFinish(RotateType type)
     {
-        //Debug.Log("200");
         if (!CheckViewMode(ViewMode.View2)
             || !CheckPlayerState(PlayerState.isRotating))
             return;
-        //Debug.Log("201");
         gs.SetPlayerState(PlayerState.rotatingFinished);
         if (type == RotateType.Left)
         {
-           // Debug.Log("202");
             GameEvents.onCubeRotateEnd();
         }
         if (type == RotateType.Right)
         {
-            //Debug.Log("203");
             GameEvents.onCameraRotateEnd();
         }
     }

@@ -23,13 +23,15 @@ public class ItemInteractionController : MonoBehaviour
 
     private Rigidbody rb;
     private GameState gs;
-    private PlayerAction pa;
+
+    private PlayerAction playerAction;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        pa = GetComponent<PlayerAction>();
         gs = GameState.Instance;
+        playerAction = GetComponent<PlayerAction>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -92,6 +94,10 @@ public class ItemInteractionController : MonoBehaviour
 
     void HandlePlate(Collider plateCollider)
     {
+        float minPressSpeed = playerAction != null ? playerAction.stopBounceYSpeed : 0f;
+        if (rb == null || Mathf.Abs(rb.velocity.y) <= minPressSpeed)
+            return;
+
         Plate plateLink = ResolvePlateLink(plateCollider);
         if (plateLink == null)
         {
@@ -128,7 +134,7 @@ public class ItemInteractionController : MonoBehaviour
         Transform fanModel = windCollider.transform.parent;
         Vector3 windDir = fanModel.TransformDirection(Vector3.forward).normalized;
         rb.velocity += windDir * windForce * Time.fixedDeltaTime; // 增量添加
-        if (pa != null)
+        if (playerAction != null)
         {
             Vector3 playerMoveDir = rb.velocity; // 归一化的移动输入方向
             float dot = Vector3.Dot(playerMoveDir, windDir);
@@ -148,8 +154,8 @@ public class ItemInteractionController : MonoBehaviour
             }
 
             // 应用变化，并限制合理的范围（例如 5 ~ 50）
-            pa.moveAcceleration += accelChange * Time.fixedDeltaTime;
-            pa.moveAcceleration = Mathf.Clamp(pa.moveAcceleration, 8f, 20f);
+            playerAction.moveAcceleration += accelChange * Time.fixedDeltaTime;
+            playerAction.moveAcceleration = Mathf.Clamp(pa.moveAcceleration, 8f, 20f);
         }
     }
 

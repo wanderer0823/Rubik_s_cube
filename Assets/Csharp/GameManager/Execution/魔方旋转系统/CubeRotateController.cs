@@ -6,7 +6,11 @@ using static InitCubeSlot;
 public class CubeRotateController : MonoBehaviour
 {
     bool isDragging;
+    bool hasStartedActualDrag;
     Vector3 lastMousePos;
+    Vector3 dragStartMousePos;
+    Transform view2CameraTransform;
+    [SerializeField] private float dragStartThresholdPixels = 8f;
 
     // ============================
     // 空间计算引用
@@ -26,7 +30,7 @@ public class CubeRotateController : MonoBehaviour
         GameEvents.OnCubeRotateExecute += StartRotate;
         GameEvents.OnCubeRotateFinishExecute += StopRotate;
     }
-
+    
     void OnDisable()
     {
         GameEvents.OnCubeRotateExecute -= StartRotate;
@@ -38,9 +42,23 @@ public class CubeRotateController : MonoBehaviour
     {
         if (!isDragging) return;
 
-        Vector3 delta = Input.mousePosition - lastMousePos;
-        lastMousePos = Input.mousePosition;
-        //ball = ViewModeManager.Instance.ball;
+        Vector3 currentMousePos = Input.mousePosition;
+        if (!hasStartedActualDrag)
+        {
+            if ((currentMousePos - dragStartMousePos).sqrMagnitude <
+                dragStartThresholdPixels * dragStartThresholdPixels)
+            {
+                lastMousePos = currentMousePos;
+                return;
+            }
+
+            hasStartedActualDrag = true;
+            lastMousePos = currentMousePos;
+            return;
+        }
+
+        Vector3 delta = currentMousePos - lastMousePos;
+        lastMousePos = currentMousePos;
 
 
         RotateCubeFree(delta);
@@ -53,13 +71,16 @@ public class CubeRotateController : MonoBehaviour
     void StartRotate()
     {
         isDragging = true;
-        lastMousePos = Input.mousePosition;
+        hasStartedActualDrag = false;
+        dragStartMousePos = Input.mousePosition;
+        lastMousePos = dragStartMousePos;
     }
 
     void StopRotate()
     {
         isDragging = false;
-        AutoSnapToNearestFace();
+        if (hasStartedActualDrag)
+            AutoSnapToNearestFace();
     }
 
     void RotateCubeFree(Vector3 delta)
@@ -68,9 +89,19 @@ public class CubeRotateController : MonoBehaviour
 
         float rotX = delta.y * sensitivity;
         float rotY = -delta.x * sensitivity;
+        TryResolveView2CameraTransform();
 
-        transform.Rotate(Vector3.right, rotX, Space.World);
-        transform.Rotate(Vector3.up, rotY, Space.World);
+        Vector3 horizontalAxis = Vector3.up;
+        Vector3 verticalAxis = Vector3.right;
+
+        if (view2CameraTransform != null)
+        {
+            horizontalAxis = view2CameraTransform.up;
+            verticalAxis = view2CameraTransform.right;
+        }
+
+        transform.Rotate(verticalAxis, rotX, Space.World);
+        transform.Rotate(horizontalAxis, rotY, Space.World);
     }
 
     // ============================
@@ -126,11 +157,20 @@ public class CubeRotateController : MonoBehaviour
 
         Vector3 currentNormal = transform.rotation * DirToVector(face);
 
-        Quaternion targetRot =
+        Quaternion alignToGround =
             Quaternion.FromToRotation(currentNormal, Vector3.down)
             * transform.rotation;
 
-        StartCoroutine(SmoothRotate(targetRot, face));
+        Vector3 twistReferenceAxis = GetTwistReferenceAxis(face);
+        Vector3 leveledForward = Vector3.ProjectOnPlane(alignToGround * twistReferenceAxis, Vector3.up);
+        if (leveledForward.sqrMagnitude > 0.0001f)
+        {
+            Vector3 snappedForward = SnapHorizontalAxis(leveledForward.normalized);
+            Quaternion yawSnap = Quaternion.FromToRotation(leveledForward.normalized, snappedForward);
+            alignToGround = yawSnap * alignToGround;
+        }
+
+        StartCoroutine(SmoothRotate(alignToGround, face));
     }
 
     IEnumerator SmoothRotate(Quaternion target, FaceDir gravityFace)
@@ -149,6 +189,68 @@ public class CubeRotateController : MonoBehaviour
 
         // 回正完成后计算空间状态
         //CalculateBallSpaceState();
+    }
+
+    Vector3 SnapHorizontalAxis(Vector3 direction)
+    {
+        Vector3[] candidates =
+        {
+            Vector3.forward,
+            Vector3.right,
+            Vector3.back,
+            Vector3.left
+        };
+
+        Vector3 best = Vector3.forward;
+        float bestDot = float.NegativeInfinity;
+
+        foreach (Vector3 candidate in candidates)
+        {
+            float dot = Vector3.Dot(direction, candidate);
+            if (dot > bestDot)
+            {
+                bestDot = dot;
+                best = candidate;
+            }
+        }
+
+        return best;
+    }
+
+    Vector3 GetTwistReferenceAxis(FaceDir downFace)
+    {
+        switch (downFace)
+        {
+            case FaceDir.Front:
+            case FaceDir.Back:
+                return Vector3.up;
+            default:
+                return Vector3.forward;
+        }
+    }
+
+    bool TryResolveView2CameraTransform()
+    {
+        if (view2CameraTransform != null)
+            return true;
+
+        var activeCameraController = FindObjectOfType<CameraRotateController>();
+        if (activeCameraController != null)
+        {
+            view2CameraTransform = activeCameraController.transform;
+            return true;
+        }
+
+        foreach (var candidate in Resources.FindObjectsOfTypeAll<CameraRotateController>())
+        {
+            if (!candidate.gameObject.scene.IsValid())
+                continue;
+
+            view2CameraTransform = candidate.transform;
+            return true;
+        }
+
+        return false;
     }
 
     // ============================

@@ -14,7 +14,7 @@ public class PlayerAction : MonoBehaviour
     public PlayerPhysicsProfile bounceProfile;
 
     [Header("反弹控制（仅Bounce状态）")]
-    public float minBounceSpeed = 1.5f;
+    public float stopBounceYSpeed = 0.2f;
 
     [Header("移动设置")]
     public float moveSpeed = 5f;
@@ -39,6 +39,7 @@ public class PlayerAction : MonoBehaviour
     private Collider col;
     private GameState gs;
     private bool isBouncing = false;
+    private bool hasActiveBounceJump = false;
     // 当前生效的 profile
     private PlayerPhysicsProfile currentProfile;
 
@@ -74,14 +75,28 @@ public class PlayerAction : MonoBehaviour
     }
     void FixedUpdate()//Yiu
     {
-        // Bounce 状态：速度低于阈值时停止反弹，恢复正常移动
-        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce && isBouncing)
+        if (gs == null)
+            return;
+
+        if (gs.CurrentMatState != PlayerMatState.Bounce)
         {
-            if (rb.velocity.magnitude < minBounceSpeed)
-            {
-                isBouncing = false;
-                Debug.Log("Bounce反弹结束，恢复正常移动");
-            }
+            hasActiveBounceJump = false;
+            return;
+        }
+
+        float absYSpeed = Mathf.Abs(rb.velocity.y);
+        isBouncing = absYSpeed > stopBounceYSpeed;
+
+        if (absYSpeed >= stopBounceYSpeed)
+            hasActiveBounceJump = true;
+
+        // 只要已经进入过一次跳跃过程，后续 y 速度跌破阈值就立刻重置
+        if (hasActiveBounceJump && absYSpeed < stopBounceYSpeed && transform.position.y < 38f)
+        {
+            hasActiveBounceJump = false;
+            isBouncing = false;
+            ResetUnpressedPlates();
+            Debug.Log("Bounce跳跃结束，已重置压力板");
         }
     }
 
@@ -218,6 +233,7 @@ public class PlayerAction : MonoBehaviour
 
         // 切换材质时取消反弹状态
         isBouncing = false;
+        hasActiveBounceJump = false;
 
         // 更新小球视觉材质
         if (ballRenderer != null)
@@ -235,17 +251,6 @@ public class PlayerAction : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        // Bounce 状态：碰撞速度够就进入反弹模式
-        if (gs != null && gs.CurrentMatState == PlayerMatState.Bounce)
-        {
-            if (rb.velocity.magnitude >= minBounceSpeed)
-            {
-                isBouncing = true;
-            }
-        }
-    }
     /// <summary>
     /// 应用物理参数到 Rigidbody 和 Collider
     /// </summary>
@@ -288,6 +293,15 @@ public class PlayerAction : MonoBehaviour
     public void AddExternalAcceleration(Vector3 deltaVelocity)
     {
         externalAcceleration += deltaVelocity;
+    }
+
+    private void ResetUnpressedPlates()
+    {
+        foreach (Plate plate in FindObjectsOfType<Plate>())
+        {
+            if (plate != null && !plate.isPressed)
+                plate.ResetPlate();
+        }
     }
 
 }
