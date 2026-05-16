@@ -21,6 +21,18 @@ public class ViewModeManager : MonoBehaviour
     private Quaternion newRotation = Quaternion.Euler(360, 360, 360);
     private Quaternion lastRoomRotation = Quaternion.Euler(360, 360, 360);
 
+    private void ResetPlayerToStartPosition()
+    {
+        if (player == null)
+            return;
+
+        PlayerAction playerAction = player.GetComponent<PlayerAction>();
+        if (playerAction == null)
+            return;
+
+        playerAction.ResetToStartPosition();
+    }
+
     void Awake()
     {
         Instance = this;
@@ -224,7 +236,7 @@ public class ViewModeManager : MonoBehaviour
         newRotation = currentRoom.transform.rotation;
         if (Quaternion.Angle(lastRoomRotation, newRotation) > 0f) 
         {
-            player.transform.position = new Vector3(0, 40, 0);
+            ResetPlayerToStartPosition();
             lastRoomRotation = newRotation;
         }
 

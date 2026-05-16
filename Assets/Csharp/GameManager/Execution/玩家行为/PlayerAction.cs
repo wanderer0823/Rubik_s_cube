@@ -77,16 +77,7 @@ public class PlayerAction : MonoBehaviour
         gs = GameState.Instance;
         ApplyProfile(steelProfile);
 
-        if (!ignoreFixedSpawnPosition && startPositionOverride != null)
-        {
-            transform.position = startPositionOverride.position;
-
-            if (rb != null)
-            {
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-            }
-        }
+        ResetToStartPosition();
     }
     void FixedUpdate()//Yiu
     {
@@ -308,6 +299,20 @@ public class PlayerAction : MonoBehaviour
     public void AddExternalAcceleration(Vector3 deltaVelocity)
     {
         externalAcceleration += deltaVelocity;
+    }
+
+    public void ResetToStartPosition()
+    {
+        if (ignoreFixedSpawnPosition || startPositionOverride == null)
+            return;
+
+        transform.position = startPositionOverride.position;
+
+        if (rb == null)
+            return;
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     private void ResetUnpressedPlates()

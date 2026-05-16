@@ -6,6 +6,18 @@ using UnityEngine;
 /// </summary>
 public class Plate : MonoBehaviour
 {
+    private struct MaterialSlotBinding
+    {
+        public Renderer Renderer;
+        public int SlotIndex;
+
+        public MaterialSlotBinding(Renderer renderer, int slotIndex)
+        {
+            Renderer = renderer;
+            SlotIndex = slotIndex;
+        }
+    }
+
     [Tooltip("达到该次数后触发压力板")]
     public int maxCount = 1;
 
@@ -24,11 +36,11 @@ public class Plate : MonoBehaviour
     [HideInInspector]
     public bool isPressed = false;
     private Vector3 initialPosition;
+    private readonly List<MaterialSlotBinding> materialBindings = new List<MaterialSlotBinding>();
 
     private void Awake()
     {
-        if (targetRenderer == null)
-            targetRenderer = GetComponentInChildren<Renderer>();
+        CacheMaterialBindings();
 
         initialPosition = transform.position;
         RefreshMaterial();
@@ -81,15 +93,28 @@ public class Plate : MonoBehaviour
 
     private void RefreshMaterial()
     {
-        if (targetRenderer == null || countMaterials == null || countMaterials.Count == 0)
+        Material targetMaterial = ResolveCurrentCountMaterial();
+        if (targetMaterial == null)
             return;
 
-        int remainingCount = Mathf.Max(0, maxCount - currentCount);
-        int materialIndex = Mathf.Clamp(remainingCount, 0, countMaterials.Count - 1);
-        Material targetMaterial = countMaterials[materialIndex];
+        if (materialBindings.Count == 0)
+            CacheMaterialBindings();
 
-        if (targetMaterial != null)
-            targetRenderer.material = targetMaterial;
+        foreach (MaterialSlotBinding binding in materialBindings)
+        {
+            if (binding.Renderer == null)
+                continue;
+
+            Material[] materials = binding.Renderer.sharedMaterials;
+            if (materials == null || binding.SlotIndex < 0 || binding.SlotIndex >= materials.Length)
+                continue;
+
+            if (materials[binding.SlotIndex] == targetMaterial)
+                continue;
+
+            materials[binding.SlotIndex] = targetMaterial;
+            binding.Renderer.sharedMaterials = materials;
+        }
     }
 
     public void ResetPlate()
@@ -99,5 +124,59 @@ public class Plate : MonoBehaviour
         StopAllCoroutines();
         transform.position = initialPosition;
         RefreshMaterial();
+    }
+
+    private Material ResolveCurrentCountMaterial()
+    {
+        if (countMaterials == null || countMaterials.Count == 0)
+            return null;
+
+        int remainingCount = Mathf.Max(0, maxCount - currentCount);
+        int materialIndex = Mathf.Clamp(remainingCount, 0, countMaterials.Count - 1);
+        return countMaterials[materialIndex];
+    }
+
+    private void CacheMaterialBindings()
+    {
+        materialBindings.Clear();
+
+        if (targetRenderer != null)
+        {
+            AddFallbackBinding(targetRenderer);
+            return;
+        }
+
+        Material expectedMaterial = ResolveCurrentCountMaterial();
+        if (expectedMaterial != null)
+        {
+            Renderer[] childRenderers = GetComponentsInChildren<Renderer>(true);
+            foreach (Renderer renderer in childRenderers)
+            {
+                Material[] materials = renderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    if (materials[i] == expectedMaterial)
+                        materialBindings.Add(new MaterialSlotBinding(renderer, i));
+                }
+            }
+        }
+
+        if (materialBindings.Count > 0)
+            return;
+
+        targetRenderer = GetComponentInChildren<Renderer>();
+        AddFallbackBinding(targetRenderer);
+    }
+
+    private void AddFallbackBinding(Renderer renderer)
+    {
+        if (renderer == null)
+            return;
+
+        Material[] materials = renderer.sharedMaterials;
+        if (materials == null || materials.Length == 0)
+            return;
+
+        materialBindings.Add(new MaterialSlotBinding(renderer, 0));
     }
 }

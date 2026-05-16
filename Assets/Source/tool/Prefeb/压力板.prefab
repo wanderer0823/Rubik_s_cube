@@ -164,9 +164,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 3
   currentCount: 0
-  plateMoveDistance: 1
+  plateMoveDistance: 0.1
   plateMoveSpeed: 2
-  targetRenderer: {fileID: 0}
+  targetRenderer: {fileID: 5901504321752074764}
   countMaterials:
   - {fileID: 2100000, guid: 8c4e79c59644ba74a9c8dc05716d8a77, type: 2}
   - {fileID: 2100000, guid: a69166e383a52f748812d3d514d4b555, type: 2}
@@ -199,3 +199,9 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.018395834, y: 0.01839583, z: 0.0030183028}
   m_Center: {x: 0.000000007450581, y: 0, z: 0.0012332378}
+--- !u!23 &5901504321752074764 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2947878528205020949, guid: d195985e915f762478afa1e08b88a6dd,
+    type: 3}
+  m_PrefabInstance: {fileID: 500272229177731815}
+  m_PrefabAsset: {fileID: 0}
