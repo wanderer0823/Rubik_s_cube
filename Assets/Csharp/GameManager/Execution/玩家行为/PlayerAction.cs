@@ -128,7 +128,7 @@ public class PlayerAction : MonoBehaviour
     public Vector3 deltaHorVelocity;
     void Move(Vector3 moveDir)
     {
-        if (isBouncing) return;
+        //if (isBouncing) return;
 
         // 获取输入方向（本地转世界）
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
