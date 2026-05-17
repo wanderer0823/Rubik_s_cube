@@ -23,6 +23,7 @@ public class ItemInteractionController : MonoBehaviour
 
     private Rigidbody rb;
     private GameState gs;
+    public Vector3 windAddVelocity;
 
     private PlayerAction playerAction;
 
@@ -91,6 +92,14 @@ public class ItemInteractionController : MonoBehaviour
         //}
         HandleWind(other);
     }
+    //离开风扇范围加速度恢复
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Wind"))
+            return;
+        playerAction.moveAcceleration = 20f;
+        windAddVelocity = Vector3.zero;
+    }
 
     void HandlePlate(Collider plateCollider)
     {
@@ -133,7 +142,7 @@ public class ItemInteractionController : MonoBehaviour
     {
         Transform fanModel = windCollider.transform.parent;
         Vector3 windDir = fanModel.TransformDirection(Vector3.forward).normalized;
-        rb.velocity += windDir * windForce * Time.fixedDeltaTime; // 增量添加
+        windAddVelocity += windDir * windForce * Time.fixedDeltaTime; // 增量添加
         if (playerAction != null)
         {
             Vector3 playerMoveDir = rb.velocity; // 归一化的移动输入方向
@@ -152,10 +161,13 @@ public class ItemInteractionController : MonoBehaviour
             {
                 accelChange = dot * 10f;   // dot为负，accelChange为负（如-0.5 → -1）
             }
+            else if (dot > -0.2f && dot < 0.2f)
+            {
+                windAddVelocity += windDir * windForce *0.1f;
+            }
 
-            // 应用变化，并限制合理的范围（例如 5 ~ 50）
-            playerAction.moveAcceleration += accelChange * Time.fixedDeltaTime;
-            playerAction.moveAcceleration = Mathf.Clamp(playerAction.moveAcceleration, 8f, 20f);
+                playerAction.moveAcceleration += accelChange * Time.fixedDeltaTime;
+            playerAction.moveAcceleration = Mathf.Clamp(playerAction.moveAcceleration, 5f, 20f);
         }
     }
 

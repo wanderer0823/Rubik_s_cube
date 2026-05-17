@@ -35,10 +35,14 @@ public class PlayerInputManager
             gm.RequestInteract();
 
         //欧：检测移动方向
-        if (TryGetMoveInput(out Vector3 moveDir) && ShouldMoveDueToHoldTime(moveDir))
-        {
-            gm.RequestMove(moveDir.normalized);
-        }
+        // 每帧获取移动输入（可能为零）
+        Vector3 moveDir = Vector3.zero;
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
+        moveDir = new Vector3(x, 0, z).normalized;
+
+        // 无论是否为零都发送，让 PlayerAction 每帧执行移动/刹车逻辑
+        gm.RequestMove(moveDir);
 
     }
 
@@ -111,7 +115,8 @@ public class PlayerInputManager
 
     #region ======================================================
     #region === 欧：上面两个主要函数使用的封装函数===
-        //欧：封装检测玩家移动操作输入的函数
+
+    //欧：封装检测玩家移动操作输入的函数
     private bool TryGetMoveInput(out Vector3 moveDir)
     {
         float x = Input.GetAxis("Horizontal");
@@ -121,7 +126,7 @@ public class PlayerInputManager
         return moveDir != Vector3.zero;  // 返回是否有输入
     }
 
-        //长按短按检测
+    //长按短按检测
     private bool ShouldMoveDueToHoldTime(Vector3 moveDir)
     {
         if (moveDir == Vector3.zero)
@@ -140,7 +145,7 @@ public class PlayerInputManager
 
         return false;
     }
-        //欧：检测视角移动操作输入的函数
+    //欧：检测视角移动操作输入的函数
     private bool TryGetMouseMoveInput(out Vector2 mouseMove)
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;

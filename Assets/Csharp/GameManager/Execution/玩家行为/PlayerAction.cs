@@ -47,6 +47,7 @@ public class PlayerAction : MonoBehaviour
     // 当前生效的 profile
     private PlayerPhysicsProfile currentProfile;
 
+    private ItemInteractionController IIC;
     void OnEnable()
     {
         GameEvents.OnTabExecute += OnTabPressed;
@@ -70,6 +71,7 @@ public class PlayerAction : MonoBehaviour
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();///Yiu
         col = GetComponent<Collider>();
+        IIC= GetComponent<ItemInteractionController>();
     }
 
     void Start()///YIu
@@ -104,6 +106,7 @@ public class PlayerAction : MonoBehaviour
             ResetUnpressedPlates();
             Debug.Log("Bounce跳跃结束，已重置压力板");
         }
+
     }
 
     //玩家打开/关闭背包系统的UI
@@ -123,7 +126,7 @@ public class PlayerAction : MonoBehaviour
 
         // 获取输入方向（本地转世界）
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
-        float targetSpeed = currentProfile != null ? currentProfile.moveSpeed : 5f;
+        float targetSpeed = moveSpeed;
 
         // 期望的水平速度方向
         Vector3 targetHorVelocity = moveDir.normalized * targetSpeed;
@@ -145,14 +148,15 @@ public class PlayerAction : MonoBehaviour
             float currentSpeed = currentHorVelocity.magnitude;
             float decel = Mathf.Min(currentSpeed, brake);
             deltaHorVelocity = -currentHorVelocity.normalized * decel;
-            if (float.IsNaN(deltaHorVelocity.x)) deltaHorVelocity = Vector3.zero;
+            if (float.IsNaN(deltaHorVelocity.x))
+                deltaHorVelocity = Vector3.zero;
         }
 
         // 叠加到速度上（保留 Y 轴）
         Vector3 newVelocity = rb.velocity;
         newVelocity.x += deltaHorVelocity.x;
         newVelocity.z += deltaHorVelocity.z;
-        rb.velocity = newVelocity;
+        rb.velocity = newVelocity+IIC.windAddVelocity;
     }
     ///Yiu：注释掉TryOpenDoor_()
     #region （已注释） 欧的旧尝试开门
