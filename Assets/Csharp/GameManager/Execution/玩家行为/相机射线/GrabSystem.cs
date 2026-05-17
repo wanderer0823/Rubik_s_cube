@@ -93,16 +93,45 @@ public class GrabSystem : MonoBehaviour
 
             if (g != null)
             {
-                currentTarget = g;
+                // 切换高亮目标
+                if (currentTarget != g)
+                {
+                    DisableOutline(currentTarget);
+                    currentTarget = g;
+                    EnableOutline(currentTarget);
+                }
+
                 if (crosshairImage != null)
                     crosshairImage.color = interactColor;
                 return;
             }
         }
 
-        currentTarget = null;
+        // 没有目标
+        if (currentTarget != null)
+        {
+            DisableOutline(currentTarget);
+            currentTarget = null;
+        }
+
         if (crosshairImage != null)
             crosshairImage.color = normalColor;
+    }
+
+    void EnableOutline(Grabbable target)
+    {
+        if (target == null) return;
+        MinimalOutline outline = target.GetComponent<MinimalOutline>();
+        if (outline != null)
+            outline.SetEnabled(true);
+    }
+
+    void DisableOutline(Grabbable target)
+    {
+        if (target == null) return;
+        MinimalOutline outline = target.GetComponent<MinimalOutline>();
+        if (outline != null)
+            outline.SetEnabled(false);
     }
 
     void GrabObject(Grabbable obj)
@@ -153,19 +182,18 @@ public class GrabSystem : MonoBehaviour
 
         Debug.Log($"GrabSystem: 释放 {heldObject.gameObject.name}");
 
-        // 恢复物理
+        DisableOutline(heldObject);
+
         Rigidbody objRb = heldObject.GetComponent<Rigidbody>();
         if (objRb != null)
-        {
             objRb.isKinematic = false;
-        }
 
         heldObject = null;
         currentTarget = null;
         isHolding = false;
 
-        // 恢复玩家状态
         gs.SetPlayerState(PlayerState.isMoving);
+
         if (crosshairImage != null)
             crosshairImage.color = normalColor;
     }
