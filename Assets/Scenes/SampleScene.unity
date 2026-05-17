@@ -2058,7 +2058,7 @@ MonoBehaviour:
   maxGrabDistance: 10
   grabbableLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -10489,11 +10489,16 @@ MonoBehaviour:
   bounceProfile: {fileID: 11400000, guid: 3fabb3e5cf90ce94a9609f4ca113f5c5, type: 2}
   stopBounceYSpeed: 0.2
   moveSpeed: 6
+  ignoreFixedSpawnPosition: 0
+  startPositionOverride: {fileID: 0}
   interactRange: 3
   ballRenderer: {fileID: 604833502}
   steelMaterial: {fileID: 2100000, guid: 41f98728c6dcbe946890e3d19f6ad6c3, type: 2}
   glassMaterial: {fileID: 2100000, guid: c5a2d91c37656b441875e865b8761bac, type: 2}
   bounceMaterial: {fileID: 2100000, guid: 33861bc0ed9bf5547899c8a2af008d77, type: 2}
+  moveAcceleration: 20
+  brakeDeceleration: 30
+  deltaHorVelocity: {x: 0, y: 0, z: 0}
 --- !u!136 &2018642119
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10770,6 +10775,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1134656185}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &2057178072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2025414634506806311, guid: 80fe18ceed993a744acc60aa25e6806c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1720349726945529569}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2070858262
 GameObject:
   m_ObjectHideFlags: 0
@@ -18855,6 +18866,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3921867719333855169}
     m_Modifications:
+    - target: {fileID: -5473600914907883183, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: -5473600914907883183, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: -5473600914907883183, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: -5473600914907883183, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: -5473600914907883183, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.26
+      objectReference: {fileID: 0}
     - target: {fileID: 1679956244071693981, guid: 80fe18ceed993a744acc60aa25e6806c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18910,10 +18946,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u98CE\u6247"
       objectReference: {fileID: 0}
+    - target: {fileID: 2025414634506806311, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2025414634506806311, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720349726945529576}
   m_SourcePrefab: {fileID: 100100000, guid: 80fe18ceed993a744acc60aa25e6806c, type: 3}
 --- !u!4 &1720349726945529570 stripped
 Transform:
@@ -18921,6 +18966,20 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1720349726945529569}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1720349726945529576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057178072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a608aa6789e80f144a98b4476e10c3d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 1, g: 0.9786801, b: 0.40566027, a: 1}
+  outlineWidth: 0.0211
 --- !u!23 &1720732274517057204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26727,6 +26786,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: junior school_desk0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1543754591403262953, guid: cdeb9629480cb054aba49bf1f702832e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6844478197636811749, guid: cdeb9629480cb054aba49bf1f702832e,
         type: 3}

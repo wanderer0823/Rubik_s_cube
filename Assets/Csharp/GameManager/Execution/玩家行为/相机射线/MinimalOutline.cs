@@ -1,64 +1,100 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// 轻量描边：通过复制 Mesh 并放大渲染纯色实现。
-/// 挂在 Grabbable 物体上，默认禁用，GrabSystem 控制开关。
-/// </summary>
-[RequireComponent(typeof(Renderer))]
 public class MinimalOutline : MonoBehaviour
 {
     [Header("描边设置")]
     public Color outlineColor = Color.yellow;
+
     [Range(0.01f, 0.1f)]
     public float outlineWidth = 0.03f;
 
-    private GameObject outlineObj;
-    private Renderer sourceRenderer;
+    // 所有描边对象
+    private List<GameObject> outlineObjects = new List<GameObject>();
 
     void Awake()
     {
-        sourceRenderer = GetComponent<Renderer>();
         CreateOutline();
         SetEnabled(false);
     }
 
     void CreateOutline()
     {
-        MeshFilter mf = GetComponent<MeshFilter>();
-        if (mf == null || mf.sharedMesh == null) return;
+        // 获取所有子 MeshFilter
+        MeshFilter[] meshFilters =
+            GetComponentsInChildren<MeshFilter>(true);
 
-        outlineObj = new GameObject("_Outline");
-        outlineObj.transform.SetParent(transform, false);
-        outlineObj.transform.localPosition = Vector3.zero;
-        outlineObj.transform.localRotation = Quaternion.identity;
-        outlineObj.transform.localScale = Vector3.one * (1f + outlineWidth);
+        foreach (MeshFilter mf in meshFilters)
+        {
+            if (mf.sharedMesh == null)
+                continue;
 
-        MeshFilter outlineMF = outlineObj.AddComponent<MeshFilter>();
-        outlineMF.sharedMesh = mf.sharedMesh;
+            MeshRenderer sourceRenderer =
+                mf.GetComponent<MeshRenderer>();
 
-        MeshRenderer outlineMR = outlineObj.AddComponent<MeshRenderer>();
-        Material outlineMat = new Material(Shader.Find("Unlit/Color"));
-        outlineMat.color = outlineColor;
-        outlineMR.material = outlineMat;
-        outlineMR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        outlineMR.receiveShadows = false;
+            if (sourceRenderer == null)
+                continue;
 
-        outlineObj.SetActive(false);
+            // 创建描边对象
+            GameObject outlineObj =
+                new GameObject(mf.gameObject.name + "_Outline");
+
+            outlineObj.transform.SetParent(mf.transform, false);
+
+            outlineObj.transform.localPosition = Vector3.zero;
+            outlineObj.transform.localRotation = Quaternion.identity;
+
+            outlineObj.transform.localScale =
+                Vector3.one * (1f + outlineWidth);
+
+            // Mesh
+            MeshFilter outlineMF =
+                outlineObj.AddComponent<MeshFilter>();
+
+            outlineMF.sharedMesh = mf.sharedMesh;
+
+            // Renderer
+            MeshRenderer outlineMR =
+                outlineObj.AddComponent<MeshRenderer>();
+
+            Material outlineMat =
+                new Material(Shader.Find("Unlit/Color"));
+
+            outlineMat.color = outlineColor;
+
+            outlineMR.material = outlineMat;
+
+            outlineMR.shadowCastingMode =
+                UnityEngine.Rendering.ShadowCastingMode.Off;
+
+            outlineMR.receiveShadows = false;
+
+            // 防止描边被原模型挡住
+            outlineMR.sortingOrder = -1;
+
+            outlineObj.SetActive(false);
+
+            outlineObjects.Add(outlineObj);
+        }
     }
 
     public void SetEnabled(bool enabled)
     {
-        if (outlineObj != null)
-            outlineObj.SetActive(enabled);
+        foreach (GameObject obj in outlineObjects)
+        {
+            if (obj != null)
+                obj.SetActive(enabled);
+        }
     }
 
     public void SetColor(Color color)
     {
         outlineColor = color;
-        if (outlineObj != null)
+
+        foreach (GameObject obj in outlineObjects)
         {
-            var mr = outlineObj.GetComponent<MeshRenderer>();
+            MeshRenderer mr = obj.GetComponent<MeshRenderer>();
+
             if (mr != null)
                 mr.material.color = color;
         }
@@ -66,7 +102,10 @@ public class MinimalOutline : MonoBehaviour
 
     void OnDestroy()
     {
-        if (outlineObj != null)
-            Destroy(outlineObj);
+        foreach (GameObject obj in outlineObjects)
+        {
+            if (obj != null)
+                Destroy(obj);
+        }
     }
 }
