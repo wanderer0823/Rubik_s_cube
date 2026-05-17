@@ -31,6 +31,7 @@ public class GrabSystem : MonoBehaviour
     private Grabbable heldObject;
     private float grabDistance;
     private bool isHolding = false;
+    private bool isGravityAllowed = false;
 
     void Start()
     {
@@ -64,6 +65,9 @@ public class GrabSystem : MonoBehaviour
                 // 确认不在UI上
                 if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                     return;
+                //确认是同一个重力体系
+                if (!isGravityAllowed)
+                    return;
 
                 GrabObject(currentTarget);
             }
@@ -73,7 +77,7 @@ public class GrabSystem : MonoBehaviour
             HoldObject();
 
             // 松开左键 → 释放
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 ReleaseObject();
             }
@@ -90,6 +94,28 @@ public class GrabSystem : MonoBehaviour
             Grabbable g = hit.collider.GetComponent<Grabbable>();
             if (g == null)
                 g = hit.collider.GetComponentInParent<Grabbable>();
+
+            //确认在同一个重力体系下
+            Vector3 allowedRotation = g.allowedParentRotate.ToVector3();
+            Transform t = g.transform;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (t.parent == null)
+                {
+                    Debug.LogError("父层级不足：i="+i);
+                    return;
+                }
+
+                t = t.parent;
+            }
+
+            Vector3 parentRotation = t.eulerAngles;
+            if (allowedRotation == parentRotation)
+            {
+                isGravityAllowed = true;
+            }
+            else return;
 
             if (g != null)
             {

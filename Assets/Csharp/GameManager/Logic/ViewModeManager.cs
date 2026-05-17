@@ -138,9 +138,8 @@ public class ViewModeManager : MonoBehaviour
     {
         if (!CheckViewMode(ViewMode.View3))
             return;
-
         // 移动时自动关背包
-        if (CheckPlayerState(PlayerState.isOpeningBag))
+        if (CheckPlayerState(PlayerState.isOpeningBag) && moveDir != Vector3.zero)
         {
             gs.CloseBag();
             GameEvents.onBagCloseExecute();
@@ -290,7 +289,7 @@ public class ViewModeManager : MonoBehaviour
     void CheckArrowsClick(int number)
     {
         if (!CheckPlayerState(PlayerState.turningFinished)
-            || !CheckViewMode(ViewMode.View1))
+            || !CheckViewMode(ViewMode.View2))
             return;
         //更新view mode
         gs.SetPlayerState(PlayerState.isTurning);

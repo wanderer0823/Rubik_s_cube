@@ -8,7 +8,7 @@ using static InitCubeSlot;
 //视角状态
 public enum ViewMode
 {
-    View1,
+    //View1,
     View2,
     View3
 }
@@ -88,10 +88,10 @@ public class GameState
             CloseBag();
         CurrentView = mode;
         Debug.Log("切换为视角：" + CurrentView);
-        if(mode==ViewMode.View1)
+        /*if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
-        }
+        }*/
         if(mode==ViewMode.View2)
         {
             SetPlayerState(PlayerState.rotatingFinished);
@@ -110,10 +110,10 @@ public class GameState
             CloseBag();
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
         Debug.Log("F切换为视角：" + CurrentView);
-        if (CurrentView == ViewMode.View1)
+        /*if (CurrentView == ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
-        }
+        }*/
         if (CurrentView == ViewMode.View2)
         {
             SetPlayerState(PlayerState.rotatingFinished);
