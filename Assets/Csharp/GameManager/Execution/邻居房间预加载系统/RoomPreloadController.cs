@@ -4,7 +4,7 @@ using UnityEngine;
 using static InitCubeSlot;
 
 /// <summary>
-/// 邻居房间预加载控制：
+/// 邻居房间预加载控制器：
 /// 维护逻辑邻居列表，并计算当前房间和同一大面前后左右邻房间的门是否能形成通道。
 /// </summary>
 public class RoomPreloadController : MonoBehaviour
@@ -31,6 +31,7 @@ public class RoomPreloadController : MonoBehaviour
     {
         Debug.Log("ExecutePreload");
         var vmm = ViewModeManager.Instance;
+        var gs = GameState.Instance;
         if (vmm == null || vmm.cubeRoot == null || vmm.cubeData == null || vmm.ball == null)
         {
             Debug.LogWarning("RoomPreloadController: missing cubeRoot/cubeData/ball, skip preload");
@@ -41,7 +42,26 @@ public class RoomPreloadController : MonoBehaviour
         InitCubeSlot cubeData = vmm.cubeData;
         Vector3 ballWorldPos = vmm.ball.position;
 
-        CubeSurface_s currentSurface = BallLocationService.CalculateSurface(cubeRoot, cubeData, ballWorldPos);
+        CubeSurface_s currentSurface = null;
+
+        // Temporarily resolve the active surface directly from CurrentRoomID.
+        if (gs != null)
+        {
+            currentSurface = cubeData.GetSurfaceByRoomID(gs.CurrentRoomID);
+        }
+
+        // Previous logic kept here for rollback:
+        // CubeSurface_s currentSurface = BallLocationService.CalculateSurface(cubeRoot, cubeData, ballWorldPos);
+        // if (currentSurface == null && gs != null)
+        // {
+        //     currentSurface = gs.CurrentSurface ?? cubeData.GetSurfaceByRoomID(gs.CurrentRoomID);
+        //     if (currentSurface != null)
+        //     {
+        //         Debug.LogWarning(
+        //             $"RoomPreloadController: fallback to CurrentRoomID={gs.CurrentRoomID} because ball surface was not resolved yet");
+        //     }
+        // }
+
         if (currentSurface == null)
         {
             Debug.LogWarning("RoomPreloadController: failed to resolve current surface, skip preload");
@@ -161,8 +181,7 @@ public class RoomPreloadController : MonoBehaviour
 
         _lastPayload = payload;
         OnPreloadComplete?.Invoke(payload);
-        Debug.Log($"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");
+        Debug.Log(
+            $"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");
     }
-
-
 }

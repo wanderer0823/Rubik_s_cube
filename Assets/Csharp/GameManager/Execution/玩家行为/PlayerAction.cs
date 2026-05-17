@@ -190,7 +190,7 @@ public class PlayerAction : MonoBehaviour
                     //广播
                     Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
                     controller.enabled = false;     // 临时禁用控制器
-                    transform.position = new Vector3(0, 40, 0);
+                    transform.position = GetResolvedStartPosition();
                     controller.enabled = true;      // 重新启用
                     RoomPreloadController innn = FindObjectOfType<RoomPreloadController>();
                     innn.TriggerPreloadComplete();//触发跳转
@@ -301,12 +301,20 @@ public class PlayerAction : MonoBehaviour
         externalAcceleration += deltaVelocity;
     }
 
+    private Vector3 GetResolvedStartPosition()
+    {
+        if (startPositionOverride == null)
+            return transform.position;
+
+        return startPositionOverride.position;
+    }
+
     public void ResetToStartPosition()
     {
-        if (ignoreFixedSpawnPosition || startPositionOverride == null)
+        if (ignoreFixedSpawnPosition)
             return;
 
-        transform.position = startPositionOverride.position;
+        transform.position = GetResolvedStartPosition();
 
         if (rb == null)
             return;
