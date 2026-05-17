@@ -10,6 +10,7 @@ public class InitCubeSlot : MonoBehaviour
     public GameObject csP;                      //测试一键加载prefb
 
     //用于整体管理魔方结构
+    public int TestRoomID = 43;
     public List<Slot> slots;                    //槽位，内含方块（CubePiece）类和面（CubeSurface_s）类
     public List<Room> rooms;                    //房间列表
     public GameObject CurrentRoom;              //房间刷新点（放预制体的）
@@ -191,6 +192,8 @@ public class InitCubeSlot : MonoBehaviour
 
     private void Start()
     {
+        GameState.Instance.CurrentRoomID = TestRoomID;
+        GameState.Instance.RefreshCurrentSurfaceFromRoomID();
         GameEvents.calculateNeighbors();
     }
 
@@ -237,7 +240,7 @@ public class InitCubeSlot : MonoBehaviour
             //初始化房间的差异性
             room.roomID = i;
             i++;
-            room.RoomPerfab = csP;
+            // room.RoomPerfab = csP;
         }
 
         //改到start里

@@ -204,6 +204,9 @@ public class CubeTurnController1 : MonoBehaviour
             });
         }
 
+        if (GameState.Instance != null)
+            GameState.Instance.SetPlayerState(PlayerState.isTurning);
+
         StartCoroutine(AnimateTurn(animationStates, isCW));
         return true;
     }
@@ -246,7 +249,8 @@ public class CubeTurnController1 : MonoBehaviour
         ApplyTurnResult(isCW);
 
         isTurnAnimating = false;
-        GameState.Instance.SetPlayerState(PlayerState.turningFinished);
+        if (GameState.Instance != null)
+            GameState.Instance.SetPlayerState(PlayerState.rotatingFinished);
     }
 
     private void ApplyTurnResult(bool isCW)

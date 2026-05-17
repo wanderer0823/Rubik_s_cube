@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -116,35 +116,7 @@ public class PlayerInputManager
     #region ======================================================
     #region === 欧：上面两个主要函数使用的封装函数===
 
-    //欧：封装检测玩家移动操作输入的函数
-    private bool TryGetMoveInput(out Vector3 moveDir)
-    {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        moveDir = new Vector3(x, 0, z);
 
-        return moveDir != Vector3.zero;  // 返回是否有输入
-    }
-
-    //长按短按检测
-    private bool ShouldMoveDueToHoldTime(Vector3 moveDir)
-    {
-        if (moveDir == Vector3.zero)
-        {
-            holdTime = 0f;  // 松开时重置计时器
-            return false;
-        }
-
-        holdTime += Time.deltaTime;
-
-        if (holdTime > maxHoverTime)
-        {
-            holdTime = 0f;
-            return true;
-        }
-
-        return false;
-    }
     //欧：检测视角移动操作输入的函数
     private bool TryGetMouseMoveInput(out Vector2 mouseMove)
     {

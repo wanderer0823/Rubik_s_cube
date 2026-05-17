@@ -19,10 +19,35 @@ public class RoomInstanceManager : MonoBehaviour
     {
         RoomPreloadController.OnPreloadComplete += OnPreloadComplete;
     }
+
+    void Start()
+    {
+        EnsureCurrentRoomLoaded();
+    }
     
     void OnDisable()
     {
         RoomPreloadController.OnPreloadComplete -= OnPreloadComplete;
+    }
+
+    private void EnsureCurrentRoomLoaded()
+    {
+        var preloadController = GameManager.Instance?.roomPreloadSystem;
+        if (preloadController == null)
+        {
+            preloadController = FindObjectOfType<RoomPreloadController>();
+        }
+
+        if (preloadController == null)
+            return;
+
+        if (preloadController.LastPayload != null)
+        {
+            OnPreloadComplete(preloadController.LastPayload);
+            return;
+        }
+
+        preloadController.ExecutePreload();
     }
 
     private void OnPreloadComplete(NeighborPreloadPayload payload)

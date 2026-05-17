@@ -287,7 +287,8 @@ public class ItemInteractionController : MonoBehaviour
             }
 
             Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
-            transform.position = new Vector3(0, 40, 0);
+            if (playerAction != null)
+                playerAction.ResetToStartPosition();
             GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
             GameEvents.calculateNeighbors();
             break;
