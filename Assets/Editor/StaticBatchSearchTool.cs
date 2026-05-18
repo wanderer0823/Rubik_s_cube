@@ -21,17 +21,17 @@ public class StaticBatchSearchTool : EditorWindow
 
     void OnGUI()
     {
-        GUILayout.Label("静态合批材质工具（自动Batching）", EditorStyles.boldLabel);
+        GUILayout.Label("【一键合批hierarchy中多选的房间】依次点击按钮，进度条加载完了再点下一个", EditorStyles.boldLabel);
 
         DrawRootsList();
 
         GUILayout.Space(10);
 
-        if (GUILayout.Button("扫描材质分组并默认合批"))
+        if (GUILayout.Button("【1-一键合批】扫描材质分组并默认合批"))
         {
             ScanAndAutoBatch();
         }
-        if (GUILayout.Button("仅刷新缓存（不改变Static标记）"))
+        if (GUILayout.Button("【2-合批后更新状态】仅刷新缓存（不改变Static标记）"))
         {
             RefreshBatchingCacheOnly();
         }

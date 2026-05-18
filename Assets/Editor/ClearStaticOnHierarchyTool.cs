@@ -15,7 +15,7 @@ public static class ClearStaticOnHierarchyTool
         ClearRecursive(go, StaticEditorFlags.BatchingStatic, "BatchingStatic", removeCache: true);
     }
 
-    [MenuItem("Tools/Hierarchy/取消选中物体所有子孙的 Batching Static")]
+    [MenuItem("Tools/Hierarchy/【删除选中对象的所有合批状态】取消hierarchy里选中物体的子级所有Batching Static")]
     static void ClearBatchingOnSelection()
     {
         var selected = Selection.gameObjects;
@@ -40,7 +40,7 @@ public static class ClearStaticOnHierarchyTool
         ClearRecursive(go, StaticEditorFlags.ContributeGI, "ContributeGI", removeCache: false);
     }
 
-    [MenuItem("Tools/Hierarchy/取消选中物体所有子孙的 Contribute GI")]
+    [MenuItem("Tools/Hierarchy/【删除选中对象的所有待烘焙状态】取消hierarchy里选中物体的子级所有Contribute GI")]
     static void ClearContributeOnSelection()
     {
         var selected = Selection.gameObjects;
