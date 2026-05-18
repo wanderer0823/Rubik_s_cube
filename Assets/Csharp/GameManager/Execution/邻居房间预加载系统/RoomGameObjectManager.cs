@@ -16,11 +16,28 @@ public class RoomGameObjectManager : MonoBehaviour
     public List<RoomGameObjectEntry> roomGameObjects = new List<RoomGameObjectEntry>();
 
     private readonly Dictionary<int, GameObject> _roomGameObjectMap = new Dictionary<int, GameObject>();
+    private readonly HashSet<int> _positionAdjustedRoomIds = new HashSet<int>();
     private bool _isRoomGameObjectMapBuilt;
 
     void Awake()
     {
         BuildRoomGameObjectMap();
+    }
+
+    void OnEnable()
+    {
+        GameEvents.OnRoomTransitionExecute += OnRoomTransition;
+    }
+
+    void Start()
+    {
+        LoadCurrentRoomGameObject();
+        ApplyCurrentRoomPositionToAll();
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnRoomTransitionExecute -= OnRoomTransition;
     }
 
     public void LoadCurrentRoomGameObject()
@@ -60,10 +77,9 @@ public class RoomGameObjectManager : MonoBehaviour
 
         SetAllRoomsInactive();
 
+        ApplyCurrentRoomPosition(roomObject, currentRoomId);
         roomObject.SetActive(true);
         _currentRoomObject = roomObject;
-
-        Debug.Log($"RoomGameObjectManager: activated room={currentRoomId}");
     }
 
     private void BuildRoomGameObjectMap()
@@ -72,6 +88,7 @@ public class RoomGameObjectManager : MonoBehaviour
             return;
 
         _roomGameObjectMap.Clear();
+        _positionAdjustedRoomIds.Clear();
 
         foreach (var entry in roomGameObjects)
         {
@@ -103,5 +120,40 @@ public class RoomGameObjectManager : MonoBehaviour
         }
 
         _currentRoomObject = null;
+    }
+
+    private void ApplyCurrentRoomPositionToAll()
+    {
+        if (CurrentRoom == null)
+            return;
+
+        foreach (var entry in roomGameObjects)
+        {
+            if (entry == null || entry.roomObject == null)
+                continue;
+
+            ApplyCurrentRoomPosition(entry.roomObject, entry.roomID);
+        }
+    }
+
+    private void ApplyCurrentRoomPosition(GameObject roomObject, int roomID)
+    {
+        if (roomObject == null || CurrentRoom == null)
+            return;
+
+        if (_positionAdjustedRoomIds.Contains(roomID))
+            return;
+
+        roomObject.transform.position += CurrentRoom.transform.position;
+        _positionAdjustedRoomIds.Add(roomID);
+    }
+
+    private void OnRoomTransition(int roomID)
+    {
+        var gameState = GameState.Instance;
+        if (gameState == null)
+            return;
+
+        LoadRoomGameObject(gameState, roomID);
     }
 }
