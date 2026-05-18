@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
@@ -104,7 +104,7 @@ public class PlayerAction : MonoBehaviour
             hasActiveBounceJump = false;
             isBouncing = false;
             ResetUnpressedPlates();
-            Debug.Log("Bounce跳跃结束，已重置压力板");
+            /*__DEBUGTOOL_START__*/Debug.Log("Bounce跳跃结束，已重置压力板");/*__DEBUGTOOL_END__*/
         }
 
     }
@@ -112,7 +112,7 @@ public class PlayerAction : MonoBehaviour
     //玩家打开/关闭背包系统的UI
     void OnTabPressed()
     {
-        Debug.Log("打开/关闭背包系统。");
+        /*__DEBUGTOOL_START__*/Debug.Log("打开/关闭背包系统。");/*__DEBUGTOOL_END__*/
     }
     //玩家wasd移动
     // 可调参数：移动加速度（控制响应速度）
@@ -235,7 +235,7 @@ public class PlayerAction : MonoBehaviour
     // ===== 新增：材质切换响应 =====
     void OnMatChanged(PlayerMatState newMat)
     {
-        Debug.Log($"PlayerAction: 材质切换为 {newMat}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"PlayerAction: 材质切换为 {newMat}");/*__DEBUGTOOL_END__*/
 
         // 物理参数切换
         PlayerPhysicsProfile profile = GetProfileForMat(newMat);
@@ -285,8 +285,8 @@ public class PlayerAction : MonoBehaviour
             pm.bounceCombine = PhysicMaterialCombine.Maximum;
             pm.frictionCombine = PhysicMaterialCombine.Average;
         }
-        Debug.Log($"ApplyProfile: mass={profile.mass}, drag={profile.drag}, " +
-                  $"bounce={profile.bounciness}, friction={profile.friction}, speed={profile.moveSpeed}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"ApplyProfile: mass={profile.mass}, drag={profile.drag}, " +
+                  $"bounce={profile.bounciness}, friction={profile.friction}, speed={profile.moveSpeed}");/*__DEBUGTOOL_END__*/
     }
     PlayerPhysicsProfile GetProfileForMat(PlayerMatState mat)
     {

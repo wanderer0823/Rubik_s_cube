@@ -5,51 +5,51 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// ±³°üÏµÍ³£º¹ÜÀí±³°üÄÚ¸ñ×Ó + ÓÒ²à¹«¹²ÏêÇéÃæ°å¡£
-/// ¹ÒÔÚ BackpackPanel ÉÏ¡£
+/// ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ + ï¿½Ò²à¹«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¡£
+/// ï¿½ï¿½ï¿½ï¿½ BackpackPanel ï¿½Ï¡ï¿½
 /// </summary>
 public class BackpackSystem : MonoBehaviour
 {
     [Header("ScrollRect")]
     [SerializeField] private ScrollRect scrollRect;
 
-    [Header("²ÄÖÊ¸ñ×Ó£¨¹Ì¶¨3¸ö£¬°´Steel/Glass/BounceË³Ðò£©")]
+    [Header("ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½Ó£ï¿½ï¿½Ì¶ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Steel/Glass/BounceË³ï¿½ï¿½")]
     [SerializeField] private List<BackpackSlotUI> matSlots;
 
-    [Header("²ÄÖÊ¸ñ×ÓÈÝÆ÷£¨MatSection£©")]
+    [Header("ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MatSectionï¿½ï¿½")]
     [SerializeField] private Transform matSection;
 
-    [Header("²ÄÖÊ¸ñ×ÓÔ¤ÖÆÌå")]
+    [Header("ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private GameObject matSlotPrefab;
 
-    [Header("²ÄÖÊÏêÇéÍ¼Æ¬")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬")]
     [SerializeField] private Sprite steelDetailSprite;
     [SerializeField] private Sprite glassDetailSprite;
     [SerializeField] private Sprite bounceDetailSprite;
 
-    [Header("ÏßË÷¸ñ×ÓÈÝÆ÷£¨ClueSection£©")]
-    [SerializeField] private Transform clueSection;    // ¸ÄÃû£¬Ö¸Ïò ClueSection
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ClueSectionï¿½ï¿½")]
+    [SerializeField] private Transform clueSection;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ ClueSection
 
-    [Header("ÏßË÷¸ñ×ÓÔ¤ÖÆÌå")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private GameObject clueSlotPrefab;
 
-    [Header("¹«¹²ÏêÇéÃæ°å£¨ÔÚBackpackPanelÍâ²¿£©")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¨ï¿½ï¿½BackpackPanelï¿½â²¿ï¿½ï¿½")]
     [SerializeField] private RectTransform detailPopupPanel;
     [SerializeField] private TMP_Text detailNameText;
     [SerializeField] private TMP_Text detailDescText;
     [SerializeField] private Image detailImage;
 
-    [Header("ÏêÇéÃæ°å¶¯»­")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¶¯ï¿½ï¿½")]
     [SerializeField] private float animDuration = 0.25f;
-    [SerializeField] private float hideOffsetY = -200f;   // Òþ²ØÊ±Ïà¶ÔÏÔÊ¾Î»ÖÃµÄYÆ«ÒÆ£¨ÆÁÄ»ÏÂ·½£©
+    [SerializeField] private float hideOffsetY = -200f;   // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Î»ï¿½Ãµï¿½YÆ«ï¿½Æ£ï¿½ï¿½ï¿½Ä»ï¿½Â·ï¿½ï¿½ï¿½
 
-    // ÏêÇéÃæ°åµÄÏÔÊ¾Î»ÖÃ£¨ÓÉ³õÊ¼Î»ÖÃ¾ö¶¨£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Î»ï¿½Ã£ï¿½ï¿½É³ï¿½Ê¼Î»ï¿½Ã¾ï¿½ï¿½ï¿½ï¿½ï¿½
     private Vector2 detailShowPos;
     private Vector2 detailHidePos;
     private Coroutine currentAnim;
     private CanvasGroup detailCanvasGroup;
 
-    // ÒÑ´´½¨µÄÏßË÷¸ñ×Ó
+    // ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Dictionary<string, BackpackSlotUI> clueSlotMap = new Dictionary<string, BackpackSlotUI>();
 
     void OnEnable()
@@ -73,36 +73,36 @@ public class BackpackSystem : MonoBehaviour
         InitDetailPanel();
     }
 
-    // ===== ³õÊ¼»¯ =====
+    // ===== ï¿½ï¿½Ê¼ï¿½ï¿½ =====
     private void InitDetailPanel()
     {
         if (detailPopupPanel == null) return;
 
-        // ¼ÇÂ¼ÏÔÊ¾Î»ÖÃ
+        // ï¿½ï¿½Â¼ï¿½ï¿½Ê¾Î»ï¿½ï¿½
         detailShowPos = detailPopupPanel.anchoredPosition;
         detailHidePos = detailShowPos + new Vector2(0, hideOffsetY);
 
-        // È·±£ÓÐ CanvasGroup ÓÃÓÚµ­Èëµ­³ö
+        // È·ï¿½ï¿½ï¿½ï¿½ CanvasGroup ï¿½ï¿½ï¿½Úµï¿½ï¿½ëµ­ï¿½ï¿½
         detailCanvasGroup = detailPopupPanel.GetComponent<CanvasGroup>();
         if (detailCanvasGroup == null)
             detailCanvasGroup = detailPopupPanel.gameObject.AddComponent<CanvasGroup>();
 
-        // ³õÊ¼Òþ²Ø
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
         detailCanvasGroup.alpha = 0f;
         detailPopupPanel.anchoredPosition = detailHidePos;
         detailPopupPanel.gameObject.SetActive(false);
     }
 
-    // ===== ¹«¹²ÏêÇéÃæ°å¿ØÖÆ£¨ÓÉ BackpackSlotUI µ÷ÓÃ£©=====
+    // ===== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ BackpackSlotUI ï¿½ï¿½ï¿½Ã£ï¿½=====
 
     /// <summary>
-    /// ÏÔÊ¾ÏêÇéÃæ°å£º´ÓÏÂ·½½¥ÏÔ¸¡ÉÏ
+    /// ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£ºï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½
     /// </summary>
     public void ShowDetail(string itemName, string description, Sprite image)
     {
         if (detailPopupPanel == null) return;
 
-        // Ìî³äÄÚÈÝ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (detailNameText != null) detailNameText.text = itemName;
         if (detailDescText != null) detailDescText.text = description;
 
@@ -119,12 +119,12 @@ public class BackpackSystem : MonoBehaviour
             }
         }
 
-        // Ã¿´ÎÐü¸¡¶¼´Óµ×²¿ÖØÐÂ¸¡ÉÏ
+        // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµ×²ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½
         if (currentAnim != null)
             StopCoroutine(currentAnim);
 
         detailPopupPanel.gameObject.SetActive(true);
-        // ÖØÖÃµ½µ×²¿ÆðÊ¼Î»ÖÃ
+        // ï¿½ï¿½ï¿½Ãµï¿½ï¿½×²ï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½
         detailPopupPanel.anchoredPosition = detailHidePos;
         detailCanvasGroup.alpha = 0f;
 
@@ -132,7 +132,7 @@ public class BackpackSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Òþ²ØÏêÇéÃæ°å£º½¥ÒþÍËÏÂ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void HideDetail()
     {
@@ -171,7 +171,7 @@ public class BackpackSystem : MonoBehaviour
         currentAnim = null;
     }
 
-    // »º¶¯º¯Êý
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private float EaseOutCubic(float t)
     {
         t = Mathf.Clamp01(t);
@@ -184,24 +184,24 @@ public class BackpackSystem : MonoBehaviour
         return t * t * t;
     }
 
-    // ===== ÏßË÷¹ÜÀí =====
+    // ===== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ =====
 
     public void AddClue(string clueID, string clueName, string description, Sprite detailImg = null)
     {
         if (clueSlotMap.ContainsKey(clueID)) return;
 
-        if (clueSlotPrefab == null || clueSection == null)    // clueContent ¡ú clueSection
+        if (clueSlotPrefab == null || clueSection == null)    // clueContent ï¿½ï¿½ clueSection
         {
-            Debug.LogWarning("BackpackSystem: ÏßË÷Ô¤ÖÆÌå»òÈÝÆ÷Î´ÅäÖÃ");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("BackpackSystem: ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½");/*__DEBUGTOOL_END__*/
             return;
         }
 
-        GameObject go = Instantiate(clueSlotPrefab, clueSection);    // clueContent ¡ú clueSection
+        GameObject go = Instantiate(clueSlotPrefab, clueSection);    // clueContent ï¿½ï¿½ clueSection
         BackpackSlotUI slot = go.GetComponent<BackpackSlotUI>();
 
         if (slot == null)
         {
-            Debug.LogError("BackpackSystem: ÏßË÷Ô¤ÖÆÌåÈ±ÉÙ BackpackSlotUI ×é¼þ");
+            Debug.LogError("BackpackSystem: ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ BackpackSlotUI ï¿½ï¿½ï¿½");
             Destroy(go);
             return;
         }
@@ -216,13 +216,13 @@ public class BackpackSystem : MonoBehaviour
         );
 
         clueSlotMap[clueID] = slot;
-        Debug.Log($"BackpackSystem: Ìí¼ÓÏßË÷ [{clueID}] {clueName}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSystem: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [{clueID}] {clueName}");/*__DEBUGTOOL_END__*/
     }
 
-    // ===== ²ÄÖÊ¹ÜÀí =====
+    // ===== ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ =====
     public void AddMat(PlayerMatState matType, string matName, string desc, Sprite detail = null)
     {
-        // ¼ì²éÊÇ·ñÒÑÓÐ¸Ã²ÄÖÊ
+        // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ð¸Ã²ï¿½ï¿½ï¿½
         foreach (var existingSlot in matSlots)
         {
             if (existingSlot != null && existingSlot.gameObject.name == matName)
@@ -231,7 +231,7 @@ public class BackpackSystem : MonoBehaviour
 
         if (matSlotPrefab == null || matSection == null)
         {
-            Debug.LogError("BackpackSystem: ²ÄÖÊÔ¤ÖÆÌå»òÈÝÆ÷Î´ÅäÖÃ");
+            Debug.LogError("BackpackSystem: ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
@@ -241,7 +241,7 @@ public class BackpackSystem : MonoBehaviour
 
         if (newSlot == null)
         {
-            Debug.LogError("BackpackSystem: ²ÄÖÊÔ¤ÖÆÌåÈ±ÉÙ BackpackSlotUI");
+            Debug.LogError("BackpackSystem: ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ BackpackSlotUI");
             Destroy(go);
             return;
         }
@@ -256,10 +256,10 @@ public class BackpackSystem : MonoBehaviour
         );
 
         matSlots.Add(newSlot);
-        Debug.Log($"BackpackSystem: Ìí¼Ó²ÄÖÊ [{matName}]");
+        /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSystem: ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ [{matName}]");/*__DEBUGTOOL_END__*/
     }
 
-    // ===== ±³°üÊÂ¼þÏìÓ¦ =====
+    // ===== ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ó¦ =====
 
     private void OnBagOpen()
     {
@@ -268,7 +268,7 @@ public class BackpackSystem : MonoBehaviour
 
     private void OnBagClose()
     {
-        // ¹Ø±Õ±³°üÊ±Á¢¼´Òþ²ØÏêÇéÃæ°å£¨²»²¥¶¯»­£©
+        // ï¿½Ø±Õ±ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (detailPopupPanel != null)
         {
             if (currentAnim != null)
@@ -292,7 +292,7 @@ public class BackpackSystem : MonoBehaviour
         if (matSlots == null || matSlots.Count == 0) return;
         var currentMat = GameState.Instance.CurrentMatState;
 
-        // ¶¯Ì¬ÁÐ±íÎÞ·¨ÓÃ index ¶ÔÓ¦ enum£¬¸ÄÓÃÃû×ÖÆ¥Åä
+        // ï¿½ï¿½Ì¬ï¿½Ð±ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ index ï¿½ï¿½Ó¦ enumï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½
         foreach (var slot in matSlots)
         {
             if (slot == null) continue;

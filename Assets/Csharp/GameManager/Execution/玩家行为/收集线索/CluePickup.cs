@@ -1,20 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// ÏßË÷Ê°È¡£º¹ÒÔÚ³¡¾°ÖÐÏßË÷ prefab ÉÏ¡£
-/// Íæ¼ÒÔÚ View3 ¿¿½üºó°´ E Ê°È¡£¬ÓÀ¾Ã±£´æµ½±³°ü¡£
+/// ï¿½ï¿½ï¿½ï¿½Ê°È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ prefab ï¿½Ï¡ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ View3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ E Ê°È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã±ï¿½ï¿½æµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class CluePickup : MonoBehaviour
 {
-    [Header("ÏßË÷ÐÅÏ¢")]
-    public string clueID;           // Î¨Ò»±êÊ¶
-    public string clueName;         // ÏÔÊ¾Ãû³Æ
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢")]
+    public string clueID;           // Î¨Ò»ï¿½ï¿½Ê¶
+    public string clueName;         // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
     [TextArea(2, 5)]
-    public string description;      // ÃèÊöÎÄ±¾
-    public Sprite detailImage;      // ÏêÇéÍ¼Æ¬£¨¿ÉÑ¡£©
+    public string description;      // ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
+    public Sprite detailImage;      // ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
 
-    [Header("Ê°È¡ÉèÖÃ")]
-    public float pickupRange = 3f;  // Ê°È¡¾àÀë
+    [Header("Ê°È¡ï¿½ï¿½ï¿½ï¿½")]
+    public float pickupRange = 3f;  // Ê°È¡ï¿½ï¿½ï¿½ï¿½
 
     private bool isPickedUp = false;
 
@@ -32,7 +32,7 @@ public class CluePickup : MonoBehaviour
     {
         if (isPickedUp) return;
 
-        // ÓÃÍæ¼ÒÎ»ÖÃ¶ø²»ÊÇball
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ball
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) return;
 
@@ -51,7 +51,7 @@ public class CluePickup : MonoBehaviour
             backpack.AddClue(clueID, clueName, description, detailImage);
         }
 
-        Debug.Log($"Ê°È¡ÏßË÷£º{clueName}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"Ê°È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{clueName}");/*__DEBUGTOOL_END__*/
         gameObject.SetActive(false);
     }
 }

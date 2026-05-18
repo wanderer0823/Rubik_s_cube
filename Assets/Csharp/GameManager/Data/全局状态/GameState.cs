@@ -87,7 +87,7 @@ public class GameState
         if (IsBagOpen)
             CloseBag();
         CurrentView = mode;
-        Debug.Log("切换为视角：" + CurrentView);
+        /*__DEBUGTOOL_START__*/Debug.Log("切换为视角：" + CurrentView);/*__DEBUGTOOL_END__*/
         /*if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -109,7 +109,7 @@ public class GameState
         if (IsBagOpen)
             CloseBag();
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
-        Debug.Log("F切换为视角：" + CurrentView);
+        /*__DEBUGTOOL_START__*/Debug.Log("F切换为视角：" + CurrentView);/*__DEBUGTOOL_END__*/
         /*if (CurrentView == ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -134,7 +134,7 @@ public class GameState
 public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
-        Debug.Log("更新为玩家状态：" + CurrentPlayerState);
+        /*__DEBUGTOOL_START__*/Debug.Log("更新为玩家状态：" + CurrentPlayerState);/*__DEBUGTOOL_END__*/
     }
     #endregion
     #endregion
@@ -157,7 +157,7 @@ public void SetPlayerState(PlayerState state)
             CurrentPlayerFace = surface.dir;
         }
 
-        Debug.Log($"更新空间信息 Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"更新空间信息 Room:{CurrentRoomID} Face:{CurrentPlayerFace}");/*__DEBUGTOOL_END__*/
     }
 
     public bool RefreshCurrentSurfaceFromRoomID()
@@ -176,7 +176,7 @@ public void SetPlayerState(PlayerState state)
     public void SetGravityFace(InitCubeSlot.FaceDir face)
     {
         CurrentGravityFace = face;
-        Debug.Log("更新重力方向" + CurrentGravityFace);
+        /*__DEBUGTOOL_START__*/Debug.Log("更新重力方向" + CurrentGravityFace);/*__DEBUGTOOL_END__*/
     }
     #endregion
     #endregion
@@ -186,7 +186,7 @@ public void SetPlayerState(PlayerState state)
     public void SetMatState(PlayerMatState state)
     {
         CurrentMatState = state;
-        Debug.Log("切换材质：" + CurrentMatState);
+        /*__DEBUGTOOL_START__*/Debug.Log("切换材质：" + CurrentMatState);/*__DEBUGTOOL_END__*/
     }
     #endregion
     #endregion
@@ -197,13 +197,13 @@ public void SetPlayerState(PlayerState state)
     {
         stateBeforeBag = CurrentPlayerState;
         SetPlayerState(PlayerState.isOpeningBag);
-        Debug.Log("背包打开，记住之前状态：" + stateBeforeBag);
+        /*__DEBUGTOOL_START__*/Debug.Log("背包打开，记住之前状态：" + stateBeforeBag);/*__DEBUGTOOL_END__*/
     }
 
     public void CloseBag()
     {
         SetPlayerState(stateBeforeBag);
-        Debug.Log("背包关闭，恢复状态：" + stateBeforeBag);
+        /*__DEBUGTOOL_START__*/Debug.Log("背包关闭，恢复状态：" + stateBeforeBag);/*__DEBUGTOOL_END__*/
     }
 
     public bool IsBagOpen => CurrentPlayerState == PlayerState.isOpeningBag;
@@ -216,7 +216,7 @@ public void SetPlayerState(PlayerState state)
     {
         if (index < 0 || index >= 4 || TaskFinished[index]) return false;
         TaskFinished[index] = true;
-        Debug.Log($"任务 {index} 完成");
+        /*__DEBUGTOOL_START__*/Debug.Log($"任务 {index} 完成");/*__DEBUGTOOL_END__*/
         return true;
     }
 
@@ -234,7 +234,7 @@ public void SetPlayerState(PlayerState state)
     public bool CollectClue(string clueID)
     {
         bool added = collectedClueIDs.Add(clueID);
-        if (added) Debug.Log($"收集线索：{clueID}");
+        if (added) /*__DEBUGTOOL_START__*/Debug.Log($"收集线索：{clueID}");/*__DEBUGTOOL_END__*/
         return added;
     }
 

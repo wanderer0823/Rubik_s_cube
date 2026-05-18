@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using static InitCubeSlot;
 
 public static class BallLocationService
@@ -34,7 +34,7 @@ public static class BallLocationService
         Vector3Int surfaceCoord =
             nearestPieceCoord +
             FaceOffset[faceDir];
-        Debug.Log("С���ڱ��������Σ�" + surfaceCoord);
+        /*__DEBUGTOOL_START__*/Debug.Log("С���ڱ��������Σ�" + surfaceCoord);/*__DEBUGTOOL_END__*/
 
         // 5 ͨ�� surfaceCoordMap �����
         var surface = cubeData.GetSurfaceByCoord(surfaceCoord);

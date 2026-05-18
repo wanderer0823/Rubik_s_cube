@@ -29,12 +29,12 @@ public class RoomPreloadController : MonoBehaviour
 
     public void ExecutePreload()
     {
-        Debug.Log("ExecutePreload");
+        /*__DEBUGTOOL_START__*/Debug.Log("ExecutePreload");/*__DEBUGTOOL_END__*/
         var vmm = ViewModeManager.Instance;
         var gs = GameState.Instance;
         if (vmm == null || vmm.cubeRoot == null || vmm.cubeData == null || vmm.ball == null)
         {
-            Debug.LogWarning("RoomPreloadController: missing cubeRoot/cubeData/ball, skip preload");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("RoomPreloadController: missing cubeRoot/cubeData/ball, skip preload");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -64,7 +64,7 @@ public class RoomPreloadController : MonoBehaviour
 
         if (currentSurface == null)
         {
-            Debug.LogWarning("RoomPreloadController: failed to resolve current surface, skip preload");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("RoomPreloadController: failed to resolve current surface, skip preload");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -181,7 +181,7 @@ public class RoomPreloadController : MonoBehaviour
 
         _lastPayload = payload;
         OnPreloadComplete?.Invoke(payload);
-        Debug.Log(
-            $"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");
+        /*__DEBUGTOOL_START__*/Debug.Log(
+            $"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");/*__DEBUGTOOL_END__*/
     }
 }

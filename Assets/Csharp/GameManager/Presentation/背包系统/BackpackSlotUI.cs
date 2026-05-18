@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// µ¥¸ö±³°ü¸ñ×Ó£º´¦ÀíÐü¸¡ºÍµã»÷¡£
-/// Ðü¸¡Ê±Í¨Öª BackpackSystem ÏÔÊ¾¹«¹²ÏêÇéÃæ°å¡£
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½
+/// ï¿½ï¿½ï¿½ï¿½Ê±Í¨Öª BackpackSystem ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¡£
 /// 
-/// ²ã¼¶½á¹¹£¨µ¥¸ö¸ñ×Ó£©£º
-/// SlotRoot (´Ë½Å±¾)
-///   ©À©¤©¤ Icon (Image)
-///   ©¸©¤©¤ NameText (Text)
+/// ï¿½ã¼¶ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½
+/// SlotRoot (ï¿½Ë½Å±ï¿½)
+///   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Icon (Image)
+///   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NameText (Text)
 /// </summary>
 public class BackpackSlotUI : MonoBehaviour,
     IPointerEnterHandler,
@@ -20,35 +20,35 @@ public class BackpackSlotUI : MonoBehaviour,
 {
     public enum SlotType { Material, Clue }
 
-    [Header("UI×é¼þÒýÓÃ")]
+    [Header("UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private Image iconImage;
 
-    [Header("Ñ¡ÖÐ¸ßÁÁ")]
+    [Header("Ñ¡ï¿½Ð¸ï¿½ï¿½ï¿½")]
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Color normalColor = new Color(0.2f, 0.2f, 0.2f, 0.8f);
     [SerializeField] private Color selectedColor = new Color(0.3f, 0.6f, 1f, 0.9f);
     [SerializeField] private Color hoverColor = new Color(0.4f, 0.4f, 0.4f, 0.9f);
 
-    // ÔËÐÐÊ±Êý¾Ý£¨ÓÉ Init ÉèÖÃ£©
+    // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ Init ï¿½ï¿½ï¿½Ã£ï¿½
     private SlotType slotType;
     private string displayName;
     private string description;
-    private Sprite detailSprite;     // ÏêÇéÍ¼Æ¬
+    private Sprite detailSprite;     // ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
     private Action onClickCallback;
     private bool isSelected = false;
-    private PlayerMatState? linkedMatState = null;   // ÐÂÔö£º¹ØÁªµÄ²ÄÖÊÀàÐÍ
+    private PlayerMatState? linkedMatState = null;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // ËùÊôµÄ BackpackSystem ÒýÓÃ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ BackpackSystem ï¿½ï¿½ï¿½ï¿½
     private BackpackSystem backpackSystem;
 
     /// <summary>
-    /// ³õÊ¼»¯¸ñ×Ó
+    /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Init(BackpackSystem system, SlotType type, string name, string desc,
                      Action onClick = null, Sprite detail = null,PlayerMatState? matState = null)
     {
-        backpackSystem = system;    // Ö±½Ó¸³Öµ£¬²»ÔÙ GetComponentInParent
+        backpackSystem = system;    // Ö±ï¿½Ó¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GetComponentInParent
         slotType = type;
         displayName = name;
         description = desc;
@@ -65,10 +65,10 @@ public class BackpackSlotUI : MonoBehaviour,
 
     public PlayerMatState? LinkedMatState => linkedMatState;
 
-    // ===== Êó±êÐü¸¡ =====
+    // ===== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ =====
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Í¨Öª¹«¹²ÏêÇéÃæ°åÏÔÊ¾
+        // Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
         if (backpackSystem != null)
             backpackSystem.ShowDetail(displayName, description, detailSprite);
 
@@ -78,7 +78,7 @@ public class BackpackSlotUI : MonoBehaviour,
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Í¨Öª¹«¹²ÏêÇéÃæ°åÒþ²Ø
+        // Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (backpackSystem != null)
             backpackSystem.HideDetail();
 
@@ -86,7 +86,7 @@ public class BackpackSlotUI : MonoBehaviour,
             backgroundImage.color = normalColor;
     }
 
-    // ===== Êó±êµã»÷ =====
+    // ===== ï¿½ï¿½ï¿½ï¿½ï¿½ =====
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -95,11 +95,11 @@ public class BackpackSlotUI : MonoBehaviour,
         if (slotType == SlotType.Material && onClickCallback != null)
         {
             onClickCallback.Invoke();
-            Debug.Log($"BackpackSlotUI: µã»÷²ÄÖÊ [{displayName}]");
+            /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSlotUI: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [{displayName}]");/*__DEBUGTOOL_END__*/
         }
     }
 
-    // ===== Ñ¡ÖÐ¸ßÁÁ£¨²ÄÖÊ¸ñ×ÓÓÃ£© =====
+    // ===== Ñ¡ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ =====
     public void SetSelected(bool selected)
     {
         isSelected = selected;

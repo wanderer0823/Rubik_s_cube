@@ -51,7 +51,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Glass)
             {
-                Debug.Log("Glass + Plate: 无效果");
+                /*__DEBUGTOOL_START__*/Debug.Log("Glass + Plate: 无效果");/*__DEBUGTOOL_END__*/
             }
             return;
         }
@@ -64,7 +64,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Steel)
             {
-                Debug.Log("Steel + Spring: 无效果");
+                /*__DEBUGTOOL_START__*/Debug.Log("Steel + Spring: 无效果");/*__DEBUGTOOL_END__*/
             }
             return;
         }
@@ -134,7 +134,7 @@ public class ItemInteractionController : MonoBehaviour
         Plate plateLink = ResolvePlateLink(plateCollider);
         if (plateLink == null)
         {
-            Debug.LogWarning("Plate 缺少 PlateLink");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("Plate 缺少 PlateLink");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -155,7 +155,7 @@ public class ItemInteractionController : MonoBehaviour
             StartCoroutine(ResetJumpAfterDelay(anim, 1f));
         }
 
-        Debug.Log($"{gs.CurrentMatState} + Spring: 弹起，方向 {launchDir}, 力 {springForce}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"{gs.CurrentMatState} + Spring: 弹起，方向 {launchDir}, 力 {springForce}");/*__DEBUGTOOL_END__*/
     }
     IEnumerator ResetJumpAfterDelay(Animator anim, float delay)
     {
@@ -202,7 +202,7 @@ public class ItemInteractionController : MonoBehaviour
         DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
         if (doorCtrl == null)
         {
-            Debug.Log("Door碰撞：未找到DoorController");
+            /*__DEBUGTOOL_START__*/Debug.Log("Door碰撞：未找到DoorController");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -215,7 +215,7 @@ public class ItemInteractionController : MonoBehaviour
 
         if (!isPassable)
         {
-            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");
+            /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");/*__DEBUGTOOL_END__*/
             BounceBackFromDoor(doorCollider);
             return;
         }
@@ -224,19 +224,19 @@ public class ItemInteractionController : MonoBehaviour
         {
             if (doorCtrl.doorMat == DoorController.DoorMat.Soft)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于钢铁球无法撞碎软门");
+                /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于钢铁球无法撞碎软门");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
                 return;
             }
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
+                /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");/*__DEBUGTOOL_END__*/
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
+                /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
             }
             return;
@@ -249,7 +249,7 @@ public class ItemInteractionController : MonoBehaviour
                 if (playerSpeed >= doorCtrl.softDoorHitSpeed)
                 {
                     doorCtrl.Open();
-                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");
+                    /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");/*__DEBUGTOOL_END__*/
                     Animator animator=doorCollider.GetComponent<Animator>();
                     animator.SetBool("isBreaking", true);
                     MusicAudioManager.Instance.PlaySfx("wooddoor");
@@ -259,7 +259,7 @@ public class ItemInteractionController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于速度不足({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");
+                    /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于速度不足({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");/*__DEBUGTOOL_END__*/
                     BounceBackFromDoor(doorCollider);
                 }
                 return;
@@ -267,12 +267,12 @@ public class ItemInteractionController : MonoBehaviour
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
+                /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");/*__DEBUGTOOL_END__*/
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
-                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
+                /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
             }
         }
@@ -314,10 +314,10 @@ public class ItemInteractionController : MonoBehaviour
                     continue;
 
                 TryFindTrueNeighborRoom(roomId, oppositeDir);
-                Debug.Log("NeighborRoomID是——" + roomId);
+                /*__DEBUGTOOL_START__*/Debug.Log("NeighborRoomID是——" + roomId);/*__DEBUGTOOL_END__*/
             }
 
-            Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
+            /*__DEBUGTOOL_START__*/Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);/*__DEBUGTOOL_END__*/
             if (playerAction != null)
                 playerAction.ResetToStartPosition();
             GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
@@ -341,7 +341,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else
             {
-                Debug.Log("开门失败");
+                /*__DEBUGTOOL_START__*/Debug.Log("开门失败");/*__DEBUGTOOL_END__*/
             }
         }
     }
