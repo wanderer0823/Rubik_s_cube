@@ -21,6 +21,8 @@ public class ItemInteractionController : MonoBehaviour
     [Header("门碰撞回弹力度")]
     public float doorBounceForce = 2f;
 
+    public int groundLayer = 0;
+
     private Rigidbody rb;
     private GameState gs;
     public Vector3 windAddVelocity;
@@ -33,6 +35,7 @@ public class ItemInteractionController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         gs = GameState.Instance;
         playerAction = GetComponent<PlayerAction>();
+        groundLayer = LayerMask.NameToLayer("Walls");
     }
 
     void OnTriggerEnter(Collider other)
@@ -64,6 +67,22 @@ public class ItemInteractionController : MonoBehaviour
                 Debug.Log("Steel + Spring: 无效果");
             }
             return;
+        }
+
+        if (other.gameObject.layer == groundLayer)
+        {
+            if (mat == PlayerMatState.Bounce)
+            {
+                MusicAudioManager.Instance.PlaySfx("bounce");
+            }
+            else if (mat == PlayerMatState.Steel)
+            {
+                MusicAudioManager.Instance.PlaySfx("steel");
+            }
+            else if (mat == PlayerMatState.Glass)
+            {
+                MusicAudioManager.Instance.PlaySfx("glass");
+            }
         }
 
        
@@ -132,6 +151,7 @@ public class ItemInteractionController : MonoBehaviour
         if (anim != null)
         {
             anim.SetBool("Jump",true);
+            MusicAudioManager.Instance.PlaySfx("banhuang");
             StartCoroutine(ResetJumpAfterDelay(anim, 1f));
         }
 
@@ -232,6 +252,7 @@ public class ItemInteractionController : MonoBehaviour
                     Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");
                     Animator animator=doorCollider.GetComponent<Animator>();
                     animator.SetBool("isBreaking", true);
+                    MusicAudioManager.Instance.PlaySfx("wooddoor");
                     BounceBackFromDoor(doorCollider);
                     StartCoroutine(WaitForBreaking(1.0f, doorCollider.gameObject));
 

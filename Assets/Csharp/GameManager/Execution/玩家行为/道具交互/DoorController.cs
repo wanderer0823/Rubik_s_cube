@@ -133,6 +133,7 @@ public class DoorController : MonoBehaviour
         if (shouldBeOpen && !isVisuallyOpen)
         {
             // 旋转打开
+            MusicAudioManager.Instance.PlaySfx("opendoor");
             isVisuallyOpen = true;
             if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
             doorAnimCoroutine = StartCoroutine(AnimateDoor(doorOpenAngle));

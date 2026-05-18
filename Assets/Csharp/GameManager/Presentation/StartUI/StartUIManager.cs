@@ -16,6 +16,7 @@ namespace Csharp.GameManager.Presentation.StartUI
         public void StartGame()
         {
             StartUI.SetActive(false);
+            MusicAudioManager.Instance.PlaySfx("afterclass");
         }
 
         public void ExitGame()
