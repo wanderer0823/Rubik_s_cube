@@ -7,6 +7,7 @@ public class ViewModeManager : MonoBehaviour
 {
     public static ViewModeManager Instance;
     private GameState gs;
+    public GameObject player;
     [Header("小球")]
     public GameObject ball_p;
     public Transform ball;
@@ -15,9 +16,12 @@ public class ViewModeManager : MonoBehaviour
     [Header("空间系统引用")]
     public Transform cubeRoot;
     public InitCubeSlot cubeData;
+    [Header("房间旋转用的时间")]
+    [SerializeField] private float RotationTime=5f;
+
 
     //欧添加：在更新旋转后重置小球位置
-    public GameObject player;
+
     private Quaternion newRotation = Quaternion.Euler(360, 360, 360);
     private Quaternion lastRoomRotation = Quaternion.Euler(360, 360, 360);
 
@@ -165,6 +169,9 @@ public class ViewModeManager : MonoBehaviour
             && !CheckPlayerState(PlayerState.isMoving))
             return;
 
+        if (isRotating)//在旋转的时候不能切视角
+            return;
+
         gs.FSetView();
     }
 
@@ -190,56 +197,59 @@ public class ViewModeManager : MonoBehaviour
             return;
         RotateCurrentRoom();
     }
-    private void RotateCurrentRoom()
+    private bool isRotating = false;  // 防止旋转过程中再次触发
+
+private void RotateCurrentRoom()
+{
+    if (isRotating) return;  // 正在旋转，忽略本次调用
+
+    GameObject currentRoom = cubeData.CurrentRoom;
+
+        // 1. 计算目标旋转（与原来相同）
+    Quaternion rotation_R = Quaternion.FromToRotation(
+    CubeRotateController.CurrentGDirinMF,
+    new Vector3(0, -1, 0));
+    Quaternion qStart = Quaternion.Euler(270, 0, 0);
+    GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID);
+    Quaternion qEnd = pieceObj.transform.localRotation;
+    if (pieceObj.transform.parent == cubeRoot)
     {
-        Quaternion rotation_R =
-            Quaternion.FromToRotation(
-                CubeRotateController.CurrentGDirinMF,
-                new Vector3(0, -1, 0));
-        Debug.Log("地球："+ CubeRotateController.CurrentGDirinMF);
-
-        Quaternion qStart = Quaternion.Euler(270, 0, 0);
-
-        Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
-
-        GameObject pieceObj =
-            cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID);
-
-        Debug.Log($"旋转计算: CurrentGDirinMF={CubeRotateController.CurrentGDirinMF}, RoomID={gs.CurrentRoomID}, pieceObj={pieceObj?.name}");
-
-        Quaternion qEnd =
-            cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID)
-            .transform.localRotation;
-
-        if (pieceObj.transform.parent == cubeRoot)
-        {
-            qEnd = pieceObj.transform.localRotation;
-        }
-
-        Debug.Log("可恶这是什么" + qEnd.eulerAngles);
-
-        Quaternion rotation_T =
-            qEnd * Quaternion.Inverse(qStart);
-
-        Quaternion rotation =
-            rotation_R * rotation_T;
-
-        GameObject currentRoom = cubeData.CurrentRoom;
-
-        Debug.Log($"旋转计算: currentRoom={currentRoom?.name}, rotation_R={rotation_R.eulerAngles}, rotation_T={rotation_T.eulerAngles}, final={rotation.eulerAngles}");
-
-        Debug.Log($"旋转前: currentRoom.rotation={currentRoom.transform.rotation.eulerAngles}");
-
-        currentRoom.transform.rotation = rotation;
-
-        newRotation = currentRoom.transform.rotation;
-        if (Quaternion.Angle(lastRoomRotation, newRotation) > 0f) 
-        {
-            ResetPlayerToStartPosition();
-            lastRoomRotation = newRotation;
-        }
-
+        qEnd = pieceObj.transform.localRotation;
     }
+    Quaternion rotation_T = qEnd * Quaternion.Inverse(qStart);
+    Quaternion targetRotation = rotation_R * rotation_T;
+
+    // 2. 启动平滑旋转协程
+    StartCoroutine(RotateOverTime(currentRoom.transform, targetRotation, RotationTime)); // 0.5秒完成旋转
+}
+
+private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetRotation, float duration)
+{
+    isRotating = true;
+    Quaternion startRotation = targetTransform.rotation;
+    float elapsed = 0f;
+
+    while (elapsed < duration)
+    {
+        elapsed += Time.deltaTime;
+        float t = elapsed / duration;  // 0→1
+        // 使用Slerp保证旋转路径最短
+        targetTransform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+        yield return null;
+    }
+
+    // 确保最终精确到达目标旋转
+    targetTransform.rotation = targetRotation;
+    isRotating = false;
+
+    // 旋转完成后的处理（原来写在RotateCurrentRoom末尾的逻辑）
+    newRotation = targetTransform.rotation;
+    if (Quaternion.Angle(lastRoomRotation, newRotation) > 0f)
+    {
+        //ResetPlayerToStartPosition();
+        lastRoomRotation = newRotation;
+    }
+}
     #endregion
 
     void CheckRotate(RotateType type)//left right
