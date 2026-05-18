@@ -82,11 +82,13 @@ public class RoomInstanceManager : MonoBehaviour
         {
             Destroy(_currentRoomInstance);
         }
-        
+
         // 仅实例化当前房间
-        _currentRoomInstance = Instantiate(room.RoomPerfab, CurrentRoom.transform, false);
-        _currentRoomInstance.transform.localPosition = Vector3.zero;
-        _currentRoomInstance.transform.localRotation = Quaternion.Euler(room.orRotation);
+        _currentRoomInstance = Instantiate(
+            room.RoomPerfab,
+            room.spawnPoint,
+            Quaternion.Euler(room.orRotation)
+        );
 
         #region 张奕忻修改！！！！防止克隆静态物体失败
         // 恢复原始Mesh并清掉烘焙光照引用，让克隆体可以自由旋转
@@ -94,6 +96,7 @@ public class RoomInstanceManager : MonoBehaviour
         if (batchingCache != null) batchingCache.RestoreForClone(clearLightmap: true);
         #endregion
 
+        _currentRoomInstance.transform.SetParent(CurrentRoom.transform, true);
 
         Debug.Log(
             $"RoomInstanceManager: 当前房间={currentRoomId} 邻居房间数={_neighborRoomIds.Count}"
