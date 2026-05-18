@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class SmallObjectShadowTool : EditorWindow
 {
-    float sizeThreshold = 0.5f;
+    float sizeThreshold = 6.0f;
 
     List<Renderer> affectedObjects = new List<Renderer>();
 
