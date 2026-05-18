@@ -1,21 +1,21 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 /// <summary>
 /// ����ʰȡ������� View3 ������ E ��ȡ���ʵ�������
 /// ���ڳ����в��ʵ��� prefab �ϡ�
 /// </summary>
 public class MatPickup : MonoBehaviour
 {
-    [Header("��������")]
+    [Header("材质类型")]
     public PlayerMatState matType;
 
-    [Header("������ʾ��Ϣ")]
+    [Header("背包详情文字设置")]
     public string displayName;
     [TextArea(2, 4)]
     public string description;
     public Sprite detailImage;
 
-    [Header("ʰȡ����")]
+    [Header("可拾取距离")]
     public float pickupRange = 3f;
 
     private bool isPickedUp = false;

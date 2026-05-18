@@ -1081,7 +1081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &70018862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4305,10 +4305,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Detail Name
+  m_text: "\u94A2\u7403"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 89a4ebbd2efc57a42b6a425dc7a27745, type: 2}
+  m_sharedMaterial: {fileID: -2205807538636405536, guid: 89a4ebbd2efc57a42b6a425dc7a27745,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4332,8 +4333,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 65.4
+  m_fontSizeBase: 65.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9759,9 +9760,9 @@ MonoBehaviour:
   matSection: {fileID: 51999057}
   matSlotPrefab: {fileID: 6483035423702333183, guid: c8bea9a2f85c25c45843fee09ef6849f,
     type: 3}
-  steelDetailSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  glassDetailSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  bounceDetailSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  steelDetailSprite: {fileID: 21300000, guid: 94d6db20d2f9cfc4fa53ddbb24431e23, type: 3}
+  glassDetailSprite: {fileID: 21300000, guid: 260ada557a50d294e9c60434881464b1, type: 3}
+  bounceDetailSprite: {fileID: 21300000, guid: 69d68e8eaa18c594ea98b2ca4cbf665c, type: 3}
   clueSection: {fileID: 1380860381}
   clueSlotPrefab: {fileID: 6483035423702333183, guid: c8bea9a2f85c25c45843fee09ef6849f,
     type: 3}
@@ -27118,7 +27119,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -27231,13 +27232,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Detail Description\Detail Description\Detail Description\Detail Description\Detail
-    Description\Detail Description\Detail Description\Detail Description\D
-
-'
+  m_text: "\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4\u6211\u8981\u8BF4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9fdaf26d572e17e4394debdf01738dee, type: 2}
+  m_sharedMaterial: {fileID: 7759514304707848940, guid: 9fdaf26d572e17e4394debdf01738dee,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -27385,7 +27384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5849056, g: 0.14898533, b: 0.14898533, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28903,10 +28902,12 @@ MonoBehaviour:
     m_Bits: 64
   liftSpeed: 5
   holdHeightOffset: 1.5
-  rotateSpeed: 90
+  rotateStepAngle: 90
+  rotateCooldown: 0.15
   crosshairImage: {fileID: 1136942198}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   interactColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  detectInterval: 0.05
 --- !u!114 &2138106902
 MonoBehaviour:
   m_ObjectHideFlags: 0

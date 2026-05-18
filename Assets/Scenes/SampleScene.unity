@@ -2070,10 +2070,12 @@ MonoBehaviour:
     m_Bits: 64
   liftSpeed: 5
   holdHeightOffset: 2.5
-  rotateSpeed: 90
+  rotateStepAngle: 90
+  rotateCooldown: 0.15
   crosshairImage: {fileID: 78199078}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   interactColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  detectInterval: 0.05
 --- !u!1 &331454289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,7 +2233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &375293602
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3557,12 +3559,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69224c2a7e617f147b52f4f0474a04c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 2018642116}
   ball_p: {fileID: 604833498}
   ball: {fileID: 604833499}
   minBallSpeed: 0.02
   cubeRoot: {fileID: 1576474101}
   cubeData: {fileID: 773962225}
-  player: {fileID: 2018642116}
+  RotationTime: 5
 --- !u!114 &681406233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4010,7 +4013,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1700263821}
   m_HandleRect: {fileID: 1700263820}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10808,6 +10811,7 @@ MonoBehaviour:
   springForce: 15
   windForce: 3
   doorBounceForce: 30
+  groundLayer: 0
   windAddVelocity: {x: 0, y: 0, z: 0}
   animator: {fileID: 0}
 --- !u!1 &2023404754
@@ -19076,6 +19080,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u98CE\u6247"
       objectReference: {fileID: 0}
+    - target: {fileID: 2025414634506806311, guid: 80fe18ceed993a744acc60aa25e6806c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8634118983830504657, guid: 80fe18ceed993a744acc60aa25e6806c,
         type: 3}
       propertyPath: m_Size.x
@@ -26935,6 +26944,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: junior school_desk0
       objectReference: {fileID: 0}
+    - target: {fileID: 1543754591403262953, guid: cdeb9629480cb054aba49bf1f702832e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6844478197636811749, guid: cdeb9629480cb054aba49bf1f702832e,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -31056,7 +31070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &4117099539137990275
 MeshFilter:
   m_ObjectHideFlags: 0
