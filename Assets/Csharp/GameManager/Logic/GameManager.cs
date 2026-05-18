@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public RoomPreloadController roomPreloadSystem;
     [Header("Presentation Systems���ֲ�")]
     public ArrowsButton ArrowsButton;
+    public MusicAudioManager musicAudioManager;
     #endregion
 
     public static GameManager Instance;

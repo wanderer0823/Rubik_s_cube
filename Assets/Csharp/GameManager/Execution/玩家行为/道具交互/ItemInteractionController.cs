@@ -26,7 +26,7 @@ public class ItemInteractionController : MonoBehaviour
     public Vector3 windAddVelocity;
 
     private PlayerAction playerAction;
-
+    public Animator animator;
 
     void Start()
     {
@@ -71,6 +71,11 @@ public class ItemInteractionController : MonoBehaviour
         if (other.CompareTag("Door"))
         {
             HandleDoorCollision(other);
+        }
+
+        if (other.CompareTag("Door2"))
+        {
+            ExecuteDoorTransition(other);
         }
     }
 
@@ -173,6 +178,7 @@ public class ItemInteractionController : MonoBehaviour
 
     void HandleDoorCollision(Collider doorCollider)
     {
+
         DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
         if (doorCtrl == null)
         {
@@ -224,7 +230,11 @@ public class ItemInteractionController : MonoBehaviour
                 {
                     doorCtrl.Open();
                     Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");
-                    ExecuteDoorTransition(doorCollider);
+                    Animator animator=doorCollider.GetComponent<Animator>();
+                    animator.SetBool("isBreaking", true);
+                    BounceBackFromDoor(doorCollider);
+                    StartCoroutine(WaitForBreaking(1.0f, doorCollider.gameObject));
+
                 }
                 else
                 {
@@ -318,5 +328,11 @@ public class ItemInteractionController : MonoBehaviour
     Plate ResolvePlateLink(Collider plateCollider)
     {
         return plateCollider.GetComponentInParent<Plate>();
+    }
+    private IEnumerator WaitForBreaking(float delay, GameObject door)
+    {
+        yield return new WaitForSeconds(delay);
+        door.transform.parent.GetChild(0).gameObject.SetActive(false);  //隐藏门的形
+        door.transform.parent.GetChild(1).gameObject.SetActive(true);//触发开门的真正门
     }
 }

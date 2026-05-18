@@ -195,6 +195,7 @@ public class InitCubeSlot : MonoBehaviour
         GameState.Instance.CurrentRoomID = TestRoomID;
         GameState.Instance.RefreshCurrentSurfaceFromRoomID();
         GameEvents.calculateNeighbors();
+        //MusicAudioManager.Instance.PlayBgm("bgm");
     }
 
     #region 列表初始化

@@ -67,6 +67,7 @@ public class Plate : MonoBehaviour
             return;
 
         isPressed = true;
+        MusicAudioManager.Instance?.PlaySfx("plate");
         RefreshMaterial();
         StartCoroutine(MovePlate(Vector3.down * plateMoveDistance));
 

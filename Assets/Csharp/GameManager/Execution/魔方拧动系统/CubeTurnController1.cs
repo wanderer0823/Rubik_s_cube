@@ -222,6 +222,7 @@ public class CubeTurnController1 : MonoBehaviour
     private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
     {
         isTurnAnimating = true;
+        MusicAudioManager.Instance.PlaySfx("mofang");
 
         float duration = Mathf.Max(0.01f, turnAnimationDuration);
         float elapsed = 0f;
