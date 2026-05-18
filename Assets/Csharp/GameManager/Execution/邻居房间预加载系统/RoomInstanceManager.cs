@@ -90,6 +90,12 @@ public class RoomInstanceManager : MonoBehaviour
             Quaternion.Euler(room.orRotation)
         );
 
+        #region 张奕忻修改！！！！防止克隆静态物体失败
+        // 恢复原始Mesh并清掉烘焙光照引用，让克隆体可以自由旋转
+        var batchingCache = _currentRoomInstance.GetComponent<RoomBatchingCache>();
+        if (batchingCache != null) batchingCache.RestoreForClone(clearLightmap: true);
+        #endregion
+
         _currentRoomInstance.transform.SetParent(CurrentRoom.transform, true);
 
         Debug.Log(
