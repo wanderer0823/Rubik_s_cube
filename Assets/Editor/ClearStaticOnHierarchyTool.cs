@@ -12,7 +12,7 @@ public static class ClearStaticOnHierarchyTool
         // 多选场景下 Unity 会对每个对象触发一次，这里直接处理 context 即可
         var go = cmd.context as GameObject;
         if (go == null) return;
-        ClearRecursive(go, StaticEditorFlags.BatchingStatic, "BatchingStatic", removeCache: true);
+        ClearRecursive(go, StaticEditorFlags.BatchingStatic, "BatchingStatic");
     }
 
     [MenuItem("Tools/Hierarchy/【删除选中对象的所有合批状态】取消hierarchy里选中物体的子级所有Batching Static")]
@@ -26,7 +26,7 @@ public static class ClearStaticOnHierarchyTool
         }
 
         foreach (var go in selected)
-            ClearRecursive(go, StaticEditorFlags.BatchingStatic, "BatchingStatic", removeCache: true);
+            ClearRecursive(go, StaticEditorFlags.BatchingStatic, "BatchingStatic");
     }
 
     // ===================================================
@@ -37,7 +37,7 @@ public static class ClearStaticOnHierarchyTool
     {
         var go = cmd.context as GameObject;
         if (go == null) return;
-        ClearRecursive(go, StaticEditorFlags.ContributeGI, "ContributeGI", removeCache: false);
+        ClearRecursive(go, StaticEditorFlags.ContributeGI, "ContributeGI");
     }
 
     [MenuItem("Tools/Hierarchy/【删除选中对象的所有待烘焙状态】取消hierarchy里选中物体的子级所有Contribute GI")]
@@ -51,13 +51,13 @@ public static class ClearStaticOnHierarchyTool
         }
 
         foreach (var go in selected)
-            ClearRecursive(go, StaticEditorFlags.ContributeGI, "ContributeGI", removeCache: false);
+            ClearRecursive(go, StaticEditorFlags.ContributeGI, "ContributeGI");
     }
 
     // ===================================================
     // 通用递归清除
     // ===================================================
-    static void ClearRecursive(GameObject root, StaticEditorFlags mask, string label, bool removeCache)
+    static void ClearRecursive(GameObject root, StaticEditorFlags mask, string label)
     {
         var all = root.GetComponentsInChildren<Transform>(true);
         int affected = 0;
@@ -75,14 +75,7 @@ public static class ClearStaticOnHierarchyTool
             affected++;
         }
 
-        // 只有清除 BatchingStatic 时才顺手删除缓存组件
-        if (removeCache)
-        {
-            var cache = root.GetComponent<RoomBatchingCache>();
-            if (cache != null)
-                Undo.DestroyObjectImmediate(cache);
-        }
-
+        AssetDatabase.SaveAssets();
         Debug.Log($"[{root.name}] 已取消 {affected} 个子孙节点的 {label} 标记。");
     }
 }
