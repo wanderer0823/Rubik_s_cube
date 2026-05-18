@@ -99,7 +99,7 @@ public class GrabSystem : MonoBehaviour
             Vector3 allowedRotation = g.allowedParentRotate.ToVector3();
             Transform t = g.transform;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 if (t.parent == null)
                 {
