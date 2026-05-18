@@ -20072,7 +20072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 45
+  TestRoomID: 47
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -20690,34 +20690,39 @@ MonoBehaviour:
     RoomPerfab: {fileID: 0}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 33
+    orRotation: {x: 0, y: 0, z: 90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 945307973006681811, guid: 7ffa2e55cdb92ee48a72fc7f22f689b8,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 34
+    orRotation: {x: 0, y: 0, z: -90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 3752087338703264035, guid: 172f41e366aed944d9b0123cbc707df3,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
+  - roomID: 35
     orRotation: {x: 0, y: 0, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 3744210160014785142, guid: 893beeba28d277249a31ec23c14989c2,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 36
+    orRotation: {x: 0, y: 0, z: 90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 6969552145977090598, guid: e2150c510bf62114e9d3d88bf59b145d,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 37
+    orRotation: {x: 90, y: 0, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 6797072000131750775, guid: ec5196089bdd22e4dbced4171a85b41a,
+      type: 3}
     faces: []
     dirMap: 00000000
   - roomID: 38
@@ -20741,66 +20746,73 @@ MonoBehaviour:
       type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
+  - roomID: 41
+    orRotation: {x: 0, y: 0, z: -90}
+    spawnPoint: {x: 0, y: 0, z: 0}
+    RoomPerfab: {fileID: 5561142216084678746, guid: 6c7d9dc5c5fa62743b41753b9b59bd3b,
+      type: 3}
+    faces: []
+    dirMap: 00000000
+  - roomID: 42
+    orRotation: {x: 0, y: -90, z: 90}
+    spawnPoint: {x: 0, y: 0, z: 0}
+    RoomPerfab: {fileID: 2379493012541061857, guid: 2c304175e3d960548b4987977bd15bad,
+      type: 3}
+    faces: []
+    dirMap: 00000000
+  - roomID: 43
     orRotation: {x: 0, y: 0, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
     RoomPerfab: {fileID: 0}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
-    spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
-    faces: []
-    dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
-    spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
-    faces: []
-    dirMap: 00000000
-  - roomID: 0
+  - roomID: 44
     orRotation: {x: 0, y: 90, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
     RoomPerfab: {fileID: 1559257100264263882, guid: 8d2c1a5ffe2403e44b478290ca396529,
       type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
+  - roomID: 45
     orRotation: {x: 0, y: 180, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
     RoomPerfab: {fileID: 312122166680518664, guid: 03156014bf62e804a897fd59951e29e4,
       type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 46
+    orRotation: {x: 0, y: -90, z: -90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 8011768135984933718, guid: c6611a242fb28ff49a33c5df7cb27c47,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
+  - roomID: 47
     orRotation: {x: 0, y: 0, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 3124611618258360596, guid: 02ddf31135692df418a31799a8ecb168,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 48
+    orRotation: {x: 0, y: 90, z: -90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 6460041204797089483, guid: 82f6ef8b8c1a55444ac40087e2c96f59,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 49
+    orRotation: {x: 0, y: 0, z: -90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 158980186318738796, guid: fab24179ab77b7d428440f26ec168880,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 50
+    orRotation: {x: 90, y: 0, z: 90}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 8043477446701901379, guid: 005a39d11a4eb8b47975ab3a86fa4115,
+      type: 3}
     faces: []
     dirMap: 00000000
   - roomID: 0
@@ -26232,7 +26244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1970399154
 Transform:
   m_ObjectHideFlags: 0
@@ -27106,7 +27118,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
