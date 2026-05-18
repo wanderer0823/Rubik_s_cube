@@ -45275,7 +45275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &535371990
 Transform:
   m_ObjectHideFlags: 0
@@ -123758,11 +123758,13 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 909aa513f61e064488e4614e2e2552e6, type: 3}
   - key: mofang
     clip: {fileID: 8300000, guid: 60c2bf5ed72d0544cb440c502d96c4c5, type: 3}
+  - key: ui
+    clip: {fileID: 8300000, guid: 88ca95075efb8694499b54ae53e40473, type: 3}
   masterVolume: 1
   bgmVolume: 1
   sfxVolume: 1
   defaultBgmKey: 
-  playDefaultBgmOnStart: 1
+  playDefaultBgmOnStart: 0
 --- !u!23 &2001644386 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5850869209415028088, guid: f427c6f413fbbe2488e678e056d91721,
