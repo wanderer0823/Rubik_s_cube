@@ -44,7 +44,6 @@ public class DoorController : MonoBehaviour
         {
             _isOpened = true;
         }
-        Debug.Log($"门 {gameObject.name} 已打开（isOpened=true）");
         // TODO: 播放开门动画
     }
 
@@ -77,11 +76,6 @@ public class DoorController : MonoBehaviour
     /// </summary>
     public void LogDoorStatus()
     {
-        Debug.Log($"[门状态] {gameObject.name} | " +
-                  $"DoorMat={doorMat} | " +
-                  $"isOpened={_isOpened} | " +
-                  $"isPassable={GetIsPassable()} | " +
-                  $"DoorVector={DoorinRoomVector}");
     }
 
     // ==================== 门向量计算（原 DoorVectorReturn 逻辑）====================

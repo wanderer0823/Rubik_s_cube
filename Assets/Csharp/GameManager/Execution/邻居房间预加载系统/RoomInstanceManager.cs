@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
 
-// 维护当前逻辑邻居房间ID（不实例化邻居房间）
-// 仅实例化当前房间
+// 缁存姢褰撳墠閫昏緫閭诲眳鎴块棿ID锛堜笉瀹炰緥鍖栭偦灞呮埧闂达級
+// 浠呭疄渚嬪寲褰撳墠鎴块棿
 
 public class RoomInstanceManager : MonoBehaviour
 {
-    // 当前逻辑邻居房间ID
+    // 褰撳墠閫昏緫閭诲眳鎴块棿ID
     public List<int> _neighborRoomIds = new List<int>();
 
-    // 当前房间实例
+    // 褰撳墠鎴块棿瀹炰緥
     private GameObject _currentRoomInstance;
 
     public GameObject CurrentRoom;
@@ -62,13 +62,13 @@ public class RoomInstanceManager : MonoBehaviour
 
         InitCubeSlot cubeData = vmm.cubeData;
 
-        // 更新逻辑邻居房间列表
+        // 鏇存柊閫昏緫閭诲眳鎴块棿鍒楄〃
         _neighborRoomIds.Clear();
         _neighborRoomIds.AddRange(payload.LogicalNeighborRoomIds);
 
         int currentRoomId = gs.CurrentRoomID;
 
-        // 当前房间合法性检查
+        // 褰撳墠鎴块棿鍚堟硶鎬ф鏌?
         if (currentRoomId < 0 || currentRoomId >= cubeData.rooms.Count)
             return;
 
@@ -77,30 +77,27 @@ public class RoomInstanceManager : MonoBehaviour
         if (room == null || room.RoomPerfab == null)
             return;
 
-        // 销毁旧当前房间
+        // 閿€姣佹棫褰撳墠鎴块棿
         if (_currentRoomInstance != null)
         {
             Destroy(_currentRoomInstance);
         }
         
-        // 仅实例化当前房间
+        // 浠呭疄渚嬪寲褰撳墠鎴块棿
         _currentRoomInstance = Instantiate(room.RoomPerfab, CurrentRoom.transform, false);
         _currentRoomInstance.transform.localPosition = Vector3.zero;
         _currentRoomInstance.transform.localRotation = Quaternion.Euler(room.orRotation);
 
-        #region 张奕忻修改！！！！防止克隆静态物体失败
-        // 恢复原始Mesh并清掉烘焙光照引用，让克隆体可以自由旋转
+        #region 寮犲蹇讳慨鏀癸紒锛侊紒锛侀槻姝㈠厠闅嗛潤鎬佺墿浣撳け璐?
+        // 鎭㈠鍘熷Mesh骞舵竻鎺夌儤鐒欏厜鐓у紩鐢紝璁╁厠闅嗕綋鍙互鑷敱鏃嬭浆
         var batchingCache = _currentRoomInstance.GetComponent<RoomBatchingCache>();
         if (batchingCache != null) batchingCache.RestoreForClone(clearLightmap: true);
         #endregion
 
 
-        Debug.Log(
-            $"RoomInstanceManager: 当前房间={currentRoomId} 邻居房间数={_neighborRoomIds.Count}"
-        );
     }
 
-    // 获取当前逻辑邻居房间ID列表
+    // 鑾峰彇褰撳墠閫昏緫閭诲眳鎴块棿ID鍒楄〃
     public List<int> GetNeighborRoomIds()
     {
         return _neighborRoomIds;
