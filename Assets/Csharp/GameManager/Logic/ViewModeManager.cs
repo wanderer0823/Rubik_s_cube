@@ -188,6 +188,8 @@ public class ViewModeManager : MonoBehaviour
     {
         if (mode != ViewMode.View3)
             return;
+
+        ResetPlayerToStartPosition();
         RotateCurrentRoom();
     }
     private void RotateCurrentRoom()
@@ -233,11 +235,7 @@ public class ViewModeManager : MonoBehaviour
         currentRoom.transform.rotation = rotation;
 
         newRotation = currentRoom.transform.rotation;
-        if (Quaternion.Angle(lastRoomRotation, newRotation) > 0f) 
-        {
-            ResetPlayerToStartPosition();
-            lastRoomRotation = newRotation;
-        }
+        lastRoomRotation = newRotation;
 
     }
     #endregion
