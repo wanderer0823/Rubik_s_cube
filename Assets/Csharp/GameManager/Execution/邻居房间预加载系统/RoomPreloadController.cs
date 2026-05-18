@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static InitCubeSlot;
 
 /// <summary>
-/// 閭诲眳鎴块棿棰勫姞杞芥帶鍒跺櫒锛?
-/// 缁存姢閫昏緫閭诲眳鍒楄〃锛屽苟璁＄畻褰撳墠鎴块棿鍜屽悓涓€澶ч潰鍓嶅悗宸﹀彸閭绘埧闂寸殑闂ㄦ槸鍚﹁兘褰㈡垚閫氶亾銆?
+/// 邻居房间预加载控制器：
+/// 维护逻辑邻居列表，并计算当前房间和同一大面前后左右邻房间的门是否能形成通道。
 /// </summary>
 public class RoomPreloadController : MonoBehaviour
 {
@@ -29,6 +29,7 @@ public class RoomPreloadController : MonoBehaviour
 
     public void ExecutePreload()
     {
+        Debug.Log("ExecutePreload");
         var vmm = ViewModeManager.Instance;
         var gs = GameState.Instance;
         if (vmm == null || vmm.cubeRoot == null || vmm.cubeData == null || vmm.ball == null)
@@ -180,5 +181,7 @@ public class RoomPreloadController : MonoBehaviour
 
         _lastPayload = payload;
         OnPreloadComplete?.Invoke(payload);
+        Debug.Log(
+            $"RoomPreloadController: preload complete CurrentRoom={currentSurface.roomID}, logicalNeighbors={payload.LogicalNeighborRoomIds.Count}");
     }
 }

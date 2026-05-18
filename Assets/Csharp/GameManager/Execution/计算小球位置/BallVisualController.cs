@@ -1,14 +1,14 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using static InitCubeSlot;
 
 /// <summary>
-/// æ§åˆ¶é­”æ–¹å†…å°çƒçš„è§†è§‰ä½ç½®ã€‚
-/// å°çƒå§‹ç»ˆä½œä¸ºå½“å‰ CubePiece çš„å­ç‰©ä½“ã€‚
-/// åªåœ¨ç©å®¶çœŸæ­£è¿‡é—¨æ¢æˆ¿é—´æ—¶é‡æ–°å®šä½ã€‚
+/// ¿ØÖÆÄ§·½ÄÚĞ¡ÇòµÄÊÓ¾õÎ»ÖÃ¡£
+/// Ğ¡ÇòÊ¼ÖÕ×÷Îªµ±Ç° CubePiece µÄ×ÓÎïÌå¡£
+/// Ö»ÔÚÍæ¼ÒÕæÕı¹ıÃÅ»»·¿¼äÊ±ÖØĞÂ¶¨Î»¡£
 /// </summary>
 public class BallVisualController : MonoBehaviour
 {
-    [Header("è§†è§‰åç§»ï¼ˆé­”æ–¹æ’æ§½æ·±åº¦ï¼‰")]
+    [Header("ÊÓ¾õÆ«ÒÆ£¨Ä§·½²å²ÛÉî¶È£©")]
     public float surfaceOffset = 0.008f;
 
     private InitCubeSlot cubeData;
@@ -16,7 +16,7 @@ public class BallVisualController : MonoBehaviour
     void Start()
     {
         cubeData = ViewModeManager.Instance?.cubeData;
-        // åˆå§‹å®šä½
+        // ³õÊ¼¶¨Î»
         PositionBall(GameState.Instance.CurrentRoomID);
     }
 
@@ -31,7 +31,7 @@ public class BallVisualController : MonoBehaviour
     }
 
     /// <summary>
-    /// å°†å°çƒç§»åŠ¨åˆ°æŒ‡å®šæˆ¿é—´å¯¹åº”çš„ Piece ä¸‹
+    /// ½«Ğ¡ÇòÒÆ¶¯µ½Ö¸¶¨·¿¼ä¶ÔÓ¦µÄ Piece ÏÂ
     /// </summary>
     void PositionBall(int roomID)
     {
@@ -41,20 +41,20 @@ public class BallVisualController : MonoBehaviour
         CubeSurface_s surface = FindSurfaceByRoomID(roomID);
         if (surface == null)
         {
-            Debug.LogWarning($"BallVisual: æ‰¾ä¸åˆ° RoomID={roomID} å¯¹åº”çš„ Surface");
+            Debug.LogWarning($"BallVisual: ÕÒ²»µ½ RoomID={roomID} ¶ÔÓ¦µÄ Surface");
             return;
         }
 
         GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(roomID);
         if (pieceObj == null)
         {
-            Debug.LogWarning($"BallVisual: æ‰¾ä¸åˆ° RoomID={roomID} å¯¹åº”çš„ PieceObj");
+            Debug.LogWarning($"BallVisual: ÕÒ²»µ½ RoomID={roomID} ¶ÔÓ¦µÄ PieceObj");
             return;
         }
 
         transform.SetParent(pieceObj.transform, false);
 
-        // é€»è¾‘æ–¹å‘ â†’ é­”æ–¹åæ ‡ç³»ä¸–ç•Œæ–¹å‘ â†’ Pieceæœ¬åœ°æ–¹å‘
+        // Âß¼­·½Ïò ¡ú Ä§·½×ø±êÏµÊÀ½ç·½Ïò ¡ú Piece±¾µØ·½Ïò
         Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
         Vector3 logicDir = FaceDirToLocalVector(surface.dir);
         Vector3 worldDir = cubeRoot.TransformDirection(logicDir);
@@ -62,6 +62,8 @@ public class BallVisualController : MonoBehaviour
 
         transform.localPosition = pieceLocalDir * surfaceOffset;
 
+        Debug.Log($"BallVisual: Room={roomID}, Piece={pieceObj.name}, " +
+                  $"FaceDir={surface.dir}, pieceLocalDir={pieceLocalDir}, localPos={transform.localPosition}");
     }
 
     CubeSurface_s FindSurfaceByRoomID(int roomID)
@@ -93,7 +95,7 @@ public class BallVisualController : MonoBehaviour
     }
 
     /// <summary>
-    /// è·å–æŒ‡å®šæˆ¿é—´ Surface åœ¨ä¸–ç•Œç©ºé—´çš„æœå¤–æ–¹å‘ï¼ˆä¾›å¤–éƒ¨ä½¿ç”¨ï¼‰
+    /// »ñÈ¡Ö¸¶¨·¿¼ä Surface ÔÚÊÀ½ç¿Õ¼äµÄ³¯Íâ·½Ïò£¨¹©Íâ²¿Ê¹ÓÃ£©
     /// </summary>
     public static Vector3 GetSurfaceWorldDirection(int roomID)
     {
@@ -101,7 +103,7 @@ public class BallVisualController : MonoBehaviour
         var cubeRoot = ViewModeManager.Instance?.cubeRoot;
         if (cubeData == null || cubeRoot == null) return Vector3.up;
 
-        // æ‰¾ Surface
+        // ÕÒ Surface
         CubeSurface_s surface = null;
         foreach (var slot in cubeData.slots)
         {

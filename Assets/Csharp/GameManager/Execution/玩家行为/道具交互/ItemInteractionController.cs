@@ -1,24 +1,24 @@
-﻿using UnityEngine;
+using UnityEngine;
 using static InitCubeSlot;
 using System.Collections;
 using Unity.VisualScripting;
 
 /// <summary>
-/// 鐜╁涓庨亾鍏凤紙Spring/Wind/Plate锛夌殑纰版挒浜や簰銆?
-/// 鎸傚湪鐜╁鐗╀綋涓婏紙甯?Rigidbody + Collider锛夈€?
+/// 玩家与道具（Spring/Wind/Plate）的碰撞交互。
+/// 挂在玩家物体上（带 Rigidbody + Collider）。
 /// </summary>
 public class ItemInteractionController : MonoBehaviour
 {
-    [Header("InitCubeSlot")]
+    [Header("魔方数据引用")]
     public InitCubeSlot cubeData;
 
-    [Header("Spring Force")]
+    [Header("Spring 设置")]
     public float springForce = 15f;
 
-    [Header("Wind Force")]
+    [Header("Wind 设置")]
     public float windForce = 10f;
 
-    [Header("Door Force")]
+    [Header("门碰撞回弹力度")]
     public float doorBounceForce = 2f;
 
     private Rigidbody rb;
@@ -48,6 +48,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Glass)
             {
+                Debug.Log("Glass + Plate: 无效果");
             }
             return;
         }
@@ -60,6 +61,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else if (mat == PlayerMatState.Steel)
             {
+                Debug.Log("Steel + Spring: 无效果");
             }
             return;
         }
@@ -95,7 +97,7 @@ public class ItemInteractionController : MonoBehaviour
         //}
         HandleWind(other);
     }
-    //绂诲紑椋庢墖鑼冨洿鍔犻€熷害鎭㈠
+    //离开风扇范围加速度恢复
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Wind"))
@@ -113,7 +115,7 @@ public class ItemInteractionController : MonoBehaviour
         Plate plateLink = ResolvePlateLink(plateCollider);
         if (plateLink == null)
         {
-            Debug.LogWarning("Plate 缂哄皯 PlateLink");
+            Debug.LogWarning("Plate 缺少 PlateLink");
             return;
         }
 
@@ -133,6 +135,7 @@ public class ItemInteractionController : MonoBehaviour
             StartCoroutine(ResetJumpAfterDelay(anim, 1f));
         }
 
+        Debug.Log($"{gs.CurrentMatState} + Spring: 弹起，方向 {launchDir}, 力 {springForce}");
     }
     IEnumerator ResetJumpAfterDelay(Animator anim, float delay)
     {
@@ -144,24 +147,24 @@ public class ItemInteractionController : MonoBehaviour
     {
         Transform fanModel = windCollider.transform.parent;
         Vector3 windDir = fanModel.TransformDirection(Vector3.forward).normalized;
-        windAddVelocity += windDir * windForce * Time.fixedDeltaTime; // 澧為噺娣诲姞
+        windAddVelocity += windDir * windForce * Time.fixedDeltaTime; // 增量添加
         if (playerAction != null)
         {
-            Vector3 playerMoveDir = rb.velocity; // 褰掍竴鍖栫殑绉诲姩杈撳叆鏂瑰悜
+            Vector3 playerMoveDir = rb.velocity; // 归一化的移动输入方向
             float dot = Vector3.Dot(playerMoveDir, windDir);
 
-            // 椤洪锛歞ot > 0.2 锛堝す瑙掔害78搴︿互鍐咃級鈫?澧炲姞鍔犻€熷害
-            // 閫嗛锛歞ot < -0.2 鈫?鍑忓皯鍔犻€熷害
-            // 渚ч锛氫腑闂磋寖鍥?鈫?涓嶅彉鎴栫紦鎱㈡仮澶嶉粯璁ゅ€?
+            // 顺风：dot > 0.2 （夹角约78度以内）→ 增加加速度
+            // 逆风：dot < -0.2 → 减少加速度
+            // 侧风：中间范围 → 不变或缓慢恢复默认值
 
             float accelChange = 0f;
             if (dot > 0.2f)
             {
-                accelChange = dot * 2f;   // 鏈€澶ч『椋庢椂 +2锛堝彲璋冿級
+                accelChange = dot * 2f;   // 最大顺风时 +2（可调）
             }
             else if (dot < -0.2f)
             {
-                accelChange = dot * 10f;   // dot涓鸿礋锛宎ccelChange涓鸿礋锛堝-0.5 鈫?-1锛?
+                accelChange = dot * 10f;   // dot为负，accelChange为负（如-0.5 → -1）
             }
             else if (dot > -0.2f && dot < 0.2f)
             {
@@ -179,6 +182,7 @@ public class ItemInteractionController : MonoBehaviour
         DoorController doorCtrl = doorCollider.GetComponentInParent<DoorController>();
         if (doorCtrl == null)
         {
+            Debug.Log("Door碰撞：未找到DoorController");
             return;
         }
 
@@ -191,6 +195,7 @@ public class ItemInteractionController : MonoBehaviour
 
         if (!isPassable)
         {
+            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");
             BounceBackFromDoor(doorCollider);
             return;
         }
@@ -199,16 +204,19 @@ public class ItemInteractionController : MonoBehaviour
         {
             if (doorCtrl.doorMat == DoorController.DoorMat.Soft)
             {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于钢铁球无法撞碎软门");
                 BounceBackFromDoor(doorCollider);
                 return;
             }
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
                 BounceBackFromDoor(doorCollider);
             }
             return;
@@ -221,6 +229,7 @@ public class ItemInteractionController : MonoBehaviour
                 if (playerSpeed >= doorCtrl.softDoorHitSpeed)
                 {
                     doorCtrl.Open();
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened=1, 玩家可以通过，软门被撞碎(速度={playerSpeed:F1})");
                     Animator animator=doorCollider.GetComponent<Animator>();
                     animator.SetBool("isBreaking", true);
                     BounceBackFromDoor(doorCollider);
@@ -229,6 +238,7 @@ public class ItemInteractionController : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于速度不足({playerSpeed:F1}<{doorCtrl.softDoorHitSpeed})");
                     BounceBackFromDoor(doorCollider);
                 }
                 return;
@@ -236,10 +246,12 @@ public class ItemInteractionController : MonoBehaviour
 
             if (doorCtrl.doorMat == DoorController.DoorMat.Hard && doorCtrl.IsOpened)
             {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家可以通过");
                 ExecuteDoorTransition(doorCollider);
             }
             else
             {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");
                 BounceBackFromDoor(doorCollider);
             }
         }
@@ -281,8 +293,10 @@ public class ItemInteractionController : MonoBehaviour
                     continue;
 
                 TryFindTrueNeighborRoom(roomId, oppositeDir);
+                Debug.Log("NeighborRoomID是——" + roomId);
             }
 
+            Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);
             if (playerAction != null)
                 playerAction.ResetToStartPosition();
             GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
@@ -306,6 +320,7 @@ public class ItemInteractionController : MonoBehaviour
             }
             else
             {
+                Debug.Log("开门失败");
             }
         }
     }
@@ -317,7 +332,7 @@ public class ItemInteractionController : MonoBehaviour
     private IEnumerator WaitForBreaking(float delay, GameObject door)
     {
         yield return new WaitForSeconds(delay);
-        door.transform.parent.GetChild(0).gameObject.SetActive(false);  //闅愯棌闂ㄧ殑褰?
-        door.transform.parent.GetChild(1).gameObject.SetActive(true);//瑙﹀彂寮€闂ㄧ殑鐪熸闂?
+        door.transform.parent.GetChild(0).gameObject.SetActive(false);  //隐藏门的形
+        door.transform.parent.GetChild(1).gameObject.SetActive(true);//触发开门的真正门
     }
 }

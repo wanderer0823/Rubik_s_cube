@@ -1,11 +1,11 @@
-﻿//using JetBrains.Annotations;
+//using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.Runtime.CompilerServices;
 using UnityEngine;
 using static InitCubeSlot;
-//瑙嗚鐘舵€?
+//视角状态
 public enum ViewMode
 {
     //View1,
@@ -13,7 +13,7 @@ public enum ViewMode
     View3
 }
 
-//鐜╁鐘舵€?
+//玩家状态
 public enum PlayerState
 {
     isTurning,
@@ -22,24 +22,24 @@ public enum PlayerState
     turningFinished,
     rotatingFinished,
     isMoving,
-    isOpeningBag,    // 鏂板锛氭墦寮€鑳屽寘
-    isGrabbing       // 鏂板锛氫妇璧风墿浣?
+    isOpeningBag,    // 新增：打开背包
+    isGrabbing       // 新增：举起物体
 }
 
-//鐜╁鏉愯川鐘舵€?
+//玩家材质状态
 public enum PlayerMatState
 {
-    Steel,//閽㈤搧
-    Glass,//鐜荤拑
-    Bounce,//寮瑰姏
+    Steel,//钢铁
+    Glass,//玻璃
+    Bounce,//弹力
     None
 }
-//鍙嬀鍙栭亾鍏?
+//可拾取道具
 public enum ItemType
 {
-    Spring,//寮圭哀
-    Wind,//椋?
-    Plate//鍘嬫澘
+    Spring,//弹簧
+    Wind,//风
+    Plate//压板
 }
 public class GameState
 {
@@ -47,10 +47,10 @@ public class GameState
     private GameObject ball;
     private Rigidbody rb;
     public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.None;
-    // 鑳屽寘锛氳浣忔墦寮€鍓嶇殑鐘舵€?
+    // 背包：记住打开前的状态
     private PlayerState stateBeforeBag;
     public bool[] TaskFinished { get; private set; } = new bool[5];
-    // 绾跨储鏀堕泦
+    // 线索收集
     private HashSet<string> collectedClueIDs = new HashSet<string>();
 
 
@@ -63,12 +63,12 @@ public class GameState
     public ViewMode CurrentView { get; private set; }
     public PlayerState CurrentPlayerState { get; private set; }
     public FaceDir CurrentPlayerFace { get; private set; }
-    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// 褰撳墠灏忕悆鎵€鍦ㄧ殑琛ㄩ潰
-    public int CurrentRoomID=43;// 褰撳墠鎴块棿ID锛岃繖閲屾槸鏄剧ず鐨勫垵濮嬫埧闂?
-    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // 褰撳墠閲嶅姏闈?
+    public InitCubeSlot.CubeSurface_s CurrentSurface { get; private set; }// 当前小球所在的表面
+    public int CurrentRoomID=43;// 当前房间ID，这里是显示的初始房间
+    public InitCubeSlot.FaceDir CurrentGravityFace { get; private set; } // 当前重力面
 
 
-    // 鏋勯€犲嚱鏁?.鍒濆鍖栭粯璁ょ姸鎬?
+    // 构造函数..初始化默认状态
     public void InitGameState()
     {
         ball = ViewModeManager.Instance.ball_p;
@@ -79,14 +79,15 @@ public class GameState
     }
 
     #region ====================================
-    #region 淇敼瑙嗚鏂瑰悜
-    // 淇敼瑙嗚
+    #region 修改视角方向
+    // 修改视角
     public void SetView(ViewMode mode)
     {
-        // 鍒囪瑙掑墠鑷姩鍏宠儗鍖?
+        // 切视角前自动关背包
         if (IsBagOpen)
             CloseBag();
         CurrentView = mode;
+        Debug.Log("切换为视角：" + CurrentView);
         /*if(mode==ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -102,12 +103,13 @@ public class GameState
 
         GameEvents.onViewSwitchExecute(CurrentView);
     }
-    //椤哄簭鍒囨崲瑙嗚
+    //顺序切换视角
     public void FSetView()
     {
         if (IsBagOpen)
             CloseBag();
         CurrentView = (ViewMode)(((int)CurrentView + 1) % System.Enum.GetValues(typeof(ViewMode)).Length);
+        Debug.Log("F切换为视角：" + CurrentView);
         /*if (CurrentView == ViewMode.View1)
         {
             SetPlayerState(PlayerState.turningFinished);
@@ -127,23 +129,24 @@ public class GameState
 #endregion
 
 #region ===========================================
-#region 淇敼鐜╁鐘舵€?
-// 淇敼鐜╁鐘舵€?
+#region 修改玩家状态
+// 修改玩家状态
 public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
+        Debug.Log("更新为玩家状态：" + CurrentPlayerState);
     }
     #endregion
     #endregion
 
     #region ===========================================
-    #region 鎺у埗灏忕悆鐗╃悊鐘舵€?
+    #region 控制小球物理状态
     
     #endregion
     #endregion
 
     #region ===========================================
-    #region 鏇存柊灏忕悆浣嶇疆鐘舵€?
+    #region 更新小球位置状态
     public void SetCurrentSurface(InitCubeSlot.CubeSurface_s surface)
     {
         CurrentSurface = surface;
@@ -154,6 +157,7 @@ public void SetPlayerState(PlayerState state)
             CurrentPlayerFace = surface.dir;
         }
 
+        Debug.Log($"更新空间信息 Room:{CurrentRoomID} Face:{CurrentPlayerFace}");
     }
 
     public bool RefreshCurrentSurfaceFromRoomID()
@@ -172,30 +176,34 @@ public void SetPlayerState(PlayerState state)
     public void SetGravityFace(InitCubeSlot.FaceDir face)
     {
         CurrentGravityFace = face;
+        Debug.Log("更新重力方向" + CurrentGravityFace);
     }
     #endregion
     #endregion
 
     #region ===========================================
-    #region 鏉愯川鍒囨崲
+    #region 材质切换
     public void SetMatState(PlayerMatState state)
     {
         CurrentMatState = state;
+        Debug.Log("切换材质：" + CurrentMatState);
     }
     #endregion
     #endregion
 
     #region ===========================================
-    #region 鑳屽寘寮€鍏?
+    #region 背包开关
     public void OpenBag()
     {
         stateBeforeBag = CurrentPlayerState;
         SetPlayerState(PlayerState.isOpeningBag);
+        Debug.Log("背包打开，记住之前状态：" + stateBeforeBag);
     }
 
     public void CloseBag()
     {
         SetPlayerState(stateBeforeBag);
+        Debug.Log("背包关闭，恢复状态：" + stateBeforeBag);
     }
 
     public bool IsBagOpen => CurrentPlayerState == PlayerState.isOpeningBag;
@@ -203,11 +211,12 @@ public void SetPlayerState(PlayerState state)
     #endregion
 
     #region ===========================================
-    #region 浠诲姟绯荤粺
+    #region 任务系统
     public bool FinishTask(int index)
     {
         if (index < 0 || index >= 4 || TaskFinished[index]) return false;
         TaskFinished[index] = true;
+        Debug.Log($"任务 {index} 完成");
         return true;
     }
 
@@ -221,10 +230,11 @@ public void SetPlayerState(PlayerState state)
     #endregion
 
     #region ===========================================
-    #region 绾跨储鏀堕泦
+    #region 线索收集
     public bool CollectClue(string clueID)
     {
         bool added = collectedClueIDs.Add(clueID);
+        if (added) Debug.Log($"收集线索：{clueID}");
         return added;
     }
 

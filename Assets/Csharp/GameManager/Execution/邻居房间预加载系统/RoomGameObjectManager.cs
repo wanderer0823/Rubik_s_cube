@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomGameObjectManager : MonoBehaviour
@@ -16,17 +16,11 @@ public class RoomGameObjectManager : MonoBehaviour
     public List<RoomGameObjectEntry> roomGameObjects = new List<RoomGameObjectEntry>();
 
     private readonly Dictionary<int, GameObject> _roomGameObjectMap = new Dictionary<int, GameObject>();
-    private readonly HashSet<int> _positionAdjustedRoomIds = new HashSet<int>();
     private bool _isRoomGameObjectMapBuilt;
 
     void Awake()
     {
         BuildRoomGameObjectMap();
-    }
-
-    void Start()
-    {
-        ApplyCurrentRoomPositionToAll();
     }
 
     public void LoadCurrentRoomGameObject()
@@ -69,6 +63,7 @@ public class RoomGameObjectManager : MonoBehaviour
         roomObject.SetActive(true);
         _currentRoomObject = roomObject;
 
+        Debug.Log($"RoomGameObjectManager: activated room={currentRoomId}");
     }
 
     private void BuildRoomGameObjectMap()
@@ -77,7 +72,6 @@ public class RoomGameObjectManager : MonoBehaviour
             return;
 
         _roomGameObjectMap.Clear();
-        _positionAdjustedRoomIds.Clear();
 
         foreach (var entry in roomGameObjects)
         {
@@ -109,23 +103,5 @@ public class RoomGameObjectManager : MonoBehaviour
         }
 
         _currentRoomObject = null;
-    }
-
-    private void ApplyCurrentRoomPositionToAll()
-    {
-        if (CurrentRoom == null)
-            return;
-
-        foreach (var entry in roomGameObjects)
-        {
-            if (entry == null || entry.roomObject == null)
-                continue;
-
-            if (_positionAdjustedRoomIds.Contains(entry.roomID))
-                continue;
-
-            entry.roomObject.transform.position += CurrentRoom.transform.position;
-            _positionAdjustedRoomIds.Add(entry.roomID);
-        }
     }
 }
