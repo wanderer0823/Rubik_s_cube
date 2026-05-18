@@ -1,21 +1,21 @@
 using UnityEngine;
 
 /// <summary>
-/// ²ÄÖÊÊ°È¡£ºÍæ¼ÒÔÚ View3 ¿¿½üºó°´ E »ñÈ¡²ÄÖÊµ½±³°ü¡£
-/// ¹ÒÔÚ³¡¾°ÖÐ²ÄÖÊµÀ¾ß prefab ÉÏ¡£
+/// ï¿½ï¿½ï¿½ï¿½Ê°È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ View3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ E ï¿½ï¿½È¡ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+/// ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½Êµï¿½ï¿½ï¿½ prefab ï¿½Ï¡ï¿½
 /// </summary>
 public class MatPickup : MonoBehaviour
 {
-    [Header("²ÄÖÊÀàÐÍ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public PlayerMatState matType;
 
-    [Header("±³°üÏÔÊ¾ÐÅÏ¢")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢")]
     public string displayName;
     [TextArea(2, 4)]
     public string description;
     public Sprite detailImage;
 
-    [Header("Ê°È¡ÉèÖÃ")]
+    [Header("Ê°È¡ï¿½ï¿½ï¿½ï¿½")]
     public float pickupRange = 3f;
 
     private bool isPickedUp = false;
@@ -48,7 +48,7 @@ public class MatPickup : MonoBehaviour
             backpack.AddMat(matType, displayName, description, detailImage);
         }
 
-        Debug.Log($"Ê°È¡²ÄÖÊ£º{displayName}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"Ê°È¡ï¿½ï¿½ï¿½Ê£ï¿½{displayName}");/*__DEBUGTOOL_END__*/
         gameObject.SetActive(false);
     }
 }

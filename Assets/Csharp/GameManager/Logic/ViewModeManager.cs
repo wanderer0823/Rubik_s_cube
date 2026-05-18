@@ -122,7 +122,7 @@ public class ViewModeManager : MonoBehaviour
             // 背包已开 → 关闭
             gs.CloseBag();
             GameEvents.onBagCloseExecute();
-            Debug.Log("VMM: 背包关闭");
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包关闭");/*__DEBUGTOOL_END__*/
         }
         else
         {
@@ -134,7 +134,7 @@ public class ViewModeManager : MonoBehaviour
 
             gs.OpenBag();
             GameEvents.onBagOpenExecute();
-            Debug.Log("VMM: 背包打开");
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包打开");/*__DEBUGTOOL_END__*/
         }
     }
 
@@ -313,7 +313,7 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
             || !CheckPlayerState(PlayerState.isMoving))
             return;
         GameEvents.onInteractExecute();
-        Debug.Log("VMM: E键交互执行");
+        /*__DEBUGTOOL_START__*/Debug.Log("VMM: E键交互执行");/*__DEBUGTOOL_END__*/
     }
 
     // ===== 新增：滚轮分流 =====
@@ -340,7 +340,7 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
             return;
         gs.SetMatState(targetMat);
         GameEvents.onMatChangeExecute(targetMat);
-        Debug.Log("VMM: 材质切换为 " + targetMat);
+        /*__DEBUGTOOL_START__*/Debug.Log("VMM: 材质切换为 " + targetMat);/*__DEBUGTOOL_END__*/
     }
 
     #endregion

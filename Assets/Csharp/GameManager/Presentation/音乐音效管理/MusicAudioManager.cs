@@ -239,7 +239,7 @@ public class MusicAudioManager : MonoBehaviour
         if (clipMap.TryGetValue(key, out AudioClip clip))
             return clip;
 
-        Debug.LogWarning($"MusicAudioManager: 未找到音频 key -> {key}");
+        /*__DEBUGTOOL_START__*/Debug.LogWarning($"MusicAudioManager: 未找到音频 key -> {key}");/*__DEBUGTOOL_END__*/
         return null;
     }
 

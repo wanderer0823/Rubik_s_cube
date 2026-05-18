@@ -1,25 +1,25 @@
 using UnityEngine;
 
 /// <summary>
-/// ×¼ÐÇ¾ÙÆð/·ÅÏÂ/Ðý×ªÏµÍ³¡£
-/// ¹ÒÔÚ View3 Ïà»úÉÏ¡£
-/// ³¤°´×ó¼ü¾ÙÆð£¬ËÉ¿ª·ÅÏÂ£¬¹öÂÖÐý×ª¡£
+/// ×¼ï¿½Ç¾ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½×ªÏµÍ³ï¿½ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ View3 ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
 /// </summary>
 public class GrabSystem : MonoBehaviour
 {
-    [Header("¼ì²âÉèÖÃ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float maxGrabDistance = 10f;
     public LayerMask grabbableLayer;
     public LayerMask wallLayer;
 
-    [Header("¾ÙÆðÉèÖÃ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float liftSpeed = 5f;
     public float holdHeightOffset = 1f;
 
-    [Header("Ðý×ªÉèÖÃ")]
+    [Header("ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½")]
     public float rotateSpeed = 90f;
 
-    [Header("×¼ÐÇÌáÊ¾")]
+    [Header("×¼ï¿½ï¿½ï¿½ï¿½Ê¾")]
     public UnityEngine.UI.Image crosshairImage;
     public Color normalColor = Color.white;
     public Color interactColor = Color.green;
@@ -60,13 +60,13 @@ public class GrabSystem : MonoBehaviour
         {
             DetectTarget();
 
-            // ³¤°´×ó¼ü + ÓÐÄ¿±ê ¡ú ×¥Æð
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ ×¥ï¿½ï¿½
             if (currentTarget != null && Input.GetMouseButtonDown(0))
             {
-                // È·ÈÏ²»ÔÚUIÉÏ
+                // È·ï¿½Ï²ï¿½ï¿½ï¿½UIï¿½ï¿½
                 if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                     return;
-                //È·ÈÏÊÇÍ¬Ò»¸öÖØÁ¦ÌåÏµ
+                //È·ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
                 if (!isGravityAllowed)
                     return;
 
@@ -77,7 +77,7 @@ public class GrabSystem : MonoBehaviour
         {
             HoldObject();
 
-            // ËÉ¿ª×ó¼ü ¡ú ÊÍ·Å
+            // ï¿½É¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Í·ï¿½
             if (Input.GetMouseButtonDown(0))
             {
                 ReleaseObject();
@@ -97,7 +97,7 @@ public class GrabSystem : MonoBehaviour
             if (g == null)
                 g = hit.collider.GetComponentInParent<Grabbable>();
 
-            //È·ÈÏÔÚÍ¬Ò»¸öÖØÁ¦ÌåÏµÏÂ
+            //È·ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
             Vector3 allowedRotation = g.allowedParentRotate.ToVector3();
             Transform t = g.transform;
 
@@ -105,7 +105,7 @@ public class GrabSystem : MonoBehaviour
             {
                 if (t.parent == null)
                 {
-                    Debug.LogError("¸¸²ã¼¶²»×ã£ºi="+i);
+                    Debug.LogError("ï¿½ï¿½ï¿½ã¼¶ï¿½ï¿½ï¿½ã£ºi="+i);
                     return;
                 }
 
@@ -121,7 +121,7 @@ public class GrabSystem : MonoBehaviour
 
             if (g != null)
             {
-                // ÇÐ»»¸ßÁÁÄ¿±ê
+                // ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
                 if (currentTarget != g)
                 {
                     DisableOutline(currentTarget);
@@ -135,7 +135,7 @@ public class GrabSystem : MonoBehaviour
             }
         }
 
-        // Ã»ÓÐÄ¿±ê
+        // Ã»ï¿½ï¿½Ä¿ï¿½ï¿½
         if (currentTarget != null)
         {
             DisableOutline(currentTarget);
@@ -168,26 +168,26 @@ public class GrabSystem : MonoBehaviour
         grabDistance = Vector3.Distance(cam.transform.position, obj.transform.position);
         isHolding = true;
 
-        // ÎïÌå±äÎªÔË¶¯Ñ§£¬¸úËæ×¼ÐÇ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ë¶ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½
         Rigidbody objRb = obj.GetComponent<Rigidbody>();
         if (objRb != null)
         {
             objRb.isKinematic = true;
         }
 
-        // ÇÐ»»Íæ¼Ò×´Ì¬
+        // ï¿½Ð»ï¿½ï¿½ï¿½ï¿½×´Ì¬
         gs.SetPlayerState(PlayerState.isGrabbing);
-        Debug.Log($"GrabSystem: ¾ÙÆð {obj.gameObject.name}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: ï¿½ï¿½ï¿½ï¿½ {obj.gameObject.name}");/*__DEBUGTOOL_END__*/
     }
 
     void HoldObject()
     {
         if (heldObject == null) return;
 
-        // Ä¿±êÎ»ÖÃ£ºÏà»úÇ°·½ grabDistance ¾àÀë
+        // Ä¿ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ grabDistance ï¿½ï¿½ï¿½ï¿½
         Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + Vector3.up *holdHeightOffset;
 
-        // ·À´©Ç½£ºÉäÏß¼ì²âÏà»úµ½Ä¿±êÎ»ÖÃÖ®¼äÊÇ·ñÓÐÇ½
+        // ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½Ö®ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ç½
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, grabDistance, wallLayer))
         {
@@ -196,7 +196,7 @@ public class GrabSystem : MonoBehaviour
             targetPos = cam.transform.position + cam.transform.forward * safeDistance;
         }
 
-        // Æ½»¬ÒÆ¶¯µ½Ä¿±êÎ»ÖÃ
+        // Æ½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
         heldObject.transform.position = Vector3.Lerp(
             heldObject.transform.position,
             targetPos,
@@ -208,7 +208,7 @@ public class GrabSystem : MonoBehaviour
     {
         if (heldObject == null) return;
 
-        Debug.Log($"GrabSystem: ÊÍ·Å {heldObject.gameObject.name}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: ï¿½Í·ï¿½ {heldObject.gameObject.name}");/*__DEBUGTOOL_END__*/
 
         DisableOutline(heldObject);
 
@@ -217,7 +217,7 @@ public class GrabSystem : MonoBehaviour
         {
             objRb.isKinematic = false;
 
-            // ¿ªÆôÂäµØ¼ì²â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½
             isWaitingGroundFreeze = true;
         }
 
@@ -231,42 +231,42 @@ public class GrabSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// ¹öÂÖÐý×ªÎïÌå£¨ÓÉ VMM ¡ú OnGrabRotateExecute µ÷ÓÃ£©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½å£¨ï¿½ï¿½ VMM ï¿½ï¿½ OnGrabRotateExecute ï¿½ï¿½ï¿½Ã£ï¿½
     /// </summary>
     void OnScrollRotate(float delta)
     {
         if (!isHolding || heldObject == null) return;
 
-        // ÈÆÎïÌå×ÔÉíYÖáÐý×ª£¬delta>0Ë³Ê±Õë£¬<0ÄæÊ±Õë
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½delta>0Ë³Ê±ï¿½ë£¬<0ï¿½ï¿½Ê±ï¿½ï¿½
         float angle = delta * rotateSpeed;
         heldObject.transform.Rotate(Vector3.up, angle, Space.Self);
-        Debug.Log($"GrabSystem: Ðý×ªÎïÌå ½Ç¶È={angle:F1}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ ï¿½Ç¶ï¿½={angle:F1}");/*__DEBUGTOOL_END__*/
     }
 
-    //µØÃæÅö×²ºóÌí¼ÓÔË¶¯Ñ§
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½Ñ§
     void OnCollisionEnter(Collision collision)
     {
         if (!isWaitingGroundFreeze) return;
         if (heldObject == null) return;
 
-        // ±ØÐëÊÇ Walls Layer
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Walls Layer
         if (((1 << collision.gameObject.layer) & wallLayer) == 0)
             return;
 
-        // Trigger ²»´¦Àí
+        // Trigger ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Collider col = collision.collider;
         if (col.isTrigger)
             return;
 
-        // ÊÀ½çÖØÁ¦·´·½Ïò£¨µØÃæ·¨Ïß·½Ïò£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£¨µï¿½ï¿½æ·¨ï¿½ß·ï¿½ï¿½ï¿½
         Vector3 upDir = -Physics.gravity.normalized;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            // ·¨ÏßÓëÖØÁ¦·´·½Ïò½Ó½ü
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½
             float dot = Vector3.Dot(contact.normal, upDir);
 
-            // 0.9 ¡Ö 25¶ÈÒÔÄÚ
+            // 0.9 ï¿½ï¿½ 25ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (dot > 0.8f)
             {
                 StartCoroutine(FreezeAfterDelay());

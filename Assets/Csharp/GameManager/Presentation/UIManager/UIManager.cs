@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
 
         if (viewPanels == null || viewPanels.Length < 2)
         {
-            Debug.LogWarning("ViewPanels 未正确配置");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("ViewPanels 未正确配置");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
     {
         if (viewSwitchButtons == null || viewSwitchButtons.Length < 3)
         {
-            Debug.LogWarning("ViewSwitchButtons 未正确配置");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("ViewSwitchButtons 未正确配置");/*__DEBUGTOOL_END__*/
             return;
         }
 
@@ -145,7 +145,7 @@ public class UIManager : MonoBehaviour
     {
         if (arrowsButtons == null || arrowsButtons.Count < 3)
         {
-            Debug.LogWarning("箭头按钮未正确初始化");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning("箭头按钮未正确初始化");/*__DEBUGTOOL_END__*/
             return;
         }
 
