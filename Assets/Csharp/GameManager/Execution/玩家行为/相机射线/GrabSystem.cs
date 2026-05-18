@@ -1,28 +1,35 @@
 using UnityEngine;
 
 /// <summary>
-/// ׼�Ǿ���/����/��תϵͳ��
-/// ���� View3 ����ϡ�
-/// ������������ɿ����£�������ת��
+///      View3     
 /// </summary>
 public class GrabSystem : MonoBehaviour
 {
-    [Header("�������")]
+    [Header("可移动物体范围")]
     public float maxGrabDistance = 10f;
     public LayerMask grabbableLayer;
     public LayerMask wallLayer;
 
-    [Header("��������")]
+    [Header("托举设置")]
     public float liftSpeed = 5f;
     public float holdHeightOffset = 1f;
 
-    [Header("��ת����")]
-    public float rotateSpeed = 90f;
+    [Header("旋转设置")]
+    public float rotateStepAngle = 90f;     // 每次旋转的角度
+    public float rotateCooldown = 0.15f;    // 两次旋转之间的最小间隔，防误触
 
-    [Header("׼����ʾ")]
+    private float lastRotateTime;
+
+    [Header("高亮设置")]
     public UnityEngine.UI.Image crosshairImage;
     public Color normalColor = Color.white;
     public Color interactColor = Color.green;
+
+    [Header("性能")]
+    public float detectInterval = 0.05f;   // 20 次/秒，足够丝滑
+
+    private float lastDetectTime;
+
 
     private Camera cam;
     private GameState gs;
@@ -32,7 +39,6 @@ public class GrabSystem : MonoBehaviour
     private float grabDistance;
     private bool isHolding = false;
     private bool isGravityAllowed = false;
-    private bool isWaitingGroundFreeze = false;
 
     void Start()
     {
@@ -58,26 +64,28 @@ public class GrabSystem : MonoBehaviour
 
         if (!isHolding)
         {
-            DetectTarget();
+            if (Time.unscaledTime - lastDetectTime >= detectInterval)
+            {
+                DetectTarget();
+                lastDetectTime = Time.unscaledTime;
+            }
 
-            // ������� + ��Ŀ�� �� ץ��
+            // 输入响应仍每帧检测，保留点击灵敏度
             if (currentTarget != null && Input.GetMouseButtonDown(0))
             {
-                // ȷ�ϲ���UI��
                 if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                     return;
-                //ȷ����ͬһ��������ϵ
                 if (!isGravityAllowed)
                     return;
 
                 GrabObject(currentTarget);
             }
         }
+
         else
         {
             HoldObject();
 
-            // �ɿ���� �� �ͷ�
             if (Input.GetMouseButtonDown(0))
             {
                 ReleaseObject();
@@ -90,60 +98,59 @@ public class GrabSystem : MonoBehaviour
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
         Ray ray = cam.ScreenPointToRay(screenCenter);
 
+        isGravityAllowed = false;
+
         if (Physics.Raycast(ray, out RaycastHit hit, maxGrabDistance, grabbableLayer))
         {
             Grabbable g = hit.collider.GetComponent<Grabbable>();
-            Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-            if (g == null)
-                g = hit.collider.GetComponentInParent<Grabbable>();
+            if (g == null) g = hit.collider.GetComponentInParent<Grabbable>();
 
-            //ȷ����ͬһ��������ϵ��
-            Vector3 allowedRotation = g.allowedParentRotate.ToVector3();
-            Transform t = g.transform;
-
-            for (int i = 0; i < 2; i++)
-            {
-                if (t.parent == null)
-                {
-                    Debug.LogError("���㼶���㣺i="+i);
-                    return;
-                }
-
-                t = t.parent;
-            }
-
-            Vector3 parentRotation = t.eulerAngles;
-            if (allowedRotation == parentRotation)
+            if (g != null && IsGravityAligned(g.transform))
             {
                 isGravityAllowed = true;
-            }
-            else return;
 
-            if (g != null)
-            {
-                // �л�����Ŀ��
                 if (currentTarget != g)
                 {
                     DisableOutline(currentTarget);
                     currentTarget = g;
                     EnableOutline(currentTarget);
                 }
-
-                if (crosshairImage != null)
-                    crosshairImage.color = interactColor;
+                if (crosshairImage != null) crosshairImage.color = interactColor;
                 return;
             }
         }
 
-        // û��Ŀ��
         if (currentTarget != null)
         {
             DisableOutline(currentTarget);
             currentTarget = null;
         }
+        if (crosshairImage != null) crosshairImage.color = normalColor;
+    }
 
-        if (crosshairImage != null)
-            crosshairImage.color = normalColor;
+    /// <summary>
+    /// 物体所在房间是否与世界重力方向一致（房间没有被翻转/侧翻）
+    /// </summary>
+    bool IsGravityAligned(Transform target)
+    {
+        // 找房间根
+        Transform t = target;
+        Transform roomRoot = null;
+        for (int i = 0; i < 5 && t.parent != null; i++)
+        {
+            t = t.parent;
+            if (t.gameObject.name.StartsWith("CurrentRoom"))
+            {
+                roomRoot = t;
+                break;
+            }
+        }
+        if (roomRoot == null) return false;
+
+        Vector3 worldUp = -Physics.gravity.normalized;
+        // 房间的 up 朝向是否和世界 up 同向
+        float dot = Vector3.Dot(-roomRoot.right, worldUp);
+        return dot > 0.99f;  // 容差约 8°
     }
 
     void EnableOutline(Grabbable target)
@@ -168,26 +175,27 @@ public class GrabSystem : MonoBehaviour
         grabDistance = Vector3.Distance(cam.transform.position, obj.transform.position);
         isHolding = true;
 
-        // �����Ϊ�˶�ѧ������׼��
+        //        ׼  
         Rigidbody objRb = obj.GetComponent<Rigidbody>();
         if (objRb != null)
         {
             objRb.isKinematic = true;
         }
 
-        // �л����״̬
+        // 
         gs.SetPlayerState(PlayerState.isGrabbing);
-        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: ���� {obj.gameObject.name}");/*__DEBUGTOOL_END__*/
+        /*DEBUG_DISABLED*/
+        Debug.Log($"GrabSystem:      {obj.gameObject.name}");/*END_DEBUG_DISABLED*/
     }
 
     void HoldObject()
     {
         if (heldObject == null) return;
 
-        // Ŀ��λ�ã����ǰ�� grabDistance ����
-        Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + Vector3.up *holdHeightOffset;
+        //  
+        Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + Vector3.up * holdHeightOffset;
 
-        // ����ǽ�����߼�������Ŀ��λ��֮���Ƿ���ǽ
+        //   
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, grabDistance, wallLayer))
         {
@@ -196,7 +204,7 @@ public class GrabSystem : MonoBehaviour
             targetPos = cam.transform.position + cam.transform.forward * safeDistance;
         }
 
-        // ƽ���ƶ���Ŀ��λ��
+        // 
         heldObject.transform.position = Vector3.Lerp(
             heldObject.transform.position,
             targetPos,
@@ -208,8 +216,6 @@ public class GrabSystem : MonoBehaviour
     {
         if (heldObject == null) return;
 
-        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: �ͷ� {heldObject.gameObject.name}");/*__DEBUGTOOL_END__*/
-
         DisableOutline(heldObject);
 
         Rigidbody objRb = heldObject.GetComponent<Rigidbody>();
@@ -217,10 +223,14 @@ public class GrabSystem : MonoBehaviour
         {
             objRb.isKinematic = false;
 
-            // ������ؼ��
-            isWaitingGroundFreeze = true;
+            // 挂落地检测器：下落只与 Walls 碰撞，落到水平面后 0.2s 冻结
+            var detector = heldObject.gameObject.GetComponent<GroundLandingDetector>();
+            if (detector == null)
+                detector = heldObject.gameObject.AddComponent<GroundLandingDetector>();
+            detector.Begin(wallLayer);
         }
 
+        heldObject = null;
         currentTarget = null;
         isHolding = false;
 
@@ -231,68 +241,47 @@ public class GrabSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// ������ת���壨�� VMM �� OnGrabRotateExecute ���ã�
+    ///         VMM    OnGrabRotateExecute 
     /// </summary>
     void OnScrollRotate(float delta)
     {
         if (!isHolding || heldObject == null) return;
+        if (Mathf.Abs(delta) < 0.01f) return;
 
-        // ����������Y����ת��delta>0˳ʱ�룬<0��ʱ��
-        float angle = delta * rotateSpeed;
-        heldObject.transform.Rotate(Vector3.up, angle, Space.Self);
-        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: ��ת���� �Ƕ�={angle:F1}");/*__DEBUGTOOL_END__*/
+        // 冷却：滚得太快只旋转一格
+        if (Time.unscaledTime - lastRotateTime < rotateCooldown) return;
+
+        float sign = delta > 0f ? 1f : -1f;
+        heldObject.transform.Rotate(Vector3.up, sign * rotateStepAngle, Space.Self);
+        lastRotateTime = Time.unscaledTime;
+
+        Debug.Log($"GrabSystem: 旋转一格 {sign * rotateStepAngle}°");
     }
 
-    //������ײ������˶�ѧ
-    void OnCollisionEnter(Collision collision)
+    //  
+    float NormalizeAngle(float angle)
     {
-        if (!isWaitingGroundFreeze) return;
-        if (heldObject == null) return;
-
-        // ������ Walls Layer
-        if (((1 << collision.gameObject.layer) & wallLayer) == 0)
-            return;
-
-        // Trigger ������
-        Collider col = collision.collider;
-        if (col.isTrigger)
-            return;
-
-        // �������������򣨵��淨�߷���
-        Vector3 upDir = -Physics.gravity.normalized;
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            // ����������������ӽ�
-            float dot = Vector3.Dot(contact.normal, upDir);
-
-            // 0.9 �� 25������
-            if (dot > 0.8f)
-            {
-                StartCoroutine(FreezeAfterDelay());
-                break;
-            }
-        }
+        return Mathf.DeltaAngle(0f, angle);
     }
 
-    System.Collections.IEnumerator FreezeAfterDelay()
+    Vector3 NormalizeEuler(Vector3 v)
     {
-        isWaitingGroundFreeze = false;
+        return new Vector3(
+            NormalizeAngle(v.x),
+            NormalizeAngle(v.y),
+            NormalizeAngle(v.z)
+        );
+    }
 
-        yield return new WaitForSeconds(0.2f);
+    bool SameAngle(float a, float b)
+    {
+        return Mathf.Abs(Mathf.DeltaAngle(a, b)) < 0.1f;
+    }
 
-        if (heldObject == null)
-            yield break;
-
-        Rigidbody rb = heldObject.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-
-        heldObject = null;
+    bool SameRotation(Vector3 a, Vector3 b)
+    {
+        return SameAngle(a.x, b.x) &&
+               SameAngle(a.y, b.y) &&
+               SameAngle(a.z, b.z);
     }
 }

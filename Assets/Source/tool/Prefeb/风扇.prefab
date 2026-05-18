@@ -283,6 +283,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1194726779325159339}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 791595055f3a6164b9999dc47d592adc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6886081565601615043}
   m_SourcePrefab: {fileID: 100100000, guid: 791595055f3a6164b9999dc47d592adc, type: 3}
 --- !u!4 &1679956244071693981 stripped
 Transform:
@@ -348,11 +352,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a7a3f8f21a02d488007066911bdeed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: "\u53EF\u4EA4\u4E92\u7269\u4F53"
   allowedParentRotate:
     x: 0
     y: 0
     z: 0
-  description: "\u53EF\u4EA4\u4E92\u7269\u4F53"
 --- !u!65 &-5473600914907883183
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -415,3 +419,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   outlineWidth: 0.0211
+--- !u!114 &6886081565601615043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025414634506806311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58d689b9c64c91042bf43cf431e48272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
