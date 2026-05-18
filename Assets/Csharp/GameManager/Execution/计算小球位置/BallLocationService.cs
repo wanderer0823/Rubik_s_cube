@@ -1,42 +1,42 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using static InitCubeSlot;
 
 public static class BallLocationService
 {
     /// <summary>
-    /// ¼ÆËãÐ¡Çòµ±Ç°ËùÔÚµÄÍâ±íÃæ£¨·¿¼ä£©
+    /// ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½æ£¨ï¿½ï¿½ï¿½ä£©
     /// </summary>
-    /// <param name="cubeRoot">Ä§·½¸ùÎïÌå</param>
-    /// <param name="cubeData">InitCubeSlot ÒýÓÃ</param>
-    /// <param name="ballWorldPos">Ð¡ÇòÊÀ½ç×ø±ê</param>
+    /// <param name="cubeRoot">Ä§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="cubeData">InitCubeSlot ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="ballWorldPos">Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public static CubeSurface_s CalculateSurface(
         Transform cubeRoot,
         InitCubeSlot cubeData,
         Vector3 ballWorldPos)
     {
-        // 1 ×ª»»µ½Ä§·½±¾µØ¿Õ¼ä
+        // 1 ×ªï¿½ï¿½ï¿½ï¿½Ä§ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿Õ¼ï¿½
         Vector3 localPos = cubeRoot.InverseTransformPoint(ballWorldPos);
-            //Debug.Log("Ð¡Çò±¾µØÎ»ÖÃ£º" + localPos);
+            //Debug.Log("Ð¡ï¿½ò±¾µï¿½Î»ï¿½Ã£ï¿½" + localPos);
 
-        // 2 È¡×î½üÂß¼­×ø±ê£¨-3,0,3£©
+        // 2 È¡ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ê£¨-3,0,3ï¿½ï¿½
         Vector3Int nearestPieceCoord = new Vector3Int(
             RoundToLogic(localPos.x),
             RoundToLogic(localPos.y),
             RoundToLogic(localPos.z)
         );
-            //Debug.Log("È¡±¾µØ×î½üÎ»ÖÃ£º" + nearestPieceCoord);
+            //Debug.Log("È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½" + nearestPieceCoord);
 
-        // 3 ÅÐ¶ÏÔÚÄÄ¸öÃæ£¨ÓÃ×î´óÖáÅÐ¶Ï£©
+        // 3 ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½æ£¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½
         FaceDir faceDir = GetBallFaceDirByPos(localPos);
-            //Debug.Log("Ð¡ÇòÔÚÃæ£º" + faceDir);
+            //Debug.Log("Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½æ£º" + faceDir);
 
-        // 4 ¼ÆËã¸Ã±íÃæµÄÂß¼­×ø±ê
+        // 4 ï¿½ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector3Int surfaceCoord =
             nearestPieceCoord +
             FaceOffset[faceDir];
-        Debug.Log("Ð¡ÇòÔÚ±íÃæÕý·½ÐÎ£º" + surfaceCoord);
+        Debug.Log("Ð¡ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î£ï¿½" + surfaceCoord);
 
-        // 5 Í¨¹ý surfaceCoordMap ²é±íÃæ
+        // 5 Í¨ï¿½ï¿½ surfaceCoordMap ï¿½ï¿½ï¿½ï¿½ï¿½
         var surface = cubeData.GetSurfaceByCoord(surfaceCoord);
         
         if (surface != null)
@@ -49,12 +49,12 @@ public static class BallLocationService
     }
 
     // =========================
-    // ÄÚ²¿¹¤¾ß·½·¨
+    // ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½
     // =========================
 
     public static int RoundToLogic(float value)
     {
-        return Mathf.RoundToInt(value / 2f) * 2;//±£ÁôÅ¼Êý»òÏòÉÏÈ¡Õû»ñµÃÅ¼Êý
+        return Mathf.RoundToInt(value / 2f) * 2;//ï¿½ï¿½ï¿½ï¿½Å¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Å¼ï¿½ï¿½
         //return Mathf.FloorToInt(value*2);
     }
 
@@ -72,7 +72,7 @@ public static class BallLocationService
         return faceDir;
     }
 
-    //¸ù¾ÝÐ¡ÇòÎ»ÖÃ»ñÈ¡ÆäËùÔÚÃæ³¯Ïò
+    //ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½Ã»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ³¯ï¿½ï¿½
     public static FaceDir GetBallFaceDirByPos(Vector3 localPos)
     {
         float absX = Mathf.Abs(localPos.x);

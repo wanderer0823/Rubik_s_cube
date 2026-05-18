@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// Í¨¹ØÈÎÎñ¹ÜÀí¡£¼àÌıÈÎÎñÍê³ÉÊÂ¼ş£¬È«²¿Íê³ÉÊ±´¥·¢Í¨¹Ø¡£
-/// ¹ÒÔÚ³¡¾°¹ÜÀí¿ÕÎïÌåÉÏ£¬µ¥Àı¡£
+/// Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Ø¡ï¿½
+/// ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public class TaskSystem : MonoBehaviour
 {
     public static TaskSystem Instance { get; private set; }
 
-    [Header("Í¨¹ØUIÃæ°å")]
+    [Header("Í¨ï¿½ï¿½UIï¿½ï¿½ï¿½")]
     [SerializeField] private GameObject winPanel;
 
     void Awake()
@@ -40,7 +40,7 @@ public class TaskSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Íâ²¿µ÷ÓÃ£ºÍê³ÉÖ¸¶¨ÈÎÎñ
+    /// ï¿½â²¿ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void CompleteTask(int taskIndex)
     {
@@ -60,17 +60,14 @@ public class TaskSystem : MonoBehaviour
 
     void OnTaskFinished(int taskIndex)
     {
-        Debug.Log($"TaskSystem: ÈÎÎñ {taskIndex} Íê³É£¬" +
-                  $"½ø¶È {GetCompletedCount()}/4");
     }
 
     void OnGameWin()
     {
-        Debug.Log("TaskSystem: È«²¿ÈÎÎñÍê³É£¬ÓÎÏ·Í¨¹Ø£¡");
         if (winPanel != null)
             winPanel.SetActive(true);
 
-        // TODO: ÔİÍ£ÓÎÏ· / ²¥·ÅÍ¨¹Ø¶¯»­
+        // TODO: ï¿½ï¿½Í£ï¿½ï¿½Ï· / ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Ø¶ï¿½ï¿½ï¿½
     }
 
     int GetCompletedCount()
