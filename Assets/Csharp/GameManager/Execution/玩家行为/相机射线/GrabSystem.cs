@@ -32,6 +32,7 @@ public class GrabSystem : MonoBehaviour
     private float grabDistance;
     private bool isHolding = false;
     private bool isGravityAllowed = false;
+    private bool isWaitingGroundFreeze = false;
 
     void Start()
     {
@@ -92,6 +93,7 @@ public class GrabSystem : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, maxGrabDistance, grabbableLayer))
         {
             Grabbable g = hit.collider.GetComponent<Grabbable>();
+            Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
             if (g == null)
                 g = hit.collider.GetComponentInParent<Grabbable>();
 
@@ -212,9 +214,13 @@ public class GrabSystem : MonoBehaviour
 
         Rigidbody objRb = heldObject.GetComponent<Rigidbody>();
         if (objRb != null)
+        {
             objRb.isKinematic = false;
 
-        heldObject = null;
+            // 开启落地检测
+            isWaitingGroundFreeze = true;
+        }
+
         currentTarget = null;
         isHolding = false;
 
@@ -235,5 +241,58 @@ public class GrabSystem : MonoBehaviour
         float angle = delta * rotateSpeed;
         heldObject.transform.Rotate(Vector3.up, angle, Space.Self);
         Debug.Log($"GrabSystem: 旋转物体 角度={angle:F1}");
+    }
+
+    //地面碰撞后添加运动学
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!isWaitingGroundFreeze) return;
+        if (heldObject == null) return;
+
+        // 必须是 Walls Layer
+        if (((1 << collision.gameObject.layer) & wallLayer) == 0)
+            return;
+
+        // Trigger 不处理
+        Collider col = collision.collider;
+        if (col.isTrigger)
+            return;
+
+        // 世界重力反方向（地面法线方向）
+        Vector3 upDir = -Physics.gravity.normalized;
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            // 法线与重力反方向接近
+            float dot = Vector3.Dot(contact.normal, upDir);
+
+            // 0.9 ≈ 25度以内
+            if (dot > 0.8f)
+            {
+                StartCoroutine(FreezeAfterDelay());
+                break;
+            }
+        }
+    }
+
+    System.Collections.IEnumerator FreezeAfterDelay()
+    {
+        isWaitingGroundFreeze = false;
+
+        yield return new WaitForSeconds(0.2f);
+
+        if (heldObject == null)
+            yield break;
+
+        Rigidbody rb = heldObject.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        heldObject = null;
     }
 }
