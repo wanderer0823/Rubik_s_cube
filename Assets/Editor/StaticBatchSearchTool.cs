@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
@@ -13,7 +13,7 @@ public class StaticBatchSearchTool : EditorWindow
 
     const int threshold = 5;
 
-    [MenuItem("Tools/Hierarchy/é™æ€åˆæ‰¹æœç´¢")]
+    [MenuItem("Tools/Hierarchy/¾²Ì¬ºÏÅúËÑË÷")]
     static void Open()
     {
         GetWindow<StaticBatchSearchTool>("Static Batch Tool");
@@ -21,27 +21,22 @@ public class StaticBatchSearchTool : EditorWindow
 
     void OnGUI()
     {
-        GUILayout.Label("ã€ä¸€é”®åˆæ‰¹hierarchyä¸­å¤šé€‰çš„æˆ¿é—´ã€‘ä¾æ¬¡ç‚¹å‡»æŒ‰é’®ï¼Œè¿›åº¦æ¡åŠ è½½å®Œäº†å†ç‚¹ä¸‹ä¸€ä¸ª", EditorStyles.boldLabel);
+        GUILayout.Label("¡¾Ò»¼üºÏÅúhierarchyÖĞ¶àÑ¡µÄ·¿¼ä¡¿ÒÀ´Îµã»÷°´Å¥£¬½ø¶ÈÌõ¼ÓÔØÍêÁËÔÙµãÏÂÒ»¸ö", EditorStyles.boldLabel);
 
         DrawRootsList();
 
         GUILayout.Space(10);
 
-        if (GUILayout.Button("ã€1-ä¸€é”®åˆæ‰¹ã€‘æ‰«ææè´¨åˆ†ç»„å¹¶é»˜è®¤åˆæ‰¹"))
+        if (GUILayout.Button("¡¾Ò»¼üºÏÅú¡¿É¨Ãè²ÄÖÊ·Ö×é²¢Ä¬ÈÏºÏÅú"))
         {
             ScanAndAutoBatch();
         }
-        if (GUILayout.Button("ã€2-åˆæ‰¹åæ›´æ–°çŠ¶æ€ã€‘ä»…åˆ·æ–°ç¼“å­˜ï¼ˆä¸æ”¹å˜Staticæ ‡è®°ï¼‰"))
-        {
-            RefreshBatchingCacheOnly();
-        }
-
 
         GUILayout.Space(10);
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
-        // æ”¶é›†æ‰€æœ‰è¦æ˜¾ç¤ºçš„æè´¨ç»„
+        // ÊÕ¼¯ËùÓĞÒªÏÔÊ¾µÄ²ÄÖÊ×é
         var displayItems = new List<KeyValuePair<Material, List<GameObject>>>();
         foreach (var kv in materialGroups)
         {
@@ -50,7 +45,7 @@ public class StaticBatchSearchTool : EditorWindow
             displayItems.Add(kv);
         }
 
-        // æ‹†åˆ†ï¼šCount > 50 ä¸ Count <= 50
+        // ²ğ·Ö£ºCount > 50 Óë Count <= 50
         var highList = new List<KeyValuePair<Material, List<GameObject>>>();
         var lowList = new List<KeyValuePair<Material, List<GameObject>>>();
         foreach (var kv in displayItems)
@@ -59,10 +54,10 @@ public class StaticBatchSearchTool : EditorWindow
             else lowList.Add(kv);
         }
 
-        // é«˜é‡ç»„ï¼šæŒ‰ Count é™åº
+        // ¸ßÁ¿×é£º°´ Count ½µĞò
         highList.Sort((a, b) => b.Value.Count.CompareTo(a.Value.Count));
 
-        // ä½é‡ç»„ï¼šæŒ‰é¦–å­—æ¯åˆ†ç»„ï¼ˆæ¯3å­—æ¯ä¸€ç»„ï¼‰
+        // µÍÁ¿×é£º°´Ê××ÖÄ¸·Ö×é£¨Ã¿3×ÖÄ¸Ò»×é£©
         var grouped = new SortedDictionary<string, List<KeyValuePair<Material, List<GameObject>>>>();
         foreach (var kv in lowList)
         {
@@ -75,19 +70,19 @@ public class StaticBatchSearchTool : EditorWindow
             list.Add(kv);
         }
 
-        // æ¸²æŸ“é«˜é‡ç»„
+        // äÖÈ¾¸ßÁ¿×é
         if (highList.Count > 0)
         {
-            GUILayout.Label($"Count > 50ï¼ˆæŒ‰æ•°é‡é™åºï¼Œå…± {highList.Count} ä¸ªï¼‰", EditorStyles.boldLabel);
+            GUILayout.Label($"Count > 50£¨°´ÊıÁ¿½µĞò£¬¹² {highList.Count} ¸ö£©", EditorStyles.boldLabel);
             foreach (var kv in highList)
                 DrawMaterialRow(kv.Key, kv.Value);
             GUILayout.Space(8);
         }
 
-        // æ¸²æŸ“ä½é‡ç»„ï¼ˆæŠ˜å ï¼‰
+        // äÖÈ¾µÍÁ¿×é£¨ÕÛµş£©
         if (grouped.Count > 0)
         {
-            GUILayout.Label("Count â‰¤ 50ï¼ˆæŒ‰é¦–å­—æ¯åˆ†ç»„ï¼‰", EditorStyles.boldLabel);
+            GUILayout.Label("Count ¡Ü 50£¨°´Ê××ÖÄ¸·Ö×é£©", EditorStyles.boldLabel);
             foreach (var pair in grouped)
             {
                 if (!groupFoldouts.TryGetValue(pair.Key, out bool open))
@@ -107,16 +102,15 @@ public class StaticBatchSearchTool : EditorWindow
             }
         }
         EditorGUILayout.EndScrollView();
-
     }
 
     void DrawRootsList()
     {
-        GUILayout.Label("çˆ¶èŠ‚ç‚¹åˆ—è¡¨ï¼ˆåœ¨ Hierarchy ä¸­é€‰ä¸­æˆ¿é—´æ ¹èŠ‚ç‚¹ï¼Œæ”¯æŒå¤šé€‰ï¼‰", EditorStyles.boldLabel);
+        GUILayout.Label("¸¸½ÚµãÁĞ±í£¨ÔÚ Hierarchy ÖĞÑ¡ÖĞ·¿¼ä¸ù½Úµã£¬Ö§³Ö¶àÑ¡£©", EditorStyles.boldLabel);
 
         var sel = Selection.gameObjects;
         int count = sel != null ? sel.Length : 0;
-        EditorGUILayout.LabelField($"å½“å‰ Hierarchy å·²é€‰ä¸­: {count} ä¸ª GameObject");
+        EditorGUILayout.LabelField($"µ±Ç° Hierarchy ÒÑÑ¡ÖĞ: {count} ¸ö GameObject");
 
         if (count > 0)
         {
@@ -124,39 +118,36 @@ public class StaticBatchSearchTool : EditorWindow
             for (int i = 0; i < count && i < 30; i++)
                 EditorGUILayout.LabelField($"- {sel[i].name}");
             if (count > 30)
-                EditorGUILayout.LabelField($"... è¿˜æœ‰ {count - 30} ä¸ªæœªæ˜¾ç¤º");
+                EditorGUILayout.LabelField($"... »¹ÓĞ {count - 30} ¸öÎ´ÏÔÊ¾");
             EditorGUI.indentLevel--;
         }
 
         if (roots != null && roots.Length > 0)
         {
             EditorGUILayout.HelpBox(
-                $"ä¸Šæ¬¡æ‰«æçš„ Roots æ•°é‡: {roots.Length}ï¼ˆç‚¹å‡»ä¸‹æ–¹æŒ‰é’®ä¼šç”¨å½“å‰ Hierarchy é€‰ä¸­åˆ·æ–°ï¼‰",
+                $"ÉÏ´ÎÉ¨ÃèµÄ Roots ÊıÁ¿: {roots.Length}£¨µã»÷ÏÂ·½°´Å¥»áÓÃµ±Ç° Hierarchy Ñ¡ÖĞË¢ĞÂ£©",
                 MessageType.None);
         }
     }
 
     // =========================
-    // æ‰«æ + è‡ªåŠ¨åˆæ‰¹
+    // É¨Ãè + ×Ô¶¯ºÏÅú
     // =========================
     void ScanAndAutoBatch()
     {
-        // ä» Hierarchy é€‰ä¸­è¯»å– Roots
+        // ´Ó Hierarchy Ñ¡ÖĞ¶ÁÈ¡ Roots
         if (Selection.gameObjects != null && Selection.gameObjects.Length > 0)
             roots = Selection.gameObjects;
 
         if (roots == null || roots.Length == 0)
         {
-            Debug.LogWarning("è¯·å…ˆåœ¨ Hierarchy ä¸­é€‰ä¸­æˆ¿é—´æ ¹èŠ‚ç‚¹ï¼ˆæ”¯æŒå¤šé€‰ï¼‰ã€‚");
+            Debug.LogWarning("ÇëÏÈÔÚ Hierarchy ÖĞÑ¡ÖĞ·¿¼ä¸ù½Úµã£¨Ö§³Ö¶àÑ¡£©¡£");
             return;
         }
 
         materialGroups.Clear();
 
-
-        // æ¯ä¸ª root å¯¹åº”çš„å¾…ç¼“å­˜æ¡ç›®
-        var perRootEntries = new Dictionary<GameObject, List<RoomBatchingCache.Entry>>();
-
+        // ÊÕ¼¯²ÄÖÊ·Ö×é
         foreach (var root in roots)
         {
             if (root == null) continue;
@@ -179,7 +170,8 @@ public class StaticBatchSearchTool : EditorWindow
             }
         }
 
-        // è‡ªåŠ¨åˆæ‰¹ + æ”¶é›†ç¼“å­˜æ¡ç›®
+        // ×Ô¶¯ºÏÅú£º¸ø·ûºÏÌõ¼şµÄÎïÌå´ò BatchingStatic
+        int affected = 0;
         foreach (var kv in materialGroups)
         {
             if (kv.Value.Count <= threshold) continue;
@@ -190,138 +182,23 @@ public class StaticBatchSearchTool : EditorWindow
 
                 Undo.RecordObject(go, "Enable Batching Static");
 
-                // åªå½±å“å½“å‰ç‰©ä½“ï¼Œä¸é€’å½’å­ç‰©ä½“
+                // Ö»Ó°Ïìµ±Ç°ÎïÌå£¬²»µİ¹é×ÓÎïÌå
                 GameObjectUtility.SetStaticEditorFlags(
                     go,
                     GameObjectUtility.GetStaticEditorFlags(go) | StaticEditorFlags.BatchingStatic
                 );
 
-                // æ‰¾åˆ°æ‰€å±çš„æˆ¿é—´æ ¹
-                var owningRoot = FindOwningRoot(go);
-                if (owningRoot == null) continue;
-
-                if (!perRootEntries.TryGetValue(owningRoot, out var list))
-                {
-                    list = new List<RoomBatchingCache.Entry>();
-                    perRootEntries[owningRoot] = list;
-                }
-
-                var mf = go.GetComponent<MeshFilter>();
-                var rd = go.GetComponent<Renderer>();
-                list.Add(new RoomBatchingCache.Entry
-                {
-                    meshFilter = mf,
-                    renderer = rd,
-                    originalMesh = mf != null ? mf.sharedMesh : null,
-                });
+                EditorUtility.SetDirty(go);
+                affected++;
             }
         }
 
-        // å†™å…¥æ¯ä¸ª root çš„ RoomBatchingCacheï¼ˆä¸€æ ¹ä¸€ä¸ªç»„ä»¶ï¼‰
-        foreach (var pair in perRootEntries)
-        {
-            var root = pair.Key;
-            var cache = root.GetComponent<RoomBatchingCache>();
-            if (cache == null)
-                cache = Undo.AddComponent<RoomBatchingCache>(root);
-
-            Undo.RecordObject(cache, "Write Batching Cache");
-            cache.entries = pair.Value.ToArray();
-            EditorUtility.SetDirty(cache);
-            EditorUtility.SetDirty(root);
-        }
-
-        Debug.Log($"æ‰«æå®Œæˆï¼Œæè´¨ç»„ {materialGroups.Count}ï¼Œå·²å†™å…¥ {perRootEntries.Count} ä¸ªæˆ¿é—´æ ¹ç¼“å­˜ã€‚");
-    }
-
-    GameObject FindOwningRoot(GameObject go)
-    {
-        GameObject topMost = null;
-        Transform t = go.transform;
-        while (t != null)
-        {
-            foreach (var root in roots)
-            {
-                if (root == null) continue;
-                if (t == root.transform)
-                {
-                    topMost = root; // ç»§ç»­å‘ä¸Šæ‰¾ï¼Œçœ‹æ˜¯å¦è¿˜æœ‰æ›´é«˜å±‚çš„ root
-                    break;
-                }
-            }
-            t = t.parent;
-        }
-        return topMost;
-    }
-
-    void RefreshBatchingCacheOnly()
-    {
-        if (Selection.gameObjects != null && Selection.gameObjects.Length > 0)
-            roots = Selection.gameObjects;
-
-        if (roots == null || roots.Length == 0)
-        {
-            Debug.LogWarning("è¯·å…ˆåœ¨ Hierarchy ä¸­é€‰ä¸­æˆ¿é—´æ ¹èŠ‚ç‚¹ï¼ˆæ”¯æŒå¤šé€‰ï¼‰ã€‚");
-            return;
-        }
-
-        int rootHandled = 0;
-        int entryCount = 0;
-
-        foreach (var root in roots)
-        {
-            if (root == null) continue;
-
-            var list = new List<RoomBatchingCache.Entry>();
-
-            Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
-            foreach (var r in renderers)
-            {
-                if (r == null) continue;
-                if (r is SkinnedMeshRenderer) continue;
-
-                var mf = r.GetComponent<MeshFilter>();
-                if (mf == null) continue;
-
-                var flags = GameObjectUtility.GetStaticEditorFlags(r.gameObject);
-                if ((flags & StaticEditorFlags.BatchingStatic) == 0) continue;
-
-                list.Add(new RoomBatchingCache.Entry
-                {
-                    meshFilter = mf,
-                    renderer = r,
-                    originalMesh = mf.sharedMesh,
-                });
-            }
-
-            var cache = root.GetComponent<RoomBatchingCache>();
-            if (list.Count == 0)
-            {
-                // æ²¡æœ‰éœ€è¦ç¼“å­˜çš„ï¼Œé¡ºæ‰‹æ¸…æ‰æ—§ç»„ä»¶
-                if (cache != null)
-                {
-                    Undo.DestroyObjectImmediate(cache);
-                }
-                continue;
-            }
-
-            if (cache == null)
-                cache = Undo.AddComponent<RoomBatchingCache>(root);
-
-            Undo.RecordObject(cache, "Refresh Batching Cache");
-            cache.entries = list.ToArray();
-            EditorUtility.SetDirty(cache);
-            EditorUtility.SetDirty(root);
-
-            rootHandled++;
-            entryCount += list.Count;
-        }
-
-        Debug.Log($"åˆ·æ–°ç¼“å­˜å®Œæˆï¼š{rootHandled} ä¸ªæˆ¿é—´æ ¹ï¼Œå…± {entryCount} æ¡ Entryã€‚");
+        AssetDatabase.SaveAssets();
+        Debug.Log($"É¨ÃèÍê³É£º²ÄÖÊ×é {materialGroups.Count}£¬ÒÑºÏÅú {affected} ¸öÎïÌå¡£");
     }
 
     // =========================
-    // å–æ¶ˆåˆæ‰¹ï¼ˆæŒ‰æè´¨ç»„ï¼‰
+    // È¡ÏûºÏÅú£¨°´²ÄÖÊ×é£©
     // =========================
     void UnbatchMaterialGroup(List<GameObject> gos)
     {
@@ -332,25 +209,26 @@ public class StaticBatchSearchTool : EditorWindow
             Undo.RecordObject(go, "Disable Batching Static");
 
             var flags = GameObjectUtility.GetStaticEditorFlags(go);
-
             flags &= ~StaticEditorFlags.BatchingStatic;
-
             GameObjectUtility.SetStaticEditorFlags(go, flags);
+
+            EditorUtility.SetDirty(go);
         }
 
-        Debug.Log("å·²å–æ¶ˆè¯¥æè´¨ç»„çš„é™æ€åˆæ‰¹");
+        AssetDatabase.SaveAssets();
+        Debug.Log("ÒÑÈ¡Ïû¸Ã²ÄÖÊ×éµÄ¾²Ì¬ºÏÅú");
     }
 
-    //æ–°å¢
     void OnSelectionChange()
     {
         Repaint();
     }
+
     string GetGroupKey(string name)
     {
-        if (string.IsNullOrEmpty(name)) return "å…¶ä»–";
+        if (string.IsNullOrEmpty(name)) return "ÆäËû";
         char c = char.ToUpper(name[0]);
-        if (c < 'A' || c > 'Z') return "å…¶ä»–";
+        if (c < 'A' || c > 'Z') return "ÆäËû";
         int idx = (c - 'A') / 3;
         char start = (char)('A' + idx * 3);
         char end = (char)Mathf.Min(start + 2, 'Z');
@@ -369,7 +247,7 @@ public class StaticBatchSearchTool : EditorWindow
                 SceneView.lastActiveSceneView.FrameSelected();
         }
 
-        if (GUILayout.Button("å–æ¶ˆåˆæ‰¹", GUILayout.Width(80)))
+        if (GUILayout.Button("È¡ÏûºÏÅú", GUILayout.Width(80)))
         {
             UnbatchMaterialGroup(gos);
         }
@@ -377,5 +255,4 @@ public class StaticBatchSearchTool : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
     }
-
 }
