@@ -106,10 +106,10 @@ public class GrabSystem : MonoBehaviour
             Grabbable g = hit.collider.GetComponent<Grabbable>();
             if (g == null) g = hit.collider.GetComponentInParent<Grabbable>();
 
-            if (g != null && IsGravityAligned(g.transform))
+            if (g != null && g.IsGravityAligned())
             {
                 isGravityAllowed = true;
-                rotateAxis = g.transform.up;
+                rotateAxis = g.GetRotateWorldAxis();
 
                 if (currentTarget != g)
                 {
@@ -133,13 +133,7 @@ public class GrabSystem : MonoBehaviour
     /// <summary>
     /// 物体自身朝向是否与世界重力相反方向一致
     /// </summary>
-    bool IsGravityAligned(Transform target)
-    {
-        Vector3 worldUp = -Physics.gravity.normalized;
-        float dot = Vector3.Dot(target.forward, worldUp);
-        return dot > 0.99f;  // 容差约 8°
-    }
-
+    
     void EnableOutline(Grabbable target)
     {
         if (target == null) return;
@@ -236,13 +230,15 @@ public class GrabSystem : MonoBehaviour
 
         float sign = delta > 0f ? 1f : -1f;
 
-        // pivot = Grabbable 上指定的子物体世界坐标（没指定则用自身）
+        // 每次旋转时重新获取物体当前的旋转轴世界方向
+        Vector3 currentRotateAxis = heldObject.GetRotateWorldAxis();
+
         Vector3 pivotPos = currentPivot != null ? currentPivot.position : heldObject.transform.position;
 
-        heldObject.transform.RotateAround(pivotPos, rotateAxis, sign * rotateStepAngle);
+        heldObject.transform.RotateAround(pivotPos, currentRotateAxis, sign * rotateStepAngle);
         lastRotateTime = Time.unscaledTime;
 
-        Debug.Log($"GrabSystem: 绕 {(currentPivot != null ? currentPivot.name : "self")} 旋转 {sign * rotateStepAngle}°, pivot={pivotPos}");
+        Debug.Log($"GrabSystem: 绕 {currentRotateAxis} 旋转 {sign * rotateStepAngle}°");
     }
 
     //  
