@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006261303100674419}
   - component: {fileID: 6357527753478973795}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: collider (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,6 +61,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2101841226959791209}
     m_Modifications:
+    - target: {fileID: 1120236850424956700, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2390367311455621650, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4516900443854534609, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -156,10 +166,30 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -2.7
       objectReference: {fileID: 0}
+    - target: {fileID: 6963043707925933798, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7410660188301551917, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
         type: 3}
       propertyPath: m_Name
       value: C (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7410660188301551917, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7596595143846634496, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751828192769048231, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8935591126006047064, guid: 51f3b7a3a8dd4bf47bcf6ebdc5e61b01,
         type: 3}

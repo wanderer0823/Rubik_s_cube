@@ -20482,7 +20482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 45
+  TestRoomID: 53
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -21171,9 +21171,10 @@ MonoBehaviour:
     faces: []
     dirMap: 00000000
   - roomID: 43
-    orRotation: {x: 0, y: 0, z: 0}
+    orRotation: {x: 0, y: -90, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 6721793267345014258, guid: 4b6ea5d3c8dee694cabc6b2bf2515c1a,
+      type: 3}
     faces: []
     dirMap: 00000000
   - roomID: 44
@@ -21225,22 +21226,25 @@ MonoBehaviour:
       type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 51
+    orRotation: {x: 0, y: 180, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 2041363508894642552, guid: 7ae593cc039ef254f933b66c99c95e7b,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
+  - roomID: 52
     orRotation: {x: 0, y: 0, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 6378173997259009425, guid: 87ff306b71d86d74c8500de041d92c2d,
+      type: 3}
     faces: []
     dirMap: 00000000
-  - roomID: 0
-    orRotation: {x: 0, y: 0, z: 0}
+  - roomID: 53
+    orRotation: {x: 0, y: 180, z: 0}
     spawnPoint: {x: 0, y: 0, z: 0}
-    RoomPerfab: {fileID: 0}
+    RoomPerfab: {fileID: 829218889011072073, guid: 9c38119adbfc97d4cad0e54dbe014413,
+      type: 3}
     faces: []
     dirMap: 00000000
   CurrentRoom: {fileID: 367349154}
