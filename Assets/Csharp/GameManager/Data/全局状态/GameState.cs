@@ -49,7 +49,7 @@ public class GameState
     public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.None;
     // 背包：记住打开前的状态
     private PlayerState stateBeforeBag;
-    public bool[] TaskFinished { get; private set; } = new bool[5];
+    public bool[] TaskFinished { get; private set; } = new bool[1];
     // 线索收集
     private HashSet<string> collectedClueIDs = new HashSet<string>();
 

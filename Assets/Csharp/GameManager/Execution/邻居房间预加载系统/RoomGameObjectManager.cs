@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RoomGameObjectManager : MonoBehaviour
 {
+    private static readonly int[] TaskDoorRoomIds = { 45 };
+
     [System.Serializable]
     public class RoomGameObjectEntry
     {
@@ -47,6 +49,7 @@ public class RoomGameObjectManager : MonoBehaviour
             return;
 
         LoadRoomGameObject(gameState, gameState.CurrentRoomID);
+        TryCompleteDoorTask(gameState);
     }
 
     public void LoadRoomGameObject(GameState gameState, int currentRoomId)
@@ -80,6 +83,7 @@ public class RoomGameObjectManager : MonoBehaviour
         //ApplyCurrentRoomPosition(roomObject, currentRoomId);
         roomObject.SetActive(true);
         _currentRoomObject = roomObject;
+        TryCompleteDoorTask(gameState);
     }
 
     private void BuildRoomGameObjectMap()
@@ -155,5 +159,37 @@ public class RoomGameObjectManager : MonoBehaviour
             return;
 
         LoadRoomGameObject(gameState, roomID);
+    }
+
+    private void TryCompleteDoorTask(GameState gameState)
+    {
+        if (gameState == null || gameState.CurrentRoomID != 45)
+            return;
+
+        if (TaskSystem.Instance == null)
+            return;
+
+        foreach (int roomId in TaskDoorRoomIds)
+        {
+            GameObject roomObject = GetRoomGameObject(roomId);
+            if (roomObject == null)
+                return;
+
+            DoorController[] doors = roomObject.GetComponentsInChildren<DoorController>(true);
+            bool hasOpenedDoor = false;
+            foreach (DoorController door in doors)
+            {
+                if (door != null && door.IsOpened)
+                {
+                    hasOpenedDoor = true;
+                    break;
+                }
+            }
+
+            if (!hasOpenedDoor)
+                return;
+        }
+
+        TaskSystem.Instance.CompleteTask(0);
     }
 }
