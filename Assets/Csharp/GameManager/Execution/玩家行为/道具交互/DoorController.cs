@@ -23,10 +23,8 @@ public class DoorController : MonoBehaviour
     [Header("开门动画设置（仅Hard门）")]
     [SerializeField] private float doorOpenAngle = 90f;
     [SerializeField] private float doorAnimSpeed = 2f;
-    [SerializeField] private Transform doorPivot;       // 门旋转轴物体（门模型本身或一个空父物体）
 
     // 动画状态
-    private bool isVisuallyOpen = false;
     private Coroutine doorAnimCoroutine;
 
     public bool IsOpened => _isOpened;
@@ -34,7 +32,7 @@ public class DoorController : MonoBehaviour
     private void Awake()
     {
         _isOpened = needPlateNum == 0;
-        transform.GetChild(1).gameObject.SetActive(false);
+        //transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void Open()
@@ -136,44 +134,22 @@ public class DoorController : MonoBehaviour
 
     void CheckDoorVisualState()
     {
-        // 只有 Hard 门 + 已被压力板打开 才有开关动画//normal也可以
-        if (doorMat != DoorMat.Hard || !_isOpened || doorPivot == null) return;
+        // 只有 Hard 门 + 已被压力板打开 才有开关动画
+        if (doorMat != DoorMat.Hard || !_isOpened ) return;
 
         bool shouldBeOpen = GetIsPassable();
 
-        if (shouldBeOpen && !isVisuallyOpen)
+        //if (shouldBeOpen )
         {
             // 旋转打开
             MusicAudioManager.Instance.PlaySfx("opendoor");
-            isVisuallyOpen = true;
-            if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
-            doorAnimCoroutine = StartCoroutine(AnimateDoor(doorOpenAngle));
+            Animator animator = transform.GetComponentInChildren<Animator>();
+            animator.SetBool("isOpen", true);
+            StartCoroutine(WaitForOpening(1.0f));
         }
-        else if (!shouldBeOpen && isVisuallyOpen)
-        {
-            // 旋转关闭
-            isVisuallyOpen = false;
-            if (doorAnimCoroutine != null) StopCoroutine(doorAnimCoroutine);
-            doorAnimCoroutine = StartCoroutine(AnimateDoor(0f));
-        }
+
     }
 
-    System.Collections.IEnumerator AnimateDoor(float targetAngle)
-    {
-        float currentAngle = doorPivot.localEulerAngles.y;
-        // 处理角度环绕
-        if (currentAngle > 180f) currentAngle -= 360f;
-
-        while (Mathf.Abs(currentAngle - targetAngle) > 0.5f)
-        {
-            currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * doorAnimSpeed);
-            doorPivot.localEulerAngles = new Vector3(0, currentAngle, 0);
-            yield return null;
-        }
-
-        doorPivot.localEulerAngles = new Vector3(0, targetAngle, 0);
-        doorAnimCoroutine = null;
-    }
 
     //欧
     void OpenNormalDoor()
@@ -181,7 +157,7 @@ public class DoorController : MonoBehaviour
         if (doorMat != DoorMat.normal) return;
         Animator animator = transform.GetComponentInChildren<Animator>();
         animator.SetBool("isOpen", true);
-        MusicAudioManager.Instance.PlaySfx("wooddoor");
+        MusicAudioManager.Instance.PlaySfx("opendoor");
         StartCoroutine(WaitForOpening(1.0f));
     }
     private IEnumerator WaitForOpening(float delay)
