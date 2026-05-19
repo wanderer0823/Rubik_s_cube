@@ -6,7 +6,7 @@ public class DoorController : MonoBehaviour
 {
     // ==================== 门属性 ====================
 
-    public enum DoorMat { Hard, Soft, normal}
+    public enum DoorMat { Hard, Soft, normal,Open}
 
     [Header("初始化设定（不变）")]
     public DoorMat doorMat = DoorMat.Hard;
