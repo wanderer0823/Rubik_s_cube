@@ -418,16 +418,6 @@ public class CubeTurnController1 : MonoBehaviour
 
         (Vector3 signedAxis, int coordValue) = GetLayerFilter(localUp, localRight, side, index);
 
-        //bool isSameLayer = (currentCubePiece.Count > 0) &&
-        //               (currentAxis == VectorToAxis(signedAxis)) &&
-        //               (Mathf.Abs(coordValue) == Mathf.Abs(currentCubePiece[0].coord[GetAxisComponent(currentAxis)]));
-        //if (isSameLayer)
-        //{
-        //    selectedFace = faceDir;
-        //    selectedArrowSide = side;
-        //    selectedLayerIndex = index;
-        //    return true;
-        //}
         if(currentCubePiece!=null)
             RestoreSelectionMaterials();
         // Çå¿Õ¾ÉÁÐ±í
