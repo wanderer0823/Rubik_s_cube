@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
     // ==================== 门属性 ====================
 
-    public enum DoorMat { Hard, Soft }
+    public enum DoorMat { Hard, Soft, normal}
 
     [Header("初始化设定（不变）")]
     public DoorMat doorMat = DoorMat.Hard;
@@ -90,6 +91,16 @@ public class DoorController : MonoBehaviour
     public Vector3 DoorinRoomVector;
     public Vector3 GinMF;
 
+    void OnEnable()
+    {
+        GameEvents.OnInteractExecute += OpenNormalDoor;
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnInteractExecute -= OpenNormalDoor;
+    }
+
     void Update()
     {
         ReturnDoorVector();
@@ -125,7 +136,7 @@ public class DoorController : MonoBehaviour
 
     void CheckDoorVisualState()
     {
-        // 只有 Hard 门 + 已被压力板打开 才有开关动画
+        // 只有 Hard 门 + 已被压力板打开 才有开关动画//normal也可以
         if (doorMat != DoorMat.Hard || !_isOpened || doorPivot == null) return;
 
         bool shouldBeOpen = GetIsPassable();
@@ -164,4 +175,18 @@ public class DoorController : MonoBehaviour
         doorAnimCoroutine = null;
     }
 
+    //欧
+    void OpenNormalDoor()
+    {
+        if (doorMat != DoorMat.normal) return;
+        Animator animator = transform.GetComponentInChildren<Animator>();
+        animator.SetBool("isOpen", true);
+        MusicAudioManager.Instance.PlaySfx("wooddoor");
+        StartCoroutine(WaitForOpening(1.0f));
+    }
+    private IEnumerator WaitForOpening(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        transform.GetChild(0).gameObject.SetActive(true);  //开完后才出现传送碰撞体
+    }
 }
