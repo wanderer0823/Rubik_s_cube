@@ -26,10 +26,9 @@ public class GrabSystem : MonoBehaviour
     public Color interactColor = Color.green;
 
     [Header("性能")]
-    public float detectInterval = 0.05f;   // 20 次/秒，足够丝滑
+    public float detectInterval = 0.02f;   // 检测间隔
 
     private float lastDetectTime;
-
 
     private Camera cam;
     private GameState gs;
@@ -39,6 +38,9 @@ public class GrabSystem : MonoBehaviour
     private float grabDistance;
     private bool isHolding = false;
     private bool isGravityAllowed = false;
+
+    private Vector3 rotateAxis = new(1, 0, 0);
+    private Transform currentPivot;          // 当前抓取物体的旋转中心
 
     void Start()
     {
@@ -81,7 +83,6 @@ public class GrabSystem : MonoBehaviour
                 GrabObject(currentTarget);
             }
         }
-
         else
         {
             HoldObject();
@@ -108,6 +109,7 @@ public class GrabSystem : MonoBehaviour
             if (g != null && IsGravityAligned(g.transform))
             {
                 isGravityAllowed = true;
+                rotateAxis = g.transform.up;
 
                 if (currentTarget != g)
                 {
@@ -129,27 +131,12 @@ public class GrabSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// 物体所在房间是否与世界重力方向一致（房间没有被翻转/侧翻）
+    /// 物体自身朝向是否与世界重力相反方向一致
     /// </summary>
     bool IsGravityAligned(Transform target)
     {
-        // 找房间根
-        Transform t = target;
-        Transform roomRoot = null;
-        for (int i = 0; i < 5 && t.parent != null; i++)
-        {
-            t = t.parent;
-            if (t.gameObject.name.StartsWith("CurrentRoom"))
-            {
-                roomRoot = t;
-                break;
-            }
-        }
-        if (roomRoot == null) return false;
-
         Vector3 worldUp = -Physics.gravity.normalized;
-        // 房间的 up 朝向是否和世界 up 同向
-        float dot = Vector3.Dot(-roomRoot.right, worldUp);
+        float dot = Vector3.Dot(target.forward, worldUp);
         return dot > 0.99f;  // 容差约 8°
     }
 
@@ -175,27 +162,25 @@ public class GrabSystem : MonoBehaviour
         grabDistance = Vector3.Distance(cam.transform.position, obj.transform.position);
         isHolding = true;
 
-        //        ׼  
+        // 缓存 pivot：优先用 Grabbable 上指定的子物体，否则退回自身
+        currentPivot = obj.rotatePivot != null ? obj.rotatePivot : obj.transform;
+
         Rigidbody objRb = obj.GetComponent<Rigidbody>();
         if (objRb != null)
         {
             objRb.isKinematic = true;
         }
 
-        // 
         gs.SetPlayerState(PlayerState.isGrabbing);
-        /*DEBUG_DISABLED*/
-        Debug.Log($"GrabSystem:      {obj.gameObject.name}");/*END_DEBUG_DISABLED*/
+        Debug.Log($"GrabSystem: 抓取 {obj.gameObject.name}, pivot={currentPivot.name}");
     }
 
     void HoldObject()
     {
         if (heldObject == null) return;
 
-        //  
         Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + Vector3.up * holdHeightOffset;
 
-        //   
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, grabDistance, wallLayer))
         {
@@ -204,7 +189,6 @@ public class GrabSystem : MonoBehaviour
             targetPos = cam.transform.position + cam.transform.forward * safeDistance;
         }
 
-        // 
         heldObject.transform.position = Vector3.Lerp(
             heldObject.transform.position,
             targetPos,
@@ -232,6 +216,7 @@ public class GrabSystem : MonoBehaviour
 
         heldObject = null;
         currentTarget = null;
+        currentPivot = null;
         isHolding = false;
 
         gs.SetPlayerState(PlayerState.isMoving);
@@ -247,15 +232,17 @@ public class GrabSystem : MonoBehaviour
     {
         if (!isHolding || heldObject == null) return;
         if (Mathf.Abs(delta) < 0.01f) return;
-
-        // 冷却：滚得太快只旋转一格
         if (Time.unscaledTime - lastRotateTime < rotateCooldown) return;
 
         float sign = delta > 0f ? 1f : -1f;
-        heldObject.transform.Rotate(Vector3.up, sign * rotateStepAngle, Space.Self);
+
+        // pivot = Grabbable 上指定的子物体世界坐标（没指定则用自身）
+        Vector3 pivotPos = currentPivot != null ? currentPivot.position : heldObject.transform.position;
+
+        heldObject.transform.RotateAround(pivotPos, rotateAxis, sign * rotateStepAngle);
         lastRotateTime = Time.unscaledTime;
 
-        Debug.Log($"GrabSystem: 旋转一格 {sign * rotateStepAngle}°");
+        Debug.Log($"GrabSystem: 绕 {(currentPivot != null ? currentPivot.name : "self")} 旋转 {sign * rotateStepAngle}°, pivot={pivotPos}");
     }
 
     //  
