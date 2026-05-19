@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// ����ϵͳ����������ڸ��� + �Ҳ๫��������塣
-/// ���� BackpackPanel �ϡ�
+/// 背包系统：控制背包整体 + 右侧详情弹窗。
+/// 挂载在 BackpackPanel 上。
 /// </summary>
 public class BackpackSystem : MonoBehaviour
 {
@@ -29,7 +29,7 @@ public class BackpackSystem : MonoBehaviour
 
 
     [Header("线索在背包的排列区域ClueSection")]
-    [SerializeField] private Transform clueSection;    // ������ָ�� ClueSection
+    [SerializeField] private Transform clueSection;    // 注意：指向 ClueSection
 
     [Header("线索的背包UI单位")]
     [SerializeField] private GameObject clueSlotPrefab;
@@ -42,15 +42,18 @@ public class BackpackSystem : MonoBehaviour
 
     [Header("详情面板淡入淡出")]
     [SerializeField] private float animDuration = 0.25f;
-    [SerializeField] private float hideOffsetY = -200f;   // ����ʱ�����ʾλ�õ�Yƫ�ƣ���Ļ�·���
+    [SerializeField] private float hideOffsetY = -200f;   // 隐藏时相对显示位置的Y偏移（屏幕下方）
 
-    // ����������ʾλ�ã��ɳ�ʼλ�þ�����
+    [Header("字体")]
+    [SerializeField] private TMP_FontAsset defaultFont;
+
+    // 记录详情面板显示/隐藏位置，由初始位置决定
     private Vector2 detailShowPos;
     private Vector2 detailHidePos;
     private Coroutine currentAnim;
     private CanvasGroup detailCanvasGroup;
 
-    // �Ѵ�������������
+    // 已添加的线索字典
     private Dictionary<string, BackpackSlotUI> clueSlotMap = new Dictionary<string, BackpackSlotUI>();
 
     void OnEnable()
@@ -74,36 +77,36 @@ public class BackpackSystem : MonoBehaviour
         InitDetailPanel();
     }
 
-    // ===== ��ʼ�� =====
+    // ===== 初始化 =====
     private void InitDetailPanel()
     {
         if (detailPopupPanel == null) return;
 
-        // ��¼��ʾλ��
+        // 记录显示位置
         detailShowPos = detailPopupPanel.anchoredPosition;
         detailHidePos = detailShowPos + new Vector2(0, hideOffsetY);
 
-        // ȷ���� CanvasGroup ���ڵ��뵭��
+        // 确保 CanvasGroup 存在，用于淡入淡出
         detailCanvasGroup = detailPopupPanel.GetComponent<CanvasGroup>();
         if (detailCanvasGroup == null)
             detailCanvasGroup = detailPopupPanel.gameObject.AddComponent<CanvasGroup>();
 
-        // ��ʼ����
+        // 初始状态
         detailCanvasGroup.alpha = 0f;
         detailPopupPanel.anchoredPosition = detailHidePos;
         detailPopupPanel.gameObject.SetActive(false);
     }
 
-    // ===== �������������ƣ��� BackpackSlotUI ���ã�=====
+    // ===== 详情面板控制（供 BackpackSlotUI 调用）=====
 
     /// <summary>
-    /// ��ʾ������壺���·����Ը���
+    /// 显示详情面板：从底部向上滑入
     /// </summary>
     public void ShowDetail(string itemName, string description, Sprite image)
     {
         if (detailPopupPanel == null) return;
 
-        // �������
+        // 填充数据
         if (detailNameText != null) detailNameText.text = itemName;
         if (detailDescText != null) detailDescText.text = description;
 
@@ -120,12 +123,12 @@ public class BackpackSystem : MonoBehaviour
             }
         }
 
-        // ÿ���������ӵײ����¸���
+        // 每次重新播放动画（从底部向上）
         if (currentAnim != null)
             StopCoroutine(currentAnim);
 
         detailPopupPanel.gameObject.SetActive(true);
-        // ���õ��ײ���ʼλ��
+        // 设置到底部起始位置
         detailPopupPanel.anchoredPosition = detailHidePos;
         detailCanvasGroup.alpha = 0f;
 
@@ -133,7 +136,7 @@ public class BackpackSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// ����������壺��������
+    /// 隐藏详情面板：向下滑出
     /// </summary>
     public void HideDetail()
     {
@@ -172,7 +175,7 @@ public class BackpackSystem : MonoBehaviour
         currentAnim = null;
     }
 
-    // ��������
+    // 缓动函数
     private float EaseOutCubic(float t)
     {
         t = Mathf.Clamp01(t);
@@ -185,24 +188,25 @@ public class BackpackSystem : MonoBehaviour
         return t * t * t;
     }
 
-    // ===== �������� =====
+    // ===== 添加物品 =====
 
     public void AddClue(string clueID, string clueName, string description, Sprite detailImg = null, Sprite icon = null)
     {
         if (clueSlotMap.ContainsKey(clueID)) return;
 
-        if (clueSlotPrefab == null || clueSection == null)    // clueContent �� clueSection
+        if (clueSlotPrefab == null || clueSection == null)    // clueContent 即 clueSection
         {
-            /*__DEBUGTOOL_START__*/Debug.LogWarning("BackpackSystem: ����Ԥ���������δ����");/*__DEBUGTOOL_END__*/
+            /*__DEBUGTOOL_START__*/
+            Debug.LogWarning("BackpackSystem: 线索预制体或父物体未设置");/*__DEBUGTOOL_END__*/
             return;
         }
 
-        GameObject go = Instantiate(clueSlotPrefab, clueSection);    // clueContent �� clueSection
+        GameObject go = Instantiate(clueSlotPrefab, clueSection);    // clueContent 即 clueSection
         BackpackSlotUI slot = go.GetComponent<BackpackSlotUI>();
 
         if (slot == null)
         {
-            Debug.LogError("BackpackSystem: ����Ԥ����ȱ�� BackpackSlotUI ���");
+            Debug.LogError("BackpackSystem: 线索预制体缺少 BackpackSlotUI 组件");
             Destroy(go);
             return;
         }
@@ -212,18 +216,23 @@ public class BackpackSystem : MonoBehaviour
             BackpackSlotUI.SlotType.Clue,
             clueName,
             description,
-            null,
-            detailImg
+            null,               // 线索没有点击切换逻辑
+            detailImg,
+            null,               // 无材质类型
+            icon,               // 可能为 null
+            Color.white,        // 图标颜色（若 icon 为 null 无关紧要）
+            defaultFont         // 字体
         );
 
         clueSlotMap[clueID] = slot;
-        /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSystem: ������� [{clueID}] {clueName}");/*__DEBUGTOOL_END__*/
+        /*__DEBUGTOOL_START__*/
+        Debug.Log($"BackpackSystem: 添加线索 [{clueID}] {clueName}");/*__DEBUGTOOL_END__*/
     }
 
-    // ===== ���ʹ��� =====
+    // ===== 添加材质 =====
     public void AddMat(PlayerMatState matType, string matName, string desc, Sprite detail = null)
     {
-        // ����Ƿ����иò���
+        // 检查是否已有该材质
         foreach (var existingSlot in matSlots)
         {
             if (existingSlot != null && existingSlot.gameObject.name == matName)
@@ -232,7 +241,7 @@ public class BackpackSystem : MonoBehaviour
 
         if (matSlotPrefab == null || matSection == null)
         {
-            Debug.LogError("BackpackSystem: ����Ԥ���������δ����");
+            Debug.LogError("BackpackSystem: 材质预制体或父物体未设置");
             return;
         }
 
@@ -242,7 +251,7 @@ public class BackpackSystem : MonoBehaviour
 
         if (newSlot == null)
         {
-            Debug.LogError("BackpackSystem: ����Ԥ����ȱ�� BackpackSlotUI");
+            Debug.LogError("BackpackSystem: 材质预制体缺少 BackpackSlotUI");
             Destroy(go);
             return;
         }
@@ -262,15 +271,18 @@ public class BackpackSystem : MonoBehaviour
             () => GameEvents.onMatChangeRequest(matType),
             detail,
             matType,
-            iconSprite    // 新增
+            iconSprite,          // 小图标
+            Color.white,         // 图标颜色纯白
+            defaultFont          // 字体
         );
 
 
         matSlots.Add(newSlot);
-        /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSystem: ��Ӳ��� [{matName}]");/*__DEBUGTOOL_END__*/
+        /*__DEBUGTOOL_START__*/
+        Debug.Log($"BackpackSystem: 添加材质 [{matName}]");/*__DEBUGTOOL_END__*/
     }
 
-    // ===== �����¼���Ӧ =====
+    // ===== 背包事件响应 =====
 
     private void OnBagOpen()
     {
@@ -279,7 +291,7 @@ public class BackpackSystem : MonoBehaviour
 
     private void OnBagClose()
     {
-        // �رձ���ʱ��������������壨����������
+        // 关闭背包时，强制隐藏详情弹窗（如果有）
         if (detailPopupPanel != null)
         {
             if (currentAnim != null)
@@ -303,7 +315,7 @@ public class BackpackSystem : MonoBehaviour
         if (matSlots == null || matSlots.Count == 0) return;
         var currentMat = GameState.Instance.CurrentMatState;
 
-        // ��̬�б��޷��� index ��Ӧ enum����������ƥ��
+        // 动态列表无法用 index 对应 enum，因此按值匹配
         foreach (var slot in matSlots)
         {
             if (slot == null) continue;

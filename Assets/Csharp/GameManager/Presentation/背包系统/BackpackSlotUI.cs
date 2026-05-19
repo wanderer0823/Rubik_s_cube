@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// �����������ӣ����������͵����
-/// ����ʱ֪ͨ BackpackSystem ��ʾ����������塣
+/// 背包槽位组件：支持材质和线索两种类型
+/// 悬停时通知 BackpackSystem 显示详情弹窗。
 /// 
-/// �㼶�ṹ���������ӣ���
-/// SlotRoot (�˽ű�)
-///   ������ Icon (Image)
-///   ������ NameText (Text)
+/// 层级结构（示例）：
+/// SlotRoot (挂载本脚本)
+///   └─ Icon (Image)
+///   └─ NameText (Text)
 /// </summary>
 public class BackpackSlotUI : MonoBehaviour,
     IPointerEnterHandler,
@@ -20,35 +20,36 @@ public class BackpackSlotUI : MonoBehaviour,
 {
     public enum SlotType { Material, Clue }
 
-    [Header("UI�������")]
+    [Header("UI子对象引用")]
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private Image iconImage;
 
-    [Header("ѡ�и���")]
+    [Header("选中高亮")]
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Color normalColor = new Color(0.2f, 0.2f, 0.2f, 0.8f);
     [SerializeField] private Color selectedColor = new Color(0.3f, 0.6f, 1f, 0.9f);
     [SerializeField] private Color hoverColor = new Color(0.4f, 0.4f, 0.4f, 0.9f);
 
-    // ����ʱ���ݣ��� Init ���ã�
+    // 初始化时存储的数据（Init 方法调用）
     private SlotType slotType;
     private string displayName;
     private string description;
-    private Sprite detailSprite;     // ����ͼƬ
+    private Sprite detailSprite;     // 详情图片
     private Action onClickCallback;
     private bool isSelected = false;
-    private PlayerMatState? linkedMatState = null;   // �����������Ĳ�������
+    private PlayerMatState? linkedMatState = null;   // 仅材质槽位关联的材质类型
 
-    // ����� BackpackSystem ����
+    // 缓存 BackpackSystem 引用
     private BackpackSystem backpackSystem;
 
     /// <summary>
-    /// ��ʼ������
+    /// 初始化槽位
     /// </summary>
     public void Init(BackpackSystem system, SlotType type, string name, string desc,
-                     Action onClick = null, Sprite detail = null,PlayerMatState? matState = null, Sprite icon = null)
+                     Action onClick = null, Sprite detail = null, PlayerMatState? matState = null,
+                     Sprite icon = null, Color? iconColor = null, TMP_FontAsset fontAsset = null)
     {
-        backpackSystem = system;    // ֱ�Ӹ�ֵ������ GetComponentInParent
+        backpackSystem = system;
         slotType = type;
         displayName = name;
         description = desc;
@@ -56,22 +57,34 @@ public class BackpackSlotUI : MonoBehaviour,
         onClickCallback = onClick;
         linkedMatState = matState;
 
+        // 设置名称
         if (nameText != null)
             nameText.text = displayName;
 
-        if (iconImage != null && icon != null)    // 新增：设置图标
-            iconImage.sprite = icon;
+        // 设置字体（若传入有效字体）
+        if (fontAsset != null && nameText != null)
+            nameText.font = fontAsset;
 
+        // 设置图标
+        if (iconImage != null)
+        {
+            if (icon != null)
+                iconImage.sprite = icon;
+            // 关键：重置颜色为白色（或指定颜色），防止预制体残留的蓝色
+            iconImage.color = iconColor ?? Color.white;
+        }
+
+        // 背景初始化
         if (backgroundImage != null)
             backgroundImage.color = normalColor;
     }
 
     public PlayerMatState? LinkedMatState => linkedMatState;
 
-    // ===== ������� =====
+    // ===== 鼠标事件 =====
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // ֪ͨ�������������ʾ
+        // 通知背包系统显示详情
         if (backpackSystem != null)
             backpackSystem.ShowDetail(displayName, description, detailSprite);
 
@@ -81,7 +94,7 @@ public class BackpackSlotUI : MonoBehaviour,
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // ֪ͨ���������������
+        // 通知背包系统隐藏详情
         if (backpackSystem != null)
             backpackSystem.HideDetail();
 
@@ -89,7 +102,7 @@ public class BackpackSlotUI : MonoBehaviour,
             backgroundImage.color = normalColor;
     }
 
-    // ===== ����� =====
+    // ===== 点击逻辑 =====
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -98,11 +111,12 @@ public class BackpackSlotUI : MonoBehaviour,
         if (slotType == SlotType.Material && onClickCallback != null)
         {
             onClickCallback.Invoke();
-            /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSlotUI: ������� [{displayName}]");/*__DEBUGTOOL_END__*/
+            /*__DEBUGTOOL_START__*/
+            Debug.Log($"BackpackSlotUI: 点击材质 [{displayName}]");/*__DEBUGTOOL_END__*/
         }
     }
 
-    // ===== ѡ�и��������ʸ����ã� =====
+    // ===== 选中高亮（供外部调用，用于材质高亮）=====
     public void SetSelected(bool selected)
     {
         isSelected = selected;
