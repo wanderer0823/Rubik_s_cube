@@ -46,7 +46,7 @@ public class BackpackSlotUI : MonoBehaviour,
     /// ��ʼ������
     /// </summary>
     public void Init(BackpackSystem system, SlotType type, string name, string desc,
-                     Action onClick = null, Sprite detail = null,PlayerMatState? matState = null)
+                     Action onClick = null, Sprite detail = null,PlayerMatState? matState = null, Sprite icon = null)
     {
         backpackSystem = system;    // ֱ�Ӹ�ֵ������ GetComponentInParent
         slotType = type;
@@ -58,6 +58,9 @@ public class BackpackSlotUI : MonoBehaviour,
 
         if (nameText != null)
             nameText.text = displayName;
+
+        if (iconImage != null && icon != null)    // 新增：设置图标
+            iconImage.sprite = icon;
 
         if (backgroundImage != null)
             backgroundImage.color = normalColor;

@@ -14,6 +14,7 @@ public class MatPickup : MonoBehaviour
     [TextArea(2, 4)]
     public string description;
     public Sprite detailImage;
+    public Sprite iconSprite;
 
     [Header("可拾取距离")]
     public float pickupRange = 3f;

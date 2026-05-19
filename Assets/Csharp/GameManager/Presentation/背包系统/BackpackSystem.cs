@@ -13,33 +13,34 @@ public class BackpackSystem : MonoBehaviour
     [Header("ScrollRect")]
     [SerializeField] private ScrollRect scrollRect;
 
-    [Header("���ʸ��ӣ��̶�3������Steel/Glass/Bounce˳��")]
+    [Header("材质球Steel/Glass/Bounce的背包组件")]
     [SerializeField] private List<BackpackSlotUI> matSlots;
 
-    [Header("���ʸ���������MatSection��")]
+    [Header("材质球在背包的排列区域MatSection")]
     [SerializeField] private Transform matSection;
 
-    [Header("���ʸ���Ԥ����")]
+    [Header("材质的背包UI单位")]
     [SerializeField] private GameObject matSlotPrefab;
 
-    [Header("��������ͼƬ")]
-    [SerializeField] private Sprite steelDetailSprite;
-    [SerializeField] private Sprite glassDetailSprite;
-    [SerializeField] private Sprite bounceDetailSprite;
+    [Header("材质球3个1：1小图标")]
+    [SerializeField] private Sprite steelIconSprite;
+    [SerializeField] private Sprite glassIconSprite;
+    [SerializeField] private Sprite bounceIconSprite;
 
-    [Header("��������������ClueSection��")]
+
+    [Header("线索在背包的排列区域ClueSection")]
     [SerializeField] private Transform clueSection;    // ������ָ�� ClueSection
 
-    [Header("��������Ԥ����")]
+    [Header("线索的背包UI单位")]
     [SerializeField] private GameObject clueSlotPrefab;
 
-    [Header("����������壨��BackpackPanel�ⲿ��")]
+    [Header("详情面板引用BackpackPanel")]
     [SerializeField] private RectTransform detailPopupPanel;
     [SerializeField] private TMP_Text detailNameText;
     [SerializeField] private TMP_Text detailDescText;
     [SerializeField] private Image detailImage;
 
-    [Header("������嶯��")]
+    [Header("详情面板淡入淡出")]
     [SerializeField] private float animDuration = 0.25f;
     [SerializeField] private float hideOffsetY = -200f;   // ����ʱ�����ʾλ�õ�Yƫ�ƣ���Ļ�·���
 
@@ -186,7 +187,7 @@ public class BackpackSystem : MonoBehaviour
 
     // ===== �������� =====
 
-    public void AddClue(string clueID, string clueName, string description, Sprite detailImg = null)
+    public void AddClue(string clueID, string clueName, string description, Sprite detailImg = null, Sprite icon = null)
     {
         if (clueSlotMap.ContainsKey(clueID)) return;
 
@@ -246,14 +247,24 @@ public class BackpackSystem : MonoBehaviour
             return;
         }
 
+        Sprite iconSprite = matType switch
+        {
+            PlayerMatState.Steel => steelIconSprite,
+            PlayerMatState.Glass => glassIconSprite,
+            PlayerMatState.Bounce => bounceIconSprite,
+            _ => null
+        };
+
         newSlot.Init(this,
             BackpackSlotUI.SlotType.Material,
             matName,
             desc,
             () => GameEvents.onMatChangeRequest(matType),
             detail,
-            matType
+            matType,
+            iconSprite    // 新增
         );
+
 
         matSlots.Add(newSlot);
         /*__DEBUGTOOL_START__*/Debug.Log($"BackpackSystem: ��Ӳ��� [{matName}]");/*__DEBUGTOOL_END__*/

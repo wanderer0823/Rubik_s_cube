@@ -6,12 +6,13 @@ using UnityEngine;
 /// </summary>
 public class CluePickup : MonoBehaviour
 {
-    [Header("������Ϣ")]
-    public string clueID;           // Ψһ��ʶ
-    public string clueName;         // ��ʾ����
+    [Header("线索信息")]
+    public string clueID;
+    public string clueName;
     [TextArea(2, 5)]
-    public string description;      // �����ı�
-    public Sprite detailImage;      // ����ͼƬ����ѡ��
+    public string description;
+    public Sprite detailImage;
+    public Sprite iconSprite;    // 新增：背包内小图标
 
     [Header("ʰȡ����")]
     public float pickupRange = 3f;  // ʰȡ����
@@ -48,10 +49,11 @@ public class CluePickup : MonoBehaviour
         var backpack = FindObjectOfType<BackpackSystem>();
         if (backpack != null)
         {
-            backpack.AddClue(clueID, clueName, description, detailImage);
+            backpack.AddClue(clueID, clueName, description, detailImage, iconSprite);
         }
 
-        /*__DEBUGTOOL_START__*/Debug.Log($"ʰȡ������{clueName}");/*__DEBUGTOOL_END__*/
+        /*__DEBUGTOOL_START__*/
+        Debug.Log($"ʰȡ������{clueName}");/*__DEBUGTOOL_END__*/
         gameObject.SetActive(false);
     }
 }

@@ -5829,6 +5829,7 @@ MonoBehaviour:
   displayName: "\u94A2\u7403"
   description: 11111
   detailImage: {fileID: 21300000, guid: 82dcf608003e4e04c8c05c9da780da4e, type: 3}
+  iconSprite: {fileID: 0}
   pickupRange: 3
 --- !u!65 &2260670458863732006
 BoxCollider:
@@ -16816,6 +16817,7 @@ MonoBehaviour:
   clueName: laji
   description: lajiiiiiiiiiiiiiiiiiiiiiiiiii
   detailImage: {fileID: 21300000, guid: 82dcf608003e4e04c8c05c9da780da4e, type: 3}
+  iconSprite: {fileID: 0}
   pickupRange: 3
 --- !u!1 &4286259235942428458
 GameObject:
@@ -19718,6 +19720,7 @@ MonoBehaviour:
   displayName: Glass
   description: Glaaaaaasssssss
   detailImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  iconSprite: {fileID: 0}
   pickupRange: 3
 --- !u!65 &492136067018597512
 BoxCollider:
@@ -20294,7 +20297,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2515155460387131969}
-  - {fileID: 8201674655701749495}
   - {fileID: 8590498039058972433}
   m_Father: {fileID: 2858439398564551474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26645,6 +26647,7 @@ MonoBehaviour:
   clueName: 53
   description: "\u8FD9\u5C31\u662F53"
   detailImage: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  iconSprite: {fileID: 0}
   pickupRange: 3
 --- !u!1 &6515035002739718239
 GameObject:
@@ -30074,6 +30077,7 @@ MonoBehaviour:
   displayName: Bounce
   description: Bounceeeeeeeeeeeeee
   detailImage: {fileID: 21300000, guid: 82dcf608003e4e04c8c05c9da780da4e, type: 3}
+  iconSprite: {fileID: 0}
   pickupRange: 3
 --- !u!1 &7560485736491562273
 GameObject:
@@ -38177,78 +38181,4 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6657314261738204458, guid: b5fd3a7fd7d1aaf4abfdebc49717aee0,
     type: 3}
   m_PrefabInstance: {fileID: 7457285517793502326}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &9056685561655649532
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2679470155396739655}
-    m_Modifications:
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -13.86
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5400009
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.045714136
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.00000028356072
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9989546
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.000000024812174
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3735594236663905973, guid: 2017df4df234c6e43a29768cb47db3a0,
-        type: 3}
-      propertyPath: m_Name
-      value: 53book (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2017df4df234c6e43a29768cb47db3a0, type: 3}
---- !u!4 &8201674655701749495 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 900152773172636171, guid: 2017df4df234c6e43a29768cb47db3a0,
-    type: 3}
-  m_PrefabInstance: {fileID: 9056685561655649532}
   m_PrefabAsset: {fileID: 0}
