@@ -31,8 +31,8 @@ public class RoomGameObjectManager : MonoBehaviour
 
     void Start()
     {
-        LoadCurrentRoomGameObject();
         ApplyCurrentRoomPositionToAll();
+        //LoadCurrentRoomGameObject();
     }
 
     void OnDisable()
@@ -77,7 +77,7 @@ public class RoomGameObjectManager : MonoBehaviour
 
         SetAllRoomsInactive();
 
-        ApplyCurrentRoomPosition(roomObject, currentRoomId);
+        //ApplyCurrentRoomPosition(roomObject, currentRoomId);
         roomObject.SetActive(true);
         _currentRoomObject = roomObject;
     }

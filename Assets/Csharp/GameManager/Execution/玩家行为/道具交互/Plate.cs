@@ -35,14 +35,14 @@ public class Plate : MonoBehaviour
 
     [HideInInspector]
     public bool isPressed = false;
-    private Vector3 initialPosition;
+    private Vector3 initialLocalPosition;
     private readonly List<MaterialSlotBinding> materialBindings = new List<MaterialSlotBinding>();
 
     private void Awake()
     {
         CacheMaterialBindings();
 
-        initialPosition = transform.position;
+        initialLocalPosition = transform.localPosition;
         RefreshMaterial();
     }
 
@@ -69,6 +69,7 @@ public class Plate : MonoBehaviour
         isPressed = true;
         MusicAudioManager.Instance?.PlaySfx("plate");
         RefreshMaterial();
+        // Press along the plate's own local down direction, not world Y.
         StartCoroutine(MovePlate(Vector3.down * plateMoveDistance));
 
         if (linkedDoor != null)
@@ -79,17 +80,17 @@ public class Plate : MonoBehaviour
 
     private System.Collections.IEnumerator MovePlate(Vector3 offset)
     {
-        Vector3 start = transform.position;
+        Vector3 start = transform.localPosition;
         Vector3 end = start + offset;
         float t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime * plateMoveSpeed;
-            transform.position = Vector3.Lerp(start, end, t);
+            transform.localPosition = Vector3.Lerp(start, end, t);
             yield return null;
         }
 
-        transform.position = end;
+        transform.localPosition = end;
     }
 
     private void RefreshMaterial()
@@ -123,7 +124,7 @@ public class Plate : MonoBehaviour
         currentCount = 0;
         isPressed = false;
         StopAllCoroutines();
-        transform.position = initialPosition;
+        transform.localPosition = initialLocalPosition;
         RefreshMaterial();
     }
 
