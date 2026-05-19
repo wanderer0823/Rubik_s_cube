@@ -239,6 +239,12 @@ public class ItemInteractionController : MonoBehaviour
                 /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
             }
+            //普通门
+            if (doorCtrl.doorMat == DoorController.DoorMat.normal)
+            {
+                ExecuteDoorTransition(doorCollider);
+            }
+
             return;
         }
 
@@ -274,6 +280,12 @@ public class ItemInteractionController : MonoBehaviour
             {
                 /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
+            }
+
+            //普通门
+            if(doorCtrl.doorMat == DoorController.DoorMat.normal)
+            {
+                ExecuteDoorTransition(doorCollider);
             }
         }
     }
