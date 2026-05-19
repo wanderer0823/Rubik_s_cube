@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using InitCubeSlotFaceDir = InitCubeSlot.FaceDir;
 using InitCubeSlotAxis = InitCubeSlot.Axis;
 using ArrowSide = ArrowsButton.ArrowSide;
+using System.Net.NetworkInformation;
 
 public class CubeTurnController1 : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class CubeTurnController1 : MonoBehaviour
     private const int CoordScale = 2;
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
+
+    //欧：材质替换
+    public Material M_suliao;
+    public Material M_Outline;
 
     private enum View2LayerSelectionMode
     {
@@ -413,12 +418,37 @@ public class CubeTurnController1 : MonoBehaviour
 
         (Vector3 signedAxis, int coordValue) = GetLayerFilter(localUp, localRight, side, index);
 
+        //bool isSameLayer = (currentCubePiece.Count > 0) &&
+        //               (currentAxis == VectorToAxis(signedAxis)) &&
+        //               (Mathf.Abs(coordValue) == Mathf.Abs(currentCubePiece[0].coord[GetAxisComponent(currentAxis)]));
+        //if (isSameLayer)
+        //{
+        //    selectedFace = faceDir;
+        //    selectedArrowSide = side;
+        //    selectedLayerIndex = index;
+        //    return true;
+        //}
+        if(currentCubePiece!=null)
+            RestoreSelectionMaterials();
+        // 清空旧列表
+        currentCubePiece.Clear();
+
         currentSignedLocalAxis = signedAxis;
         currentAxis = VectorToAxis(signedAxis);
         currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
 
         if (currentCubePiece.Count == 0)
             return false;
+
+        //更新材质
+        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
+        {
+            if (piece?.indexCube == null) continue;
+            var meshRenderer = piece.indexCube.GetChild(0).GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+                meshRenderer.material = M_Outline;
+
+        }
 
         selectedFace = faceDir;
         selectedArrowSide = side;
@@ -602,5 +632,29 @@ public class CubeTurnController1 : MonoBehaviour
     private static int IndexToCoordValue(int index)
     {
         return (index - 1) * CoordScale;
+    }
+    //欧：恢复材质
+    private void RestoreSelectionMaterials()
+    {
+        if (initCubeSlot == null) return;
+        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
+        {
+            if (piece?.indexCube == null) continue;
+            var meshRenderer = piece.indexCube.GetChild(0).GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+                meshRenderer.material = M_suliao;
+        }
+    }
+    private int GetAxisComponent(InitCubeSlotAxis axis)
+    {
+        if (currentCubePiece.Count == 0) return 0;
+        Vector3Int coord = currentCubePiece[0].coord;
+        switch (axis)
+        {
+            case InitCubeSlotAxis.X: return coord.x;
+            case InitCubeSlotAxis.Y: return coord.y;
+            case InitCubeSlotAxis.Z: return coord.z;
+        }
+        return 0;
     }
 }
