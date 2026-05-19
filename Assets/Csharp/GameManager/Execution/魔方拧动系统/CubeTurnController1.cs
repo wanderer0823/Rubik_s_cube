@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using InitCubeSlotFaceDir = InitCubeSlot.FaceDir;
 using InitCubeSlotAxis = InitCubeSlot.Axis;
 using ArrowSide = ArrowsButton.ArrowSide;
+using System.Net.NetworkInformation;
 
 public class CubeTurnController1 : MonoBehaviour
 {
@@ -27,10 +28,15 @@ public class CubeTurnController1 : MonoBehaviour
     private InitCubeSlotFaceDir lastClickedFace;
     private View2LayerSelectionMode selectedLayerMode;
     private InitCubeSlotFaceDir selectedFace;
+    private ArrowSide selectedArrowSide;
     private int selectedLayerIndex;
     private const int CoordScale = 2;
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
+
+    //欧：材质替换
+    public Material M_suliao;
+    public Material M_Outline;
 
     private enum View2LayerSelectionMode
     {
@@ -99,6 +105,8 @@ public class CubeTurnController1 : MonoBehaviour
         if (!TryBuildClickSelection(
                 out InitCubeSlot.CubePiece piece,
                 out InitCubeSlotFaceDir face,
+                out Vector3 localUp,
+                out Vector3 localRight,
                 out int verticalLayerIndex,
                 out int horizontalLayerIndex))
             return;
@@ -109,16 +117,23 @@ public class CubeTurnController1 : MonoBehaviour
             lastClickedPiece == piece &&
             lastClickedFace == face;
 
-        selectedFace = face;
         if (isDoubleClick)
         {
             selectedLayerMode = View2LayerSelectionMode.Horizontal;
             selectedLayerIndex = horizontalLayerIndex;
+            selectedArrowSide = ArrowSide.Left;
         }
         else
         {
             selectedLayerMode = View2LayerSelectionMode.Vertical;
             selectedLayerIndex = verticalLayerIndex;
+            selectedArrowSide = ArrowSide.Up;
+        }
+
+        if (!TryCacheSelectedLayer(face, localUp, localRight, selectedArrowSide, selectedLayerIndex))
+        {
+            ClearSelection();
+            return;
         }
 
         lastClickTime = now;
@@ -162,13 +177,18 @@ public class CubeTurnController1 : MonoBehaviour
         if (isTurnAnimating || initCubeSlot == null)
             return false;
 
-        GetCurrentBasis(out Vector3 localUp, out Vector3 localRight);
-        (Vector3 signedAxis, int coordValue) = GetLayerFilter(localUp, localRight, side, index);
+        bool useCachedSelection =
+            selectedFace == faceDir &&
+            selectedArrowSide == side &&
+            selectedLayerIndex == index &&
+            currentCubePiece.Count > 0;
 
-        currentCubePiece.Clear();
-        currentSignedLocalAxis = signedAxis;
-        currentAxis = VectorToAxis(signedAxis);
-        currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
+        if (!useCachedSelection)
+        {
+            GetCurrentBasis(out Vector3 localUp, out Vector3 localRight);
+            if (!TryCacheSelectedLayer(faceDir, localUp, localRight, side, index))
+                return false;
+        }
 
         float angle = reverse ? -90f : 90f;
         Transform cubeRoot = ViewModeManager.Instance?.cubeRoot;
@@ -215,8 +235,10 @@ public class CubeTurnController1 : MonoBehaviour
     {
         isTrackingClick = false;
         selectedLayerMode = View2LayerSelectionMode.None;
+        selectedArrowSide = ArrowSide.Up;
         selectedLayerIndex = 0;
         selectedFace = InitCubeSlotFaceDir.Up;
+        currentCubePiece.Clear();
     }
 
     private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
@@ -304,11 +326,15 @@ public class CubeTurnController1 : MonoBehaviour
     private bool TryBuildClickSelection(
         out InitCubeSlot.CubePiece piece,
         out InitCubeSlotFaceDir face,
+        out Vector3 localUp,
+        out Vector3 localRight,
         out int verticalLayerIndex,
         out int horizontalLayerIndex)
     {
         piece = null;
         face = InitCubeSlotFaceDir.Up;
+        localUp = Vector3.up;
+        localRight = Vector3.right;
         verticalLayerIndex = 0;
         horizontalLayerIndex = 0;
 
@@ -317,8 +343,8 @@ public class CubeTurnController1 : MonoBehaviour
 
         if (!TryGetView2FaceAndBasis(
                 out face,
-                out Vector3 localUp,
-                out Vector3 localRight))
+                out localUp,
+                out localRight))
             return false;
 
         Ray ray = view2Camera.ScreenPointToRay(Input.mousePosition);
@@ -378,6 +404,46 @@ public class CubeTurnController1 : MonoBehaviour
     {
         localUp = lockedLocalUp;
         localRight = lockedLocalRight;
+    }
+
+    private bool TryCacheSelectedLayer(
+        InitCubeSlotFaceDir faceDir,
+        Vector3 localUp,
+        Vector3 localRight,
+        ArrowSide side,
+        int index)
+    {
+        if (initCubeSlot == null)
+            return false;
+
+        (Vector3 signedAxis, int coordValue) = GetLayerFilter(localUp, localRight, side, index);
+
+        if(currentCubePiece!=null)
+            RestoreSelectionMaterials();
+        // 清空旧列表
+        currentCubePiece.Clear();
+
+        currentSignedLocalAxis = signedAxis;
+        currentAxis = VectorToAxis(signedAxis);
+        currentCubePiece = initCubeSlot.GetPiecesInLayer(currentAxis, coordValue);
+
+        if (currentCubePiece.Count == 0)
+            return false;
+
+        //更新材质
+        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
+        {
+            if (piece?.indexCube == null) continue;
+            var meshRenderer = piece.indexCube.GetChild(0).GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+                meshRenderer.material = M_Outline;
+
+        }
+
+        selectedFace = faceDir;
+        selectedArrowSide = side;
+        selectedLayerIndex = index;
+        return true;
     }
 
     private (Vector3 signedAxis, int coordValue) GetLayerFilter(
@@ -556,5 +622,29 @@ public class CubeTurnController1 : MonoBehaviour
     private static int IndexToCoordValue(int index)
     {
         return (index - 1) * CoordScale;
+    }
+    //欧：恢复材质
+    private void RestoreSelectionMaterials()
+    {
+        if (initCubeSlot == null) return;
+        foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
+        {
+            if (piece?.indexCube == null) continue;
+            var meshRenderer = piece.indexCube.GetChild(0).GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+                meshRenderer.material = M_suliao;
+        }
+    }
+    private int GetAxisComponent(InitCubeSlotAxis axis)
+    {
+        if (currentCubePiece.Count == 0) return 0;
+        Vector3Int coord = currentCubePiece[0].coord;
+        switch (axis)
+        {
+            case InitCubeSlotAxis.X: return coord.x;
+            case InitCubeSlotAxis.Y: return coord.y;
+            case InitCubeSlotAxis.Z: return coord.z;
+        }
+        return 0;
     }
 }

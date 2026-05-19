@@ -2,91 +2,68 @@ Shader "Unlit/Outline"
 {
     Properties
     {
-        _outlineWidth("_outlineWidth",Range(0,2))=0.5
-        _OutlineColor("_OutlineColor",Color)=(0,0,0,1)
+        _OutlineWidth("Outline Width", Range(0,2)) = 0.5
+        _OutlineColor("Outline Color", Color) = (0,0,0,1)
+        _OutlinePow("Outline Power", Range(0.5, 5)) = 2
+        _OutlineStrength("Outline Strength", Range(0, 10)) = 1
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque"
-        "RenderPipeline"="UniversalPipeline"}
-
-        HLSLINCLUDE
-        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
-        float _outlineWidth;
-        half4 _OutlineColor;
-        ENDHLSL
-
-        Pass{
-            Tags{"LightMode"="front"}
-            Cull Back
-            HLSLPROGRAM
-
-            #pragma vertex vert
-            #pragma fragment frag
-
-
-            struct a2v{
-                float4 vertex:POSITION;
-                };
-
-            struct v2f{
-                float4 pos:SV_POSITION;
-                };
-
-            v2f vert(a2v v){
-                v2f o;
-                o.pos=TransformObjectToHClip(v.vertex);
-                return o;
-                }
-
-            half4 frag(v2f i):SV_Target{
-                
-                return half4(1,1,1,1.0);
-            }
-           
-            ENDHLSL
-            }
+        Tags { "RenderType" = "Queue" }
 
         Pass
         {
-            Tags{"LightMode"="edge"}
+            Tags { "LightMode" = "MeshOutline"}
+            Name "MeshOutline"
             Cull Front
+            Blend SrcAlpha One
+            ZWrite Off
 
             HLSLPROGRAM
-
             #pragma vertex vert
             #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            
+            float _OutlineWidth;
+            half4 _OutlineColor;
+            float _OutlinePow;
+            float _OutlineStrength;
 
             struct Attributes
             {
-                float4 vertex:POSITION;
-                float3 normal:NORMAL;
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
             };
 
             struct Varyings
             {
-                float4 pos:SV_POSITION;
+                float4 pos : SV_POSITION;
+                float3 normalWS : TEXCOORD0;
+                float3 posWS : TEXCOORD1;
             };
 
             Varyings vert(Attributes v)
             {
                 Varyings o;
-                o.pos=TransformObjectToHClip(float4(v.vertex.xyz+normalize(v.normal)*_outlineWidth*0.02,1));
+                float3 offset = normalize(v.normal) * _OutlineWidth * 0.02;
+                float4 newPos = float4(v.vertex.xyz + offset, 1);
+                o.pos = TransformObjectToHClip(newPos);
+                o.normalWS = TransformObjectToWorldNormal(v.normal);
+                o.posWS = TransformObjectToWorld(v.vertex.xyz);
                 return o;
             }
 
-            half4 frag(Varyings i):SV_Target
+            half4 frag(Varyings i) : SV_Target
             {
-               return half4(_OutlineColor.rgb,1);
+                i.normalWS = normalize(i.normalWS);
+                float3 viewDir = normalize(i.posWS - GetCameraPositionWS());
+                half ndv = 1-saturate(dot(viewDir, i.normalWS));
+                half alpha = pow(ndv, _OutlinePow) * ndv * _OutlineStrength;
+                half4 color = _OutlineColor;
+                color.a = alpha;
+                return color;
             }
             ENDHLSL
         }
-
-        
-        
-
     }
 }
