@@ -388,10 +388,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: "\u53EF\u4EA4\u4E92\u7269\u4F53"
-  allowedParentRotate:
-    x: 0
-    y: 0
-    z: 0
+  gravityAlignAxis: 4
+  alignTolerance: 10
+  rotateAxis: 2
   rotatePivot: {fileID: 4175610468332308849}
 --- !u!65 &-5473600914907883183
 BoxCollider:
