@@ -247,6 +247,7 @@ public class ItemInteractionController : MonoBehaviour
             //敞开的门
             if (doorCtrl.doorMat == DoorController.DoorMat.Open)
             {
+                Debug.Log("玩家触发敞开的门");
                 ExecuteDoorTransition(doorCollider);
             }
             return;
@@ -294,6 +295,7 @@ public class ItemInteractionController : MonoBehaviour
             //敞开的门
             if (doorCtrl.doorMat == DoorController.DoorMat.Open)
             {
+                Debug.Log("玩家触发敞开的门");
                 ExecuteDoorTransition(doorCollider);
             }
         }

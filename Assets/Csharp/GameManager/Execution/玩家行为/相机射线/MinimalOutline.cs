@@ -4,10 +4,11 @@ using System.Collections.Generic;
 public class MinimalOutline : MonoBehaviour
 {
     [Header("描边设置")]
-    public Color outlineColor = Color.yellow;
+    public Material outlineMaterial = null;
 
     [Range(0.01f, 0.1f)]
     public float outlineWidth = 0.03f;
+
 
     // 所有描边对象
     private List<GameObject> outlineObjects = new List<GameObject>();
@@ -57,17 +58,14 @@ public class MinimalOutline : MonoBehaviour
             MeshRenderer outlineMR =
                 outlineObj.AddComponent<MeshRenderer>();
 
-            Material outlineMat =
-                new Material(Shader.Find("Unlit/Color"));
-
-            outlineMat.color = outlineColor;
+            Material outlineMat =outlineMaterial;
 
             outlineMR.material = outlineMat;
 
-            outlineMR.shadowCastingMode =
-                UnityEngine.Rendering.ShadowCastingMode.Off;
+            //outlineMR.shadowCastingMode =
+            //    UnityEngine.Rendering.ShadowCastingMode.Off;
 
-            outlineMR.receiveShadows = false;
+            //outlineMR.receiveShadows = false;
 
             // 防止描边被原模型挡住
             outlineMR.sortingOrder = -1;
@@ -87,18 +85,7 @@ public class MinimalOutline : MonoBehaviour
         }
     }
 
-    public void SetColor(Color color)
-    {
-        outlineColor = color;
 
-        foreach (GameObject obj in outlineObjects)
-        {
-            MeshRenderer mr = obj.GetComponent<MeshRenderer>();
-
-            if (mr != null)
-                mr.material.color = color;
-        }
-    }
 
     void OnDestroy()
     {
