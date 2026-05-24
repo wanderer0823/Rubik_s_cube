@@ -197,6 +197,12 @@ public class GrabSystem : MonoBehaviour
         if (objRb != null)
         {
             objRb.isKinematic = false;
+
+            // 挂载落地检测器，落到地面后自动冻结
+            var detector = heldObject.gameObject.GetComponent<GroundLandingDetector>();
+            if (detector == null)
+                detector = heldObject.gameObject.AddComponent<GroundLandingDetector>();
+            detector.Begin(wallLayer);
         }
 
         heldObject = null;
