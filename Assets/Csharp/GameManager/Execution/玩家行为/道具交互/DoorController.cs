@@ -87,7 +87,7 @@ public class DoorController : MonoBehaviour
 
     [Header("门向量（运行时自动计算）")]
     public Vector3 DoorinRoomVector;
-    public Vector3 GinMF;
+    //public Vector3 GinMF;
 
     void OnEnable()
     {
@@ -122,7 +122,7 @@ public class DoorController : MonoBehaviour
             CubeRotateController.CurrentGDirinMF
         );
         parentPos = rotation * parentPos.normalized;
-        GinMF = CubeRotateController.CurrentGDirinMF;
+        //GinMF = CubeRotateController.CurrentGDirinMF;
 
         float epsilon = 0.1f;
         if (Mathf.Abs(parentPos.x) < epsilon) parentPos.x = 0;
