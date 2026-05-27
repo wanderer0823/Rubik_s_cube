@@ -41,7 +41,7 @@ public class AllButtonSubscribe : MonoBehaviour
         
         if (currentButton != null)
         {
-            /*__DEBUGTOOL_START__*/Debug.Log($"全局点击：{currentButton.name}");/*__DEBUGTOOL_END__*/
+            ///*__DEBUGTOOL_START__*/Debug.Log($"全局点击：{currentButton.name}");/*__DEBUGTOOL_END__*/
             
             // 这里执行所有按钮的通用逻辑
             MusicAudioManager.Instance.PlaySfx("ui");
