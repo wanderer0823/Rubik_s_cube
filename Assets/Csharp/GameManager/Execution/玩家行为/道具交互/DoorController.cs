@@ -11,10 +11,6 @@ public class DoorController : MonoBehaviour
     [Header("初始化设定（不变）")]
     public DoorMat doorMat = DoorMat.Hard;
     public float softDoorHitSpeed = 5f;
-
-    [Header("方向引用（从dir_door下拖入对应方向物体，如left）")]
-    public Transform dirReference;
-
     [Header("运行时状态")]
     [SerializeField] private bool _isOpened = false;
     [SerializeField] private int needPlateNum = 1;
@@ -107,15 +103,13 @@ public class DoorController : MonoBehaviour
 
     void ReturnDoorVector()
     {
-        // 安全检查
-        if (dirReference == null) return;
-        if (dirReference.parent == null) return;
 
+        Vector3 parentPos = Vector3.zero;
         // dirReference = dir_door/left，其 localPosition = (-5,0,0)
         // dirReference.parent = dir_door
         // dirReference.parent.parent = prefab根节点
-        Vector3 dir = dirReference.localPosition;
-        Vector3 parentPos = dirReference.parent.parent.rotation * dir;
+        Vector3 dir = transform.parent.localPosition;
+        parentPos = transform.root.rotation * dir;
 
         Quaternion rotation = Quaternion.FromToRotation(
             new Vector3(0, -1, 0),
