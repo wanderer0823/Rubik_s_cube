@@ -103,7 +103,12 @@ public class DoorController : MonoBehaviour
 
     void ReturnDoorVector()
     {
+        if (transform.parent == null)
+        {
+            Debug.Log("场景中有没挂好的门");
+            return;
 
+        }
         Vector3 parentPos = Vector3.zero;
         // dirReference = dir_door/left，其 localPosition = (-5,0,0)
         // dirReference.parent = dir_door
