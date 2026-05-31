@@ -167,6 +167,21 @@ public class MusicAudioManager : MonoBehaviour
         ApplyVolumes();
     }
 
+    public float GetMasterVolume()
+    {
+        return masterVolume;
+    }
+
+    public float GetBgmVolume()
+    {
+        return bgmVolume;
+    }
+
+    public float GetSfxVolume()
+    {
+        return sfxVolume;
+    }
+
     public bool HasBgm(string key)
     {
         return bgmClipMap.ContainsKey(key);
