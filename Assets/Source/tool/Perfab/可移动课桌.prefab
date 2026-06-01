@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a608aa6789e80f144a98b4476e10c3d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineMaterial: {fileID: 2100000, guid: d589860d1848c234a81500df2575e736, type: 2}
   outlineWidth: 0.03
 --- !u!114 &5601055084159126269
 MonoBehaviour:
@@ -192,6 +192,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d689b9c64c91042bf43cf431e48272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocityThreshold: 0.05
+  angularThreshold: 0.05
+  maxWaitTime: 5
+  rayDistance: 0.2
+  minStableTime: 0.2
+  normalDotThreshold: 0.9
 --- !u!65 &9141915429928875026
 BoxCollider:
   m_ObjectHideFlags: 0
