@@ -7,18 +7,28 @@ namespace Csharp.GameManager.Presentation.StartUI
     {
         public GameObject StartUI;
         public GameObject CreatorUI;
+        //Yiu
+        private GameState gs;
 
         private void Awake()
         {
-            if (StartUI == null) return;
-            StartUI.SetActive(true);
-            CreatorUI.SetActive(false);
+            if (StartUI != null)
+                StartUI.SetActive(true);
+
+            if (CreatorUI != null)
+                CreatorUI.SetActive(false);
+            //Yiu
+            gs = GameState.Instance;
         }
 
         public void StartGame()
         {
             StartUI.SetActive(false);
             MusicAudioManager.Instance.PlaySfx("afterclass");
+            //Yiu
+            if (GameState.Instance == null)
+                new GameState();
+            GameState.Instance.SetPlayerState(PlayerState.isMoving);
         }
 
         public void ExitGame()

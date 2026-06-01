@@ -122,7 +122,7 @@ public class ViewModeManager : MonoBehaviour
             // 背包已开 → 关闭
             gs.CloseBag();
             GameEvents.onBagCloseExecute();
-            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包关闭");/*__DEBUGTOOL_END__*/
+            Debug.Log("VMM: 背包关闭");
         }
         else
         {
@@ -134,7 +134,7 @@ public class ViewModeManager : MonoBehaviour
 
             gs.OpenBag();
             GameEvents.onBagOpenExecute();
-            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包打开");/*__DEBUGTOOL_END__*/
+            Debug.Log("VMM: 背包打开");
         }
     }
 

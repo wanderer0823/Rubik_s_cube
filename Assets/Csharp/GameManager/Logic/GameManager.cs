@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void RequestTab()
     {
-        //Debug.Log("Tab Pressed����");
+        /*__DEBUGTOOL_START__*/Debug.Log("Tab Pressed：请求打开背包");/*__DEBUGTOOL_END__*/
         GameEvents.onTabRequest();  
     }
 

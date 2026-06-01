@@ -182,9 +182,11 @@ public class UIManager : MonoBehaviour
     {
         if (backpackPanel == null)
         {
+            Debug.Log("背包面板是空的");
         }
         else
         {
+            Debug.Log("UIM:背包面板打开");
             backpackPanel.SetActive(true);
         }
     }

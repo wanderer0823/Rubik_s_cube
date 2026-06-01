@@ -23,7 +23,8 @@ public enum PlayerState
     rotatingFinished,
     isMoving,
     isOpeningBag,    // 新增：打开背包
-    isGrabbing       // 新增：举起物体
+    isGrabbing,       // 新增：举起物体
+    isStartUI
 }
 
 //玩家材质状态
@@ -73,7 +74,7 @@ public class GameState
     {
         ball = ViewModeManager.Instance.ball_p;
         CurrentView = ViewMode.View3;
-        CurrentPlayerState = PlayerState.isMoving;
+        CurrentPlayerState = PlayerState.isStartUI;
         CurrentSurface = new InitCubeSlot.CubeSurface_s();
         RefreshCurrentSurfaceFromRoomID();
     }
@@ -126,10 +127,10 @@ public class GameState
         GameEvents.onViewSwitchExecute(CurrentView);
     }
 #endregion
-#endregion
+    #endregion
 
-#region ===========================================
-#region 修改玩家状态
+    #region ===========================================
+    #region 修改玩家状态
 // 修改玩家状态
 public void SetPlayerState(PlayerState state)
     {
