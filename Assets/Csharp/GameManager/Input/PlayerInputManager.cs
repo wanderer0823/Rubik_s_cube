@@ -33,6 +33,8 @@ public class PlayerInputManager
 
         if (Input.GetKeyDown(KeyCode.E))
             gm.RequestInteract();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            gm.RequestExit();
 
         //欧：检测移动方向
         // 每帧获取移动输入（可能为零）

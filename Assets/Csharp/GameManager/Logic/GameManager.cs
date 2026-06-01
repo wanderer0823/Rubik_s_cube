@@ -121,6 +121,11 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.onMouseLookRequest(mouseMove);
     }
+
+    public void RequestExit()
+    {
+        GameEvents.onGameExitRequest();
+    }
     #endregion
     #endregion
 }

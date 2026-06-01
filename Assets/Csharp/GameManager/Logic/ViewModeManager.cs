@@ -55,6 +55,7 @@ public class ViewModeManager : MonoBehaviour
         //GameEvents.OnOpenDoorRequest += CheckOpenDoor;
         GameEvents.OnRotateRequest += CheckRotate;
         GameEvents.OnRotateFinishRequest += CheckRotateFinish;
+        GameEvents.OnGameExitRequest += CheckExitGame;
         GameEvents.OnMouseLookRequest += CheckMouseMove; //欧
         //订阅UIM请求事件
         GameEvents.OnDirectViewSwitchRequest += CheckDirectViewSwitch;
@@ -77,6 +78,7 @@ public class ViewModeManager : MonoBehaviour
         //GameEvents.OnOpenDoorRequest -= CheckOpenDoor;
         GameEvents.OnRotateRequest -= CheckRotate;
         GameEvents.OnRotateFinishRequest -= CheckRotateFinish;
+        GameEvents.OnGameExitRequest -= CheckExitGame;
         GameEvents.OnMouseLookRequest -= CheckMouseMove; //欧
         //UIM请求事件
         GameEvents.OnDirectViewSwitchRequest -= CheckDirectViewSwitch;
@@ -314,6 +316,27 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
             return;
         GameEvents.onInteractExecute();
         /*__DEBUGTOOL_START__*/Debug.Log("VMM: E键交互执行");/*__DEBUGTOOL_END__*/
+    }
+
+    //esc退出游戏
+    void CheckExitGame()
+    {
+        if(CheckPlayerState(PlayerState.isStartUI))
+        {
+            Application.Quit();
+        }
+        if (gs.IsBagOpen)
+        {
+            // 退出打开的背包
+            gs.CloseBag();
+            GameEvents.onBagCloseExecute();
+            Debug.Log("VMM: 背包关闭");
+        }
+        else
+        {
+            gs.SetPlayerState(PlayerState.isStartUI);
+            GameEvents.onBackStartUI();
+        }
     }
 
     // ===== 新增：滚轮分流 =====

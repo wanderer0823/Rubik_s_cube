@@ -11,6 +11,7 @@ public static class GameEvents
     public static event Action OnOpenDoorRequest;
     public static event Action<RotateType> OnRotateRequest;
     public static event Action<RotateType> OnRotateFinishRequest;
+    public static event Action OnGameExitRequest;
     public static event Action<Vector2> OnMouseLookRequest;//欧
     // UIM请求VMM监听
     public static event Action<ViewMode> OnDirectViewSwitchRequest;
@@ -63,6 +64,8 @@ public static class GameEvents
     public static event Action OnGameWin;
     // 过门成功，小球需要移动
     public static event Action<int> OnRoomTransitionExecute;
+    // StartUI监听VMM：eac重新打开开始界面
+    public static event Action OnBackStartUI;
     #endregion
 
     #region === 请求事件广播方法 ===
@@ -73,6 +76,7 @@ public static class GameEvents
     public static void onOpenDoorRequest() => OnOpenDoorRequest?.Invoke();
     public static void onRotateRequest(RotateType type) => OnRotateRequest?.Invoke(type);
     public static void onRotateFinishRequest(RotateType type) => OnRotateFinishRequest ?.Invoke(type);
+    public static void onGameExitRequest() => OnGameExitRequest?.Invoke();
     public static void onMouseLookRequest(Vector2 mouseMove)=>OnMouseLookRequest?.Invoke(mouseMove);//欧
     // UIM请求VMM监听
     public static void onDirectViewSwitchRequest(ViewMode mode) => OnDirectViewSwitchRequest?.Invoke(mode);
@@ -106,6 +110,8 @@ public static class GameEvents
     public static void isView1Now() => IsView1Now?.Invoke();
     // RPC监听UIM和PA
     public static void calculateNeighbors() =>CalculateNeighbors?.Invoke();
+    // StartUI监听VMM
+    public static void onBackStartUI() => OnBackStartUI?.Invoke();
     // ===== 新增执行广播 =====
     public static void onBagOpenExecute() => OnBagOpenExecute?.Invoke();
     public static void onBagCloseExecute() => OnBagCloseExecute?.Invoke();

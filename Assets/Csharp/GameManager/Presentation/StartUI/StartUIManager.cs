@@ -1,5 +1,7 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Csharp.GameManager.Presentation.StartUI
 {
@@ -8,7 +10,10 @@ namespace Csharp.GameManager.Presentation.StartUI
         public GameObject StartUI;
         public GameObject CreatorUI;
         //Yiu
+        public Button StartButton;
         private GameState gs;
+        private bool haveBackToHere=false;
+        private TextMeshProUGUI buttonText;
 
         private void Awake()
         {
@@ -19,6 +24,21 @@ namespace Csharp.GameManager.Presentation.StartUI
                 CreatorUI.SetActive(false);
             //Yiu
             gs = GameState.Instance;
+        }
+
+        private void Start()
+        {
+            buttonText = StartButton.GetComponent<TextMeshProUGUI>();
+        }
+
+        public void OnEnable()
+        {
+            GameEvents.OnBackStartUI += BackToStartUI;
+        }
+
+        public void OnDisable()
+        {
+            GameEvents.OnBackStartUI -= BackToStartUI;
         }
 
         public void StartGame()
@@ -44,6 +64,24 @@ namespace Csharp.GameManager.Presentation.StartUI
         public void CloseCreator()
         {
             CreatorUI.SetActive(false);
+        }
+
+        //Yiu
+        private void BackToStartUI()
+        {
+            haveBackToHere = true;
+            if(StartButton!=null) StartUI.SetActive(true);
+            RenameStartButton();
+        }
+        private void RenameStartButton()
+        {
+            if(buttonText == null&&StartButton!=null)
+            {
+                buttonText = StartButton.GetComponentInChildren<TextMeshProUGUI>();
+            }
+            if (buttonText != null)
+                buttonText.text = "继续游戏";
+            else Debug.Log("SUM：找不到开始游戏按钮的文字组件");
         }
     }
 }
