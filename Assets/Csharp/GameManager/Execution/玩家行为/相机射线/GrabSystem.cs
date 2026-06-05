@@ -161,7 +161,7 @@ public class GrabSystem : MonoBehaviour
         }
 
         gs.SetPlayerState(PlayerState.isGrabbing);
-        Debug.Log($"GrabSystem: 抓取 {obj.gameObject.name}, pivot={currentPivot.name}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: 抓取 {obj.gameObject.name}, pivot={currentPivot.name}");/*__DEBUGTOOL_END__*/
     }
 
     void HoldObject()
@@ -189,7 +189,7 @@ public class GrabSystem : MonoBehaviour
     {
         if (heldObject == null) return;
 
-        Debug.Log($"GrabSystem: 释放 {heldObject.gameObject.name}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: 释放 {heldObject.gameObject.name}");/*__DEBUGTOOL_END__*/
 
         DisableOutline(heldObject);
 
@@ -232,6 +232,6 @@ public class GrabSystem : MonoBehaviour
         heldObject.transform.RotateAround(pivotPos, currentRotateAxis, sign * rotateStepAngle);
         lastRotateTime = Time.unscaledTime;
 
-        Debug.Log($"GrabSystem: 绕 {currentRotateAxis} 旋转 {sign * rotateStepAngle}°");
+        /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: 绕 {currentRotateAxis} 旋转 {sign * rotateStepAngle}°");/*__DEBUGTOOL_END__*/
     }
 }

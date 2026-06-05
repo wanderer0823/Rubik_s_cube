@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,7 +81,7 @@ namespace Csharp.GameManager.Presentation.StartUI
             }
             if (buttonText != null)
                 buttonText.text = "继续游戏";
-            else Debug.Log("SUM：找不到开始游戏按钮的文字组件");
+            else /*__DEBUGTOOL_START__*/Debug.Log("SUM：找不到开始游戏按钮的文字组件");/*__DEBUGTOOL_END__*/
         }
     }
 }

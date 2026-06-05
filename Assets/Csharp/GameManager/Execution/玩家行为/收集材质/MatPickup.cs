@@ -1,9 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-/// <summary>
-/// ����ʰȡ������� View3 ������ E ��ȡ���ʵ�������
-/// ���ڳ����в��ʵ��� prefab �ϡ�
-/// </summary>
 public class MatPickup : MonoBehaviour
 {
     [Header("材质类型")]
@@ -49,7 +45,7 @@ public class MatPickup : MonoBehaviour
             backpack.AddMat(matType, displayName, description, detailImage);
         }
 
-        /*__DEBUGTOOL_START__*/Debug.Log($"ʰȡ���ʣ�{displayName}");/*__DEBUGTOOL_END__*/
+        /*__DEBUGTOOL_START__*/Debug.Log($"拿到{displayName}");/*__DEBUGTOOL_END__*/
         gameObject.SetActive(false);
     }
 }

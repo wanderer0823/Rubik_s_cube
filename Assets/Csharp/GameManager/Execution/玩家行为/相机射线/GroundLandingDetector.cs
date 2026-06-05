@@ -2,18 +2,18 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// ÂäµØ¼ì²âÆ÷£ºÎïÌåÊÍ·ÅºóµÈ´ýÂäµØ£¬Âäµ½µØÃæ£¨Walls ²ã£©ºó¶³½á¡£
-/// ÓÉ GrabSystem ÔÚÊÍ·ÅÎïÌåÊ±¶¯Ì¬¹ÒÔØµ½ÎïÌåÉÏ¡£
+/// ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·Åºï¿½È´ï¿½ï¿½ï¿½Ø£ï¿½ï¿½äµ½ï¿½ï¿½ï¿½æ£¨Walls ï¿½ã£©ï¿½ó¶³½á¡£
+/// ï¿½ï¿½ GrabSystem ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½
 /// </summary>
 public class GroundLandingDetector : MonoBehaviour
 {
-    [Header("¼ì²â²ÎÊý")]
-    public float velocityThreshold = 0.05f;     // ËÙ¶ÈµÍÓÚ´ËÖµÊÓÎª¾²Ö¹
-    public float angularThreshold = 0.05f;      // ½ÇËÙ¶ÈµÍÓÚ´ËÖµÊÓÎª¾²Ö¹
-    public float maxWaitTime = 5f;              // ×î³¤µÈ´ýÊ±¼ä
-    public float rayDistance = 0.2f;            // µ×²¿ÉäÏß¼ì²â¾àÀë
-    public float minStableTime = 0.2f;          // ¾²Ö¹³ÖÐøÊ±¼ä£¬±ÜÃâ¶¶¶¯ÎóÅÐ
-    public float normalDotThreshold = 0.9f;     // ·¨ÏßÓëworldUpµÄµã»ýãÐÖµ£¨Ô¼25¶ÈÈÝ²î£©
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    public float velocityThreshold = 0.05f;     // ï¿½Ù¶Èµï¿½ï¿½Ú´ï¿½Öµï¿½ï¿½Îªï¿½ï¿½Ö¹
+    public float angularThreshold = 0.05f;      // ï¿½ï¿½ï¿½Ù¶Èµï¿½ï¿½Ú´ï¿½Öµï¿½ï¿½Îªï¿½ï¿½Ö¹
+    public float maxWaitTime = 5f;              // ï¿½î³¤ï¿½È´ï¿½Ê±ï¿½ï¿½
+    public float rayDistance = 0.2f;            // ï¿½×²ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float minStableTime = 0.2f;          // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¬ï¿½ï¿½ï¿½â¶¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float normalDotThreshold = 0.9f;     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½worldUpï¿½Äµï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ô¼25ï¿½ï¿½ï¿½Ý²î£©
 
     private Rigidbody rb;
     private Collider col;
@@ -21,7 +21,7 @@ public class GroundLandingDetector : MonoBehaviour
     private bool started = false;
 
     /// <summary>
-    /// GrabSystem ÊÍ·ÅÎïÌåÊ±µ÷ÓÃ£¬Æô¶¯ÂäµØ¼ì²â
+    /// GrabSystem ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½
     /// </summary>
     public void Begin(LayerMask walls)
     {
@@ -34,7 +34,7 @@ public class GroundLandingDetector : MonoBehaviour
 
         if (rb == null || col == null)
         {
-            Debug.LogWarning($"GroundLandingDetector: {gameObject.name} È±ÉÙ Rigidbody »ò Collider");
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"GroundLandingDetector: {gameObject.name} È±ï¿½ï¿½ Rigidbody ï¿½ï¿½ Collider");/*__DEBUGTOOL_END__*/
             Destroy(this);
             return;
         }
@@ -56,17 +56,17 @@ public class GroundLandingDetector : MonoBehaviour
             {
                 stableTime += Time.deltaTime;
 
-                // ³ÖÐø¾²Ö¹³¬¹ýãÐÖµ²Å¼ì²â
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Å¼ï¿½ï¿½
                 if (stableTime >= minStableTime)
                 {
                     if (CheckGround())
                     {
                         rb.isKinematic = true;
-                        Debug.Log($"{gameObject.name} ÂäµØ£¬ÒÑ¶³½á");
+                        /*__DEBUGTOOL_START__*/Debug.Log($"{gameObject.name} ï¿½ï¿½Ø£ï¿½ï¿½Ñ¶ï¿½ï¿½ï¿½");/*__DEBUGTOOL_END__*/
                         Destroy(this);
                         yield break;
                     }
-                    // ¼ì²âÊ§°ÜËµÃ÷ÎïÌå¿¨ÔÚÇ½ÉÏµÈÎ»ÖÃ£¬ÖØÖÃÎÈ¶¨¼ÆÊ±¼ÌÐøµÈ
+                    // ï¿½ï¿½ï¿½Ê§ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½å¿¨ï¿½ï¿½Ç½ï¿½Ïµï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     stableTime = 0f;
                 }
             }
@@ -79,12 +79,12 @@ public class GroundLandingDetector : MonoBehaviour
             yield return null;
         }
 
-        Debug.LogWarning($"{gameObject.name} µÈ´ýÂäµØ³¬Ê±£¬Ìø¹ý¶³½á");
+        /*__DEBUGTOOL_START__*/Debug.LogWarning($"{gameObject.name} ï¿½È´ï¿½ï¿½ï¿½Ø³ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");/*__DEBUGTOOL_END__*/
         Destroy(this);
     }
 
     /// <summary>
-    /// µ×²¿¶àµãÉäÏß¼ì²â£¬È·ÈÏÊÇ·ñÂäÔÚµØÃæ£¨·¨Ïß³¯ÉÏ£©
+    /// ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½â£¬È·ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½æ£¨ï¿½ï¿½ï¿½ß³ï¿½ï¿½Ï£ï¿½
     /// </summary>
     bool CheckGround()
     {
@@ -123,8 +123,8 @@ public class GroundLandingDetector : MonoBehaviour
         Vector3 avgNormal = (sumNormal / hitCount).normalized;
         float dot = Vector3.Dot(avgNormal, worldUp);
 
-        Debug.Log($"{gameObject.name} ÂäµØ¼ì²â£º{hitCount}/{samplePoints.Length} ÃüÖÐ, " +
-                  $"Æ½¾ù·¨Ïß={avgNormal}, dot={dot:F2}");
+        /*__DEBUGTOOL_START__*/Debug.Log($"{gameObject.name} ï¿½ï¿½Ø¼ï¿½â£º{hitCount}/{samplePoints.Length} ï¿½ï¿½ï¿½ï¿½, " +
+                  $"Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½={avgNormal}, dot={dot:F2}");/*__DEBUGTOOL_END__*/
 
         return dot >= normalDotThreshold;
     }

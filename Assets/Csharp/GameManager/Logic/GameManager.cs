@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     public void RequestViewSwitch()
     {
-        //Debug.Log("ViewSwitch����");
+        //Debug.Log("按键F的ViewSwitch请求");
         GameEvents.onViewSwitchRequest(); 
     }
 

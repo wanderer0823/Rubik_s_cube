@@ -124,7 +124,7 @@ public class ViewModeManager : MonoBehaviour
             // 背包已开 → 关闭
             gs.CloseBag();
             GameEvents.onBagCloseExecute();
-            Debug.Log("VMM: 背包关闭");
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包关闭");/*__DEBUGTOOL_END__*/
         }
         else
         {
@@ -136,7 +136,7 @@ public class ViewModeManager : MonoBehaviour
 
             gs.OpenBag();
             GameEvents.onBagOpenExecute();
-            Debug.Log("VMM: 背包打开");
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包打开");/*__DEBUGTOOL_END__*/
         }
     }
 
@@ -166,14 +166,14 @@ public class ViewModeManager : MonoBehaviour
             GameEvents.onBagCloseExecute();
         }
 
+        /*__DEBUGTOOL_START__*/Debug.Log("VMM：开始检查F状态");/*__DEBUGTOOL_END__*/
         if (!CheckPlayerState(PlayerState.rotatingFinished)
             && !CheckPlayerState(PlayerState.turningFinished)
             && !CheckPlayerState(PlayerState.isMoving))
+        {
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM：PlayerState状态不能切换视角！");/*__DEBUGTOOL_END__*/
             return;
-
-        if (isRotating)//在旋转的时候不能切视角
-            return;
-
+        }
         gs.FSetView();
     }
 
@@ -330,7 +330,7 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
             // 退出打开的背包
             gs.CloseBag();
             GameEvents.onBagCloseExecute();
-            Debug.Log("VMM: 背包关闭");
+            /*__DEBUGTOOL_START__*/Debug.Log("VMM: 背包关闭");/*__DEBUGTOOL_END__*/
         }
         else
         {
