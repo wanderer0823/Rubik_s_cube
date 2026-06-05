@@ -105,7 +105,7 @@ public class DoorController : MonoBehaviour
     {
         if (transform.parent == null)
         {
-            //Debug.Log("场景中有没挂好的门");
+            Debug.Log("场景中有没挂好的门");
             return;
 
         }
