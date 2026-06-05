@@ -48,6 +48,7 @@ public class PlayerAction : MonoBehaviour
     private PlayerPhysicsProfile currentProfile;
 
     private ItemInteractionController IIC;
+    private float cameraShakeSpeed = 1.0f;
     void OnEnable()
     {
         GameEvents.OnTabExecute += OnTabPressed;
@@ -106,7 +107,6 @@ public class PlayerAction : MonoBehaviour
             ResetUnpressedPlates();
             /*__DEBUGTOOL_START__*/Debug.Log("Bounce跳跃结束，已重置压力板");/*__DEBUGTOOL_END__*/
         }
-
     }
 
     //玩家打开/关闭背包系统的UI
@@ -122,10 +122,6 @@ public class PlayerAction : MonoBehaviour
     public Vector3 deltaHorVelocity;
     void Move(Vector3 moveDir)
     {
-        if(moveDir != Vector3.zero)
-        {
-            //Debug.Log("VMM：玩家正在输入WASD生效中");
-        }
         // 获取输入方向（本地转世界）
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
         float targetSpeed = moveSpeed;
@@ -142,6 +138,11 @@ public class PlayerAction : MonoBehaviour
             // 限制单帧最大加速度
             float maxDelta = moveAcceleration * Time.fixedDeltaTime;
             deltaHorVelocity = Vector3.ClampMagnitude(deltaHorVelocity, maxDelta);
+            // Yiu: 新增镜头摇晃
+            if (!isBouncing)
+            {
+                GameEvents.onWalkMovement(rb.velocity);//由view3 的CA监听
+            }
         }
         else
         {
@@ -152,6 +153,8 @@ public class PlayerAction : MonoBehaviour
             deltaHorVelocity = -currentHorVelocity.normalized * decel;
             if (float.IsNaN(deltaHorVelocity.x))
                 deltaHorVelocity = Vector3.zero;
+            //Yiu:镜头控制
+            GameEvents.onStopMovement();
         }
 
         // 叠加到速度上（保留 Y 轴）

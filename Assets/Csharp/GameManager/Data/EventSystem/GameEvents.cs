@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public static class GameEvents
@@ -66,6 +67,9 @@ public static class GameEvents
     public static event Action<int> OnRoomTransitionExecute;
     // StartUI监听VMM：eac重新打开开始界面
     public static event Action OnBackStartUI;
+    // CA监听PA，相机走路晃动
+    public static event Action<Vector3> OnWalkMovement;
+    public static event Action OnStopMovement;
     #endregion
 
     #region === 请求事件广播方法 ===
@@ -123,5 +127,7 @@ public static class GameEvents
     public static void onGameWin() => OnGameWin?.Invoke();
     public static void onRoomTransitionExecute(int newRoomID) => OnRoomTransitionExecute?.Invoke(newRoomID);
 
+    public static void onWalkMovement(Vector3 v) => OnWalkMovement?.Invoke(v);
+    public static void onStopMovement() => OnStopMovement?.Invoke();
     #endregion
 }
