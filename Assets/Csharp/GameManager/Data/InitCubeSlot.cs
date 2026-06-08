@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[ExecuteAlways]
 public class InitCubeSlot : MonoBehaviour
 {
     public GameObject LogicCube;                //逻辑魔方
@@ -174,7 +175,7 @@ public class InitCubeSlot : MonoBehaviour
     [System.Serializable]
     public class FaceState  //每个方向的数据
     {
-        public bool HasDoor = true;   //房间的这一面是否有门
+        public bool HasDoor;   //房间的这一面是否有门
         public bool isPassable; //是否可通行
     }
     #endregion
