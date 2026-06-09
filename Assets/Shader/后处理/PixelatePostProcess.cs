@@ -3,13 +3,18 @@ using UnityEngine;
 [ExecuteAlways]
 public class PixelatePostProcess : MonoBehaviour
 {
-    [SerializeField][Range(1f, 100f)] private float pixelSize = 1f;
+    [Range(1, 16)]
+    public int pixelSize = 4;
 
-    private void OnValidate()
+    [Range(0, 1)]
+    public float blurStrength = 0.25f;
+
+    private void Update()
     {
-        if (PixelateRenderFeature.instance != null)
-        {
-            PixelateRenderFeature.instance.settings.pixelSize = pixelSize;
-        }
+        if (PixelateRenderFeature.instance == null)
+            return;
+
+        PixelateRenderFeature.instance.settings.pixelSize = pixelSize;
+        PixelateRenderFeature.instance.settings.blurStrength = blurStrength;
     }
 }
