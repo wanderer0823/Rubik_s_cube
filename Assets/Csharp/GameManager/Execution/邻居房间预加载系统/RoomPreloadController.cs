@@ -83,6 +83,15 @@ public class RoomPreloadController : MonoBehaviour
             var room = cubeData.rooms[surface.roomID];
             room?.ResetIsPassible();
         }
+        
+        int currentRoomId = currentSurface.roomID;
+        List<int> allNeighborRoomIds = new List<int>();
+        foreach (var surface in fiveSurfaces)
+        {
+            if (surface.roomID != currentRoomId)   // 排除当前房间自己
+                allNeighborRoomIds.Add(surface.roomID);
+        }
+        Debug.Log($"[RoomPreload] 当前房间 {currentRoomId} 的周围邻居房间ID（不考虑门通道）: {string.Join(", ", allNeighborRoomIds)}");
 
         foreach (var surface in fiveSurfaces)
         {

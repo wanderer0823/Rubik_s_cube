@@ -36,6 +36,15 @@ public class ItemInteractionController : MonoBehaviour
         gs = GameState.Instance;
         playerAction = GetComponent<PlayerAction>();
         groundLayer = LayerMask.NameToLayer("Walls");
+        
+        if (cubeData == null)
+        {
+            var vmm = ViewModeManager.Instance;
+            if (vmm != null)
+                cubeData = vmm.cubeData;
+            else
+                /*__DEBUGTOOL_START__*/Debug.LogError("ItemInteractionController: 无法获取 ViewModeManager");/*__DEBUGTOOL_END__*/
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -204,6 +213,34 @@ public class ItemInteractionController : MonoBehaviour
         {
             /*__DEBUGTOOL_START__*/Debug.Log("Door碰撞：未找到DoorController");/*__DEBUGTOOL_END__*/
             return;
+        }
+        
+        if (doorCtrl.targetRoomID >= 0)
+        {
+            // 检查 cubeData 有效性
+            if (cubeData != null && doorCtrl.targetRoomID >= 0 && doorCtrl.targetRoomID < cubeData.rooms.Count)
+            {
+                var targetRoom = cubeData.rooms[doorCtrl.targetRoomID];
+                if (targetRoom != null)
+                {
+                    /*__DEBUGTOOL_START__*/Debug.Log($"门 {doorCtrl.gameObject.name} 设置了优先传送房间 {doorCtrl.targetRoomID}，强制传送，跳过所有通行判断");/*__DEBUGTOOL_END__*/
+                    GameState.Instance.CurrentRoomID = doorCtrl.targetRoomID;
+                    GameState.Instance.RefreshCurrentSurfaceFromRoomID();
+                    if (playerAction != null)
+                        playerAction.ResetToStartPosition();
+                    GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
+                    GameEvents.calculateNeighbors();
+                    return; // 直接返回，不再执行任何后面的通行判断
+                }
+                else
+                {
+                    /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的优先传送房间ID {doorCtrl.targetRoomID} 对应的房间数据为 null，继续执行原有通行判断");/*__DEBUGTOOL_END__*/
+                }
+            }
+            else
+            {
+                /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的优先传送房间ID {doorCtrl.targetRoomID} 无效（超出范围或 cubeData 为空），继续执行原有通行判断");/*__DEBUGTOOL_END__*/
+            }
         }
 
         var mat = gs.CurrentMatState;
