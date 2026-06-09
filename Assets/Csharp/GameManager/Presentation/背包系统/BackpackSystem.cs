@@ -13,6 +13,10 @@ public class BackpackSystem : MonoBehaviour
     [Header("ScrollRect")]
     [SerializeField] private ScrollRect scrollRect;
 
+    [Header("测试用")] [SerializeField] private bool addMat = false;
+    [Header("材质拾取物列表（拖入场景中的MatPickup物体）")]
+    [SerializeField] private List<MatPickup> materialPickups = new List<MatPickup>();
+
     [Header("材质球Steel/Glass/Bounce的背包组件")]
     [SerializeField] private List<BackpackSlotUI> matSlots;
 
@@ -75,6 +79,92 @@ public class BackpackSystem : MonoBehaviour
     void Start()
     {
         InitDetailPanel();
+        if (addMat)
+        {
+            InitializeMaterialsFromPickups();
+        }
+    }
+    
+    private void InitializeMaterialsFromPickups()
+    {
+        if (materialPickups == null || materialPickups.Count == 0)
+        {
+            /*__DEBUGTOOL_START__*/
+            Debug.Log("BackpackSystem: 材质拾取物列表为空，跳过初始化");
+            /*__DEBUGTOOL_END__*/
+            return;
+        }
+
+        foreach (var pickup in materialPickups)
+        {
+            if (pickup == null)
+            {
+                /*__DEBUGTOOL_START__*/
+                Debug.LogWarning("BackpackSystem: 列表中存在空的拾取物引用，已跳过");
+                /*__DEBUGTOOL_END__*/
+                continue;
+            }
+            
+            AddMatFromPickup(pickup);
+        }
+    }
+
+    /// <summary>
+    /// 从 MatPickup 读取配置并添加到背包（带去重）
+    /// </summary>
+    private void AddMatFromPickup(MatPickup pickup)
+    {
+        // 去重：检查是否已经添加过同类型材质
+        foreach (var existingSlot in matSlots)
+        {
+            if (existingSlot != null && existingSlot.LinkedMatState == pickup.matType)
+            {
+                /*__DEBUGTOOL_START__*/
+                Debug.Log($"BackpackSystem: 材质 [{pickup.displayName}] 已存在，跳过");
+                /*__DEBUGTOOL_END__*/
+                return;
+            }
+        }
+
+        // 获取图标（优先使用 Pickup 上的自定义图标，否则使用默认）
+        Sprite iconSprite = pickup.iconSprite != null ? pickup.iconSprite : pickup.matType switch
+        {
+            PlayerMatState.Steel => steelIconSprite,
+            PlayerMatState.Glass => glassIconSprite,
+            PlayerMatState.Bounce => bounceIconSprite,
+            _ => null
+        };
+
+        // 实例化槽位
+        GameObject go = Instantiate(matSlotPrefab, matSection);
+        go.name = pickup.displayName;
+        BackpackSlotUI newSlot = go.GetComponent<BackpackSlotUI>();
+
+        if (newSlot == null)
+        {
+            Debug.LogError("BackpackSystem: 材质预制体缺少 BackpackSlotUI");
+            Destroy(go);
+            return;
+        }
+
+        newSlot.Init(
+            this,
+            BackpackSlotUI.SlotType.Material,
+            pickup.displayName,
+            pickup.description,
+            () => GameEvents.onMatChangeRequest(pickup.matType),
+            pickup.detailImage,
+            pickup.matType,
+            iconSprite,
+            Color.white,
+            defaultFont
+        );
+
+        matSlots.Add(newSlot);
+        
+        /*__DEBUGTOOL_START__*/
+        Debug.Log($"BackpackSystem: 从拾取物添加材质 [{pickup.displayName}]");
+        /*__DEBUGTOOL_END__*/
     }
 
     // ===== 初始化 =====

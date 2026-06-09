@@ -11180,6 +11180,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 1378630423}
+  addMat: 1
+  materialPickups:
+  - {fileID: 846587664061074082, guid: af08ac52a9bd2fd409c27c93c3125759, type: 3}
+  - {fileID: 8196199831548590892, guid: 6e2604eaf2dfa1943beecf431c8f114b, type: 3}
+  - {fileID: 3798150675093109347, guid: 281b97288ab4a0b499283353e990f5f4, type: 3}
   matSlots:
   - {fileID: 507909099}
   - {fileID: 617736715}
@@ -31819,7 +31824,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
