@@ -15,6 +15,9 @@ public class DoorController : MonoBehaviour
     [SerializeField] private bool _isOpened = false;
     [SerializeField] private int needPlateNum = 1;
     private int currentPlateNum = 0;
+    
+    [Header("传送覆盖（可选）")]
+    public int targetRoomID = -1; 
 
     [Header("开门动画设置（仅Hard门）")]
     [SerializeField] private float doorOpenAngle = 90f;
