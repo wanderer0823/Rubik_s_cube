@@ -105,7 +105,7 @@ public class ItemInteractionController : MonoBehaviour
         if (gs == null) return;
         var mat = gs.CurrentMatState;
 
-        if (!other.CompareTag("Wind"))
+        if (!other.CompareTag("Wind")||gs.CurrentMatState==PlayerMatState.Steel)
             return;
 
         //if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
