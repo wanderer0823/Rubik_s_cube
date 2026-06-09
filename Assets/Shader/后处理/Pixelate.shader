@@ -4,6 +4,7 @@ Shader "Unlit/Pixelate"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _PixelSize ("Pixel Size", Float) = 10.0
+        _BlurStrength("Blur Strength",Range(0,1))=0.25
     }
 
     SubShader
@@ -28,8 +29,9 @@ Shader "Unlit/Pixelate"
             SAMPLER(sampler_MainTex);
 
             CBUFFER_START(UnityPerMaterial)
-                float4 _MainTex_ST;
-                float _PixelSize;
+            float4 _MainTex_ST;
+            float _PixelSize;
+            float _BlurStrength;
             CBUFFER_END
 
             struct Attributes
@@ -52,10 +54,14 @@ Shader "Unlit/Pixelate"
                 return output;
             }
 
-            float4 frag(Varyings input) : SV_Target
+            float4 frag(Varyings input):SV_Target
             {
-                float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
-                return color;
+                float2 uv=input.uv;
+                float2 texel=1.0/_ScreenParams.xy;
+                float4 blur=(SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(-1,-1))+2*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(0,-1))+SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(1,-1))+2*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(-1,0))+4*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv)+2*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(1,0))+SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(-1,1))+2*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(0,1))+SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv+texel*float2(1,1)))/16;
+                float2 p=floor(uv*_ScreenParams.xy/_PixelSize)*_PixelSize/_ScreenParams.xy;
+                float4 pixel=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,p);
+                return lerp(pixel,blur,_BlurStrength);
             }
             ENDHLSL
         }
