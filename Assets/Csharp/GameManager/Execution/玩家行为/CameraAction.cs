@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraAction : MonoBehaviour
 {
     public Transform player;
-    public Vector3 offset = new Vector3(0, 3f, 0);
+    public Vector3 offset = new Vector3(0, 1f, 0);
 
     [SerializeField] private float minAngle = -80f;  // 向下看
     [SerializeField] private float maxAngle = 80f;   // 向上看
@@ -19,7 +19,7 @@ public class CameraAction : MonoBehaviour
     private float bobFrequency = 4.2f;        // 摇晃频率（越高摇晃越快）
     private float bobAmplitude = 0.05f;     // 摇晃幅度
     [SerializeField] private float verticalShakeInstence = 1.7f;
-    [SerializeField] private float horizontalShakeInstance = 5.0f;
+    [SerializeField] private float horizontalShakeInstance = 1.7f;
     private float landBobDamping = 0.9f;    // 着陆时的摇晃衰减
     #endregion
 
@@ -75,7 +75,7 @@ public class CameraAction : MonoBehaviour
         float horizontalBob = horizontalShakeInstance * Mathf.Cos(bobTimer * Mathf.PI * 0.5f) * (dynamicAmplitude * 0.5f);
 
         // 应用摇晃到相机 offset
-        offset.y = 3f + verticalBob;
+        offset.y = 1.7f + verticalBob;
         offset.x = horizontalBob;
     }
 
