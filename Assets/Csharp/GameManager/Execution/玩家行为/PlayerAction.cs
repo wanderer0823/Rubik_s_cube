@@ -324,6 +324,8 @@ public class PlayerAction : MonoBehaviour
             return;
 
         transform.position = GetResolvedStartPosition();
+        ContinuousCollisionDetector3D ccd=gameObject.GetComponent<ContinuousCollisionDetector3D>();
+        ccd.OnTeleport(transform.position);
 
         if (rb == null)
             return;
