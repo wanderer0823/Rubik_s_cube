@@ -204,6 +204,17 @@ public class ContinuousCollisionDetector3D : MonoBehaviour
     {
     }
 
+    public void OnTeleport(Vector3 newPosition)
+    {
+        // 直接将 previousPosition 设为新位置，这样下一帧计算的位移 ≈ 0
+        previousPosition = newPosition;
+        // 强制跳过下一次检测，避免刚刚传送完就做 sweep
+        skipNextDetection = true;
+        // 同步刚体位置（如果外部已经设置，这里只是确保记录一致）
+        if (rb != null) rb.position = newPosition;
+        transform.position = newPosition;
+    }
+
     private float GetColliderMinWorldWidth()
     {
         switch (playerCollider)
