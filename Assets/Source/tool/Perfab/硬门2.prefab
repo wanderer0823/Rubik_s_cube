@@ -463,13 +463,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorMat: 0
   softDoorHitSpeed: 5
-  dirReference: {fileID: 0}
   _isOpened: 0
   needPlateNum: 1
+  targetRoomID: -1
   doorOpenAngle: 90
   doorAnimSpeed: 2
   DoorinRoomVector: {x: 0, y: 0, z: 0}
-  GinMF: {x: 0, y: 0, z: 0}
 --- !u!1 &4638034182635223000
 GameObject:
   m_ObjectHideFlags: 0

@@ -714,6 +714,7 @@ MonoBehaviour:
   softDoorHitSpeed: 8
   _isOpened: 0
   needPlateNum: 1
+  targetRoomID: -1
   doorOpenAngle: 90
   doorAnimSpeed: 25
   DoorinRoomVector: {x: 0, y: 0, z: 1}
@@ -1151,8 +1152,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.38136712, y: 19.047129, z: -1.3532835}
+  m_Size: {x: 9.270969, y: 8.619575, z: 2.9040515}
+  m_Center: {x: -0.556801, y: 19.138275, z: -0.90125775}
 --- !u!95 &7714858012363343201
 Animator:
   serializedVersion: 5
@@ -1723,8 +1724,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.20189436, y: 18.998579, z: 0}
+  m_Size: {x: 2, y: 2.0000005, z: 3.021889}
+  m_Center: {x: -0.20189434, y: 18.998579, z: -2.4344068}
 --- !u!1 &1295681992776253893
 GameObject:
   m_ObjectHideFlags: 0
