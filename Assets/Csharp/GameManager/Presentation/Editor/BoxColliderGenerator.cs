@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,12 +39,18 @@ public class BoxColliderGenerator : EditorWindow
             return;
         }
 
+        // 开始 Undo 记录
+        Undo.IncrementCurrentGroup();
+        int undoGroup = Undo.GetCurrentGroup();
+
         int totalColliders = 0;
         foreach (GameObject obj in selected)
         {
             totalColliders += GenerateBoxCollidersRecursive(obj);
         }
 
+        // 结束 Undo 记录
+        Undo.CollapseUndoOperations(undoGroup);
         EditorUtility.DisplayDialog("成功", $"已生成 {totalColliders} 个BoxCollider", "确定");
     }
 
@@ -83,16 +90,26 @@ public class BoxColliderGenerator : EditorWindow
             return 0;
         }
 
+        // 如果选择了重新生成，先删除旧的 BoxCollider
         if (overwriteExisting)
         {
             BoxCollider[] existingColliders = target.GetComponents<BoxCollider>();
             foreach (BoxCollider collider in existingColliders)
             {
-                DestroyImmediate(collider);
+                // Undo 记录删除操作
+                Undo.DestroyObjectImmediate(collider);
+            }
+        }
+        else
+        {
+            // 如果已经有 BoxCollider 就跳过
+            if (target.GetComponent<BoxCollider>() != null)
+            {
+                return 0;
             }
         }
 
-        // 使用 KD-Tree 分析网格分离
+        // 分析 Mesh，找出分离的网格部分
         List<List<Vector3>> separatedMeshGroups = AnalyzeMeshSeparationWithKDTree(mesh);
 
         int colliderCount = 0;
@@ -100,14 +117,36 @@ public class BoxColliderGenerator : EditorWindow
         {
             if (meshGroup.Count == 0) continue;
 
-            BoxCollider collider = target.AddComponent<BoxCollider>();
+            // Undo 记录添加组件操作
+            BoxCollider collider = Undo.AddComponent<BoxCollider>(target);
             Bounds bounds = CalculateBoundsFromVertices(meshGroup);
 
+            // Undo 记录属性修改
+            Undo.RecordObject(collider, "设置 BoxCollider 属性");
             collider.center = bounds.center;
             collider.size = bounds.size;
             collider.isTrigger = false;
 
             colliderCount++;
+        }
+
+        // 保存修改
+        if (colliderCount > 0)
+        {
+            // 记录目标物体的修改
+            EditorUtility.SetDirty(target);
+
+            // 检查是否是 Prefab
+            string assetPath = AssetDatabase.GetAssetPath(target);
+            if (!string.IsNullOrEmpty(assetPath) && assetPath.EndsWith(".prefab"))
+            {
+                // 是 Prefab 资源，保存它
+                PrefabUtility.SavePrefabAsset(target);
+            }
+
+            // 刷新资源数据库
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         return colliderCount;
@@ -121,7 +160,6 @@ public class BoxColliderGenerator : EditorWindow
             return new List<List<Vector3>>();
         }
 
-        // 构建 KD-Tree 索引
         int[] indices = new int[vertices.Length];
         for (int i = 0; i < vertices.Length; i++)
         {
@@ -129,16 +167,12 @@ public class BoxColliderGenerator : EditorWindow
         }
 
         KDTree kdtree = new KDTree(vertices, indices);
-
-        // 使用并查集优化连通性检测
         UnionFind uf = new UnionFind(vertices.Length);
 
-        // 为每个顶点查找邻近顶点，建立连通关系
         float sqrThreshold = meshSeparationThreshold * meshSeparationThreshold;
 
         for (int i = 0; i < vertices.Length; i++)
         {
-            // 使用 KD-Tree 快速查询邻近顶点
             List<int> neighbors = kdtree.FindNearby(vertices[i], meshSeparationThreshold);
 
             foreach (int neighbor in neighbors)
@@ -150,7 +184,6 @@ public class BoxColliderGenerator : EditorWindow
             }
         }
 
-        // 按连通分量分组
         Dictionary<int, List<Vector3>> groups = new Dictionary<int, List<Vector3>>();
         for (int i = 0; i < vertices.Length; i++)
         {
@@ -202,7 +235,6 @@ public class BoxColliderGenerator : EditorWindow
             int axis = depth % 3;
             int mid = (start + end) / 2;
 
-            // 快速选择算法找中位数
             QuickSelect(indices, start, end, mid, axis);
 
             KDNode node = new KDNode(indices[mid], vertices[indices[mid]]);
@@ -298,7 +330,7 @@ public class BoxColliderGenerator : EditorWindow
         }
     }
 
-    // 并查集优化连通性检测
+    // 并查集实现
     private class UnionFind
     {
         private int[] parent;
@@ -319,7 +351,7 @@ public class BoxColliderGenerator : EditorWindow
         {
             if (parent[x] != x)
             {
-                parent[x] = Find(parent[x]); // 路径压缩
+                parent[x] = Find(parent[x]);
             }
             return parent[x];
         }
@@ -331,7 +363,6 @@ public class BoxColliderGenerator : EditorWindow
 
             if (px == py) return;
 
-            // 按秩合并
             if (rank[px] < rank[py])
             {
                 parent[px] = py;
