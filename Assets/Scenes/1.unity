@@ -1578,7 +1578,7 @@ PrefabInstance:
     - target: {fileID: 8634118983830504657, guid: 80fe18ceed993a744acc60aa25e6806c,
         type: 3}
       propertyPath: m_Size.x
-      value: 1.41
+      value: 1.26
       objectReference: {fileID: 0}
     - target: {fileID: 8634118983830504657, guid: 80fe18ceed993a744acc60aa25e6806c,
         type: 3}
@@ -4197,7 +4197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &335150734
 Transform:
   m_ObjectHideFlags: 0
@@ -12117,11 +12117,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 42
       objectReference: {fileID: 0}
-    - target: {fileID: 2379493012541061857, guid: 2c304175e3d960548b4987977bd15bad,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3048506923603779675, guid: 2c304175e3d960548b4987977bd15bad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12171,6 +12166,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694728670959060989, guid: 2c304175e3d960548b4987977bd15bad,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.04161
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23916,7 +23916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 41
+  TestRoomID: 42
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}

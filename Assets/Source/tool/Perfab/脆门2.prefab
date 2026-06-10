@@ -711,9 +711,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorMat: 1
-  softDoorHitSpeed: 8
+  softDoorHitSpeed: 4
   _isOpened: 0
   needPlateNum: 1
+  targetRoomID: -1
   doorOpenAngle: 90
   doorAnimSpeed: 25
   DoorinRoomVector: {x: 0, y: 0, z: 1}
@@ -1723,7 +1724,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 2, y: 2, z: 5.98}
   m_Center: {x: -0.20189436, y: 18.998579, z: 0}
 --- !u!1 &1295681992776253893
 GameObject:
