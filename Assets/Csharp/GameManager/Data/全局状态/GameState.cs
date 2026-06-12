@@ -131,8 +131,8 @@ public class GameState
 
     #region ===========================================
     #region 修改玩家状态
-// 修改玩家状态
-public void SetPlayerState(PlayerState state)
+    // 修改玩家状态
+    public void SetPlayerState(PlayerState state)
     {
         CurrentPlayerState = state;
         /*__DEBUGTOOL_START__*/Debug.Log("更新为玩家状态：" + CurrentPlayerState);/*__DEBUGTOOL_END__*/

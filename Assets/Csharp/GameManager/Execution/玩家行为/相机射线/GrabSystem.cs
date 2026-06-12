@@ -162,6 +162,7 @@ public class GrabSystem : MonoBehaviour
 
         gs.SetPlayerState(PlayerState.isGrabbing);
         /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: 抓取 {obj.gameObject.name}, pivot={currentPivot.name}");/*__DEBUGTOOL_END__*/
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Grabbable"), true); //抓取物体时不和拾取物品产生碰撞，否则会变成永动机desu
     }
 
     void HoldObject()
@@ -211,6 +212,7 @@ public class GrabSystem : MonoBehaviour
         isHolding = false;
 
         gs.SetPlayerState(PlayerState.isMoving);
+        Physics.IgnoreLayerCollision( LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Grabbable"), false);
 
         if (crosshairImage != null)
             crosshairImage.color = normalColor;

@@ -67,7 +67,8 @@ public class ItemInteractionController : MonoBehaviour
 
         if (other.CompareTag("Spring"))
         {
-            if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
+            if ((mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce )
+                && gs.CurrentPlayerState!=PlayerState.isGrabbing)//添加握持时不可被弹起与播放动画
             {
                 HandleSpring(other);
             }
@@ -152,6 +153,7 @@ public class ItemInteractionController : MonoBehaviour
 
     void HandleSpring(Collider springCollider)
     {
+        Debug.Log($"IIC：执行HandleSpring（），玩家当前状态：{gs.CurrentPlayerState}");
         Transform springModel = springCollider.transform.parent;
         Vector3 launchDir = springModel.TransformDirection(Vector3.up).normalized;
 
