@@ -7427,7 +7427,7 @@ PrefabInstance:
         type: 3}
       propertyPath: linkedDoor
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1071962817}
     - target: {fileID: 7530471417087665295, guid: 6c4c11fc116b341459d266f5112af4fe,
         type: 3}
       propertyPath: targetRenderer
@@ -11406,6 +11406,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6793440296647411689, guid: fb1e7d2178cd6574abcaf9fcb4f8aba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15715,6 +15720,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0455a483fee959d4fb68ea62792cda0c, type: 3}
+--- !u!114 &1071962817 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1008806303527023725, guid: 0455a483fee959d4fb68ea62792cda0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1071962816}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef5fc5ef4254a443b45f292065b3815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &1075828039 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7107464614407724409, guid: 88e7806c3a53b03459d7006f34ad8223,
@@ -24817,7 +24834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 39
+  TestRoomID: 42
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
