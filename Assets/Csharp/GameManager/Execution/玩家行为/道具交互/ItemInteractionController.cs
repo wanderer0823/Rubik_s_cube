@@ -95,8 +95,6 @@ public class ItemInteractionController : MonoBehaviour
             }
         }
 
-       
-
         if (other.CompareTag("Door"))
         {
             HandleDoorCollision(other);
@@ -108,14 +106,12 @@ public class ItemInteractionController : MonoBehaviour
         }
     }
 
-
-
     void OnTriggerStay(Collider other)
     {
         if (gs == null) return;
         var mat = gs.CurrentMatState;
 
-        if (!other.CompareTag("Wind")||gs.CurrentMatState==PlayerMatState.Steel)
+        if (!other.CompareTag("Wind")||gs.CurrentMatState==PlayerMatState.Steel || gs.CurrentPlayerState == PlayerState.isGrabbing)
             return;
 
         //if (mat == PlayerMatState.Glass || mat == PlayerMatState.Bounce)
