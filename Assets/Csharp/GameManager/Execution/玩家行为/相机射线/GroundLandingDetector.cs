@@ -1,28 +1,23 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// ��ؼ�����������ͷź�ȴ���أ��䵽���棨Walls �㣩�󶳽ᡣ
-/// �� GrabSystem ���ͷ�����ʱ��̬���ص������ϡ�
-/// </summary>
+
 public class GroundLandingDetector : MonoBehaviour
 {
-    [Header("������")]
-    public float velocityThreshold = 0.05f;     // �ٶȵ��ڴ�ֵ��Ϊ��ֹ
-    public float angularThreshold = 0.05f;      // ���ٶȵ��ڴ�ֵ��Ϊ��ֹ
-    public float maxWaitTime = 5f;              // ��ȴ�ʱ��
-    public float rayDistance = 0.2f;            // �ײ����߼�����
-    public float minStableTime = 0.2f;          // ��ֹ����ʱ�䣬���ⶶ������
-    public float normalDotThreshold = 0.9f;     // ������worldUp�ĵ����ֵ��Լ25���ݲ
+    [Header("落地检测")]
+    public float velocityThreshold = 0.05f;     
+    public float angularThreshold = 0.05f;      
+    public float maxWaitTime = 5f;              
+    public float rayDistance = 0.2f;            
+    public float minStableTime = 0.2f;          
+    public float normalDotThreshold = 0.9f;     
 
     private Rigidbody rb;
     private Collider col;
     private LayerMask wallLayer;
     private bool started = false;
 
-    /// <summary>
-    /// GrabSystem �ͷ�����ʱ���ã������ؼ��
-    /// </summary>
+    
     public void Begin(LayerMask walls)
     {
         if (started) return;
@@ -34,7 +29,7 @@ public class GroundLandingDetector : MonoBehaviour
 
         if (rb == null || col == null)
         {
-            /*__DEBUGTOOL_START__*/Debug.LogWarning($"GroundLandingDetector: {gameObject.name} ȱ�� Rigidbody �� Collider");/*__DEBUGTOOL_END__*/
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"GroundLandingDetector: {gameObject.name} 缺失 Rigidbody 或 Collider");/*__DEBUGTOOL_END__*/
             Destroy(this);
             return;
         }
@@ -56,17 +51,16 @@ public class GroundLandingDetector : MonoBehaviour
             {
                 stableTime += Time.deltaTime;
 
-                // ������ֹ������ֵ�ż��
+                // 
                 if (stableTime >= minStableTime)
                 {
                     if (CheckGround())
                     {
                         rb.isKinematic = true;
-                        /*__DEBUGTOOL_START__*/Debug.Log($"{gameObject.name} ��أ��Ѷ���");/*__DEBUGTOOL_END__*/
                         Destroy(this);
                         yield break;
                     }
-                    // ���ʧ��˵�����忨��ǽ�ϵ�λ�ã������ȶ���ʱ������
+                    // 
                     stableTime = 0f;
                 }
             }
@@ -79,13 +73,10 @@ public class GroundLandingDetector : MonoBehaviour
             yield return null;
         }
 
-        /*__DEBUGTOOL_START__*/Debug.LogWarning($"{gameObject.name} �ȴ���س�ʱ����������");/*__DEBUGTOOL_END__*/
         Destroy(this);
     }
 
-    /// <summary>
-    /// �ײ�������߼�⣬ȷ���Ƿ����ڵ��棨���߳��ϣ�
-    /// </summary>
+    
     bool CheckGround()
     {
         Bounds bounds = col.bounds;
@@ -122,9 +113,6 @@ public class GroundLandingDetector : MonoBehaviour
 
         Vector3 avgNormal = (sumNormal / hitCount).normalized;
         float dot = Vector3.Dot(avgNormal, worldUp);
-
-        /*__DEBUGTOOL_START__*/Debug.Log($"{gameObject.name} ��ؼ�⣺{hitCount}/{samplePoints.Length} ����, " +
-                  $"ƽ������={avgNormal}, dot={dot:F2}");/*__DEBUGTOOL_END__*/
 
         return dot >= normalDotThreshold;
     }
