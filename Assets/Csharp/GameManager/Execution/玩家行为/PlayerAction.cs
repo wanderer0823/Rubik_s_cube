@@ -114,12 +114,15 @@ public class PlayerAction : MonoBehaviour
     {
         /*__DEBUGTOOL_START__*/Debug.Log("打开/关闭背包系统。");/*__DEBUGTOOL_END__*/
     }
+    
     //玩家wasd移动
+
     // 可调参数：移动加速度（控制响应速度）
     public float moveAcceleration = 20f;
     // 可调参数：地面/空中刹车减速度
     public float brakeDeceleration = 30f;
     public Vector3 deltaHorVelocity;
+
     void Move(Vector3 moveDir)
     {
         // 获取输入方向（本地转世界）
@@ -276,14 +279,18 @@ public class PlayerAction : MonoBehaviour
         rb.mass = profile.mass;
         rb.drag = profile.drag;
         rb.angularDrag = profile.angularDrag;
+        Debug.Log("PA-1: rb参数切换完毕");
         if (col != null)
         {
+            Debug.Log("PA-2: 准备创建pm");
             PhysicMaterial pm = col.sharedMaterial;
             if (pm == null)
             {
+                Debug.Log("PA-3: pm为空，创建新材质");
                 pm = new PhysicMaterial("PlayerPhysMat");
                 col.material = pm;
             }
+            Debug.Log("PA-4: 完毕创建pm");
             pm.bounciness = profile.bounciness;
             pm.dynamicFriction = profile.friction;
             pm.staticFriction = profile.friction;
