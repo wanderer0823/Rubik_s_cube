@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class ColliderVisualizerWindow : EditorWindow
 {
@@ -17,6 +18,10 @@ public class ColliderVisualizerWindow : EditorWindow
     static Collider selectedCollider;
 
     static ColliderVisualizerWindow window;
+
+    static GameObject[] pickObjects;
+    static int pickIndex;
+    static Vector2 lastMousePos;
 
     [MenuItem("Tools/碰撞体生成/碰撞体可视")]
     static void OpenWindow()
@@ -118,6 +123,10 @@ public class ColliderVisualizerWindow : EditorWindow
 
     static void DuringSceneGUI(SceneView sceneView)
     {
+        if (selectedCollider != null && !selectedCollider.enabled)
+        {
+            selectedCollider = null;
+        }
         if (!enableVisualization)
             return;
 
@@ -132,7 +141,7 @@ public class ColliderVisualizerWindow : EditorWindow
             TrySelectCollider(e.mousePosition);
         }
 
-        Collider[] colliders = Object.FindObjectsByType<Collider>(FindObjectsSortMode.None);
+        Collider[] colliders = GetColliders();
 
         foreach (Collider col in colliders)
         {
@@ -266,7 +275,7 @@ public class ColliderVisualizerWindow : EditorWindow
         Collider nearest = null;
         float nearestDistance = float.MaxValue;
 
-        Collider[] colliders = Object.FindObjectsByType<Collider>(FindObjectsSortMode.None);
+        Collider[] colliders = GetColliders();
 
         foreach (Collider col in colliders)
         {
@@ -290,13 +299,32 @@ public class ColliderVisualizerWindow : EditorWindow
 
         selectedCollider = nearest;
 
-        if (nearest == null)
+        if (nearest != null)
         {
-            Selection.activeObject = null;
+            Selection.activeGameObject = nearest.gameObject;
         }
         else
         {
-            Selection.activeObject = nearest;
+            GameObject picked =
+                HandleUtility.PickGameObject(
+                    mousePos,
+                    false);
+
+            if (picked != null)
+            {
+                Selection.activeGameObject = picked;
+
+                Collider c =
+                    picked.GetComponent<Collider>();
+
+                if (c != null)
+                    selectedCollider = c;
+            }
+            else
+            {
+                Selection.activeGameObject = null;
+                selectedCollider = null;
+            }
         }
 
         SceneView.RepaintAll();
@@ -313,6 +341,9 @@ public class ColliderVisualizerWindow : EditorWindow
     static bool ShouldDrawCollider(Collider col)
     {
         if (col == null)
+            return false;
+
+        if (!col.enabled)
             return false;
 
         if (col.isTrigger)
@@ -494,5 +525,17 @@ public class ColliderVisualizerWindow : EditorWindow
             new Vector3(-r, -h * 0.5f + r, 0));
 
         Handles.matrix = old;
+    }
+
+    static Collider[] GetColliders()
+    {
+        PrefabStage stage = PrefabStageUtility.GetCurrentPrefabStage();
+
+        if (stage != null)
+        {
+            return stage.prefabContentsRoot.GetComponentsInChildren<Collider>(true);
+        }
+
+        return Object.FindObjectsByType<Collider>(FindObjectsSortMode.None);
     }
 }
