@@ -45,7 +45,7 @@ public enum ItemType
 public class GameState
 {
     public static GameState Instance;
-    private GameObject ball;
+    //private GameObject ball;
     private Rigidbody rb;
     public PlayerMatState CurrentMatState { get; private set; } = PlayerMatState.None;
     // 背包：记住打开前的状态
@@ -57,6 +57,12 @@ public class GameState
 
     public GameState()
     {
+        if (Instance != null)
+        {
+            Debug.LogError("GameState already exists!");
+            return;
+        }
+
         Instance = this;
         InitGameState();
     }
@@ -72,7 +78,7 @@ public class GameState
     // 构造函数..初始化默认状态
     public void InitGameState()
     {
-        ball = ViewModeManager.Instance.ball_p;
+        //ball = ViewModeManager.Instance.ball_p;
         CurrentView = ViewMode.View3;
         CurrentPlayerState = PlayerState.isStartUI;
         CurrentSurface = new InitCubeSlot.CubeSurface_s();

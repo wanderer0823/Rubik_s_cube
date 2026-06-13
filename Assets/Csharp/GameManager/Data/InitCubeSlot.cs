@@ -193,6 +193,8 @@ public class InitCubeSlot : MonoBehaviour
 
     private void Start()
     {
+        if (GameState.Instance == null)
+            new GameState();
         GameState.Instance.CurrentRoomID = TestRoomID;
         GameState.Instance.RefreshCurrentSurfaceFromRoomID();
         GameEvents.calculateNeighbors();
