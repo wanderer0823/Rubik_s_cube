@@ -279,23 +279,23 @@ public class PlayerAction : MonoBehaviour
         rb.mass = profile.mass;
         rb.drag = profile.drag;
         rb.angularDrag = profile.angularDrag;
-        Debug.Log("PA-1: rb参数切换完毕");
         if (col != null)
         {
-            Debug.Log("PA-2: 准备创建pm");
-            PhysicMaterial pm = col.sharedMaterial;
+            Debug.Log(col.name);
+            Debug.Log(col.GetType());
+            PhysicMaterial pm = new PhysicMaterial();
             if (pm == null)
             {
-                Debug.Log("PA-3: pm为空，创建新材质");
                 pm = new PhysicMaterial("PlayerPhysMat");
                 col.material = pm;
             }
-            Debug.Log("PA-4: 完毕创建pm");
             pm.bounciness = profile.bounciness;
             pm.dynamicFriction = profile.friction;
             pm.staticFriction = profile.friction;
             pm.bounceCombine = PhysicMaterialCombine.Maximum;
             pm.frictionCombine = PhysicMaterialCombine.Average;
+
+            col.sharedMaterial = pm;
         }
         /*__DEBUGTOOL_START__*/Debug.Log($"ApplyProfile: mass={profile.mass}, drag={profile.drag}, " +
                   $"bounce={profile.bounciness}, friction={profile.friction}, speed={profile.moveSpeed}");/*__DEBUGTOOL_END__*/
