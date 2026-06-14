@@ -4451,7 +4451,7 @@ MonoBehaviour:
   minBallSpeed: 0.02
   cubeRoot: {fileID: 2080022983}
   cubeData: {fileID: 1696843652}
-  RotationTime: 5
+  RotationTime: 8
 --- !u!23 &272506954 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 744503074351234958, guid: 88e7806c3a53b03459d7006f34ad8223,
@@ -7610,7 +7610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535371989}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
@@ -7773,11 +7773,11 @@ MonoBehaviour:
   triggerInteraction: 1
   detectTiming: 1
   minWidthThresholdMultiplier: 1
-  castPadding: 0.02
-  skinWidth: 0.01
+  castPadding: 0.1
+  skinWidth: 1
   removeVelocityIntoSurface: 1
   slideOnSurface: 1
-  drawDebugLine: 0
+  drawDebugLine: 1
   debugLineColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!136 &535372002
 CapsuleCollider:
@@ -27797,7 +27797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 31
+  TestRoomID: 46
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -39781,10 +39781,10 @@ SceneRoots:
   - {fileID: 1706968674}
   - {fileID: 1461266756}
   - {fileID: 399452106}
+  - {fileID: 535371990}
   - {fileID: 1692653794}
   - {fileID: 1973094423}
   - {fileID: 1008668509}
-  - {fileID: 535371990}
   - {fileID: 405638580}
   - {fileID: 430615340}
   - {fileID: 1041714067}
