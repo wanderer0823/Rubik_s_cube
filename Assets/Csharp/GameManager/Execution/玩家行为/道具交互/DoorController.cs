@@ -32,6 +32,7 @@ public class DoorController : MonoBehaviour
     {
         _isOpened = needPlateNum == 0;
         //transform.GetChild(1).gameObject.SetActive(false);
+
     }
 
     public void Open()
