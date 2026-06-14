@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Prevents a fast-moving player collider from tunneling through room colliders.
-/// Attach this to the player object that has a Rigidbody and a Collider.
+/// 防止快速移动的玩家碰撞体穿透房间碰撞体。
+/// 附加到拥有 Rigidbody 和 Collider 的玩家对象上。
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
@@ -15,33 +15,35 @@ public class ContinuousCollisionDetector3D : MonoBehaviour
     }
 
     [Header("Cast")]
-    [Tooltip("Layers treated as solid room/wall colliders.")]
+    [Tooltip("视为实心房间/墙壁碰撞体的层")]
     [SerializeField] private LayerMask obstacleLayers = ~0;
 
-    [Tooltip("Trigger colliders are usually not walls, so Ignore is the safer default.")]
+    [Tooltip("触发碰撞体通常不是墙壁，因此默认忽略是更安全的")]
     [SerializeField] private QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Ignore;
 
-    [Tooltip("LateUpdate can catch room rotation driven by Update/coroutines. Use FixedUpdate only if all movement is physics-driven.")]
+    [Tooltip("LateUpdate 可以捕获由 Update/协程驱动的房间旋转。如果所有移动都是物理驱动的，则使用 FixedUpdate")]
     [SerializeField] private DetectTiming detectTiming = DetectTiming.LateUpdate;
 
-    [Tooltip("Only run the sweep when movement exceeds colliderMinWidth * this value.")]
+    [Tooltip("仅当移动距离超过碰撞体最小宽度乘以该值时，才执行扫描")]
     [SerializeField, Min(0.01f)] private float minWidthThresholdMultiplier = 1f;
 
-    [Tooltip("Extra sweep distance added to avoid missing a surface due to precision.")]
+    [Tooltip("额外扫描距离，避免因精度问题错过表面")]
     [SerializeField, Min(0f)] private float castPadding = 0.02f;
 
     [Header("Correction")]
-    [Tooltip("Small separation kept from the hit surface after correction.")]
+    [Tooltip("修正后与碰撞表面保持的小间距")]
     [SerializeField, Min(0f)] private float skinWidth = 0.03f;
 
-    [Tooltip("Removes velocity into the hit surface after correction.")]
+    [Tooltip("修正后移除指向碰撞表面的速度分量")]
     [SerializeField] private bool removeVelocityIntoSurface = true;
 
-    [Tooltip("If true, preserves velocity parallel to the wall instead of stopping completely.")]
+    [Tooltip("若为 true，则保留平行于墙壁的速度，而不是完全停止")]
     [SerializeField] private bool slideOnSurface = true;
 
     [Header("Debug")]
+    [Tooltip("是否绘制调试线")]
     [SerializeField] private bool drawDebugLine;
+    [Tooltip("调试线颜色")]
     [SerializeField] private Color debugLineColor = Color.cyan;
 
     private const int MaxHits = 16;
@@ -149,24 +151,24 @@ public class ContinuousCollisionDetector3D : MonoBehaviour
         switch (playerCollider)
         {
             case SphereCollider sphere:
-            {
-                Vector3 center = previousPosition + previousRotation * Vector3.Scale(sphere.center, transform.lossyScale);
-                float radius = GetScaledSphereRadius(sphere);
-                return Physics.SphereCastNonAlloc(center, radius, direction, hits, distance, obstacleLayers, triggerInteraction);
-            }
+                {
+                    Vector3 center = previousPosition + previousRotation * Vector3.Scale(sphere.center, transform.lossyScale);
+                    float radius = GetScaledSphereRadius(sphere);
+                    return Physics.SphereCastNonAlloc(center, radius, direction, hits, distance, obstacleLayers, triggerInteraction);
+                }
 
             case CapsuleCollider capsule:
-            {
-                GetCapsuleWorldPoints(capsule, previousPosition, previousRotation, out Vector3 point0, out Vector3 point1, out float radius);
-                return Physics.CapsuleCastNonAlloc(point0, point1, radius, direction, hits, distance, obstacleLayers, triggerInteraction);
-            }
+                {
+                    GetCapsuleWorldPoints(capsule, previousPosition, previousRotation, out Vector3 point0, out Vector3 point1, out float radius);
+                    return Physics.CapsuleCastNonAlloc(point0, point1, radius, direction, hits, distance, obstacleLayers, triggerInteraction);
+                }
 
             case BoxCollider box:
-            {
-                Vector3 center = previousPosition + previousRotation * Vector3.Scale(box.center, transform.lossyScale);
-                Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, Abs(transform.lossyScale));
-                return Physics.BoxCastNonAlloc(center, halfExtents, direction, hits, previousRotation, distance, obstacleLayers, triggerInteraction);
-            }
+                {
+                    Vector3 center = previousPosition + previousRotation * Vector3.Scale(box.center, transform.lossyScale);
+                    Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, Abs(transform.lossyScale));
+                    return Physics.BoxCastNonAlloc(center, halfExtents, direction, hits, previousRotation, distance, obstacleLayers, triggerInteraction);
+                }
 
             default:
                 return Physics.RaycastNonAlloc(previousPosition, direction, hits, distance, obstacleLayers, triggerInteraction);
@@ -226,16 +228,16 @@ public class ContinuousCollisionDetector3D : MonoBehaviour
                 return Mathf.Min(GetScaledCapsuleRadius(capsule) * 2f, GetScaledCapsuleHeight(capsule));
 
             case BoxCollider box:
-            {
-                Vector3 size = Vector3.Scale(box.size, Abs(transform.lossyScale));
-                return Mathf.Min(size.x, size.y, size.z);
-            }
+                {
+                    Vector3 size = Vector3.Scale(box.size, Abs(transform.lossyScale));
+                    return Mathf.Min(size.x, size.y, size.z);
+                }
 
             default:
-            {
-                Vector3 size = playerCollider.bounds.size;
-                return Mathf.Min(size.x, size.y, size.z);
-            }
+                {
+                    Vector3 size = playerCollider.bounds.size;
+                    return Mathf.Min(size.x, size.y, size.z);
+                }
         }
     }
 
@@ -329,4 +331,3 @@ public class ContinuousCollisionDetector3D : MonoBehaviour
         Gizmos.DrawLine(previousPosition, transform.position);
     }
 }
-
