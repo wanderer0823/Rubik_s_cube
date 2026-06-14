@@ -33,6 +33,9 @@ public class Plate : MonoBehaviour
     [Tooltip("此压力板触发后打开的门")]
     public DoorController linkedDoor;
 
+    [Tooltip("此压力板触发后打开的门 ID，由 Plate-Door 绑定面板维护")]
+    public string linkedDoorId;
+
     [HideInInspector]
     public bool isPressed = false;
     private Vector3 initialLocalPosition;
@@ -72,9 +75,10 @@ public class Plate : MonoBehaviour
         // Press along the plate's own local down direction, not world Y.
         StartCoroutine(MovePlate(Vector3.down * plateMoveDistance));
 
-        if (linkedDoor != null)
+        DoorController resolvedDoor = ResolveLinkedDoor();
+        if (resolvedDoor != null)
         {
-            linkedDoor.Open();
+            resolvedDoor.Open();
         }
     }
 
@@ -180,5 +184,24 @@ public class Plate : MonoBehaviour
             return;
 
         materialBindings.Add(new MaterialSlotBinding(renderer, 0));
+    }
+
+    private DoorController ResolveLinkedDoor()
+    {
+        if (!string.IsNullOrEmpty(linkedDoorId) && DoorRegistry.TryGet(linkedDoorId, out DoorController registeredDoor))
+        {
+            linkedDoor = registeredDoor;
+            return registeredDoor;
+        }
+
+        if (linkedDoor != null)
+            return linkedDoor;
+
+        if (!string.IsNullOrEmpty(linkedDoorId))
+        {
+            Debug.LogWarning($"Plate {name} 未找到 linkedDoorId={linkedDoorId} 对应的运行时门", this);
+        }
+
+        return null;
     }
 }
