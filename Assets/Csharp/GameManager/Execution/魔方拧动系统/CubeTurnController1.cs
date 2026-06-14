@@ -22,6 +22,7 @@ public class CubeTurnController1 : MonoBehaviour
     private Vector3 lockedLocalRight = Vector3.right;
     private bool isTrackingClick;
     private bool isTurnAnimating;
+    private bool isInputLocked;  // 新增：输入锁定标志
     private Vector3 clickStartMousePos;
     private float lastClickTime;
     private InitCubeSlot.CubePiece lastClickedPiece;
@@ -34,7 +35,7 @@ public class CubeTurnController1 : MonoBehaviour
     public List<InitCubeSlot.CubePiece> currentCubePiece = new List<InitCubeSlot.CubePiece>();
     public InitCubeSlotAxis currentAxis;
 
-    //ŷ�������滻
+    //欧：材质替换
     public Material M_suliao;
     public Material M_Outline;
 
@@ -74,6 +75,10 @@ public class CubeTurnController1 : MonoBehaviour
 
     private void TrackLayerClick()
     {
+        // 输入锁定时不处理点击
+        if (isInputLocked)
+            return;
+
         if (GameState.Instance == null || GameState.Instance.CurrentView != ViewMode.View2)
         {
             isTrackingClick = false;
@@ -112,7 +117,7 @@ public class CubeTurnController1 : MonoBehaviour
             return;
 
         float now = Time.unscaledTime;
-        bool isDoubleClick =
+        bool isDoubleClick = 
             now - lastClickTime <= Mathf.Max(0.01f, doubleClickThreshold) &&
             lastClickedPiece == piece &&
             lastClickedFace == face;
@@ -146,7 +151,8 @@ public class CubeTurnController1 : MonoBehaviour
         if (GameState.Instance == null || GameState.Instance.CurrentView != ViewMode.View2)
             return;
 
-        if (selectedLayerMode == View2LayerSelectionMode.None || isTurnAnimating)
+        // 输入锁定时不处理键盘输入
+        if (isInputLocked || selectedLayerMode == View2LayerSelectionMode.None || isTurnAnimating)
             return;
 
         bool rotated = false;
@@ -174,7 +180,8 @@ public class CubeTurnController1 : MonoBehaviour
         int index,
         bool reverse)
     {
-        if (isTurnAnimating || initCubeSlot == null)
+        // 输入锁定时不能旋转
+        if (isInputLocked || isTurnAnimating || initCubeSlot == null)
             return false;
 
         bool useCachedSelection =
@@ -239,11 +246,13 @@ public class CubeTurnController1 : MonoBehaviour
         selectedLayerIndex = 0;
         selectedFace = InitCubeSlotFaceDir.Up;
         currentCubePiece.Clear();
+        isInputLocked = false;  // 新增：确保清理时解锁
     }
 
     private IEnumerator AnimateTurn(List<TurnAnimationState> animationStates, bool isCW)
     {
         isTurnAnimating = true;
+        isInputLocked = true;  // 新增：锁定输入
         MusicAudioManager.Instance.PlaySfx("mofang");
 
         float duration = Mathf.Max(0.01f, turnAnimationDuration);
@@ -272,6 +281,8 @@ public class CubeTurnController1 : MonoBehaviour
         ApplyTurnResult(isCW);
 
         isTurnAnimating = false;
+        isInputLocked = false;  // 新增：解锁输入
+        
         if (GameState.Instance != null)
             GameState.Instance.SetPlayerState(PlayerState.rotatingFinished);
     }
@@ -420,7 +431,7 @@ public class CubeTurnController1 : MonoBehaviour
 
         if(currentCubePiece!=null)
             RestoreSelectionMaterials();
-        // ��վ��б�
+        // 清空旧列表
         currentCubePiece.Clear();
 
         currentSignedLocalAxis = signedAxis;
@@ -430,7 +441,7 @@ public class CubeTurnController1 : MonoBehaviour
         if (currentCubePiece.Count == 0)
             return false;
 
-        //���²���
+        //更新材质
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
             if (piece?.indexCube == null) continue;
@@ -623,7 +634,8 @@ public class CubeTurnController1 : MonoBehaviour
     {
         return (index - 1) * CoordScale;
     }
-    //ŷ���ָ�����
+
+    //欧：恢复材质
     private void RestoreSelectionMaterials()
     {
         if (initCubeSlot == null) return;
@@ -635,6 +647,7 @@ public class CubeTurnController1 : MonoBehaviour
                 meshRenderer.material = M_suliao;
         }
     }
+
     private int GetAxisComponent(InitCubeSlotAxis axis)
     {
         if (currentCubePiece.Count == 0) return 0;
