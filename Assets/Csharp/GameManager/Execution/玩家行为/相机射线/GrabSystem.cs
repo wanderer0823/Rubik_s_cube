@@ -21,10 +21,11 @@ public class GrabSystem : MonoBehaviour
 
     private float lastRotateTime;
 
-    [Header("高亮设置")]
-    public UnityEngine.UI.Image crosshairImage;
-    public Color normalColor = Color.white;
-    public Color interactColor = Color.green;
+    [Header("准星设置")]
+    public UnityEngine.UI.Image crosshairImage; // 显示准星的 Image 组件
+    public Sprite crosshairSprite1; // 默认准星
+    public Sprite crosshairSprite2; // 瞄准准星
+    public Sprite crosshairSprite3; // 抓取准星
 
     [Header("性能")]
     public float detectInterval = 0.02f;
@@ -47,6 +48,7 @@ public class GrabSystem : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         gs = GameState.Instance;
+        UpdateCrosshair();
     }
 
     void OnEnable()
@@ -117,7 +119,7 @@ public class GrabSystem : MonoBehaviour
                     currentTarget = g;
                     EnableOutline(currentTarget);
                 }
-                if (crosshairImage != null) crosshairImage.color = interactColor;
+                UpdateCrosshair();
                 return;
             }
         }
@@ -127,7 +129,7 @@ public class GrabSystem : MonoBehaviour
             DisableOutline(currentTarget);
             currentTarget = null;
         }
-        if (crosshairImage != null) crosshairImage.color = normalColor;
+        UpdateCrosshair();
     }
 
     void EnableOutline(Grabbable target)
@@ -214,8 +216,7 @@ public class GrabSystem : MonoBehaviour
         gs.SetPlayerState(PlayerState.isMoving);
         Physics.IgnoreLayerCollision( LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Grabbable"), false);
 
-        if (crosshairImage != null)
-            crosshairImage.color = normalColor;
+        UpdateCrosshair();
     }
 
     void OnScrollRotate(float delta)
@@ -236,4 +237,26 @@ public class GrabSystem : MonoBehaviour
 
         /*__DEBUGTOOL_START__*/Debug.Log($"GrabSystem: 绕 {currentRotateAxis} 旋转 {sign * rotateStepAngle}°");/*__DEBUGTOOL_END__*/
     }
+
+    void UpdateCrosshair()
+    {
+        if (crosshairImage == null) return;
+
+        if (isHolding)
+        {
+            // 抓取中 - 显示准星3
+            crosshairImage.sprite = crosshairSprite3;
+        }
+        else if (currentTarget != null && isGravityAllowed)
+        {
+            // 瞄准中 - 显示准星2
+            crosshairImage.sprite = crosshairSprite2;
+        }
+        else
+        {
+            // 默认 - 显示准星1
+            crosshairImage.sprite = crosshairSprite1;
+        }
+    }
+
 }
