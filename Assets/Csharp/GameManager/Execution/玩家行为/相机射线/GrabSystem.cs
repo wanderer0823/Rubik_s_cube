@@ -10,6 +10,7 @@ public class GrabSystem : MonoBehaviour
     public float maxGrabDistance = 10f;
     public LayerMask grabbableLayer;
     public LayerMask wallLayer;
+    public float GW_distance = 0.6f;
 
     [Header("托举设置")]
     public float liftSpeed = 5f;
@@ -178,7 +179,7 @@ public class GrabSystem : MonoBehaviour
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, grabDistance, wallLayer))
         {
-            float safeDistance = hit.distance - 0.3f;
+            float safeDistance = hit.distance - GW_distance;
             if (safeDistance < 0.5f) safeDistance = 0.5f;
             targetPos = cam.transform.position + cam.transform.forward * safeDistance;
         }

@@ -37444,7 +37444,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -39776,13 +39776,15 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  GW_distance: 0.6
   liftSpeed: 5
   holdHeightOffset: 1.5
   rotateStepAngle: 90
   rotateCooldown: 0.15
   crosshairImage: {fileID: 1136942198}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  interactColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  crosshairSprite1: {fileID: 21300000, guid: f2ffae8122337274ea944141be3b51a5, type: 3}
+  crosshairSprite2: {fileID: 21300000, guid: dfec972e4427fe4498984f92da9f442d, type: 3}
+  crosshairSprite3: {fileID: 21300000, guid: 664b93dcf357724438af09aa75bccfd2, type: 3}
   detectInterval: 0.05
 --- !u!114 &2138106902
 MonoBehaviour:
