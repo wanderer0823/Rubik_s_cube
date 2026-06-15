@@ -153,6 +153,8 @@ public class GrabSystem : MonoBehaviour
         heldObject = obj;
         grabDistance = Vector3.Distance(cam.transform.position, obj.transform.position);
         isHolding = true;
+        /*__DEBUGTOOL_START__*/Debug.Log("GrabS-1:isHolding");/*__DEBUGTOOL_END__*/
+        UpdateCrosshair();
 
         currentPivot = obj.rotatePivot != null ? obj.rotatePivot : obj.transform;
 
@@ -212,6 +214,7 @@ public class GrabSystem : MonoBehaviour
         currentTarget = null;
         currentPivot = null;
         isHolding = false;
+        /*__DEBUGTOOL_START__*/Debug.Log("GrabS-2:!isHolding");/*__DEBUGTOOL_END__*/
 
         gs.SetPlayerState(PlayerState.isMoving);
         Physics.IgnoreLayerCollision( LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Grabbable"), false);
@@ -245,6 +248,7 @@ public class GrabSystem : MonoBehaviour
         if (isHolding)
         {
             // 抓取中 - 显示准星3
+            /*__DEBUGTOOL_START__*/Debug.Log("GrabS-3:isHolding");/*__DEBUGTOOL_END__*/
             crosshairImage.sprite = crosshairSprite3;
         }
         else if (currentTarget != null && isGravityAllowed)
