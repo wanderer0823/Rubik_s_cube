@@ -332,6 +332,7 @@ public class CubeTurnController1 : MonoBehaviour
         }
 
         initCubeSlot.RebuildSurfaceCoordMap();
+        GameEvents.calculateNeighbors();
     }
 
     private bool TryBuildClickSelection(
