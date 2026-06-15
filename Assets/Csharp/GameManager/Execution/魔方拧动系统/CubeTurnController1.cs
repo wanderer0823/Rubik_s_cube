@@ -289,6 +289,8 @@ public class CubeTurnController1 : MonoBehaviour
 
     private void ApplyTurnResult(bool isCW)
     {
+        HashSet<int> rotatedRoomIds = new HashSet<int>();
+
         foreach (InitCubeSlot.CubePiece piece in currentCubePiece)
         {
             Vector3Int coord = piece.coord;
@@ -328,6 +330,13 @@ public class CubeTurnController1 : MonoBehaviour
             {
                 surface.dir = DirRotator.Rotate(surface.dir, currentAxis, isCW);
                 surface.UpdatePosition(piece.coord);
+
+                if (surface.roomID >= 0
+                    && surface.roomID < initCubeSlot.rooms.Count
+                    && rotatedRoomIds.Add(surface.roomID))
+                {
+                    initCubeSlot.rooms[surface.roomID]?.RotateDirMap(currentAxis, isCW);
+                }
             }
         }
 

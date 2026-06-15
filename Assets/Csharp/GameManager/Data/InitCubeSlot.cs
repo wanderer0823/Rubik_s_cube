@@ -150,6 +150,26 @@ public class InitCubeSlot : MonoBehaviour
         }
 
         //根据方向获取该方向的门状态
+        public void RotateDirMap(Axis axis, bool cw)
+        {
+            if (dirMap == null || dirMap.Length != 6)
+            {
+                dirMap = new FaceDir[6];
+                for (int i = 0; i < dirMap.Length; i++)
+                    dirMap[i] = (FaceDir)i;
+            }
+
+            FaceDir[] nextMap = new FaceDir[6];
+            for (int i = 0; i < dirMap.Length; i++)
+            {
+                FaceDir currentDir = (FaceDir)i;
+                FaceDir rotatedDir = DirRotator.Rotate(currentDir, axis, cw);
+                nextMap[(int)rotatedDir] = dirMap[i];
+            }
+
+            dirMap = nextMap;
+        }
+
         public FaceState GetFace(FaceDir dir)
         {
             FaceDir originalDir = dirMap[(int)dir];

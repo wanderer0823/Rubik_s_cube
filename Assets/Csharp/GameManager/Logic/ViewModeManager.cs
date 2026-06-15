@@ -197,6 +197,7 @@ public class ViewModeManager : MonoBehaviour
     {
         if (mode != ViewMode.View3)
             return;
+        RequestNeighborPreload();
         RotateCurrentRoom();
     }
     private bool isRotating = false;  // 防止旋转过程中再次触发
