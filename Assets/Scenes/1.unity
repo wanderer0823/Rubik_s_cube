@@ -5299,7 +5299,7 @@ Transform:
   m_GameObject: {fileID: 367349154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 191.6, z: 0}
+  m_LocalPosition: {x: 0, y: 57.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7726,16 +7726,10 @@ MonoBehaviour:
   glassMaterial: {fileID: 2100000, guid: c5a2d91c37656b441875e865b8761bac, type: 2}
   bounceMaterial: {fileID: 2100000, guid: 33861bc0ed9bf5547899c8a2af008d77, type: 2}
   enableAutoStep: 1
-  stepHeight: 1.5
+  stepHeight: 0.5
   stepCheckDistance: 1
   stepUpSpeed: 2
   showDebugLines: 1
-  lowRayOffset: 0.05
-  stepSpeedLow: 2
-  midRay1Ratio: 0.5
-  stepSpeedMid: 4
-  midRay2Ratio: 0.75
-  stepSpeedHigh: 7
   moveAcceleration: 20
   brakeDeceleration: 30
   deltaHorVelocity: {x: 0, y: 0, z: 0}
@@ -28207,7 +28201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 2
+  TestRoomID: 43
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -28830,13 +28824,13 @@ MonoBehaviour:
     RoomPerfab: {fileID: 4781000240095890843, guid: e178378534dc23c4ead28320a3c3ba69,
       type: 3}
     faces:
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29446,7 +29440,7 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29590,10 +29584,6 @@ MonoBehaviour:
     RoomPerfab: {fileID: 2041363508894642552, guid: 7ae593cc039ef254f933b66c99c95e7b,
       type: 3}
     faces:
-    - HasDoor: 0
-      isPassable: 0
-    - HasDoor: 0
-      isPassable: 0
     - HasDoor: 1
       isPassable: 0
     - HasDoor: 1
@@ -29601,6 +29591,10 @@ MonoBehaviour:
     - HasDoor: 0
       isPassable: 0
     - HasDoor: 0
+      isPassable: 0
+    - HasDoor: 1
+      isPassable: 0
+    - HasDoor: 1
       isPassable: 0
     dirMap: 000000000100000002000000030000000400000005000000
   - roomID: 52
@@ -29613,9 +29607,9 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -31919,7 +31913,7 @@ PrefabInstance:
     - target: {fileID: 945307973006681811, guid: 7ffa2e55cdb92ee48a72fc7f22f689b8,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -220,13 +220,19 @@ public class ItemInteractionController : MonoBehaviour
         string passStr = isPassable ? "1" : "0";
         string openStr = doorCtrl.IsOpened ? "1" : "0";
 
-        if (!isPassable&& doorCtrl.targetRoomID >= cubeData.rooms.Count || doorCtrl.targetRoomID < 0)
+        if (!isPassable)
         {
+            if (doorCtrl.targetRoomID < cubeData.rooms.Count && doorCtrl.targetRoomID > 0)
+            {
+                Debug.Log("你是强制传送,继续逻辑");
 
-                /*__DEBUGTOOL_START__*/
-            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");/*__DEBUGTOOL_END__*/
-            BounceBackFromDoor(doorCollider);
-            return;
+            }
+            else
+            {
+                Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");
+                BounceBackFromDoor(doorCollider);
+                return;
+            }
         }
 
         //普通门
