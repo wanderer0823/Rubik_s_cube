@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 8366993233988994488}
   - component: {fileID: 3102700998208040606}
   - component: {fileID: 7112684081989706391}
+  - component: {fileID: 7325668126499183783}
   m_Layer: 0
   m_Name: door_G_007.008
   m_TagString: Untagged
@@ -277,6 +278,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!64 &7325668126499183783
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793017011836386825}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9039282895655506170, guid: 62c58cbc9d5538d4fa571be41ed46f3a, type: 3}
 --- !u!1 &4050531595035225744
 GameObject:
   m_ObjectHideFlags: 0
