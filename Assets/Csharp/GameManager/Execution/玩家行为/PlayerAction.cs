@@ -39,7 +39,25 @@ public class PlayerAction : MonoBehaviour
     public float stepCheckDistance = 0.5f;   // 向前探测距离
     public float stepUpSpeed = 3f;           // 抬升速度（瞬时）
     public bool showDebugLines = true;       // 是否在Scene视图中显示检测线
+
+    [Header("自动越障分段调节")]
+    // Low射线离脚底偏移
+    public float lowRayOffset = 0.05f;
+    public float stepSpeedLow = 1f;
+    // Mid1高度（0~1，相对于Upper）
+    [Range(0f, 1f)]
+    public float midRay1Ratio = 0.5f;
+    public float stepSpeedMid = 1.25f;
+    // Mid2高度（0~1，相对于Upper）
+    [Range(0f, 1f)]
+    public float midRay2Ratio = 0.75f;
+    public float stepSpeedHigh = 1.5f;
     private bool isStepping = false;
+
+    [Space(20)]
+    public float moveAcceleration = 20f;
+    public float brakeDeceleration = 30f;
+    public Vector3 deltaHorVelocity;
 
     private Rigidbody rb;
     private Collider col;
@@ -125,13 +143,20 @@ public class PlayerAction : MonoBehaviour
     {
         // ===== 1. 计算射线参数 =====
         Vector3 footPos = col.bounds.min;
-        Vector3 origin = new Vector3(transform.position.x, footPos.y + 0.05f, transform.position.z);
+        Vector3 origin = new Vector3(transform.position.x, footPos.y + lowRayOffset, transform.position.z);
         Vector3 direction = transform.forward;
+        Vector3 upperOrigin = new Vector3(transform.position.x,footPos.y + lowRayOffset + stepHeight,transform.position.z);
+        //Yiu
+        Vector3 midOrigin1 = new Vector3(transform.position.x,footPos.y + lowRayOffset + stepHeight * midRay1Ratio,transform.position.z);
+        Vector3 midOrigin2 = new Vector3(transform.position.x,footPos.y + lowRayOffset + stepHeight * midRay2Ratio,transform.position.z);
 
         // 调试绘图
         if (showDebugLines)
         {
+            Debug.DrawRay(upperOrigin, direction * stepHeight, Color.white);
             Debug.DrawRay(origin, direction * stepCheckDistance, Color.green);
+            Debug.DrawRay(midOrigin1, direction * stepCheckDistance, Color.yellow);
+            Debug.DrawRay(midOrigin2, direction * stepCheckDistance, Color.magenta);
             Debug.DrawRay(origin, Vector3.up * 0.05f, Color.cyan);
         }
 
@@ -159,9 +184,16 @@ public class PlayerAction : MonoBehaviour
             return;
         }
 
+        // ===== 3.5 Yiu:新增两条短射线，划分阈值 =====
+        RaycastHit midHit1;
+        bool hitMid1 = Physics.Raycast(midOrigin1, direction, out midHit1, stepCheckDistance);
+        RaycastHit midHit2;
+        bool hitMid2 = Physics.Raycast(midOrigin2, direction, out midHit2, stepCheckDistance);
+
         // ===== 4. 头顶空间检测 =====
-        Vector3 upperOrigin = transform.position + Vector3.up * stepHeight;
-        bool hitUpper = Physics.Raycast(upperOrigin, direction, stepCheckDistance);
+        
+        RaycastHit upperHit;
+        bool hitUpper = Physics.Raycast(upperOrigin, direction, out upperHit, stepCheckDistance);
 
         if (hitUpper)
         {
@@ -170,8 +202,24 @@ public class PlayerAction : MonoBehaviour
         }
 
         // ===== 5. 执行抬升 =====
-        Debug.Log($"[AutoStep] 抬升！施加 {stepUpSpeed} m/s");
-        rb.velocity += Vector3.up * stepUpSpeed;
+        //Debug.Log($"[AutoStep] 抬升！施加 {stepUpSpeed} m/s");
+        //rb.velocity += Vector3.up * stepUpSpeed;
+        float finalStepSpeed = stepUpSpeed;
+        if (hitMid2)
+        {
+            finalStepSpeed = stepUpSpeed * stepSpeedHigh;
+        }
+        else if (hitMid1)
+        {
+            finalStepSpeed = stepUpSpeed * stepSpeedMid;
+        }
+        else
+        {
+            finalStepSpeed = stepUpSpeed * stepSpeedLow;
+        }
+        Debug.Log($"[AutoStep] 抬升！施加 {finalStepSpeed} m/s");
+
+        rb.velocity += Vector3.up * finalStepSpeed;
         isStepping = true;
     }
 
@@ -181,10 +229,6 @@ public class PlayerAction : MonoBehaviour
     {
         Debug.Log("打开/关闭背包系统。");
     }
-
-    public float moveAcceleration = 20f;
-    public float brakeDeceleration = 30f;
-    public Vector3 deltaHorVelocity;
 
     void Move(Vector3 moveDir)
     {
