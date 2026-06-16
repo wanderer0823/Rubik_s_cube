@@ -634,15 +634,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 3793017011836386825, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050531595035225744, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4254384739038594939, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
         type: 3}
       propertyPath: m_Name
       value: "\u786C\u95E82"
       objectReference: {fileID: 0}
+    - target: {fileID: 4638034182635223000, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5879111774032140935, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
         type: 3}
       propertyPath: doorId
       value: "1_1_dir_door__9__up_\u786C\u95E82"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211541340095999665, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211541340095999665, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211541340095999665, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709603941644790812, guid: 4e71d76365ab79b4db1fc0a78bed84c3,
+        type: 3}
+      propertyPath: _isOpened
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2779,6 +2814,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5442478038161395475}
     m_Modifications:
+    - target: {fileID: 4128120244438337819, guid: b43e47833a044b3479cf75e8cca25067,
+        type: 3}
+      propertyPath: targetRoomID
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5120557216487441923, guid: b43e47833a044b3479cf75e8cca25067,
         type: 3}
       propertyPath: m_LocalPosition.x

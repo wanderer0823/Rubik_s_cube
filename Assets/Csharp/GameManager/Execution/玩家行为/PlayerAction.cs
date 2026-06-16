@@ -159,9 +159,6 @@ public class PlayerAction : MonoBehaviour
             return;
         }
 
-        // 检测到任何物体
-        Debug.Log($"[AutoStep] 检测到物体: {lowHit.collider.name}，距离 {lowHit.distance}");
-
         // ===== 4. 头顶空间检测 =====
         Vector3 upperOrigin = transform.position + Vector3.up * stepHeight;
         bool hitUpper = Physics.Raycast(upperOrigin, direction, stepCheckDistance);
