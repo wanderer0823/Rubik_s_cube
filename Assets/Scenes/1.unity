@@ -7725,6 +7725,11 @@ MonoBehaviour:
   steelMaterial: {fileID: 2100000, guid: 41f98728c6dcbe946890e3d19f6ad6c3, type: 2}
   glassMaterial: {fileID: 2100000, guid: c5a2d91c37656b441875e865b8761bac, type: 2}
   bounceMaterial: {fileID: 2100000, guid: 33861bc0ed9bf5547899c8a2af008d77, type: 2}
+  enableAutoStep: 1
+  stepHeight: 0.5
+  stepCheckDistance: 1
+  stepUpSpeed: 2
+  showDebugLines: 1
   moveAcceleration: 20
   brakeDeceleration: 30
   deltaHorVelocity: {x: 0, y: 0, z: 0}
@@ -28196,7 +28201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 29
+  TestRoomID: 1
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -37444,7 +37449,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
