@@ -7726,10 +7726,16 @@ MonoBehaviour:
   glassMaterial: {fileID: 2100000, guid: c5a2d91c37656b441875e865b8761bac, type: 2}
   bounceMaterial: {fileID: 2100000, guid: 33861bc0ed9bf5547899c8a2af008d77, type: 2}
   enableAutoStep: 1
-  stepHeight: 0.5
+  stepHeight: 1.5
   stepCheckDistance: 1
   stepUpSpeed: 2
   showDebugLines: 1
+  lowRayOffset: 0.05
+  stepSpeedLow: 1
+  midRay1Ratio: 0.5
+  stepSpeedMid: 1
+  midRay2Ratio: 0.75
+  stepSpeedHigh: 1.5
   moveAcceleration: 20
   brakeDeceleration: 30
   deltaHorVelocity: {x: 0, y: 0, z: 0}
@@ -28201,7 +28207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 43
+  TestRoomID: 2
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}

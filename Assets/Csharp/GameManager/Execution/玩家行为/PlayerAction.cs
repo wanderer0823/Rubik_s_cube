@@ -108,12 +108,6 @@ public class PlayerAction : MonoBehaviour
         if (gs == null)
             return;
         
-        // ===== 新增：自动台阶检测（仅当未弹跳且有水平移动时） =====
-        if (enableAutoStep && !isBouncing)
-        {
-            TryAutoStep();
-        }
-
         // ===== 原有的 Bounce 逻辑 =====
         if (gs.CurrentMatState != PlayerMatState.Bounce)
         {
@@ -263,6 +257,12 @@ public class PlayerAction : MonoBehaviour
         newVelocity.x += deltaHorVelocity.x;
         newVelocity.z += deltaHorVelocity.z;
         rb.velocity = newVelocity + IIC.windAddVelocity;
+
+        // ===== 新增：自动台阶检测（仅当未弹跳且有水平移动时） =====
+        if (enableAutoStep && !isBouncing)
+        {
+            TryAutoStep();
+        }
     }
 
     void OnMatChanged(PlayerMatState newMat)
