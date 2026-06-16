@@ -213,34 +213,6 @@ public class ItemInteractionController : MonoBehaviour
             return;
         }
         
-        if (doorCtrl.targetRoomID >= 0)
-        {
-            // 检查 cubeData 有效性
-            if (cubeData != null && doorCtrl.targetRoomID >= 0 && doorCtrl.targetRoomID < cubeData.rooms.Count)
-            {
-                var targetRoom = cubeData.rooms[doorCtrl.targetRoomID];
-                if (targetRoom != null)
-                {
-                    /*__DEBUGTOOL_START__*/Debug.Log($"门 {doorCtrl.gameObject.name} 设置了优先传送房间 {doorCtrl.targetRoomID}，强制传送，跳过所有通行判断");/*__DEBUGTOOL_END__*/
-                    GameState.Instance.CurrentRoomID = doorCtrl.targetRoomID;
-                    GameState.Instance.RefreshCurrentSurfaceFromRoomID();
-                    if (playerAction != null)
-                        playerAction.ResetToStartPosition();
-                    GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
-                    GameEvents.calculateNeighbors();
-                    return; // 直接返回，不再执行任何后面的通行判断
-                }
-                else
-                {
-                    /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的优先传送房间ID {doorCtrl.targetRoomID} 对应的房间数据为 null，继续执行原有通行判断");/*__DEBUGTOOL_END__*/
-                }
-            }
-            else
-            {
-                /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的优先传送房间ID {doorCtrl.targetRoomID} 无效（超出范围或 cubeData 为空），继续执行原有通行判断");/*__DEBUGTOOL_END__*/
-            }
-        }
-
         var mat = gs.CurrentMatState;
         float playerSpeed = rb.velocity.magnitude;
         bool isPassable = doorCtrl.GetIsPassable();
@@ -248,11 +220,25 @@ public class ItemInteractionController : MonoBehaviour
         string passStr = isPassable ? "1" : "0";
         string openStr = doorCtrl.IsOpened ? "1" : "0";
 
-        if (!isPassable)
+        if (!isPassable&& doorCtrl.targetRoomID >= cubeData.rooms.Count || doorCtrl.targetRoomID < 0)
         {
-            /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");/*__DEBUGTOOL_END__*/
+
+                /*__DEBUGTOOL_START__*/
+            Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于通道未连通");/*__DEBUGTOOL_END__*/
             BounceBackFromDoor(doorCollider);
             return;
+        }
+
+        //普通门
+        if (doorCtrl.doorMat == DoorController.DoorMat.normal)
+        {
+            ExecuteDoorTransition(doorCollider);
+        }
+        //敞开的门
+        if (doorCtrl.doorMat == DoorController.DoorMat.Open)
+        {
+            Debug.Log("玩家触发敞开的门");
+            ExecuteDoorTransition(doorCollider);
         }
 
         if (mat == PlayerMatState.Steel)
@@ -274,17 +260,7 @@ public class ItemInteractionController : MonoBehaviour
                 /*__DEBUGTOOL_START__*/Debug.Log($"{doorMatName}, isPassable={passStr}, isOpened={openStr}, 玩家不可以通过，由于硬门未被压力板打开");/*__DEBUGTOOL_END__*/
                 BounceBackFromDoor(doorCollider);
             }
-            //普通门
-            if (doorCtrl.doorMat == DoorController.DoorMat.normal)
-            {
-                ExecuteDoorTransition(doorCollider);
-            }
-            //敞开的门
-            if (doorCtrl.doorMat == DoorController.DoorMat.Open)
-            {
-                Debug.Log("玩家触发敞开的门");
-                ExecuteDoorTransition(doorCollider);
-            }
+
             return;
         }
 
@@ -324,17 +300,7 @@ public class ItemInteractionController : MonoBehaviour
 
            
         }
-        //普通门
-        if (doorCtrl.doorMat == DoorController.DoorMat.normal)
-        {
-            ExecuteDoorTransition(doorCollider);
-        }
-        //敞开的门
-        if (doorCtrl.doorMat == DoorController.DoorMat.Open)
-        {
-            Debug.Log("玩家触发敞开的门");
-            ExecuteDoorTransition(doorCollider);
-        }
+       
     }
 
     void BounceBackFromDoor(Collider doorCollider)
@@ -352,6 +318,9 @@ public class ItemInteractionController : MonoBehaviour
 
         var gsLocal = GameState.Instance;
         if (gsLocal == null) return;
+
+        if (TryExecuteFixedRoomTransition(doorCtrl))
+            return;
 
         int id = gsLocal.CurrentRoomID;
         Vector3Int doorDir = Vector3Int.RoundToInt(doorCtrl.DoorinRoomVector);
@@ -383,6 +352,35 @@ public class ItemInteractionController : MonoBehaviour
             GameEvents.calculateNeighbors();
             break;
         }
+    }
+
+    private bool TryExecuteFixedRoomTransition(DoorController doorCtrl)
+    {
+        if (doorCtrl == null || doorCtrl.targetRoomID < 0)
+            return false;
+
+        if (cubeData == null || doorCtrl.targetRoomID >= cubeData.rooms.Count)
+        {
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的固定传送房间ID {doorCtrl.targetRoomID} 无效（超出范围或 cubeData 为空），继续执行原有传送逻辑");/*__DEBUGTOOL_END__*/
+            return false;
+        }
+
+        var targetRoom = cubeData.rooms[doorCtrl.targetRoomID];
+        if (targetRoom == null)
+        {
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的固定传送房间ID {doorCtrl.targetRoomID} 对应的房间数据为 null，继续执行原有传送逻辑");/*__DEBUGTOOL_END__*/
+            return false;
+        }
+
+        GameState.Instance.CurrentRoomID = doorCtrl.targetRoomID;
+        GameState.Instance.RefreshCurrentSurfaceFromRoomID();
+        /*__DEBUGTOOL_START__*/Debug.Log($"门 {doorCtrl.gameObject.name} 在门逻辑执行完成后传送到固定房间 {doorCtrl.targetRoomID}");/*__DEBUGTOOL_END__*/
+
+        if (playerAction != null)
+            playerAction.ResetToStartPosition();
+        GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
+        GameEvents.calculateNeighbors();
+        return true;
     }
 
     private void TryFindTrueNeighborRoom(int id, Vector3Int oppositeDoorDir)
