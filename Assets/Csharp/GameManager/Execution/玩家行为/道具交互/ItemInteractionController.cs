@@ -350,6 +350,7 @@ public class ItemInteractionController : MonoBehaviour
                 playerAction.ResetToStartPosition();
             GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
             GameEvents.calculateNeighbors();
+            RoomGameObjectManager.Instance.LoadCurrentRoomGameObject();
             break;
         }
     }

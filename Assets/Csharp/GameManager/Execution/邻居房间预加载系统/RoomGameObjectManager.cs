@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class RoomGameObjectManager : MonoBehaviour
 {
+    public static RoomGameObjectManager Instance { get; private set; }
     private static readonly int[] TaskDoorRoomIds = { 45 };
 
     [System.Serializable]
@@ -24,6 +25,7 @@ public class RoomGameObjectManager : MonoBehaviour
     void Awake()
     {
         BuildRoomGameObjectMap();
+        Instance = this;
     }
 
     void OnEnable()
