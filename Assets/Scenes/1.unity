@@ -4555,7 +4555,7 @@ MonoBehaviour:
   minBallSpeed: 0.02
   cubeRoot: {fileID: 2080022983}
   cubeData: {fileID: 1696843652}
-  RotationTime: 5
+  RotationTime: 8
 --- !u!23 &272506954 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 744503074351234958, guid: 88e7806c3a53b03459d7006f34ad8223,
@@ -5299,7 +5299,7 @@ Transform:
   m_GameObject: {fileID: 367349154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 57.31, z: 0}
+  m_LocalPosition: {x: 0, y: 70, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28576,7 +28576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LogicCube: {fileID: 1554906249}
   csP: {fileID: 1394315370041996979, guid: 88e7806c3a53b03459d7006f34ad8223, type: 3}
-  TestRoomID: 30
+  TestRoomID: 27
   slots:
   - coord: {x: -2, y: -2, z: -2}
     indexCube: {fileID: 1274377082}
@@ -29091,9 +29091,9 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29188,7 +29188,7 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29226,9 +29226,9 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     dirMap: 000000000100000002000000030000000400000005000000
   - roomID: 13
@@ -29332,17 +29332,17 @@ MonoBehaviour:
     RoomPerfab: {fileID: 2326644760172372014, guid: 8fe5364ecccd35a4ba75b343e5ef18f0,
       type: 3}
     faces:
-    - HasDoor: 0
+    - HasDoor: 1
+      isPassable: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
-      isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     dirMap: 000000000100000002000000030000000400000005000000
   - roomID: 19
@@ -29505,11 +29505,11 @@ MonoBehaviour:
     faces:
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29602,9 +29602,9 @@ MonoBehaviour:
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29617,9 +29617,9 @@ MonoBehaviour:
     RoomPerfab: {fileID: 945307973006681811, guid: 7ffa2e55cdb92ee48a72fc7f22f689b8,
       type: 3}
     faces:
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -29902,9 +29902,9 @@ MonoBehaviour:
     RoomPerfab: {fileID: 6460041204797089483, guid: 82f6ef8b8c1a55444ac40087e2c96f59,
       type: 3}
     faces:
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
-    - HasDoor: 0
+    - HasDoor: 1
       isPassable: 0
     - HasDoor: 0
       isPassable: 0
@@ -37976,7 +37976,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

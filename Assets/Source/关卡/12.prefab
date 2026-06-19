@@ -913,8 +913,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.9999974, z: 1.3593036}
+  m_Center: {x: 0, y: 0.0000000023740687, z: -0.17965169}
 --- !u!1 &756940548922414395
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,6 +2392,7 @@ MonoBehaviour:
   softDoorHitSpeed: 5
   _isOpened: 0
   needPlateNum: 1
+  targetRoomID: 11
   doorOpenAngle: 90
   doorAnimSpeed: 2
   DoorinRoomVector: {x: 0, y: 0, z: 0}
@@ -5564,6 +5565,7 @@ MonoBehaviour:
   softDoorHitSpeed: 5
   _isOpened: 0
   needPlateNum: 1
+  targetRoomID: -1
   doorOpenAngle: 90
   doorAnimSpeed: 2
   DoorinRoomVector: {x: 0, y: 0, z: 0}
@@ -6421,8 +6423,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.9999981, z: 1.3439873}
+  m_Center: {x: 0, y: -0.00000000227287, z: 0.17199361}
 --- !u!1 &5102095575177712311
 GameObject:
   m_ObjectHideFlags: 0
