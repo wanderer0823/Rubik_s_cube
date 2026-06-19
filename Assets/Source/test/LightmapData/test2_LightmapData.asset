@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9181fe812b44dcbdad42e83081234d, type: 3}
+  m_Name: test2_LightmapData
+  m_EditorClassIdentifier: 
+  lightmapColor:
+  - {fileID: 2800000, guid: 763e336dc86da1d4f980c1ae56fb5d39, type: 3}
+  lightmapDir:
+  - {fileID: 2800000, guid: 4d7e9b9bceb9cf34db924670718ec501, type: 3}
+  shadowMask:
+  - {fileID: 2800000, guid: 883eb09786bc4c7498aff55a6cbc3041, type: 3}
+  renderers:
+  - rendererPath: 
+    lightmapIndex: 0
+    lightmapScaleOffset: {x: 0.9956467, y: 0.9956467, z: -0.0040381104, w: -0.0040381104}
+    realtimeLightmapIndex: -1
+    realtimeLightmapScaleOffset: {x: 1, y: 1, z: 0, w: 0}
+  - rendererPath: Cube (1)
+    lightmapIndex: 0
+    lightmapScaleOffset: {x: 0.34237653, y: 0.34237653, z: -0.0013885993, w: 0.64847344}
+    realtimeLightmapIndex: -1
+    realtimeLightmapScaleOffset: {x: 1, y: 1, z: 0, w: 0}
