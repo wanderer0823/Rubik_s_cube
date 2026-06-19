@@ -10,8 +10,10 @@ public class BallVisualController : MonoBehaviour
 {
     [Header("�Ӿ�ƫ�ƣ�ħ�������ȣ�")]
     public float surfaceOffset = 0.008f;
+    public Transform playerTrans;
 
     private InitCubeSlot cubeData;
+    private Vector3 currentWorldNormal = Vector3.up;
 
     void Start()
     {
@@ -23,11 +25,13 @@ public class BallVisualController : MonoBehaviour
     void OnEnable()
     {
         GameEvents.OnRoomTransitionExecute += PositionBall;
+        GameEvents.OnViewSwitchExecute += OnViewSwitched;
     }
 
     void OnDisable()
     {
         GameEvents.OnRoomTransitionExecute -= PositionBall;
+        GameEvents.OnViewSwitchExecute -= OnViewSwitched;
     }
 
     /// <summary>
@@ -64,6 +68,48 @@ public class BallVisualController : MonoBehaviour
 
         /*__DEBUGTOOL_START__*/Debug.Log($"BallVisual: Room={roomID}, Piece={pieceObj.name}, " +
                   $"FaceDir={surface.dir}, pieceLocalDir={pieceLocalDir}, localPos={transform.localPosition}");/*__DEBUGTOOL_END__*/
+
+        currentWorldNormal = worldDir.normalized;
+        // 应用旋转
+        ApplyRotation();
+    }
+    
+    void OnViewSwitched(ViewMode mode)
+    {
+        // 只更新旋转，不改变位置
+        UpdateRotationOnly();
+    }
+
+    public void UpdateRotationOnly()
+    {
+        if (currentWorldNormal == Vector3.zero) return; // 未初始化
+        Transform playerTrans = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (playerTrans != null)
+        {
+            Quaternion baseRotation = Quaternion.FromToRotation(Vector3.up, currentWorldNormal);
+            transform.rotation = baseRotation * playerTrans.rotation;
+        }
+        else
+        {
+            // 没有玩家时只对齐法线
+            transform.up = currentWorldNormal;
+        }
+    }
+    
+    // 把原来PositionBall里的旋转逻辑抽取成ApplyRotation，避免重复代码
+    private void ApplyRotation()
+    {
+        // 使用currentWorldNormal
+        Transform playerTrans = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (playerTrans != null)
+        {
+            Quaternion baseRotation = Quaternion.FromToRotation(Vector3.up, currentWorldNormal);
+            transform.rotation = baseRotation * playerTrans.rotation;
+        }
+        else
+        {
+            transform.up = currentWorldNormal;
+        }
     }
 
     CubeSurface_s FindSurfaceByRoomID(int roomID)
