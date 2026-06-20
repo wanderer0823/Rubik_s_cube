@@ -9,6 +9,7 @@ public class PlayerInputManager
     private float holdTime=0.0f;
     private float maxHoverTime = 0.01f;
     private bool isView2LeftRotateActive;
+    private bool isMovementLocked;
     [Header("鼠标灵敏度")]
     [SerializeField] private float mouseSensitivity = 2f;
 
@@ -21,6 +22,11 @@ public class PlayerInputManager
     {
         HandleKeyboard();
         HandleMouse();
+    }
+
+    public void SetMovementLocked(bool locked)
+    {
+        isMovementLocked = locked;
     }
 
     private void HandleKeyboard()
@@ -42,6 +48,8 @@ public class PlayerInputManager
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         moveDir = new Vector3(x, 0, z).normalized;
+        if (isMovementLocked)
+            moveDir = Vector3.zero;
 
         // 无论是否为零都发送，让 PlayerAction 每帧执行移动/刹车逻辑
         gm.RequestMove(moveDir);

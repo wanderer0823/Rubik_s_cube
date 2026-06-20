@@ -1,0 +1,106 @@
+{
+  "roomId": 43,
+  "steps": [
+    {
+      "speaker": "你",
+      "text": "是不是下课了，看来是课上睡过头了，趁课间我要打个电话给老妈，等一下，我的校卡哪去了？",
+      "stepType": "Text"
+    },
+    {
+      "speaker": "你",
+      "text": "这是什么？",
+      "stepType": "Text"
+    },
+    {
+      "speaker": "提示",
+      "text": "按Tab打开背包，按Tab退出",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "OpenBag"
+    },
+    {
+      "speaker": "你",
+      "text": "魔方？",
+      "stepType": "Text"
+    },
+
+    {
+      "speaker": "提示",
+      "text": "f键使用魔方",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "EnterCube"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "LockWASD"
+    },
+    {
+      "speaker": "提示",
+      "text": "右键拖动右边空白处查看魔方",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "RightDragCompleted"
+    },
+    {
+      "speaker": "提示",
+      "text": "左键拖动左边空白处旋转魔方整体",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "LeftDragCompleted"
+    },
+    {
+      "speaker": "提示",
+      "text": "f键退出",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "ExitCube"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "UnlockWASD"
+    },
+    {
+      "stepType": "Delay",
+      "delayTime": 8.0
+    },
+    {
+      "speaker": "你",
+      "text": "这个感觉好怪，我感觉我要吐了",
+      "stepType": "Text"
+    },
+    {
+      "speaker": "你",
+      "text": "等一下，那我要往哪里走呢",
+      "stepType": "Text"
+    },
+    {
+      "speaker": "提示",
+      "text": "f键使用魔方",
+      "stepType": "ShowTips"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "EnterCubeAgain"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "LockWASD"
+    },
+    {
+      "speaker": "你",
+      "text": "这个箭头应该是指着方向吧，看样子只有一个出口，先过去看看",
+      "stepType": "Text"
+    }
+  ]
+}
