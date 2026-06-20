@@ -32,11 +32,14 @@ public class GrabSystem : MonoBehaviour
     public float detectInterval = 0.02f;
 
     private float lastDetectTime;
+    
+    public bool blockRelease = false;
 
     private Camera cam;
     private GameState gs;
 
-    private Grabbable currentTarget;
+    public Grabbable CurrentTarget => currentTarget;   // 只读属性
+    public Grabbable currentTarget;
     private Grabbable heldObject;
     private float grabDistance;
     private bool isHolding = false;
@@ -67,6 +70,11 @@ public class GrabSystem : MonoBehaviour
         if (gs == null) return;
         if (gs.CurrentView != ViewMode.View3) return;
         if (gs.CurrentPlayerState == PlayerState.isOpeningBag) return;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (blockRelease) return;   // 若被阻止，忽略左键
+            ReleaseObject();
+        }
 
         if (!isHolding)
         {
@@ -149,7 +157,7 @@ public class GrabSystem : MonoBehaviour
             outline.SetEnabled(false);
     }
 
-    void GrabObject(Grabbable obj)
+    public void GrabObject(Grabbable obj)
     {
         heldObject = obj;
         grabDistance = Vector3.Distance(cam.transform.position, obj.transform.position);
@@ -191,7 +199,7 @@ public class GrabSystem : MonoBehaviour
         );
     }
 
-    void ReleaseObject()
+    public void ReleaseObject()
     {
         if (heldObject == null) return;
 
