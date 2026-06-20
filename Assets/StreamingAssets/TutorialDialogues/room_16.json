@@ -1,0 +1,25 @@
+{
+  "roomId": 16,
+  "steps": [
+    {
+      "speaker": "Guide",
+      "text": "这里是 43 号房间的新手引导示例。",
+      "color": "#FFFFFFFF",
+      "stepType": "Text",
+      "eventId": "",
+      "delayTime": 0,
+      "requiredFlag": "",
+      "completeFlag": "room43_intro_seen"
+    },
+    {
+      "speaker": "Guide",
+      "text": "再次进入本房间时，这段对话在本局游戏内不会重复触发。",
+      "color": "#FFD966FF",
+      "stepType": "Text",
+      "eventId": "",
+      "delayTime": 0,
+      "requiredFlag": "",
+      "completeFlag": "room43_once_tip_seen"
+    }
+  ]
+}

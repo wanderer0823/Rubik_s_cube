@@ -88,6 +88,9 @@ public class RoomInstanceManager : MonoBehaviour
         _currentRoomInstance.transform.localPosition = Vector3.zero;
         _currentRoomInstance.transform.localRotation = Quaternion.Euler(room.orRotation);
 
+        if (TutorialController.Instance != null)
+            TutorialController.Instance.TryStartRoomDialogue(currentRoomId);
+
         #region 张奕忻修改！！！！防止克隆静态物体失败
         // 恢复原始Mesh并清掉烘焙光照引用，让克隆体可以自由旋转
         //var batchingCache = _currentRoomInstance.GetComponent<RoomBatchingCache>();

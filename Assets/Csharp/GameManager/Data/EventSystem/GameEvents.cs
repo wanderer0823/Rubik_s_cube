@@ -36,6 +36,7 @@ public static class GameEvents
     // CRC监听VMM
     public static event Action OnCubeRotateExecute;
     public static event Action OnCubeRotateFinishExecute;
+    public static event Action OnCubeRotateSettledExecute;
     // CARC监听VMM
     public static event Action OnCameraRotateExecute;
     public static event Action OnCameraRotateFinishExecute;
@@ -66,6 +67,7 @@ public static class GameEvents
     // 过门成功，小球需要移动
     public static event Action<int> OnRoomTransitionExecute;
     // StartUI监听VMM：eac重新打开开始界面
+    public static event Action OnGameStartExecute;
     public static event Action OnBackStartUI;
     // CA监听PA，相机走路晃动
     public static event Action<Vector3> OnWalkMovement;
@@ -105,6 +107,7 @@ public static class GameEvents
     // CRC监听VMM
     public static void onCubeRotateStart() => OnCubeRotateExecute?.Invoke();
     public static void onCubeRotateEnd()=> OnCubeRotateFinishExecute?.Invoke();
+    public static void onCubeRotateSettled() => OnCubeRotateSettledExecute?.Invoke();
     // CARC监听VMM
     public static void onCameraRotateStart() => OnCameraRotateExecute?.Invoke();
     public static void onCameraRotateEnd() => OnCameraRotateFinishExecute?.Invoke();
@@ -115,6 +118,7 @@ public static class GameEvents
     // RPC监听UIM和PA
     public static void calculateNeighbors() =>CalculateNeighbors?.Invoke();
     // StartUI监听VMM
+    public static void onGameStartExecute() => OnGameStartExecute?.Invoke();
     public static void onBackStartUI() => OnBackStartUI?.Invoke();
     // ===== 新增执行广播 =====
     public static void onBagOpenExecute() => OnBagOpenExecute?.Invoke();

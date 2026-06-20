@@ -126,6 +126,11 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.onGameExitRequest();
     }
+
+    public void SetMovementInputLocked(bool locked)
+    {
+        playerInputManager?.SetMovementLocked(locked);
+    }
     #endregion
     #endregion
 }

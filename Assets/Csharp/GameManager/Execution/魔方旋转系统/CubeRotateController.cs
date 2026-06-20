@@ -7,6 +7,7 @@ public class CubeRotateController : MonoBehaviour
 {
     bool isDragging;
     bool hasStartedActualDrag;
+    bool isSnappingAfterActualDrag;
     Vector3 lastMousePos;
     Vector3 dragStartMousePos;
     Transform view2CameraTransform;
@@ -72,6 +73,7 @@ public class CubeRotateController : MonoBehaviour
     {
         isDragging = true;
         hasStartedActualDrag = false;
+        isSnappingAfterActualDrag = false;
         dragStartMousePos = Input.mousePosition;
         lastMousePos = dragStartMousePos;
     }
@@ -80,7 +82,10 @@ public class CubeRotateController : MonoBehaviour
     {
         isDragging = false;
         if (hasStartedActualDrag)
+        {
+            isSnappingAfterActualDrag = true;
             AutoSnapToNearestFace();
+        }
     }
 
     void RotateCubeFree(Vector3 delta)
@@ -189,6 +194,11 @@ public class CubeRotateController : MonoBehaviour
 
         // 回正完成后计算空间状态
         //CalculateBallSpaceState();
+        if (isSnappingAfterActualDrag)
+        {
+            isSnappingAfterActualDrag = false;
+            GameEvents.onCubeRotateSettled();
+        }
     }
 
     Vector3 SnapHorizontalAxis(Vector3 direction)

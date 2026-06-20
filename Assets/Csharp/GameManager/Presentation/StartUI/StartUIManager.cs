@@ -49,6 +49,7 @@ namespace Csharp.GameManager.Presentation.StartUI
             if (GameState.Instance == null)
                 new GameState();
             GameState.Instance.SetPlayerState(PlayerState.isMoving);
+            GameEvents.onGameStartExecute();
         }
 
         public void ExitGame()
