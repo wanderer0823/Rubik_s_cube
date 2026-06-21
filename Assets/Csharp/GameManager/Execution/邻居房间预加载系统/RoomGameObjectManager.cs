@@ -5,6 +5,9 @@ public class RoomGameObjectManager : MonoBehaviour
 {
     public static RoomGameObjectManager Instance { get; private set; }
     private static readonly int[] TaskDoorRoomIds = { 45 };
+    
+    [Header("始终激活的特殊物体（切换房间时不关闭）")]
+    public List<GameObject> alwaysActiveObjects = new List<GameObject>();
 
     [System.Serializable]
     public class RoomGameObjectEntry
@@ -120,6 +123,10 @@ public class RoomGameObjectManager : MonoBehaviour
         foreach (var entry in roomGameObjects)
         {
             if (entry == null || entry.roomObject == null)
+                continue;
+
+            // ★ 新增：如果该物体在“始终激活”列表中，跳过
+            if (alwaysActiveObjects.Contains(entry.roomObject))
                 continue;
 
             entry.roomObject.SetActive(false);
