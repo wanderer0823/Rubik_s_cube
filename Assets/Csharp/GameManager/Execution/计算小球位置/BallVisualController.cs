@@ -2,23 +2,23 @@ using UnityEngine;
 using static InitCubeSlot;
 
 /// <summary>
-/// ����ħ����С����Ӿ�λ�á�
-/// С��ʼ����Ϊ��ǰ CubePiece �������塣
-/// ֻ������������Ż�����ʱ���¶�λ��
+/// 控制小球在 Cube 表面上的位置和旋转
+/// 由 CubePiece 驱动，并随玩家朝向旋转
 /// </summary>
 public class BallVisualController : MonoBehaviour
 {
-    [Header("�Ӿ�ƫ�ƣ�ħ�������ȣ�")]
+    [Header("小球表面偏移量")]
     public float surfaceOffset = 0.008f;
     public Transform playerTrans;
 
     private InitCubeSlot cubeData;
     private Vector3 currentWorldNormal = Vector3.up;
+    private int currentRoomID = -1;  // ★ 新增：记录当前房间ID
 
     void Start()
     {
         cubeData = ViewModeManager.Instance?.cubeData;
-        // ��ʼ��λ
+        // 初始化位置
         PositionBall(GameState.Instance.CurrentRoomID);
     }
 
@@ -35,30 +35,32 @@ public class BallVisualController : MonoBehaviour
     }
 
     /// <summary>
-    /// ��С���ƶ���ָ�������Ӧ�� Piece ��
+    /// 将小球定位到指定房间所在的 Piece 表面
     /// </summary>
     void PositionBall(int roomID)
     {
+        currentRoomID = roomID;  // ★ 新增：记录当前房间ID
+
         if (cubeData == null) return;
         if (roomID < 0) return;
 
         CubeSurface_s surface = FindSurfaceByRoomID(roomID);
         if (surface == null)
         {
-            /*__DEBUGTOOL_START__*/Debug.LogWarning($"BallVisual: �Ҳ��� RoomID={roomID} ��Ӧ�� Surface");/*__DEBUGTOOL_END__*/
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"BallVisual: 找不到 RoomID={roomID} 的 Surface");/*__DEBUGTOOL_END__*/
             return;
         }
 
         GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(roomID);
         if (pieceObj == null)
         {
-            /*__DEBUGTOOL_START__*/Debug.LogWarning($"BallVisual: �Ҳ��� RoomID={roomID} ��Ӧ�� PieceObj");/*__DEBUGTOOL_END__*/
+            /*__DEBUGTOOL_START__*/Debug.LogWarning($"BallVisual: 找不到 RoomID={roomID} 的 PieceObj");/*__DEBUGTOOL_END__*/
             return;
         }
 
         transform.SetParent(pieceObj.transform, false);
 
-        // �߼����� �� ħ������ϵ���緽�� �� Piece���ط���
+        // 计算表面法线的本地方向（相对于 Piece）
         Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
         Vector3 logicDir = FaceDirToLocalVector(surface.dir);
         Vector3 worldDir = cubeRoot.TransformDirection(logicDir);
@@ -76,13 +78,22 @@ public class BallVisualController : MonoBehaviour
     
     void OnViewSwitched(ViewMode mode)
     {
-        // 只更新旋转，不改变位置
+        // 重新从当前的 surface 获取方向并更新 currentWorldNormal
+        CubeSurface_s surface = FindSurfaceByRoomID(currentRoomID);
+        if (surface != null)
+        {
+            Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
+            Vector3 logicDir = FaceDirToLocalVector(surface.dir);
+            Vector3 worldDir = cubeRoot.TransformDirection(logicDir);
+            currentWorldNormal = worldDir.normalized;
+        }
         UpdateRotationOnly();
     }
 
     public void UpdateRotationOnly()
     {
         if (currentWorldNormal == Vector3.zero) return; // 未初始化
+
         Transform playerTrans = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (playerTrans != null)
         {
@@ -91,25 +102,15 @@ public class BallVisualController : MonoBehaviour
         }
         else
         {
-            // 没有玩家时只对齐法线
+            // 无玩家时只对齐法线
             transform.up = currentWorldNormal;
         }
     }
     
-    // 把原来PositionBall里的旋转逻辑抽取成ApplyRotation，避免重复代码
+    // 应用旋转（调用 UpdateRotationOnly 避免重复代码）
     private void ApplyRotation()
     {
-        // 使用currentWorldNormal
-        Transform playerTrans = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (playerTrans != null)
-        {
-            Quaternion baseRotation = Quaternion.FromToRotation(Vector3.up, currentWorldNormal);
-            transform.rotation = baseRotation * playerTrans.rotation;
-        }
-        else
-        {
-            transform.up = currentWorldNormal;
-        }
+        UpdateRotationOnly();
     }
 
     CubeSurface_s FindSurfaceByRoomID(int roomID)
@@ -141,7 +142,7 @@ public class BallVisualController : MonoBehaviour
     }
 
     /// <summary>
-    /// ��ȡָ������ Surface ������ռ�ĳ��ⷽ�򣨹��ⲿʹ�ã�
+    /// 获取某个房间所在表面的世界法线方向（静态方法，供外部调用）
     /// </summary>
     public static Vector3 GetSurfaceWorldDirection(int roomID)
     {
@@ -149,7 +150,7 @@ public class BallVisualController : MonoBehaviour
         var cubeRoot = ViewModeManager.Instance?.cubeRoot;
         if (cubeData == null || cubeRoot == null) return Vector3.up;
 
-        // �� Surface
+        // 查找 Surface
         CubeSurface_s surface = null;
         foreach (var slot in cubeData.slots)
         {
@@ -180,5 +181,4 @@ public class BallVisualController : MonoBehaviour
 
         return cubeRoot.TransformDirection(logicDir).normalized;
     }
-
 }
