@@ -1,25 +1,23 @@
 %YAML 1.1
-%TAG !u! tag:yousandi.cn,2023:
+%TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 3
-  m_OcclusionCullingData: {fileID: 0}
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
   m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionEnabled: 0
-  m_DisplayOccluded: 0
-  m_SceneDepthBufferWidth: 512
-  m_SceneDepthBufferHeight: 512
-  m_ShadowDepthBufferWidth: 512
-  m_ShadowDepthBufferHeight: 512
+  m_OcclusionCullingData: {fileID: 0}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.754717, g: 0.70487714, b: 0.70903045, a: 1}
+  m_FogColor: {r: 0.47843137, g: 0.57247615, b: 0.9372549, a: 1}
   m_FogMode: 2
-  m_FogDensity: 0.04
+  m_FogDensity: 0.01
   m_LinearFogStart: -108.6
   m_LinearFogEnd: 171.1
   m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
@@ -29,7 +27,7 @@ RenderSettings:
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 0}
-  m_HaloStrength: 0.513
+  m_HaloStrength: 0.395
   m_FlareStrength: 1
   m_FlareFadeSpeed: 2.71
   m_HaloTexture: {fileID: 0}
@@ -132,7 +130,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6827218}
   - component: {fileID: 6827222}
@@ -140,7 +138,6 @@ GameObject:
   - component: {fileID: 6827220}
   - component: {fileID: 6827219}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: MatSlot_Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,11 +272,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 21387720}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,14 +306,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 27685030}
   - component: {fileID: 27685033}
   - component: {fileID: 27685032}
   - component: {fileID: 27685031}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,11 +426,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 35128931}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: View2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,11 +458,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 43866638}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,11 +494,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 58261388}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,12 +528,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 60881681}
   - component: {fileID: 60881680}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u8C03\u8272"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -586,11 +577,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 69975080}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: View3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,13 +609,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 78199077}
   - component: {fileID: 78199079}
   - component: {fileID: 78199078}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u51C6\u661F"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -695,13 +684,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 87192614}
   - component: {fileID: 87192613}
   - component: {fileID: 87192612}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u4E3B\u5149"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -793,7 +781,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &87192614
 Transform:
   m_ObjectHideFlags: 0
@@ -815,13 +802,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 98335547}
   - component: {fileID: 98335550}
   - component: {fileID: 98335549}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -860,9 +846,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -902,7 +885,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 132379725}
   - component: {fileID: 132379729}
@@ -910,7 +893,6 @@ GameObject:
   - component: {fileID: 132379727}
   - component: {fileID: 132379726}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: MatSlot_Bounce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1045,11 +1027,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 155102027}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u6444\u50CF\u673A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,14 +1061,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 162313558}
   - component: {fileID: 162313561}
   - component: {fileID: 162313560}
   - component: {fileID: 162313559}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,13 +1194,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 165329455}
   - component: {fileID: 165329458}
   - component: {fileID: 165329457}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1259,9 +1238,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1301,13 +1277,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 177722734}
   - component: {fileID: 177722736}
   - component: {fileID: 177722735}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1377,13 +1352,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 212515120}
   - component: {fileID: 212515123}
   - component: {fileID: 212515122}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,9 +1396,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1464,13 +1435,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 223248461}
   - component: {fileID: 223248464}
   - component: {fileID: 223248463}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1509,9 +1479,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1551,13 +1518,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 224941256}
   - component: {fileID: 224941258}
   - component: {fileID: 224941257}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5C4B\u5916\u5149"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1664,20 +1630,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &227013322
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 227013323}
   - component: {fileID: 227013326}
   - component: {fileID: 227013325}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1716,9 +1680,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1758,13 +1719,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 235082848}
   - component: {fileID: 235082850}
   - component: {fileID: 235082849}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u56FE\u6807"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1834,13 +1794,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 237525348}
   - component: {fileID: 237525350}
   - component: {fileID: 237525349}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Spot Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1897,8 +1856,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.83137256, g: 0.69927114, b: 0.54901963, a: 1}
-  m_Intensity: 600
-  m_Range: 8.3
+  m_Intensity: 266.5
+  m_Range: 17.84
   m_SpotAngle: 49.740417
   m_InnerSpotAngle: 19.198034
   m_CookieSize: 10
@@ -1939,7 +1898,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 6.77
+  m_BounceIntensity: 6.3
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -1947,20 +1906,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &238988739
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 238988740}
   - component: {fileID: 238988743}
   - component: {fileID: 238988742}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1999,9 +1956,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2041,11 +1995,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 259219704}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u903B\u8F91\u9B54\u65B9"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2076,11 +2029,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 260314058}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u7A7A\u7269\u4F53\u811A\u672C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2112,13 +2064,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 270665477}
   - component: {fileID: 270665479}
   - component: {fileID: 270665478}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2174,7 +2125,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.3370119, g: 0.45953482, b: 0.5031446, a: 1}
+  m_Color: {r: 0.3372549, g: 0.3887735, b: 0.5019608, a: 1}
   m_Intensity: 3.37
   m_Range: 10
   m_SpotAngle: 30
@@ -2225,18 +2176,16 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &276765633
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 276765634}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2267,13 +2216,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 293520598}
   - component: {fileID: 293520601}
   - component: {fileID: 293520600}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2312,9 +2260,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2354,13 +2299,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 296426324}
   - component: {fileID: 296426326}
   - component: {fileID: 296426325}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2467,14 +2411,13 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 330585546}
   - component: {fileID: 330585545}
@@ -2483,7 +2426,6 @@ GameObject:
   - component: {fileID: 330585548}
   - component: {fileID: 330585549}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -2544,8 +2486,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_enableGDRP: 1
-  m_backfaceCulling: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -2591,9 +2531,6 @@ MonoBehaviour:
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
   m_Antialiasing: 0
-  m_FXAAQualityMode: 0
-  m_FXAAContrastThreshold: 0.125
-  m_FXAAMinContrastThreshold: 0.012
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -2603,11 +2540,6 @@ MonoBehaviour:
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  allowDeepLearningSuperSampling: 0
-  deepLearningSuperSamplingUseCustomQualitySettings: 0
-  deepLearningSuperSamplingQuality: 0
-  deepLearningSuperSamplingUseCustomAttributes: 0
-  deepLearningSuperSamplingUseOptimalSettings: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -2673,11 +2605,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 331454290}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: y=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2708,13 +2639,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 347301001}
   - component: {fileID: 347301000}
   - component: {fileID: 347300999}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2777,11 +2707,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 360814858}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2814,7 +2743,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 375293605}
   - component: {fileID: 375293604}
@@ -2822,7 +2751,6 @@ GameObject:
   - component: {fileID: 375293602}
   - component: {fileID: 375293606}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2867,9 +2795,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2941,13 +2866,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 375349616}
   - component: {fileID: 375349618}
   - component: {fileID: 375349617}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3017,12 +2941,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 380280516}
   - component: {fileID: 380280517}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u751F\u65E5\u6559\u5BA4\u8C03\u8272"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3067,11 +2990,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 385546862}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3102,11 +3024,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 400137203}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u901A\u5173UI"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3139,13 +3060,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 414312992}
   - component: {fileID: 414312994}
   - component: {fileID: 414312993}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3215,13 +3135,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 433617572}
   - component: {fileID: 433617574}
   - component: {fileID: 433617573}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3270,7 +3189,6 @@ MonoBehaviour:
   m_text: 'View 1
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3353,11 +3271,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 459086220}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: View1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3386,13 +3303,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 471203141}
   - component: {fileID: 471203142}
   - component: {fileID: 471203144}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "UIManager\u53CABackpack"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3477,19 +3393,20 @@ MonoBehaviour:
   animDuration: 0.25
   hideOffsetY: -200
   defaultFont: {fileID: 0}
+  detailNameFont: {fileID: 0}
+  detailDescFont: {fileID: 0}
 --- !u!1 &493609014
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 493609017}
   - component: {fileID: 493609016}
   - component: {fileID: 493609015}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3581,7 +3498,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &493609017
 Transform:
   m_ObjectHideFlags: 0
@@ -3603,13 +3519,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 497674093}
   - component: {fileID: 497674092}
   - component: {fileID: 497674091}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: computer light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3701,7 +3616,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &497674093
 Transform:
   m_ObjectHideFlags: 0
@@ -3723,11 +3637,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 506400982}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3831,13 +3744,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 546618525}
   - component: {fileID: 546618528}
   - component: {fileID: 546618527}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3876,9 +3788,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3918,13 +3827,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 557773979}
   - component: {fileID: 557773982}
   - component: {fileID: 557773981}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3963,9 +3871,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4005,11 +3910,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 562426286}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: y=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4040,13 +3944,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 567210381}
   - component: {fileID: 567210383}
   - component: {fileID: 567210382}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4120,13 +4023,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 588111073}
   - component: {fileID: 588111075}
   - component: {fileID: 588111074}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Mats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4252,12 +4154,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 605477955}
   - component: {fileID: 605477954}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "living room\u8C03\u8272"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4302,13 +4203,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 609633389}
   - component: {fileID: 609633392}
   - component: {fileID: 609633391}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4347,9 +4247,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4389,11 +4286,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 627196686}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u6253\u5149"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4429,17 +4325,16 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 628247723}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &628247723
 Transform:
   m_ObjectHideFlags: 0
@@ -4465,11 +4360,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 640556858}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5C421\uFF08y=-1\uFF09"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4500,13 +4394,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 673425549}
   - component: {fileID: 673425551}
   - component: {fileID: 673425550}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u540D\u79F0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4555,7 +4448,6 @@ MonoBehaviour:
   m_text: 'GlassMat
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4640,6 +4532,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1143515729976864409, guid: e642a4c8fc87f54429693bea5650245c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0050dcfdfe47db3439302f607ae7a5ac, type: 2}
+    - target: {fileID: 6180889020507162399, guid: e642a4c8fc87f54429693bea5650245c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0050dcfdfe47db3439302f607ae7a5ac, type: 2}
     - target: {fileID: 6960113613145692721, guid: e642a4c8fc87f54429693bea5650245c,
         type: 3}
       propertyPath: m_Name
@@ -4648,7 +4550,7 @@ PrefabInstance:
     - target: {fileID: 6960113613145692721, guid: e642a4c8fc87f54429693bea5650245c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7772257313353138315, guid: e642a4c8fc87f54429693bea5650245c,
         type: 3}
@@ -4819,13 +4721,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 681406231}
   - component: {fileID: 681406232}
   - component: {fileID: 681406233}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: ViewModeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4885,19 +4786,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 683959216}
   - component: {fileID: 683959218}
   - component: {fileID: 683959217}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &683959216
 Transform:
   m_ObjectHideFlags: 0
@@ -4998,20 +4898,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &684602856
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 684602857}
   - component: {fileID: 684602860}
   - component: {fileID: 684602859}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5050,9 +4948,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5092,14 +4987,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 686231670}
   - component: {fileID: 686231673}
   - component: {fileID: 686231672}
   - component: {fileID: 686231671}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5226,13 +5120,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 687586027}
   - component: {fileID: 687586029}
   - component: {fileID: 687586028}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5281,7 +5174,6 @@ MonoBehaviour:
   m_text: 'View 3
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5364,14 +5256,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 719185002}
   - component: {fileID: 719185005}
   - component: {fileID: 719185004}
   - component: {fileID: 719185003}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5491,13 +5382,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 734195356}
   - component: {fileID: 734195355}
   - component: {fileID: 734195354}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u4E3B\u5149 (2)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5589,7 +5479,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &734195356
 Transform:
   m_ObjectHideFlags: 0
@@ -5611,13 +5500,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 765451613}
   - component: {fileID: 765451612}
   - component: {fileID: 765451611}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5A74\u513F\u5E8A\u805A\u5149\u706F"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5709,7 +5597,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &765451613
 Transform:
   m_ObjectHideFlags: 0
@@ -5731,13 +5618,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 768451862}
   - component: {fileID: 768451865}
   - component: {fileID: 768451864}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5776,9 +5662,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5818,14 +5701,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 773962226}
   - component: {fileID: 773962225}
   - component: {fileID: 773962227}
   - component: {fileID: 773962228}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7284,11 +7166,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 784567780}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: room0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7316,12 +7197,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 832575519}
   - component: {fileID: 832575518}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7366,11 +7246,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 837741222}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5A74\u513F\u623F\u6253\u5149"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7402,13 +7281,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 861823407}
   - component: {fileID: 861823409}
   - component: {fileID: 861823408}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7478,11 +7356,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 873525857}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7513,13 +7390,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 919490611}
   - component: {fileID: 919490613}
   - component: {fileID: 919490612}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Area Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7626,20 +7502,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &941240537
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 941240538}
   - component: {fileID: 941240540}
   - component: {fileID: 941240539}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7713,11 +7587,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 954225769}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7748,13 +7621,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 966831857}
   - component: {fileID: 966831859}
   - component: {fileID: 966831858}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7824,13 +7696,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 992928569}
   - component: {fileID: 992928572}
   - component: {fileID: 992928571}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7869,9 +7740,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7911,13 +7779,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1000451804}
   - component: {fileID: 1000451806}
   - component: {fileID: 1000451805}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: DetailImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7987,13 +7854,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1010500885}
   - component: {fileID: 1010500888}
   - component: {fileID: 1010500887}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8032,9 +7898,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8074,13 +7937,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1017555447}
   - component: {fileID: 1017555449}
   - component: {fileID: 1017555448}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u56FE\u6807"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8150,11 +8012,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1046577712}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8185,12 +8046,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1050139715}
   - component: {fileID: 1050139716}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Reflection Probe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8237,9 +8097,6 @@ ReflectionProbe:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IntensityMultiplier: 1
   m_BlendDistance: 1
   m_HDR: 1
@@ -8247,7 +8104,6 @@ ReflectionProbe:
   m_RenderDynamicObjects: 0
   m_UseOcclusionCulling: 1
   m_Importance: 1
-  m_CustomBlendWeight: 1
   m_CustomBakedTexture: {fileID: 0}
 --- !u!1001 &1063027772
 PrefabInstance:
@@ -9158,13 +9014,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1069151623}
   - component: {fileID: 1069151626}
   - component: {fileID: 1069151625}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9203,9 +9058,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9245,13 +9097,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1076420073}
   - component: {fileID: 1076420075}
   - component: {fileID: 1076420074}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: DetailNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9298,7 +9149,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Detail Name
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20099,13 +19949,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1120709325}
   - component: {fileID: 1120709328}
   - component: {fileID: 1120709327}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20144,9 +19993,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20186,17 +20032,16 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1125036892}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: living room light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1125036892
 Transform:
   m_ObjectHideFlags: 0
@@ -20220,13 +20065,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1130743837}
   - component: {fileID: 1130743839}
   - component: {fileID: 1130743838}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20333,18 +20177,16 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1134656184
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1134656185}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u9B54\u65B9\u80CC\u666F"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20379,13 +20221,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1135076787}
   - component: {fileID: 1135076789}
   - component: {fileID: 1135076788}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20434,7 +20275,6 @@ MonoBehaviour:
   m_text: 'View 2
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20517,13 +20357,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1141469141}
   - component: {fileID: 1141469140}
   - component: {fileID: 1141469139}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20615,7 +20454,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &1141469141
 Transform:
   m_ObjectHideFlags: 0
@@ -20637,13 +20475,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1153265982}
   - component: {fileID: 1153265984}
   - component: {fileID: 1153265983}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20699,8 +20536,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.27044016, g: 0.23897384, b: 0.26229277, a: 1}
-  m_Intensity: 4.3
+  m_Color: {r: 0.23921569, g: 0.24837115, b: 0.27058825, a: 1}
+  m_Intensity: 1.28
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20750,21 +20587,19 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1160416436
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1160416440}
   - component: {fileID: 1160416439}
   - component: {fileID: 1160416438}
   - component: {fileID: 1160416437}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20809,9 +20644,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20866,7 +20698,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1166831418}
   - component: {fileID: 1166831421}
@@ -20874,7 +20706,6 @@ GameObject:
   - component: {fileID: 1166831419}
   - component: {fileID: 1166831422}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: MatSlot_Steel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21009,14 +20840,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1180175550}
   - component: {fileID: 1180175553}
   - component: {fileID: 1180175552}
   - component: {fileID: 1180175551}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21130,14 +20960,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1205082643}
   - component: {fileID: 1205082642}
   - component: {fileID: 1205082641}
   - component: {fileID: 1205082640}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21182,9 +21011,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21345,11 +21171,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1209986318}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21380,11 +21205,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1219369263}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5C423\uFF08y=1\uFF09"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21415,11 +21239,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1322567016}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21453,13 +21276,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1323262835}
   - component: {fileID: 1323262837}
   - component: {fileID: 1323262836}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u8BE6\u60C5panel"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21532,13 +21354,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1339218251}
   - component: {fileID: 1339218253}
   - component: {fileID: 1339218252}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21608,13 +21429,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1341110901}
   - component: {fileID: 1341110903}
   - component: {fileID: 1341110902}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21671,7 +21491,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.48581925, g: 0.55210286, b: 0.57861626, a: 1}
-  m_Intensity: 3.11
+  m_Intensity: 0.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -21721,21 +21541,19 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1346315144
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1346315145}
   - component: {fileID: 1346315148}
   - component: {fileID: 1346315147}
   - component: {fileID: 1346315146}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21849,11 +21667,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1355045761}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21884,14 +21701,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1368437613}
   - component: {fileID: 1368437616}
   - component: {fileID: 1368437615}
   - component: {fileID: 1368437614}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22005,13 +21821,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1399199892}
   - component: {fileID: 1399199891}
   - component: {fileID: 1399199890}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22103,7 +21918,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &1399199892
 Transform:
   m_ObjectHideFlags: 0
@@ -22125,13 +21939,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1401999351}
   - component: {fileID: 1401999354}
   - component: {fileID: 1401999353}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22170,9 +21983,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22212,11 +22022,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1418810232}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22247,13 +22056,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1421693333}
   - component: {fileID: 1421693336}
   - component: {fileID: 1421693335}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22292,9 +22100,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22334,13 +22139,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1437839878}
   - component: {fileID: 1437839880}
   - component: {fileID: 1437839879}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Area Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22447,18 +22251,16 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1453861416
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1453861417}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22489,13 +22291,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1454779358}
   - component: {fileID: 1454779360}
   - component: {fileID: 1454779359}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22602,18 +22403,16 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1455267926
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1455267927}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: CurrentRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22641,14 +22440,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1455381705}
   - component: {fileID: 1455381706}
   - component: {fileID: 1455381707}
   - component: {fileID: 1455381708}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: RoomPreloadController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22717,11 +22515,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1468114438}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22752,11 +22549,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1491650316}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22787,13 +22583,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1494312563}
   - component: {fileID: 1494312565}
   - component: {fileID: 1494312564}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22900,20 +22695,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1501861071
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1501861074}
   - component: {fileID: 1501861073}
   - component: {fileID: 1501861072}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: mainlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23005,7 +22798,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &1501861074
 Transform:
   m_ObjectHideFlags: 0
@@ -23014,26 +22806,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501861071}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.015459979, y: -0.97138053, z: 0.041988287, w: 0.23327652}
+  m_LocalRotation: {x: 0.029790957, y: -0.97372097, z: 0.0821303, w: 0.21032016}
   m_LocalPosition: {x: 32.683243, y: 5.8858643, z: 15.089624}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 837741222}
-  m_LocalEulerAnglesHint: {x: 5.094, y: -153.019, z: -0.601}
+  m_LocalEulerAnglesHint: {x: 9.932, y: -155.742, z: -1.365}
 --- !u!1 &1507846968
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1507846969}
   - component: {fileID: 1507846971}
   - component: {fileID: 1507846970}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u540D\u79F0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23082,7 +22873,6 @@ MonoBehaviour:
   m_text: 'BounceMat
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -23165,12 +22955,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1517782367}
   - component: {fileID: 1517782368}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23231,13 +23020,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1518681653}
   - component: {fileID: 1518681655}
   - component: {fileID: 1518681654}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Directional Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23294,7 +23082,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.1525651, g: 0.22170791, b: 0.23899364, a: 1}
-  m_Intensity: 4.46
+  m_Intensity: 1.63
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -23344,20 +23132,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1527002666
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1527002667}
   - component: {fileID: 1527002670}
   - component: {fileID: 1527002669}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23396,9 +23182,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23438,13 +23221,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1530081892}
   - component: {fileID: 1530081891}
   - component: {fileID: 1530081890}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u4E3B\u5149 (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23536,7 +23318,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &1530081892
 Transform:
   m_ObjectHideFlags: 0
@@ -23558,11 +23339,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1552611410}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u80CC\u5305\u7CFB\u7EDF"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23597,13 +23377,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1575086570}
   - component: {fileID: 1575086573}
   - component: {fileID: 1575086572}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23642,9 +23421,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23684,7 +23460,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1576474101}
   - component: {fileID: 1576474102}
@@ -23695,7 +23471,6 @@ GameObject:
   - component: {fileID: 1576474105}
   - component: {fileID: 1576474104}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u9B54\u65B90"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23867,11 +23642,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1589821805}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: y=1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23902,13 +23676,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1603139059}
   - component: {fileID: 1603139061}
   - component: {fileID: 1603139060}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23978,13 +23751,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1637554342}
   - component: {fileID: 1637554345}
   - component: {fileID: 1637554344}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24023,9 +23795,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24065,14 +23834,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1659567935}
   - component: {fileID: 1659567934}
   - component: {fileID: 1659567933}
   - component: {fileID: 1659567932}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24117,9 +23885,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24174,13 +23939,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1700263820}
   - component: {fileID: 1700263822}
   - component: {fileID: 1700263821}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24250,13 +24014,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1707014938}
   - component: {fileID: 1707014941}
   - component: {fileID: 1707014940}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24295,9 +24058,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24337,17 +24097,16 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1713150257}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u751F\u65E5\u6559\u5BA4light"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1713150257
 Transform:
   m_ObjectHideFlags: 0
@@ -24377,13 +24136,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1726114246}
   - component: {fileID: 1726114248}
   - component: {fileID: 1726114247}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: table light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24490,21 +24248,19 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1748737255
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1748737259}
   - component: {fileID: 1748737258}
   - component: {fileID: 1748737257}
   - component: {fileID: 1748737256}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24549,9 +24305,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24606,13 +24359,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1750930070}
   - component: {fileID: 1750930073}
   - component: {fileID: 1750930072}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24651,9 +24403,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24693,13 +24442,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1765611657}
   - component: {fileID: 1765611656}
   - component: {fileID: 1765611655}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u51FA\u79DF\u5C4B\u4E3B\u5149 (3)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24791,7 +24539,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &1765611657
 Transform:
   m_ObjectHideFlags: 0
@@ -24813,12 +24560,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1792694950}
   - component: {fileID: 1792694949}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5A74\u513F\u623F\u8C03\u8272"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26007,6 +25753,21 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 885207140603754883, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.328
+      objectReference: {fileID: 0}
+    - target: {fileID: 885207140603754883, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.013
+      objectReference: {fileID: 0}
+    - target: {fileID: 885207140603754883, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.598
+      objectReference: {fileID: 0}
     - target: {fileID: 886337468109295714, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -26952,6 +26713,21 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 1832134381434949075, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.42994627
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832134381434949075, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.01763293
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832134381434949075, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.5780013
+      objectReference: {fileID: 0}
     - target: {fileID: 1835817221423862637, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -27111,6 +26887,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005997786102470890, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005997786102470890, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005997786102470890, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005997786102470890, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05299
       objectReference: {fileID: 0}
     - target: {fileID: 2012847548717613093, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
@@ -29542,6 +29338,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 4161954814760057399, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954814760057399, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954814760057399, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.0590296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954814760057399, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05299
+      objectReference: {fileID: 0}
     - target: {fileID: 4164633968149913317, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -31802,6 +31618,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 6108250451273240239, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.6984327
+      objectReference: {fileID: 0}
+    - target: {fileID: 6108250451273240239, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0021
+      objectReference: {fileID: 0}
+    - target: {fileID: 6108250451273240239, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6108250451273240239, guid: a0595181d9148bb44a7afc00424ebe83,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0736
+      objectReference: {fileID: 0}
     - target: {fileID: 6108386568247811770, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -33765,7 +33601,7 @@ PrefabInstance:
     - target: {fileID: 7573760167016158562, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7573760167016158562, guid: a0595181d9148bb44a7afc00424ebe83,
         type: 3}
@@ -35593,11 +35429,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1800610760}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5C422\uFF08y=0\uFF09"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35628,11 +35463,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1809366405}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35663,11 +35497,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1811961402}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35698,14 +35531,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1812050212}
   - component: {fileID: 1812050215}
   - component: {fileID: 1812050214}
   - component: {fileID: 1812050213}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: View2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35832,14 +35664,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1819071034}
   - component: {fileID: 1819071037}
   - component: {fileID: 1819071036}
   - component: {fileID: 1819071035}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35953,13 +35784,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1841691962}
   - component: {fileID: 1841691965}
   - component: {fileID: 1841691964}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35998,9 +35828,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36040,14 +35867,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1846469832}
   - component: {fileID: 1846469835}
   - component: {fileID: 1846469834}
   - component: {fileID: 1846469833}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Bag Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36162,14 +35988,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1888265917}
   - component: {fileID: 1888265916}
   - component: {fileID: 1888265915}
   - component: {fileID: 1888265914}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36214,9 +36039,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36271,13 +36093,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1894717370}
   - component: {fileID: 1894717373}
   - component: {fileID: 1894717372}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36316,9 +36137,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36358,13 +36176,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1905603684}
   - component: {fileID: 1905603686}
   - component: {fileID: 1905603685}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Clues
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36435,14 +36252,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1910026931}
   - component: {fileID: 1910026934}
   - component: {fileID: 1910026933}
   - component: {fileID: 1910026932}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: BackpackPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36544,19 +36360,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1929175153}
   - component: {fileID: 1929175155}
   - component: {fileID: 1929175154}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Spot Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1929175153
 Transform:
   m_ObjectHideFlags: 0
@@ -36657,20 +36472,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1937311286
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1937311287}
   - component: {fileID: 1937311289}
   - component: {fileID: 1937311288}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: DetailDescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36720,7 +36533,6 @@ MonoBehaviour:
     Description\Detail Description\Detail Description\Detail Description\D
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -36803,13 +36615,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1944331866}
   - component: {fileID: 1944331868}
   - component: {fileID: 1944331867}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Sun (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36916,20 +36727,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1944961257
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1944961258}
   - component: {fileID: 1944961260}
   - component: {fileID: 1944961259}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u540D\u79F0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36978,7 +36787,6 @@ MonoBehaviour:
   m_text: 'SteelMat
 
 '
-  m_enableAdvanceTextProcess: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -37061,11 +36869,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1968855976}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u89C6\u89D2\u5207\u6362\u6309\u94AE"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37100,13 +36907,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1974240298}
   - component: {fileID: 1974240300}
   - component: {fileID: 1974240299}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u6750\u8D28\u56FE\u6807"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37176,14 +36982,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1978915588}
   - component: {fileID: 1978915587}
   - component: {fileID: 1978915586}
   - component: {fileID: 1978915585}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37284,13 +37089,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1986358263}
   - component: {fileID: 1986358266}
   - component: {fileID: 1986358265}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37329,9 +37133,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37371,13 +37172,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1991476548}
   - component: {fileID: 1991476550}
   - component: {fileID: 1991476549}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Area Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37484,18 +37284,16 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!1 &1996361151
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1996361152}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: "\u7BAD\u5934\u6309\u94AE"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37533,11 +37331,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2004995889}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: "\u5A74\u513F\u623Flight"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37571,7 +37368,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2018642122}
   - component: {fileID: 2018642121}
@@ -37583,7 +37380,6 @@ GameObject:
   - component: {fileID: 2018642125}
   - component: {fileID: 2018642126}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -37669,9 +37465,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37812,14 +37605,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2023404758}
   - component: {fileID: 2023404757}
   - component: {fileID: 2023404756}
   - component: {fileID: 2023404755}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37864,9 +37656,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37921,11 +37710,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2070858263}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37956,14 +37744,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2072586225}
   - component: {fileID: 2072586228}
   - component: {fileID: 2072586227}
   - component: {fileID: 2072586226}
   m_Layer: 5
-  m_HasEditorInfo: 1
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38047,11 +37834,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2082453236}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: x=0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38082,13 +37868,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2084791025}
   - component: {fileID: 2084791028}
   - component: {fileID: 2084791027}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38127,9 +37912,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38169,7 +37951,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2091695234}
   - component: {fileID: 2091695237}
@@ -38177,7 +37959,6 @@ GameObject:
   - component: {fileID: 2091695235}
   - component: {fileID: 2091695238}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38224,9 +38005,6 @@ MonoBehaviour:
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
-  m_FXAAQualityMode: 0
-  m_FXAAContrastThreshold: 0.125
-  m_FXAAMinContrastThreshold: 0.012
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -38236,11 +38014,6 @@ MonoBehaviour:
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  allowDeepLearningSuperSampling: 0
-  deepLearningSuperSamplingUseCustomQualitySettings: 0
-  deepLearningSuperSamplingQuality: 0
-  deepLearningSuperSamplingUseCustomAttributes: 0
-  deepLearningSuperSamplingUseOptimalSettings: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -38305,8 +38078,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_enableGDRP: 1
-  m_backfaceCulling: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -38555,7 +38326,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2132144852}
   - component: {fileID: 2132144855}
@@ -38563,7 +38334,6 @@ GameObject:
   - component: {fileID: 2132144853}
   - component: {fileID: 2132144856}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38610,9 +38380,6 @@ MonoBehaviour:
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
-  m_FXAAQualityMode: 0
-  m_FXAAContrastThreshold: 0.125
-  m_FXAAMinContrastThreshold: 0.012
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -38622,11 +38389,6 @@ MonoBehaviour:
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  allowDeepLearningSuperSampling: 0
-  deepLearningSuperSamplingUseCustomQualitySettings: 0
-  deepLearningSuperSamplingQuality: 0
-  deepLearningSuperSamplingUseCustomAttributes: 0
-  deepLearningSuperSamplingUseOptimalSettings: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -38691,8 +38453,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_enableGDRP: 1
-  m_backfaceCulling: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -38718,13 +38478,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2134998286}
   - component: {fileID: 2134998288}
   - component: {fileID: 2134998287}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38831,7 +38590,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!224 &2138139157 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 200857504844002566, guid: c10fdea9a57075a42841c36d0c118472,
@@ -38876,13 +38634,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3396953705711009598}
   - component: {fileID: 7985565612321018900}
   - component: {fileID: 6296661341510963218}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_middlecover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38895,13 +38652,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7375862592580584324}
   - component: {fileID: 2634227941350282633}
   - component: {fileID: 385485125118706295}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_cover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38914,13 +38670,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3653238136944345657}
   - component: {fileID: 1322978899499870048}
   - component: {fileID: 3272155680288006525}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_middlecover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38944,9 +38699,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39005,9 +38757,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39039,14 +38788,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6968104114694131325}
   - component: {fileID: 8513682516950853438}
   - component: {fileID: 8655478367610893311}
   - component: {fileID: 8655478367610893312}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39086,9 +38834,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39144,14 +38889,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1482664802730278265}
   - component: {fileID: 1379384911385433623}
   - component: {fileID: 1546504378497833016}
   - component: {fileID: 1546504378497833017}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39183,9 +38927,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39228,9 +38969,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39300,13 +39038,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 963628292332439303}
   - component: {fileID: 3428379916366906162}
   - component: {fileID: 7345230776555403072}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_bottomcover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39358,13 +39095,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4184189388381247577}
   - component: {fileID: 5341383053895772507}
   - component: {fileID: 627734305946713859}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_channelcover001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39435,9 +39171,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39480,9 +39213,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39690,14 +39420,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 5199807774176914392}
   - component: {fileID: 6057527628729045772}
   - component: {fileID: 5135449123308512865}
   - component: {fileID: 6057527628729045773}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39752,9 +39481,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39819,9 +39545,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39864,9 +39587,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39909,9 +39629,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39960,14 +39677,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4991734934798058695}
   - component: {fileID: 728398818018408692}
   - component: {fileID: 1760644603995545605}
   - component: {fileID: 4991734934798058696}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39991,9 +39707,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40036,9 +39749,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40070,14 +39780,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1924097007702552929}
   - component: {fileID: 3731233391085718019}
   - component: {fileID: 6163716293039919167}
   - component: {fileID: 6163716293039919168}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40090,14 +39799,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2148599313547221458}
   - component: {fileID: 2169339693365591144}
   - component: {fileID: 1813796501731925828}
   - component: {fileID: 2169339693365591145}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40121,9 +39829,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40179,13 +39884,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1050796572199348533}
   - component: {fileID: 9190567140941687040}
   - component: {fileID: 6936878074058580216}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_endcover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40214,13 +39918,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3030380823454468862}
   - component: {fileID: 6448940410687273007}
   - component: {fileID: 9214041408643575287}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_bottomcover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40249,14 +39952,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 301979562868770772}
   - component: {fileID: 7421710198533691195}
   - component: {fileID: 8956548184512636395}
   - component: {fileID: 8956548184512636396}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40326,9 +40028,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40360,13 +40059,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8606017713763808955}
   - component: {fileID: 3780045603029103129}
   - component: {fileID: 6783623431280339482}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_channelcover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40428,9 +40126,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40510,13 +40205,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2496531205004492283}
   - component: {fileID: 1146205642436204549}
   - component: {fileID: 904199739731419405}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_cover001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40585,7 +40279,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
-  m_UseOcclusionCulling: 1
 --- !u!4 &3030380823454468862
 Transform:
   m_ObjectHideFlags: 0
@@ -40615,14 +40308,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8749644318582619254}
   - component: {fileID: 5519328288863474800}
   - component: {fileID: 8388416584989540962}
   - component: {fileID: 8749644318582619255}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40646,9 +40338,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40830,9 +40519,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40891,9 +40577,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40936,9 +40619,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40996,9 +40676,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41077,13 +40754,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4016908763426360200}
   - component: {fileID: 2955043941894440509}
   - component: {fileID: 7877435606034924618}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41303,13 +40979,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6090706684702975424}
   - component: {fileID: 2781793735611555171}
   - component: {fileID: 5186345055475785164}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_middlecover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41338,13 +41013,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7146685002384929070}
   - component: {fileID: 1098303367317946983}
   - component: {fileID: 5653690885426766024}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_cover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41357,14 +41031,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 29093557715336181}
   - component: {fileID: 8260245010626424534}
   - component: {fileID: 2293086251424617381}
   - component: {fileID: 8260245010626424535}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41385,14 +41058,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3698300656097760642}
   - component: {fileID: 6685479524276408762}
   - component: {fileID: 3521530538059575308}
   - component: {fileID: 6685479524276408763}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41416,9 +41088,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41450,14 +41119,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 5573602309391651045}
   - component: {fileID: 6026706343093936277}
   - component: {fileID: 3692817424470419470}
   - component: {fileID: 6026706343093936278}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41470,14 +41138,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4213444830818828102}
   - component: {fileID: 2826948514651455115}
   - component: {fileID: 7935241416152666704}
   - component: {fileID: 7935241416152666705}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41490,14 +41157,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8745999125072264324}
   - component: {fileID: 767392087415820609}
   - component: {fileID: 8347807966544283673}
   - component: {fileID: 8745999125072264325}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41510,14 +41176,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1206846043425334624}
   - component: {fileID: 35463228810245912}
   - component: {fileID: 5182202404213046457}
   - component: {fileID: 5182202404213046458}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41587,9 +41252,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41632,9 +41294,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41699,9 +41358,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41773,79 +41429,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1067658514927685221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5303615232639887512
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 289122824388565061, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_Name
-      value: nursery
-      objectReference: {fileID: 0}
-    - target: {fileID: 289122824388565061, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101406094205584127, guid: 91bf714f2447a2e4ca9dd91dff623b58,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91bf714f2447a2e4ca9dd91dff623b58, type: 3}
 --- !u!33 &5341383053895772507
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41860,14 +41443,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6952439268797015153}
   - component: {fileID: 7502394744570363812}
   - component: {fileID: 4774826353439200730}
   - component: {fileID: 7502394744570363813}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41891,9 +41473,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41944,9 +41523,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41986,13 +41562,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6714256099031225082}
   - component: {fileID: 8008222302572852978}
   - component: {fileID: 875604541342516426}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_channelcover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42048,9 +41623,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42093,9 +41665,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42127,14 +41696,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2880476249134995460}
   - component: {fileID: 2755019622649075566}
   - component: {fileID: 1647606804769756419}
   - component: {fileID: 5683103877296446321}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42177,13 +41745,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7312384245801090158}
   - component: {fileID: 81220635795078586}
   - component: {fileID: 9093286149676043434}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_channelcover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42196,14 +41763,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1896601790095411107}
   - component: {fileID: 493954220232249993}
   - component: {fileID: 3633506718541858505}
   - component: {fileID: 5926700823327842306}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42238,13 +41804,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7620881468007828314}
   - component: {fileID: 2579170768403884919}
   - component: {fileID: 1556028655618526002}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_bottomcover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42257,13 +41822,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 5269245927503245528}
   - component: {fileID: 8967845894883773997}
   - component: {fileID: 1878602999899814789}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_middlecover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42362,9 +41926,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42418,14 +41979,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1651123020343758250}
   - component: {fileID: 5650172645934409152}
   - component: {fileID: 9216676038324825761}
   - component: {fileID: 9216676038324825762}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42449,9 +42009,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42483,13 +42040,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1098510136164553833}
   - component: {fileID: 1385082005381866751}
   - component: {fileID: 3583466115521643073}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_cover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42513,9 +42069,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42547,14 +42100,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8859701158926057459}
   - component: {fileID: 8108391705877502083}
   - component: {fileID: 8212114292353396578}
   - component: {fileID: 8859701158926057460}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42567,13 +42119,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 6530617232874256600}
   - component: {fileID: 1883607212197024001}
   - component: {fileID: 7265870437492742377}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_channelcover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42605,9 +42156,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42654,13 +42202,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1003902117913289582}
   - component: {fileID: 7522010236750957105}
   - component: {fileID: 1623127543660421494}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_middlecover001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42673,13 +42220,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 5225879308302297858}
   - component: {fileID: 4066806416166967183}
   - component: {fileID: 5491048307978437159}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_middlecover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42692,14 +42238,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 746027426967005203}
   - component: {fileID: 3082249557837693668}
   - component: {fileID: 6525229094239489545}
   - component: {fileID: 6604262348988706998}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42790,9 +42335,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42824,14 +42366,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3926551313073247676}
   - component: {fileID: 5575466335186081852}
   - component: {fileID: 5427671526166977554}
   - component: {fileID: 6718811486667640642}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42877,9 +42418,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42911,13 +42449,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1488346997740453146}
   - component: {fileID: 5070914243350783828}
   - component: {fileID: 1286720768330981996}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_middlecover001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42949,9 +42486,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43030,13 +42564,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8378346697009768683}
   - component: {fileID: 7355131402621663407}
   - component: {fileID: 8524937864396343286}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_start_cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43049,14 +42582,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1067658514927685221}
   - component: {fileID: 5712251560500103681}
   - component: {fileID: 8518405241629409833}
   - component: {fileID: 8518405241629409834}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43080,9 +42612,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43129,13 +42658,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2503227737915324004}
   - component: {fileID: 6852220975931258563}
   - component: {fileID: 8779676092797036354}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_channelcover001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43175,9 +42703,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43243,9 +42768,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43315,14 +42837,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3551359676280588722}
   - component: {fileID: 4277810307975612149}
   - component: {fileID: 8439156024056720107}
   - component: {fileID: 8439156024056720108}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43373,14 +42894,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4397306662233675865}
   - component: {fileID: 430984009613062412}
   - component: {fileID: 6191680541157624304}
   - component: {fileID: 7743158133267397077}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43449,9 +42969,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43505,14 +43022,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 2060529698474719116}
   - component: {fileID: 952006712631410080}
   - component: {fileID: 1287295338508248082}
   - component: {fileID: 7963946302491504449}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43563,13 +43079,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3782825678076560515}
   - component: {fileID: 5429948253833701387}
   - component: {fileID: 2629081202851888166}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: a_channelcover002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43601,9 +43116,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43676,9 +43188,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43736,9 +43245,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43796,9 +43302,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43871,9 +43374,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43938,9 +43438,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43983,9 +43480,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44043,9 +43537,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44186,9 +43677,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44220,13 +43708,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 8398190115136047312}
   - component: {fileID: 1428650329115649546}
   - component: {fileID: 7389540585931057723}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: c_bottomcover001.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44239,14 +43726,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7336966708166717041}
   - component: {fileID: 1059091490452706636}
   - component: {fileID: 8570037038242645254}
   - component: {fileID: 8857706547779332060}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44327,13 +43813,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7717906513329028055}
   - component: {fileID: 8924882863415485330}
   - component: {fileID: 211806248649144116}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_middlecover003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44357,9 +43842,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44432,9 +43914,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44466,13 +43945,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 3521098689369603990}
   - component: {fileID: 3310401370124598615}
   - component: {fileID: 6717334059378021139}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: b_channelcover004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44504,9 +43982,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44549,9 +44024,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_virtualGeometry: 0
-  m_ShadingRate: 0
-  m_ForceDisableGRD: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44605,14 +44077,13 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1341193511574166207}
   - component: {fileID: 4479116591165696678}
   - component: {fileID: 5660062244844203997}
   - component: {fileID: 9222242180601808692}
   m_Layer: 0
-  m_HasEditorInfo: 1
   m_Name: Cube.013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44660,7 +44131,6 @@ SceneRoots:
   - {fileID: 3376689883305172725}
   - {fileID: 1576474101}
   - {fileID: 678799894}
-  - {fileID: 5303615232639887512}
   - {fileID: 375293605}
   - {fileID: 1076542864}
   - {fileID: 2004995889}
