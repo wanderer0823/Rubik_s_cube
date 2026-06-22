@@ -84,6 +84,7 @@ public class TutorialController : MonoBehaviour
     private void OnDialogueFinished()
     {
         currentWaitingEventId = string.Empty;
+        UnlockWASD();
 
         if (dialogueUI != null)
             dialogueUI.Hide();
