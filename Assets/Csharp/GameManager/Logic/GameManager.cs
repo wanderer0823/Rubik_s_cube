@@ -122,6 +122,16 @@ public class GameManager : MonoBehaviour
         GameEvents.onMouseLookRequest(mouseMove);
     }
 
+    public void RequestLeftMouseDragCompleted()
+    {
+        GameEvents.onLeftMouseDragCompletedExecute();
+    }
+
+    public void RequestRightMouseDragCompleted()
+    {
+        GameEvents.onRightMouseDragCompletedExecute();
+    }
+
     public void RequestExit()
     {
         GameEvents.onGameExitRequest();

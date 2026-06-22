@@ -253,8 +253,8 @@ public class TutorialController : MonoBehaviour
         GameEvents.OnGameStartExecute += OnGameStartExecute;
         GameEvents.OnBagOpenExecute += OnBagOpenExecute;
         GameEvents.OnViewSwitchExecute += OnViewSwitchExecute;
-        GameEvents.OnCameraRotateFinishExecute += OnCameraRotateFinishExecute;
-        GameEvents.OnCubeRotateSettledExecute += OnCubeRotateSettledExecute;
+        GameEvents.OnRightMouseDragCompletedExecute += OnRightMouseDragCompletedExecute;
+        GameEvents.OnLeftMouseDragCompletedExecute += OnLeftMouseDragCompletedExecute;
     }
 
     private void UnsubscribeGameplayEvents()
@@ -262,8 +262,8 @@ public class TutorialController : MonoBehaviour
         GameEvents.OnGameStartExecute -= OnGameStartExecute;
         GameEvents.OnBagOpenExecute -= OnBagOpenExecute;
         GameEvents.OnViewSwitchExecute -= OnViewSwitchExecute;
-        GameEvents.OnCameraRotateFinishExecute -= OnCameraRotateFinishExecute;
-        GameEvents.OnCubeRotateSettledExecute -= OnCubeRotateSettledExecute;
+        GameEvents.OnRightMouseDragCompletedExecute -= OnRightMouseDragCompletedExecute;
+        GameEvents.OnLeftMouseDragCompletedExecute -= OnLeftMouseDragCompletedExecute;
     }
 
     private void OnGameStartExecute()
@@ -294,12 +294,12 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-    private void OnCameraRotateFinishExecute()
+    private void OnRightMouseDragCompletedExecute()
     {
         TryCompleteWaitingEvent(RightDragCompletedEventId);
     }
 
-    private void OnCubeRotateSettledExecute()
+    private void OnLeftMouseDragCompletedExecute()
     {
         TryCompleteWaitingEvent(LeftDragCompletedEventId);
     }

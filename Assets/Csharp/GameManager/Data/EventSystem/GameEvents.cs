@@ -34,6 +34,8 @@ public static class GameEvents
     public static event Action OnOpenDoorExecute;
     public static event Action<Vector2> OnMouseLookExecute;//欧
     // CRC监听VMM
+    public static event Action OnLeftMouseDragCompletedExecute;
+    public static event Action OnRightMouseDragCompletedExecute;
     public static event Action OnCubeRotateExecute;
     public static event Action OnCubeRotateFinishExecute;
     public static event Action OnCubeRotateSettledExecute;
@@ -103,6 +105,8 @@ public static class GameEvents
     public static void onOpenDoorExecute() => OnOpenDoorExecute?.Invoke();
     public static void onMouseLookExecute(Vector2 mouseMove) => OnMouseLookExecute?.Invoke(mouseMove);//欧
     // UIM+VMM监听GS
+    public static void onLeftMouseDragCompletedExecute() => OnLeftMouseDragCompletedExecute?.Invoke();
+    public static void onRightMouseDragCompletedExecute() => OnRightMouseDragCompletedExecute?.Invoke();
     public static void onViewSwitchExecute(ViewMode mode) => OnViewSwitchExecute?.Invoke(mode);
     // CRC监听VMM
     public static void onCubeRotateStart() => OnCubeRotateExecute?.Invoke();

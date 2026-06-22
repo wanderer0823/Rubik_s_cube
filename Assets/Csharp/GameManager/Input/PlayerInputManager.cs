@@ -8,8 +8,14 @@ public class PlayerInputManager
     private GameManager gm;
     private float holdTime=0.0f;
     private float maxHoverTime = 0.01f;
+    private const float MouseDragCompleteThresholdPixels = 8f;
     private bool isView2LeftRotateActive;
+    private bool isRightRotateActive;
     private bool isMovementLocked;
+    private bool isLeftMouseTrackingDrag;
+    private bool isRightMouseTrackingDrag;
+    private Vector3 leftMouseDownPosition;
+    private Vector3 rightMouseDownPosition;
     [Header("鼠标灵敏度")]
     [SerializeField] private float mouseSensitivity = 2f;
 
@@ -59,13 +65,18 @@ public class PlayerInputManager
     private void HandleMouse()
     {
         //优先UI输入
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            return;
-
         bool isView2 = GameState.Instance != null && GameState.Instance.CurrentView == ViewMode.View2;
+        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null
+            && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
 
         if (Input.GetMouseButtonDown(0))
         {
+            if (isView2)
+                StartMouseDragTracking(0);
+
+            if (isPointerOverUI)
+                return;
+
             if (isView2)
             {
                 if (IsMouseOnView2Cube())
@@ -84,11 +95,23 @@ public class PlayerInputManager
         }
         if (Input.GetMouseButtonDown(1))
         {
+            if (isView2)
+                StartMouseDragTracking(1);
+
+            if (isPointerOverUI)
+                return;
+
+            isRightRotateActive = true;
             gm.RequestRightRotate();
         }
         //检测鼠标抬起
         if(Input.GetMouseButtonUp(0))
         {
+            CompleteMouseDragTracking(0);
+
+            if (isPointerOverUI && !(isView2 && isView2LeftRotateActive))
+                return;
+
             if (isView2)
             {
                 if (isView2LeftRotateActive)
@@ -107,9 +130,17 @@ public class PlayerInputManager
         }
         if(Input.GetMouseButtonUp(1))
         {
+            CompleteMouseDragTracking(1);
+            if (isPointerOverUI && !isRightRotateActive)
+                return;
+
+            isRightRotateActive = false;
             gm.RequestRightRotateFinish();
         }
         //欧：检测鼠标移动
+        if (isPointerOverUI)
+            return;
+
         if(TryGetMouseMoveInput(out Vector2 mouseMove))
         {
             gm.RequestMouseMove(mouseMove);
@@ -134,6 +165,41 @@ public class PlayerInputManager
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
         mouseMove = new Vector2(mouseX, mouseY);
         return mouseMove != Vector2.zero;
+    }
+
+    private void StartMouseDragTracking(int button)
+    {
+        if (button == 0)
+        {
+            isLeftMouseTrackingDrag = true;
+            leftMouseDownPosition = Input.mousePosition;
+        }
+        else if (button == 1)
+        {
+            isRightMouseTrackingDrag = true;
+            rightMouseDownPosition = Input.mousePosition;
+        }
+    }
+
+    private void CompleteMouseDragTracking(int button)
+    {
+        Vector3 mouseUpPosition = Input.mousePosition;
+        float thresholdSqr = MouseDragCompleteThresholdPixels * MouseDragCompleteThresholdPixels;
+
+        if (button == 0)
+        {
+            if (isLeftMouseTrackingDrag && (mouseUpPosition - leftMouseDownPosition).sqrMagnitude >= thresholdSqr)
+                gm.RequestLeftMouseDragCompleted();
+
+            isLeftMouseTrackingDrag = false;
+        }
+        else if (button == 1)
+        {
+            if (isRightMouseTrackingDrag && (mouseUpPosition - rightMouseDownPosition).sqrMagnitude >= thresholdSqr)
+                gm.RequestRightMouseDragCompleted();
+
+            isRightMouseTrackingDrag = false;
+        }
     }
 
     private bool IsMouseOnView2Cube()
