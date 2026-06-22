@@ -23,18 +23,47 @@ public class CameraAction : MonoBehaviour
     private float landBobDamping = 0.9f;    // 着陆时的摇晃衰减
     #endregion
 
+    private bool canFollow = false;  // 是否可以跟随
+
     private void OnEnable()
     {
         GameEvents.OnMouseLookExecute += HandleMouseLook;
-        //新增走路摇晃
         GameEvents.OnWalkMovement += Bob;
-    }
 
+        // 设置初始旋转
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+
+        // 启动协程，延迟1秒后允许跟随
+        StartCoroutine(DelayFollow(1f));
+    }
 
     private void OnDisable()
     {
-        GameEvents.OnMouseLookExecute-=HandleMouseLook;
+        GameEvents.OnMouseLookExecute -= HandleMouseLook;
         GameEvents.OnWalkMovement -= Bob;
+        canFollow = false;
+        StopAllCoroutines();
+    }
+
+    IEnumerator DelayFollow(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canFollow = true;
+
+        // 同步当前的旋转变量
+        xRotation = 0f;
+        yRotation = 90f;
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = player.position + offset;
+
+        // 只有 canFollow 为 true 时才更新旋转
+        if (canFollow)
+        {
+            transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        }
     }
 
     void HandleMouseLook(Vector2 mouseMove)
@@ -50,11 +79,6 @@ public class CameraAction : MonoBehaviour
         xRotation -= mouseY;
         //这里有报错，为了提交先注释一下！
         //xRotation = Mathf.Clamp(xRotation, minAngle, maxAngle);
-    }
-    private void LateUpdate()
-    {
-        transform.position = player.position + offset;
-        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 
     //走路摇晃
