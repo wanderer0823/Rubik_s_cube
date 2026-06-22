@@ -15,6 +15,8 @@ public class BallVisualController : MonoBehaviour
     private InitCubeSlot cubeData;
     private Vector3 currentWorldNormal = Vector3.up;
 
+    private int currentRoomID = -1;
+
     void Start()
     {
         cubeData = ViewModeManager.Instance?.cubeData;
@@ -41,6 +43,8 @@ public class BallVisualController : MonoBehaviour
     {
         if (cubeData == null) return;
         if (roomID < 0) return;
+
+        currentRoomID = roomID;
 
         CubeSurface_s surface = FindSurfaceByRoomID(roomID);
         if (surface == null)
@@ -76,8 +80,16 @@ public class BallVisualController : MonoBehaviour
     
     void OnViewSwitched(ViewMode mode)
     {
-        // 只更新旋转，不改变位置
-        UpdateRotationOnly();
+        CubeSurface_s surface = FindSurfaceByRoomID(currentRoomID);
+        if (surface != null)
+        {
+            Transform cubeRoot = ViewModeManager.Instance.cubeRoot;
+            Vector3 logicDir = FaceDirToLocalVector(surface.dir);
+            Vector3 worldDir = cubeRoot.TransformDirection(logicDir);
+            currentWorldNormal = worldDir.normalized;
+        }
+            // 只更新旋转，不改变位置
+            UpdateRotationOnly();
     }
 
     public void UpdateRotationOnly()
@@ -99,17 +111,7 @@ public class BallVisualController : MonoBehaviour
     // 把原来PositionBall里的旋转逻辑抽取成ApplyRotation，避免重复代码
     private void ApplyRotation()
     {
-        // 使用currentWorldNormal
-        Transform playerTrans = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (playerTrans != null)
-        {
-            Quaternion baseRotation = Quaternion.FromToRotation(Vector3.up, currentWorldNormal);
-            transform.rotation = baseRotation * playerTrans.rotation;
-        }
-        else
-        {
-            transform.up = currentWorldNormal;
-        }
+        UpdateRotationOnly();
     }
 
     CubeSurface_s FindSurfaceByRoomID(int roomID)
