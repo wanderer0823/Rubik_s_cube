@@ -101,6 +101,10 @@
       "speaker": "你",
       "text": "这个箭头应该是指着方向吧，看样子只有一个出口，先过去看看",
       "stepType": "Text"
+    },
+    {
+      "stepType": "WaitForEvent",
+      "eventId": "UnlockWASD"
     }
   ]
 }
