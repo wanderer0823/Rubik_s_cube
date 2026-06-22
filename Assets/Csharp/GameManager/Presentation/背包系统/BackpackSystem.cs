@@ -50,6 +50,8 @@ public class BackpackSystem : MonoBehaviour
 
     [Header("字体")]
     [SerializeField] private TMP_FontAsset defaultFont;
+    [SerializeField] private TMP_FontAsset detailNameFont;   // 新增：名字专用字体
+    [SerializeField] private TMP_FontAsset detailDescFont;   // 新增：描述专用字体
 
     // 记录详情面板显示/隐藏位置，由初始位置决定
     private Vector2 detailShowPos;
@@ -196,9 +198,20 @@ public class BackpackSystem : MonoBehaviour
     {
         if (detailPopupPanel == null) return;
 
-        // 填充数据
-        if (detailNameText != null) detailNameText.text = itemName;
-        if (detailDescText != null) detailDescText.text = description;
+        // 填充数据 - 现在 detailNameText 是 TMP_Text 类型，有 .text 属性
+        if (detailNameText != null)
+        {
+            detailNameText.text = itemName;              // 显示文字
+            if (detailNameFont != null)                  // 可选：更换字体
+                detailNameText.font = detailNameFont;
+        }
+
+        if (detailDescText != null)
+        {
+            detailDescText.text = description;           // 显示文字
+            if (detailDescFont != null)                  // 可选：更换字体
+                detailDescText.font = detailDescFont;
+        }
 
         if (detailImage != null)
         {
@@ -213,12 +226,11 @@ public class BackpackSystem : MonoBehaviour
             }
         }
 
-        // 每次重新播放动画（从底部向上）
+        // 动画代码保持不变...
         if (currentAnim != null)
             StopCoroutine(currentAnim);
 
         detailPopupPanel.gameObject.SetActive(true);
-        // 设置到底部起始位置
         detailPopupPanel.anchoredPosition = detailHidePos;
         detailCanvasGroup.alpha = 0f;
 
