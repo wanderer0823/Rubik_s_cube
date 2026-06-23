@@ -18,6 +18,8 @@ public class ViewModeManager : MonoBehaviour
     public InitCubeSlot cubeData;
     [Header("房间旋转用的时间")]
     [SerializeField] private float RotationTime=5f;
+    private bool hasActiveRotate;
+    private RotateType activeRotateType;
 
 
     //欧添加：在更新旋转后重置小球位置
@@ -261,6 +263,8 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
             || !CheckPlayerState(PlayerState.rotatingFinished))
             return;
         gs.SetPlayerState(PlayerState.isRotating);
+        hasActiveRotate = true;
+        activeRotateType = type;
         if(type==RotateType.Left)
         {
             GameEvents.onCubeRotateStart();
@@ -273,10 +277,14 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
 
     void CheckRotateFinish(RotateType type)
     {
-        if (!CheckViewMode(ViewMode.View2)
-            || !CheckPlayerState(PlayerState.isRotating))
+        if (!CheckViewMode(ViewMode.View2))
             return;
+
+        if (!hasActiveRotate || activeRotateType != type)
+            return;
+
         gs.SetPlayerState(PlayerState.rotatingFinished);
+        hasActiveRotate = false;
         if (type == RotateType.Left)
         {
             GameEvents.onCubeRotateEnd();

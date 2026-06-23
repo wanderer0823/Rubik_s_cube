@@ -73,6 +73,9 @@ public class PlayerAction : MonoBehaviour
     // private CharacterController controller;
     // private Vector3 CurrentMoveVelocity; ...
 
+    // ===== 新增：基准出生位置（未叠加世界偏移） =====
+    private Vector3 _baseSpawnPosition;
+
     void OnEnable()
     {
         GameEvents.OnTabExecute += OnTabPressed;
@@ -100,6 +103,11 @@ public class PlayerAction : MonoBehaviour
     {
         gs = GameState.Instance;
         ApplyProfile(steelProfile);
+        
+        // 记录基准出生位置（不包含世界偏移）
+        _baseSpawnPosition = GetResolvedStartPosition();
+        
+        // 应用偏移重置位置
         ResetToStartPosition();
     }
 
@@ -128,8 +136,6 @@ public class PlayerAction : MonoBehaviour
             ResetUnpressedPlates();
             Debug.Log("Bounce跳跃结束，已重置压力板");
         }
-
-        
     }
 
     // ===== 新增：自动台阶检测核心方法 =====
@@ -339,7 +345,12 @@ public class PlayerAction : MonoBehaviour
         if (ignoreFixedSpawnPosition)
             return;
 
-        transform.position = GetResolvedStartPosition();
+        // 基准位置 + 世界抬升偏移
+        Vector3 pos = _baseSpawnPosition;
+        if (RoomGameObjectManager.Instance != null)
+            pos += RoomGameObjectManager.Instance.WorldLiftOffset;
+
+        transform.position = pos;
         ContinuousCollisionDetector3D ccd = gameObject.GetComponent<ContinuousCollisionDetector3D>();
         if (ccd != null)
             ccd.OnTeleport(transform.position);

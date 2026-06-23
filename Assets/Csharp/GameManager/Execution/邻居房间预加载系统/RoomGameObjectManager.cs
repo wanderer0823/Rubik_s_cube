@@ -19,11 +19,15 @@ public class RoomGameObjectManager : MonoBehaviour
     private GameObject _currentRoomObject;
 
     public GameObject CurrentRoom;
+    [SerializeField] private Vector3 worldLiftOffset = Vector3.zero;
+    public Vector3 WorldLiftOffset => worldLiftOffset;
     public List<RoomGameObjectEntry> roomGameObjects = new List<RoomGameObjectEntry>();
 
     private readonly Dictionary<int, GameObject> _roomGameObjectMap = new Dictionary<int, GameObject>();
     private readonly HashSet<int> _positionAdjustedRoomIds = new HashSet<int>();
     private bool _isRoomGameObjectMapBuilt;
+    private Vector3 _currentRoomBasePosition;
+    private bool _hasCurrentRoomBasePosition;
 
     void Awake()
     {
@@ -39,6 +43,7 @@ public class RoomGameObjectManager : MonoBehaviour
     void Start()
     {
         ApplyCurrentRoomPositionToAll();
+        ApplyCurrentRoomLift();
         //LoadCurrentRoomGameObject();
     }
 
@@ -159,6 +164,20 @@ public class RoomGameObjectManager : MonoBehaviour
 
         roomObject.transform.position += CurrentRoom.transform.position;
         _positionAdjustedRoomIds.Add(roomID);
+    }
+
+    public void ApplyCurrentRoomLift()
+    {
+        if (CurrentRoom == null)
+            return;
+
+        if (!_hasCurrentRoomBasePosition)
+        {
+            _currentRoomBasePosition = CurrentRoom.transform.position;
+            _hasCurrentRoomBasePosition = true;
+        }
+
+        CurrentRoom.transform.position = _currentRoomBasePosition + worldLiftOffset;
     }
 
     private void OnRoomTransition(int roomID)

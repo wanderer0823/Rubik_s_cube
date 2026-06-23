@@ -47,6 +47,12 @@ public class CameraRotateController : MonoBehaviour
     void StopRotate()
     {
         isDragging = false;
+        if (snapCoroutine != null)
+        {
+            StopCoroutine(snapCoroutine);
+            snapCoroutine = null;
+        }
+
         AutoSnapToFacingFace();
     }
 
