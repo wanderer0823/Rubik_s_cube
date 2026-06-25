@@ -111,7 +111,8 @@ GameObject:
   - component: {fileID: 8819236586438334130}
   - component: {fileID: 2996775549826138459}
   - component: {fileID: 9011296996095327050}
-  m_Layer: 0
+  - component: {fileID: 1817135479124086092}
+  m_Layer: 6
   m_Name: "\u7ACB\u65B9\u4F53.066 (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,6 +184,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1817135479124086092
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164661481511177297}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0023744553, y: 0.03316928, z: 0.03211036}
+  m_Center: {x: 0.1133819, y: 0.0012556037, z: 0.010533736}
 --- !u!1 &2290122601285272953
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +338,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8708850447468885473}
     m_Modifications:
+    - target: {fileID: 4128120244438337819, guid: b43e47833a044b3479cf75e8cca25067,
+        type: 3}
+      propertyPath: targetRoomID
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 5663321650940306938, guid: b43e47833a044b3479cf75e8cca25067,
         type: 3}
       propertyPath: m_Name
@@ -537,7 +564,7 @@ PrefabInstance:
     - target: {fileID: 9081198426981252091, guid: 05d2808d3121c8b459c248692a1d9108,
         type: 3}
       propertyPath: m_Name
-      value: fjmx_zl02L Variant
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -548,7 +575,7 @@ PrefabInstance:
       addedObject: {fileID: 684464462324925429}
     - targetCorrespondingSourceObject: {fileID: 8452470858676298049, guid: 05d2808d3121c8b459c248692a1d9108,
         type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 8819236586438334130}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05d2808d3121c8b459c248692a1d9108, type: 3}
