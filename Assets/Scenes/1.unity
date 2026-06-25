@@ -6602,7 +6602,7 @@ Transform:
   m_GameObject: {fileID: 367349154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 170, z: 0}
+  m_LocalPosition: {x: 0, y: 57.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23074,7 +23074,7 @@ MonoBehaviour:
   alwaysActiveObjects:
   - {fileID: 1764845567}
   CurrentRoom: {fileID: 367349154}
-  worldLiftOffset: {x: 0, y: 40, z: 0}
+  worldLiftOffset: {x: 0, y: 200, z: 0}
   roomGameObjects:
   - roomID: 44
     roomObject: {fileID: 1464392747}
@@ -38521,7 +38521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1692653793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41702,7 +41702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1764845568
 Transform:
   m_ObjectHideFlags: 0
@@ -49399,7 +49399,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1106728776}
   m_HandleRect: {fileID: 1106728775}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
