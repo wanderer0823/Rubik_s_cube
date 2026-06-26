@@ -20,6 +20,7 @@ public class ViewModeManager : MonoBehaviour
     [SerializeField] private float RotationTime=5f;
     private bool hasActiveRotate;
     private RotateType activeRotateType;
+    private Coroutine currentRoomRotateCoroutine;
 
 
     //欧添加：在更新旋转后重置小球位置
@@ -206,7 +207,8 @@ public class ViewModeManager : MonoBehaviour
 
 private void RotateCurrentRoom()
 {
-    if (isRotating) return;  // 正在旋转，忽略本次调用
+    if (cubeData == null || cubeData.CurrentRoom == null)
+        return;
 
     GameObject currentRoom = cubeData.CurrentRoom;
 
@@ -216,6 +218,9 @@ private void RotateCurrentRoom()
     new Vector3(0, -1, 0));
     Quaternion qStart = Quaternion.Euler(270, 0, 0);
     GameObject pieceObj = cubeData.GetPieceGameObjectByRoomID(gs.CurrentRoomID);
+    if (pieceObj == null)
+        return;
+
     Quaternion qEnd = pieceObj.transform.localRotation;
     if (pieceObj.transform.parent == cubeRoot)
     {
@@ -225,17 +230,38 @@ private void RotateCurrentRoom()
     Quaternion targetRotation = rotation_R * rotation_T;
 
     // 2. 启动平滑旋转协程
-    StartCoroutine(RotateOverTime(currentRoom.transform, targetRotation, RotationTime)); // 0.5秒完成旋转
+    if (currentRoomRotateCoroutine != null)
+    {
+        StopCoroutine(currentRoomRotateCoroutine);
+        currentRoomRotateCoroutine = null;
+    }
+
+    currentRoomRotateCoroutine = StartCoroutine(RotateOverTime(currentRoom.transform, targetRotation, RotationTime)); // 0.5秒完成旋转
 }
 
 private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetRotation, float duration)
 {
     isRotating = true;
+    if (targetTransform == null)
+    {
+        isRotating = false;
+        currentRoomRotateCoroutine = null;
+        yield break;
+    }
+
     Quaternion startRotation = targetTransform.rotation;
     float elapsed = 0f;
+    duration = Mathf.Max(0.01f, duration);
 
     while (elapsed < duration)
     {
+        if (targetTransform == null)
+        {
+            isRotating = false;
+            currentRoomRotateCoroutine = null;
+            yield break;
+        }
+
         elapsed += Time.deltaTime;
         float t = elapsed / duration;  // 0→1
         // 使用Slerp保证旋转路径最短
@@ -254,6 +280,7 @@ private IEnumerator RotateOverTime(Transform targetTransform, Quaternion targetR
         //ResetPlayerToStartPosition();
         lastRoomRotation = newRotation;
     }
+    currentRoomRotateCoroutine = null;
 }
     #endregion
 

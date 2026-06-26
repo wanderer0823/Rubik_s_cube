@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueStepData currentStep;
     private Coroutine delayCoroutine;
+    private Coroutine autoResumeCoroutine;
     private bool isRunning;
     private bool isWaitingForEvent;
     private string waitingEventId;
@@ -111,6 +112,7 @@ public class DialogueManager : MonoBehaviour
     private void ProcessNextStep()
     {
         StopDelayCoroutine();
+        StopAutoResumeCoroutine();
 
         if (dialogueQueue.Count == 0)
         {
@@ -132,6 +134,8 @@ public class DialogueManager : MonoBehaviour
             case DialogueStepType.Text:
             case DialogueStepType.ShowTips:
             default:
+                if (ShouldAutoResumeShowTips())
+                    autoResumeCoroutine = StartCoroutine(AutoResumeAfterFrame());
                 break;
         }
     }
@@ -154,6 +158,22 @@ public class DialogueManager : MonoBehaviour
         ProcessNextStep();
     }
 
+    private IEnumerator AutoResumeAfterFrame()
+    {
+        yield return null;
+
+        autoResumeCoroutine = null;
+
+        if (!isRunning || isWaitingForEvent || currentStep == null)
+            yield break;
+
+        if (!ShouldAutoResumeShowTips())
+            yield break;
+
+        CompleteCurrentStep();
+        ProcessNextStep();
+    }
+
     private void CompleteCurrentStep()
     {
         if (currentStep == null)
@@ -168,8 +188,18 @@ public class DialogueManager : MonoBehaviour
         return string.IsNullOrWhiteSpace(requiredFlag) || HasFlag(requiredFlag);
     }
 
+    private bool ShouldAutoResumeShowTips()
+    {
+        return currentStep != null
+            && currentStep.ParsedStepType == DialogueStepType.ShowTips
+            && dialogueQueue.Count > 0
+            && dialogueQueue.Peek() != null
+            && dialogueQueue.Peek().ParsedStepType == DialogueStepType.WaitForEvent;
+    }
+
     private void FinishDialogue()
     {
+        StopAutoResumeCoroutine();
         currentStep = null;
         isRunning = false;
         isWaitingForEvent = false;
@@ -184,5 +214,14 @@ public class DialogueManager : MonoBehaviour
 
         StopCoroutine(delayCoroutine);
         delayCoroutine = null;
+    }
+
+    private void StopAutoResumeCoroutine()
+    {
+        if (autoResumeCoroutine == null)
+            return;
+
+        StopCoroutine(autoResumeCoroutine);
+        autoResumeCoroutine = null;
     }
 }
