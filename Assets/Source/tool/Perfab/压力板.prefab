@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1044055052749700501}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.0013000012, y: 0.00049999176, z: 0.0064999918}
+  m_LocalPosition: {x: 0.0013000012, y: 0.0005, z: 0.00484}
   m_LocalScale: {x: 0.017266957, y: 0.01726696, z: 0.01726696}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0947776, y: 0.3026961, z: 1.1023821}
+  m_Size: {x: 1.3, y: 0.3026961, z: 1.33}
   m_Center: {x: -0.062298037, y: -0.18365388, z: 0.030466672}
 --- !u!1001 &500272229177731815
 PrefabInstance:
@@ -69,7 +69,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d195985e915f762478afa1e08b88a6dd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.85
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d195985e915f762478afa1e08b88a6dd,
         type: 3}
@@ -177,6 +177,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d0153d5c75ad0fd44b5a0fdff09addc4, type: 2}
   - {fileID: 2100000, guid: a775d4f5b6c8bfd43a61e34c8f01fafb, type: 2}
   linkedDoor: {fileID: 0}
+  linkedDoorId: 
   isPressed: 0
 --- !u!65 &8623951814959971145
 BoxCollider:
