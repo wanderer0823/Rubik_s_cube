@@ -341,17 +341,48 @@ public class ItemInteractionController : MonoBehaviour
             if (!face.isPassable)
                 continue;
 
+            // 获取所有邻居房间，找到真实可通行的目标
             RoomInstanceManager roomInstanceManager = FindObjectOfType<RoomInstanceManager>();
+            int? targetRoomId = null;
             foreach (var roomId in roomInstanceManager.GetNeighborRoomIds())
             {
-                if (roomId == id)
-                    continue;
-
-                TryFindTrueNeighborRoom(roomId, oppositeDir);
-                /*__DEBUGTOOL_START__*/Debug.Log("NeighborRoomID是——" + roomId);/*__DEBUGTOOL_END__*/
+                if (roomId == id) continue;
+                int? found = TryFindTrueNeighborRoom(roomId, oppositeDir);
+                if (found.HasValue)
+                {
+                    targetRoomId = found.Value;
+                    break;  // 找到第一个可通行的邻居就退出
+                }
             }
 
-            /*__DEBUGTOOL_START__*/Debug.Log("开门成功，传送到" + GameState.Instance.CurrentRoomID);/*__DEBUGTOOL_END__*/
+            if (!targetRoomId.HasValue)
+            {
+                Debug.Log("未找到可通行的邻居房间");
+                return;
+            }
+
+            // 现在检查是否为 10 号房间，且任务未全部完成
+            if (targetRoomId.Value == 10 && !gsLocal.AllTasksFinished())
+            {
+                Debug.Log("任务未全部完成，无法进入10号房间！");
+                // 可以触发UI提示，例如 GameEvents.onTaskBlocked(10);
+                return; // 阻止传送，不修改 CurrentRoomID
+            }
+
+            // 任务完成（若目标为23/26/27/30）
+            switch (targetRoomId.Value)
+            {
+                case 23: gsLocal.TaskFinished[0] = true; break;
+                case 26: gsLocal.TaskFinished[1] = true; break;
+                case 27: gsLocal.TaskFinished[2] = true; break;
+                case 30: gsLocal.TaskFinished[3] = true; break;
+            }
+
+            // 确认传送：设置 CurrentRoomID
+            GameState.Instance.CurrentRoomID = targetRoomId.Value;
+            GameState.Instance.RefreshCurrentSurfaceFromRoomID();
+
+            // 执行传送后的操作
             if (playerAction != null)
                 playerAction.ResetToStartPosition();
             GameEvents.onRoomTransitionExecute(GameState.Instance.CurrentRoomID);
@@ -378,7 +409,7 @@ public class ItemInteractionController : MonoBehaviour
             /*__DEBUGTOOL_START__*/Debug.LogWarning($"门 {doorCtrl.gameObject.name} 的固定传送房间ID {doorCtrl.targetRoomID} 对应的房间数据为 null，继续执行原有传送逻辑");/*__DEBUGTOOL_END__*/
             return false;
         }
-
+        
         GameState.Instance.CurrentRoomID = doorCtrl.targetRoomID;
         GameState.Instance.RefreshCurrentSurfaceFromRoomID();
         /*__DEBUGTOOL_START__*/Debug.Log($"门 {doorCtrl.gameObject.name} 在门逻辑执行完成后传送到固定房间 {doorCtrl.targetRoomID}");/*__DEBUGTOOL_END__*/
@@ -390,7 +421,7 @@ public class ItemInteractionController : MonoBehaviour
         return true;
     }
 
-    private void TryFindTrueNeighborRoom(int id, Vector3Int oppositeDoorDir)
+    private int? TryFindTrueNeighborRoom(int id, Vector3Int oppositeDoorDir)
     {
         for (int i = 0; i < cubeData.rooms[id].dirMap.Length; i++)
         {
@@ -400,14 +431,15 @@ public class ItemInteractionController : MonoBehaviour
             FaceState face = cubeData.rooms[id].GetFace(cubeData.rooms[id].dirMap[i]);
             if (face.isPassable)
             {
-                GameState.Instance.CurrentRoomID = id;
-                GameState.Instance.RefreshCurrentSurfaceFromRoomID();
+                return id;  // 返回找到的房间ID
             }
             else
             {
-                /*__DEBUGTOOL_START__*/Debug.Log("开门失败");/*__DEBUGTOOL_END__*/
+                Debug.Log("开门失败");
+                return null;
             }
         }
+        return null;
     }
 
     Plate ResolvePlateLink(Collider plateCollider)
