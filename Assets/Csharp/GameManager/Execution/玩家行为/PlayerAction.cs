@@ -237,8 +237,9 @@ public class PlayerAction : MonoBehaviour
 
         Vector3 targetHorVelocity = moveDir.normalized * targetSpeed;
         Vector3 currentHorVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        bool hasMovementInput = moveDir.sqrMagnitude > 0.01f;
 
-        if (moveDir.magnitude > 0.1f)
+        if (hasMovementInput)
         {
             deltaHorVelocity = targetHorVelocity - currentHorVelocity;
             float maxDelta = moveAcceleration * Time.fixedDeltaTime;
@@ -262,10 +263,13 @@ public class PlayerAction : MonoBehaviour
         Vector3 newVelocity = rb.velocity;
         newVelocity.x += deltaHorVelocity.x;
         newVelocity.z += deltaHorVelocity.z;
-        rb.velocity = newVelocity + IIC.windAddVelocity;
+        if (IIC != null)
+            newVelocity += IIC.windAddVelocity;
+
+        rb.velocity = newVelocity;
 
         // ===== 新增：自动台阶检测（仅当未弹跳且有水平移动时） =====
-        if (enableAutoStep && !isBouncing)
+        if (enableAutoStep && !isBouncing && hasMovementInput)
         {
             TryAutoStep();
         }
